@@ -1,0 +1,18 @@
+﻿<SfDialog Header="@HeaderString" Height="320px" IsModal="true" MinHeight="320px" @ref="Dialog" Target="#divTarget" Visible="false" Width="400px">
+	<ChildContent>
+		<SfSpinner CssClass="spinnerHeight" @ref="Spinner" Type="SpinnerType.Fabric" ZIndex="12000" />
+		<DialogPositionData X="right" Y="center"></DialogPositionData>
+		<DialogAnimationSettings Effect="DialogEffect.SlideRight"></DialogAnimationSettings>
+		<DialogEvents OnOpen="OpenDialog"></DialogEvents>
+		<EditForm Model="Model" OnValidSubmit="SaveState" @ref="EditStateForm">
+			<FluentValidationValidator />
+			<div class="divContainerTable">
+				<TextBoxControl @bind-Value="@(Model.Code)" @bind-Value:event="ValueChanged" CreateDivTag="true" CreateTooltip="true" ID="textCode" MaxLength="2" MinLength="1"
+								Multiline="false" Placeholder="State Code" Readonly="@(!HeaderString.StartsWith("Add"))" ValidationMessage="@(() => Model.Code)" />
+				<TextBoxControl @bind-Value="@(Model.StateName)" @bind-Value:event="ValueChanged" CreateDivTag="true" CreateTooltip="true" ID="textState" MaxLength="50" MinLength="1"
+								Multiline="false" Placeholder="State Name" ValidationMessage="@(() => Model.StateName)" />
+			</div>
+			<DialogFooter Cancel="Cancel" CancelMethod="CancelState" @ref="DialogFooter" Save="Save" />
+		</EditForm>
+	</ChildContent>
+</SfDialog>

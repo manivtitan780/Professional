@@ -1,0 +1,8 @@
+<div class="divSwitchFlex">
+	<div class="divSwitchFlexLabel">
+		<label class="labelStatus" for="@ID">@(Placeholder.NullOrWhiteSpace() ? "&nbsp;" : Placeholder.EndsWith(":") ? Placeholder : $"{Placeholder}:")</label>
+	</div>
+	<div class="divSwitchFlexControl">
+		<SfSwitch @bind-Checked="@BindValue" CssClass="switchStatus taxEnabledSwitch" HtmlAttributes="@(new Dictionary<string, object> { { "id", ID }})" OffLabel="@OffLabel" OnLabel="@OnLabel" />
+	</div>
+</div>

@@ -1,0 +1,35 @@
+﻿<SfDialog Header="@HeaderString" Height="98vh" IsModal="true" MinHeight="98vh" @ref="Dialog" Target="#divTarget" Visible="false" Width="480px">
+	<ChildContent>
+		<SfSpinner CssClass="spinnerHeight" @ref="Spinner" Type="SpinnerType.Fabric" ZIndex="12000" />
+		<DialogPositionData X="right" Y="center" />
+		<DialogAnimationSettings Effect="DialogEffect.SlideRight" />
+		<DialogEvents OnOpen="OpenDialog"></DialogEvents>
+		<EditForm Model="Model" OnValidSubmit="SaveJobOption" @ref="EditJobOptionForm">
+			<FluentValidationValidator />
+			<div class="divContainerTable">
+				<TextBoxControl @bind-Value="@(Model.Code)" @bind-Value:event="ValueChanged" CreateDivTag="true" CreateTooltip="true" ID="textCode" MaxLength="1" MinLength="1"
+								Multiline="false" Placeholder="Job Option Code" Readonly="@(!HeaderString.StartsWith("Add"))" ValidationMessage="@(() => Model.Code)" />
+				<TextBoxControl @bind-Value="@(Model.Option)" @bind-Value:event="ValueChanged" CreateDivTag="true" CreateTooltip="true" ID="textOption" MaxLength="50" MinLength="1"
+								Multiline="false" Placeholder="Job Option" ValidationMessage="@(() => Model.Option)" />
+				<TextBoxControl @bind-Value="@(Model.Description)" @bind-Value:event="ValueChanged" CreateDivTag="true" CreateTooltip="true" ID="textDescription" MaxLength="500" MinLength="1"
+								Multiline="true" Rows="3" Placeholder="Description" ValidationMessage="@(() => Model.Description)" />
+				<TextBoxControl @bind-Value="@(Model.RateText)" @bind-Value:event="ValueChanged" CreateDivTag="true" CreateTooltip="true" ID="textRateText" MaxLength="255" MinLength="1"
+								Multiline="false" Placeholder="Rate Text" ValidationMessage="@(() => Model.RateText)" />
+				<TextBoxControl @bind-Value="@(Model.PercentText)" @bind-Value:event="ValueChanged" CreateDivTag="true" CreateTooltip="true" ID="textPercentText" MaxLength="255" MinLength="1"
+								Multiline="false" Placeholder="Percentage Text" ValidationMessage="@(() => Model.PercentText)" />
+				<MultiSelectControl @bind-Value="@(Model.Tax)" @bind-Value:event="ValueChanged" CreateDivTag="true" CreateTooltip="false" DataSource="TaxTerm"
+									FilterBarPlaceholder="Search Tax Term&hellip;" ID="multiTaxTerms" KeyField="Key" Placeholder="Select Tax Terms(s)" TItem="KeyValues" TValue="string"
+									ValueField="Value" />
+				<NumericControl @bind-Value="@(Model.CostPercent)" @bind-Value:event="ValueChanged" CreateDivTag="true" CreateTooltip="true" Decimals="2" Format="p2" ID="numericCostPercent"
+								Max="100" Min="0" Placeholder="Cost Percent" Step="0.01M" TValue="decimal" ValidationMessage="@(() => Model.CostPercent)" />
+				<SwitchControl @bind-BindValue="@(Model.Rate)" ID="checkedRate" OffLabel="NO" OnLabel="YES" Placeholder="Rate Required?" />
+				<SwitchControl @bind-BindValue="@(Model.Exp)" ID="checkedExp" OffLabel="NO" OnLabel="YES" Placeholder="Expenses Required?" />
+				<SwitchControl @bind-BindValue="@(Model.PlaceFee)" ID="checkedPlaceFee" OffLabel="NO" OnLabel="YES" Placeholder="Placement Fee Required?" />
+				<SwitchControl @bind-BindValue="@(Model.Benefits)" ID="checkedBenefits" OffLabel="NO" OnLabel="YES" Placeholder="Benefits Required?" />
+				<SwitchControl @bind-BindValue="@(Model.ShowHours)" ID="checkedShowHours" OffLabel="NO" OnLabel="YES" Placeholder="Show Hours?" />
+				<SwitchControl @bind-BindValue="@(Model.ShowPercent)" ID="checkedShowPercent" OffLabel="NO" OnLabel="YES" Placeholder="Show Percent?" />
+			</div>
+			<DialogFooter Cancel="Cancel" CancelMethod="CancelJobOption" @ref="DialogFooter" Save="Save" />
+		</EditForm>
+	</ChildContent>
+</SfDialog>

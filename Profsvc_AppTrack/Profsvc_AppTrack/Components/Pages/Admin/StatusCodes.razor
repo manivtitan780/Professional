@@ -1,0 +1,54 @@
+﻿@page "/Admin/StatusCodes"
+@layout ProfSvcLayout
+
+<AdminGrid AdaptorInstance="@typeof(AdminStatusCodeAdaptor)" AddMethod="() => EditStatusCode()" AutocompleteMethod="Admin_SearchStatusCode" AutocompleteParameter="@("@StatusCode")" Count="@Count" DataHandler="DataHandler"
+		   Entity="StatusCode" FilterGrid="FilterGrid" HeaderContentPlural="Status Codes" HeaderContentSingular="Status Code" Key="ID" Page="" @ref="AdminGrid" RefreshGrid="RefreshGrid" RoleID="@RoleID" RowSelected="RowSelected"
+		   ShowConfirm="false" TValue="StatusCode">
+	<GridColumn Field="@nameof(StatusCodeRecord.ID)" HeaderText="Last Updated" IsPrimaryKey="true" Visible="false" Width="0"></GridColumn>
+	<GridColumn HeaderText="Status" Width="20%">
+		<Template Context="aCon">
+			@{
+				if (aCon is StatusCode _con)
+				{
+					<span class="point" @onclick="() => EditStatusCode(_con.ID)">@($"[{_con.Code}] - {_con.Status}")</span>
+				}
+			}
+		</Template>
+	</GridColumn>
+	<GridColumn Field="@nameof(StatusCodeRecord.Description)" HeaderText="Description" Width="35%"></GridColumn>
+	<GridColumn Field="@nameof(StatusCodeRecord.AppliesTo)" HeaderText="Applies To" Width="20%">
+	</GridColumn>
+	<GridColumn Field="@nameof(StatusCodeRecord.Icon)" HeaderText="Icon" Width="20%">
+		<Template Context="aCon">
+			@{
+				if (aCon is StatusCode _con)
+				{
+					<span class="column-icon-@_con.ID">@((MarkupString)(_con.Icon == "" ? "" : $"&#x{_con.Icon};"))</span>
+				}
+			}
+		</Template>
+	</GridColumn>
+	<GridColumn Field="@nameof(StatusCodeRecord.Color)" HeaderText="Color" Width="20%">
+		<Template Context="aCon">
+			@{
+				if (aCon is StatusCode _con)
+				{
+					<span class="column-icon-@_con.ID" style="background-color: @_con.Color; display: block; height: 100%; width: 20px;">&nbsp;</span>
+				}
+			}
+		</Template>
+	</GridColumn>
+	<GridColumn Field="@nameof(StatusCodeRecord.UpdatedDate)" Format="d" HeaderText="Last Update" Width="15%">
+	</GridColumn>
+	<GridColumn Width="10%">
+		<Template Context="bCon">
+			@{
+				if (bCon is StatusCode _con)
+				{
+					<SfButton Content="" IconCss="editIcon" @onclick="() => EditStatusCode(_con.ID)"></SfButton>
+				}
+			}
+		</Template>
+	</GridColumn>
+</AdminGrid>
+<StatusCodeDialog HeaderString="@($"{Title} Status Code")" Model="StatusCodeRecordClone" @ref="DialogStatusCode" Save="SaveStatusCode" />

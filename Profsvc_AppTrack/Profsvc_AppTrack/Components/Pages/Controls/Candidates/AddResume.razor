@@ -1,0 +1,21 @@
+﻿<SfDialog Height="340px" IsModal="true" MinHeight="300px" @ref="Dialog" Target="#divTarget" Visible="false" Width="480px">
+	<DialogTemplates>
+		<Header>@($"Update {ResumeType} Resume")</Header>
+		<Content>
+			<SfSpinner CssClass="spinnerHeight" @ref="Spinner" Type="SpinnerType.Fabric" ZIndex="12000" />
+			<EditForm Model="Model" OnValidSubmit="SaveResumeDialog" @ref="EditResumeForm">
+				<FluentValidationValidator />
+				<div class="divContainerTable">
+					<UploaderControl AfterUpload="AfterUpload" BeforeUpload="BeforeUpload" FileSelected="OnFileSelected" ID="uploadResume" OnFileUpload="OnFileUpload" OnRemove="OnFileRemoved"
+									 Placeholder="Select a Document to upload" SetFlex="false">
+						<ValidationMessage For="() => Model.Files" />
+					</UploaderControl>
+				</div>
+				<DialogFooter CancelMethod="CancelResumeDialog" @ref="DialogFooter" />
+			</EditForm>
+		</Content>
+	</DialogTemplates>
+	<DialogEvents OnOpen="OpenDialog"></DialogEvents>
+	<DialogPositionData X="right" Y="center"></DialogPositionData>
+	<DialogAnimationSettings Duration="500" Effect="DialogEffect.SlideRight"></DialogAnimationSettings>
+</SfDialog>

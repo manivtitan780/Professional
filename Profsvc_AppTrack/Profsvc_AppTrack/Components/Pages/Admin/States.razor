@@ -1,0 +1,29 @@
+﻿@page "/Admin/States"
+@layout ProfSvcLayout
+
+<AdminGrid AdaptorInstance="@typeof(AdminStateAdaptor)" AddMethod="() => EditState()" AutocompleteMethod="Admin_SearchState" AutocompleteParameter="@("@State")" Count="@Count" DataHandler="DataHandler" Entity="State"
+		   FilterGrid="FilterGrid" HeaderContentPlural="States" HeaderContentSingular="State" Key="ID" Page="States" @ref="AdminGrid" RefreshGrid="RefreshGrid" RoleID="@RoleID" RowSelected="RowSelected"
+		   ShowConfirm="false" TValue="State">
+	<GridColumn Field="ID" HeaderText="State" Width="90%">
+		<Template Context="aCon">
+			@{
+				if (aCon is State _con)
+				{
+					<span class="point" @onclick="() => EditState(_con.ID)">@($"[{_con.Code}] - {_con.StateName}")</span>
+				}
+			}
+		</Template>
+	</GridColumn>
+	<GridColumn Field="@nameof(State.ID)" HeaderText="Code" IsPrimaryKey="true" Visible="false" Width="10%"></GridColumn>
+	<GridColumn Width="10%">
+		<Template Context="bCon">
+			@{
+				if (bCon is State _con)
+				{
+					<SfButton Content="" IconCss="editIcon" @onclick="() => EditState(_con.ID)"></SfButton>
+				}
+			}
+		</Template>
+	</GridColumn>
+</AdminGrid>
+<StateDialog HeaderString="@($"{Title} State")" Model="StateRecordClone" @ref="DialogState" Save="SaveState" />

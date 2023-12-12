@@ -1,0 +1,35 @@
+﻿<SfDialog Header="Edit M.P.C." Height="600px" IsModal="true" MinHeight="300px" @ref="Dialog" Target="#divTarget" Visible="false" Width="600px">
+	<ChildContent>
+		<SfSpinner CssClass="spinnerHeight" @ref="Spinner" Type="SpinnerType.Fabric" ZIndex="12000" />
+		<DialogPositionData X="right" Y="center" />
+		<DialogAnimationSettings Duration="500" Effect="DialogEffect.SlideRight" />
+		<DialogEvents OnOpen="OpenDialog"></DialogEvents>
+		<EditForm Model="Model" OnValidSubmit="SaveMPCDialog" @ref="EditMPCForm">
+			<DataAnnotationsValidator />
+			<div style="height: 100%">
+				<div class="divContainerTable">
+					<div style="width: 100%">
+						<SfGrid AllowPaging="false" DataSource="@MPCGrid" EnableHeaderFocus="true" EnableHover="true" Height="170px" ID="gridMPC" RowHeight="@RowHeight" SelectedRowIndex="0" 
+								TValue="CandidateMPC" Width="99%">
+							<GridSelectionSettings EnableToggle="false" Mode="SelectionMode.Row" Type="SelectionType.Single"></GridSelectionSettings>
+							<GridColumns>
+								<GridColumn Field="@nameof(CandidateMPC.Date)" HeaderText="Date" Width="20%" />
+								<GridColumn Field="@nameof(CandidateMPC.User)" HeaderText="User" IsPrimaryKey="true" Visible="false" Width="0" />
+								<GridColumn Field="@nameof(CandidateMPC.MPC)" HeaderText="M.P.C." Width="20%" />
+								<GridColumn Field="@nameof(CandidateMPC.Comments)" HeaderText="Comments" Width="20%" />
+							</GridColumns>
+						</SfGrid>
+					</div>
+					<div class="divFlex" style="margin-top: 30px;">
+						<div class="divFlexSmall">
+							<SwitchControl @bind-BindValue="@Model.MPC" ID="checkedEnabled" OffLabel="NO" OnLabel="YES" Placeholder="M.P.C.?" />
+						</div>
+					</div>
+					<TextBoxControl @bind-Value="@Model.MPCComments" @bind-Value:event="ValueChanged" CreateDivTag="true" ID="textComments" MaxLength="500"  MinLength="1" Multiline="true" 
+									Placeholder="Comments" ValidationMessage="@(() => Model.MPCComments)" Rows="4" />
+				</div>
+			</div>
+			<DialogFooter CancelMethod="CancelMPCDialog" @ref="FooterDialog" />
+		</EditForm>
+	</ChildContent>
+</SfDialog>

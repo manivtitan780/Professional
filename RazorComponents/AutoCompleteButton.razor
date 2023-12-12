@@ -1,0 +1,42 @@
+﻿@using ProfSvc_Classes
+@if (!ModelValue)
+{
+    <SfAutoComplete AllowCustom="true" @bind-Value="@Value" CssClass="@(SetLeft ? "leftMargin" : "")" EnablePersistence="@EnablePersistence" Highlight="true"
+                    HtmlAttributes="@(new Dictionary<string, object> { { "maxlength", MaxLength }, {"autocomplete", $"hoohoo_{new string(Enumerable.Range(0, 3).Select(_ => "abcdefghijklmnopqrstuvwxyz"[_random.Next(26)]).ToArray())}"} })"
+                    ID="@ID" MinLength="@MinLength" Placeholder="@PlaceholderText" @ref="Acb" ShowClearButton="true" TItem="KeyValues" TValue="string" Width="@Width">
+        <SfDataManager Adaptor="Adaptors.CustomAdaptor" AdaptorInstance="@TypeInstance" Key="Key"></SfDataManager>
+        <AutoCompleteFieldSettings Text="Key" Value="Value"></AutoCompleteFieldSettings>
+        <AutoCompleteEvents Created="Created" TItem="KeyValues" TValue="string" ValueChange="ValueChange"></AutoCompleteEvents>
+    </SfAutoComplete>
+    <SfTooltip CloseDelay="0" OnOpen="ToolTipOpen" OpenDelay="0" OpensOn="Hover" Position="Position.TopCenter" Target="@("#" + ID)" Width="100%" WindowCollision="true">
+        <ChildContent>
+        </ChildContent>
+        <ContentTemplate>
+            @if (CreateTooltip)
+            {
+                <ValidationMessage For="@ValidationMessage"></ValidationMessage>
+            }
+        </ContentTemplate>
+    </SfTooltip>
+}
+else
+{
+    <SfAutoComplete AllowCustom="true" CssClass="@(SetLeft ? "leftMargin" : "")" EnablePersistence="@EnablePersistence" Highlight="true"
+                    HtmlAttributes="@(new Dictionary<string, object> { { "maxlength", MaxLength }, {"autocomplete", $"hoohoo_{new string(Enumerable.Range(0, 3).Select(_ => "abcdefghijklmnopqrstuvwxyz"[_random.Next(26)]).ToArray())}"} })"
+                    ID="@ID" MinLength="@MinLength" Placeholder="@PlaceholderText" @ref="Acb" ShowClearButton="true" TItem="KeyValues" TValue="string" Value="@Value" ValueChanged="@ValueChanged"
+                    ValueExpression="ValueExpression" Width="@Width">
+        <SfDataManager Adaptor="Adaptors.CustomAdaptor" AdaptorInstance="@TypeInstance" Key="Key"></SfDataManager>
+        <AutoCompleteFieldSettings Text="Key" Value="Value"></AutoCompleteFieldSettings>
+        <AutoCompleteEvents Created="Created" TItem="KeyValues" TValue="string" ValueChange="ValueChange"></AutoCompleteEvents>
+    </SfAutoComplete>
+    <SfTooltip CloseDelay="0" OnOpen="ToolTipOpen" OpenDelay="0" OpensOn="Hover" Position="Position.TopCenter" Target="@("#" + ID)" Width="100%" WindowCollision="true">
+        <ChildContent>
+        </ChildContent>
+        <ContentTemplate>
+            @if (CreateTooltip)
+            {
+                <ValidationMessage For="@ValidationMessage"></ValidationMessage>
+            }
+        </ContentTemplate>
+    </SfTooltip>
+}

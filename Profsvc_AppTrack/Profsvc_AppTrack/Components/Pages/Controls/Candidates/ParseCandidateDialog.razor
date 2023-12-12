@@ -1,0 +1,27 @@
+﻿<SfDialog Header="" Height="355px" IsModal="true" MinHeight="300px" @ref="Dialog" Target="#divTarget" Visible="false" Width="480px">
+	<DialogTemplates>
+		<Header>Parse New Candidate</Header>
+		<Content>
+			<SfSpinner CssClass="spinnerHeight" @ref="Spinner" Type="SpinnerType.Fabric" ZIndex="12000" />
+			<div style="height: 100%">
+				<div class="divContainerTable">
+					<div class="divFlex">
+						<div class="divFlexLabel">
+							<label class="labelStatus" for="uploadResume">Resume to Parse:</label>
+						</div>
+						<div class="divFlexSmall" style="display: flex;">
+							<div class="uploadParseResume" style="width: 100%">
+								<SfUploader AllowMultiple="false" AutoUpload="false" ID="uploadResume" SequentialUpload="true">
+									<UploaderEvents ValueChange="FileUpload"></UploaderEvents>
+								</SfUploader>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</Content>
+	</DialogTemplates>
+	<DialogPositionData X="right" Y="center"></DialogPositionData>
+	<DialogAnimationSettings Duration="500" Effect="DialogEffect.SlideRight"></DialogAnimationSettings>
+	<DialogEvents Closed="CancelCandidate"></DialogEvents>
+</SfDialog>

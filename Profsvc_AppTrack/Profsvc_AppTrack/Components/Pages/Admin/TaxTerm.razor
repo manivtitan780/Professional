@@ -1,0 +1,42 @@
+@page "/Admin/TaxTerm"
+@layout ProfSvcLayout
+
+<AdminGrid AdaptorInstance="@typeof(AdminTaxTermAdaptor)" AddMethod="() => EditTaxTerm()" AutocompleteMethod="Admin_SearchTaxTerm" AutocompleteParameter="@("@TaxTerm")" Count="@Count" DataHandler="DataHandler" Entity="TaxTerm"
+		   FilterGrid="FilterGrid" HeaderContentPlural="Tax Terms" HeaderContentSingular="Tax Term" Height="140px" Key="Code" Page="Tax Term" @ref="AdminGrid" RefreshGrid="RefreshGrid" RoleID="@RoleID" RowSelected="RowSelected"
+		   ToggleMethod="() => ToggleStatusTaxTerm(_selectedID)" ToggleValue="_toggleValue" TValue="AdminList" Width="380px">
+	<GridColumn HeaderText="TaxTerm" Width="50%">
+		<Template Context="aCon">
+			@{
+				if (aCon is AdminList _con)
+				{
+					<span class="point" @onclick="() => EditTaxTerm(_con.Code)">@_con.Text</span>
+				}
+			}
+		</Template>
+	</GridColumn>
+	<GridColumn Field="@nameof(AdminList.Code)" HeaderText="Code" IsPrimaryKey="true" Visible="false" Width="0"></GridColumn>
+	<GridColumn Field="@nameof(AdminList.Enabled)" HeaderText="Status" Width="10%">
+		<Template Context="aCon">
+			@{
+				if (aCon is AdminList _con)
+				{
+					<span>@(_con.IsEnabled ? "Active" : "Inactive")</span>
+				}
+			}
+		</Template>
+	</GridColumn>
+	<GridColumn Field="@nameof(AdminList.UpdatedDate)" Format="d" HeaderText="Last Updated" Width="15%"></GridColumn>
+	<GridColumn Width="10%">
+		<Template Context="bCon">
+			@{
+				if (bCon is AdminList _con)
+				{
+					<SfButton Content="" IconCss="editIcon" @onclick="() => EditTaxTerm(_con.Code)"></SfButton>
+					<SfButton Content="" IconCss="@(_con.IsEnabled ? "statusOnIcon" : "statusOffIcon")" @onclick="() => ToggleMethod(_con.Code, _con.IsEnabled)"
+							  title="@($"{(_con.IsEnabled ? "Disable" : "Enable")} Tax Term")" />
+				}
+			}
+		</Template>
+	</GridColumn>
+</AdminGrid>
+<TaxTermDialog HeaderString="@($"{Title} Tax Term")" Model="TaxTermRecordClone" @ref="DialogTaxTerm" Save="SaveTaxTerm" />

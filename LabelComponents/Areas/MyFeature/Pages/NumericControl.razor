@@ -1,0 +1,37 @@
+@typeparam TValue
+
+@if (CreateDivTag)
+{
+	<div class="divFlex">
+		<div class="divFlexLabel">
+			<label class="labelStatus" for="@ID">@(Placeholder.NullOrWhiteSpace() ? "&nbsp;" : Placeholder.EndsWith(":") ? Placeholder : $"{Placeholder}:")</label>
+		</div>
+		<div class="divFlexSmall">
+			<SfNumericTextBox CssClass="@CssClass" Currency="@Currency" Decimals="@Decimals" Format="@Format" ID="@ID" Max="@Max" Min="@Min" @onchange="OnChanged"Placeholder="@Placeholder" Readonly="@Readonly"
+							  ShowSpinButton="ShowSpinButton" Step="@Step" TValue="TValue" ValidateDecimalOnType="true" Value="@Value" ValueChanged="@ValueChanged" ValueExpression="@ValueExpression" Width="@Width">
+			</SfNumericTextBox>
+			@if (CreateTooltip)
+			{
+				<SfTooltip CloseDelay="0" OnOpen="ToolTipOpen" OpenDelay="0" OpensOn="Hover" Position="Position.TopCenter" Target="@("#" + ID)" Width="100%" WindowCollision="true">
+					<ContentTemplate>
+						<ValidationMessage For="@ValidationMessage"></ValidationMessage>
+					</ContentTemplate>
+				</SfTooltip>
+			}
+		</div>
+	</div>
+}
+else
+{
+	<SfNumericTextBox CssClass="@CssClass" Currency="@Currency" Decimals="@Decimals" Format="@Format" ID="@ID" Max="@Max" Min="@Min" @onchange="OnChanged" Placeholder="@Placeholder" Readonly="@Readonly" ShowSpinButton="ShowSpinButton"
+					  Step="@Step" TValue="TValue" ValidateDecimalOnType="true" Value="@Value" ValueChanged="@ValueChanged" ValueExpression="@ValueExpression" Width="@Width">
+	</SfNumericTextBox>
+	@if (CreateTooltip)
+	{
+		<SfTooltip CloseDelay="0" OnOpen="ToolTipOpen" OpenDelay="0" OpensOn="Hover" Position="Position.TopCenter" Target="@("#" + ID)" Width="100%" WindowCollision="true">
+			<ContentTemplate>
+				<ValidationMessage For="@ValidationMessage"></ValidationMessage>
+			</ContentTemplate>
+		</SfTooltip>
+	}
+}

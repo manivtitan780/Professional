@@ -1,0 +1,90 @@
+﻿@using Position = Syncfusion.Blazor.Popups.Position
+<SfDialog Header="@HeaderString" Height="98vh" IsModal="true" MinHeight="98vh" @ref="Dialog" Target="#divTarget" Visible="false" Width="700px">
+    <ChildContent>
+        <SfSpinner CssClass="spinnerHeight" @ref="Spinner" Type="SpinnerType.Fabric" ZIndex="12000" />
+        <DialogPositionData X="right" Y="center"></DialogPositionData>
+        <DialogAnimationSettings Effect="DialogEffect.SlideRight"></DialogAnimationSettings>
+        <DialogEvents OnOpen="OpenDialog"></DialogEvents>
+        <EditForm Model="@Model" OnValidSubmit="SaveTemplate" @ref="EditTemplateForm">
+            <FluentValidationValidator />
+            <div class="divContainerTable">
+                <TextBoxControl @bind-Value="@(Model.TemplateName)" @bind-Value:event="ValueChanged" ID="textName" MaxLength="50" MinLength="1" Multiline="false" Placeholder="Template Name"
+                                Readonly="@(HeaderString.StartsWith("Edit"))" ValidationMessage="@(() => Model.TemplateName)" />
+                <TextBoxControl @bind-Value="@(Model.Subject)" @bind-Value:event="ValueChanged" ID="textSubject" MaxLength="255" MinLength="1" Multiline="false" Placeholder="Subject" @ref="SubjectTextBox"
+                                ValidationMessage="@(() => Model.Subject)" OnFocus="FocusSubjectTextBox" />
+                <TextBoxControl @bind-Value="@(Model.CC)" @bind-Value:event="ValueChanged" ID="textCC" MaxLength="200" CreateTooltip="true" MinLength="1" Multiline="false" Placeholder="CC"
+                                Tooltip="Optional. You may enter multiple email addresses separated by a comma (,)" ValidationMessage="@(() => Model.CC)" />
+                <div class="divFlex" style="height: 350px;">
+                    <div class="divFlexLabel">
+                        <label class="labelStatus" for="dropKeyword">
+                            When creating a template, keywords may be used to fill in the appropriate values
+                            from the seeker's/requisition profile when the email is sent. You can use these keywords in Subject manually. The available keywords (and
+                            the value they will be replaced with) are:
+                            <br />
+                            <strong>$TODAY$</strong> - (insert current date)
+                            <br />
+                            <strong>$FULL_NAME$</strong> - (Candidate's First and Last Name)
+                            <br />
+                            <strong>$FIRST_NAME$</strong> - (Candidate's First Name)
+                            <br />
+                            <strong>$LAST_NAME$</strong> - (Candidate's Last Name)
+                            <br />
+                            <strong>$CAND_LOCATION$</strong> - (Candidate's Location)
+                            <br />
+                            <strong>$CAND_PHONE_PRIMARY$</strong> - (Candidate's Primary Phone)
+                            <br />
+                            <strong>$CAND_SUMMARY$</strong> - (Candidate's Summary, if any)
+                            <br />
+                            <strong>$REQ_ID$</strong> - (Requisition Code)
+                            <br />
+                            <strong>$REQ_TITLE$</strong> - (Requisition Title)
+                            <br />
+                            <strong>$COMPANY$</strong> - (Requisition Company)
+                            <br />
+                            <strong>$LOCATION$</strong> - (Requisition Location)
+                            <br />
+                            <strong>$DESCRIPTION$</strong> - (Requisition Description)
+                            <br />
+                            <strong>$SUBMISSION_NOTES$</strong> - (Candidate Submission Notes)
+                            <br />
+                            <strong>$LOGGED_USER$</strong> - (Logged-in User Name)
+                            <br />
+                        </label>
+                    </div>
+                </div>
+                <DropDownControl DataSource="Keyword" DropDownValueChange="KeywordChanged" ID="dropKeyword" TextField="Key" TItem="KeyValues" TValue="string" ValueField="Value" />
+                <div style="margin-top: 20px;">
+                    <MultiSelectControl @bind-Value="@(Model.SendTo)" @bind-Value:event="ValueChanged" CreateDivTag="true" CreateTooltip="false" DataSource="SendTo" FilterBarPlaceholder="Send to&hellip;" ID="multiSendTo"
+                                        KeyField="Key" Placeholder="Select Send to(s)" TItem="KeyValues" TValue="string" ValueField="Value" Width="100%" />
+                </div>
+                <DropDownControl @bind-Value="@(Model.Action)" CreateDivTag="true" DataSource="Action" ID="dropAction" Placeholder="Action" TextField="Value" TItem="ByteValues" TValue="byte" ValueField="Key" />
+                <div class="divFlex" style="margin-top: 10px;">
+                    <div class="divFlexLabel">
+                        <label class="labelStatus" for="richTextTemplate">Template Content:</label>
+                    </div>
+                    <div class="divFlexBig">
+                        <SfTooltip CloseDelay="0" OnOpen="ToolTipOpen" OpenDelay="0" OpensOn="Hover" Position="Position.TopCenter" Target="@("#richTextTemplate")" Width="100%" WindowCollision="true">
+                            <ChildContent>
+                                <SfRichTextEditor @bind-Value="@(Model.TemplateContent)" Height="400px" ID="richTextTemplate" @ref="TemplateContent">
+                                    <RichTextEditorEvents Focus="FocusRTB"></RichTextEditorEvents>
+                                    <RichTextEditorToolbarSettings Items="_tools" />
+                                </SfRichTextEditor>
+                            </ChildContent>
+                            <ContentTemplate>
+                                <ValidationMessage For="@(() => Model.TemplateContent)"></ValidationMessage>
+                            </ContentTemplate>
+                        </SfTooltip>
+                        @*						<SfRichTextEditor @bind-Value="Model.TemplateContent" Height="400px" ID="richTextTemplate" @ref="TemplateContent">
+                        <RichTextEditorToolbarSettings Items="_tools" />
+                        </SfRichTextEditor>
+                        *@
+                    </div>
+                </div>
+                <TextBoxControl @bind-Value="@(Model.Notes)" @bind-Value:event="ValueChanged" ID="textNotes" MaxLength="400" MinLength="1" Multiline="true" Placeholder="Template Notes"
+                                Rows="3" ValidationMessage="@(() => Model.Notes)" />
+                <SwitchControl @bind-BindValue="@(Model.IsEnabled)" ID="checkedEnabled" OffLabel="NO" OnLabel="YES" Placeholder="Enabled?" />
+                <DialogFooter Cancel="Cancel" CancelMethod="CancelTemplate" @ref="DialogFooter" Save="Save" />
+            </div>
+        </EditForm>
+    </ChildContent>
+</SfDialog>

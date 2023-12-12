@@ -1,0 +1,94 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup Label="Globals">
+      <SccProjectName>SAK</SccProjectName>
+      <SccProvider>SAK</SccProvider>
+      <SccAuxPath>SAK</SccAuxPath>
+      <SccLocalPath>SAK</SccLocalPath>
+      <Configurations>Debug;Release;India;US</Configurations>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <Nullable>disable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <LangVersion>preview</LangVersion>
+        <RunAnalyzersDuringLiveAnalysis>False</RunAnalyzersDuringLiveAnalysis>
+        <AnalysisLevel>none</AnalysisLevel>
+        <RunAnalyzersDuringBuild>False</RunAnalyzersDuringBuild>
+        <Platforms>AnyCPU;x64</Platforms>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+        <Optimize>False</Optimize>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='US|AnyCPU'">
+      <Optimize>False</Optimize>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='India|AnyCPU'">
+      <Optimize>False</Optimize>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+      <Optimize>False</Optimize>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='US|x64'">
+      <Optimize>False</Optimize>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='India|x64'">
+      <Optimize>False</Optimize>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+        <Optimize>True</Optimize>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+      <Optimize>True</Optimize>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Compile Remove="Data\**" />
+        <Compile Remove="Upload\**" />
+        <Content Remove="Data\**" />
+        <Content Remove="Upload\**" />
+        <EmbeddedResource Remove="Data\**" />
+        <EmbeddedResource Remove="Upload\**" />
+        <None Remove="Data\**" />
+        <None Remove="Upload\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Remove="Code\Extensions.Add.cs" />
+      <Compile Remove="Code\Extensions.cs" />
+      <Compile Remove="Code\Extensions.Extensions.cs" />
+      <Compile Remove="Code\Extensions.To.cs" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="ProfSvc_WebAPI.csproj.DotSettings" />
+      <None Remove="ProfSvc_WebAPI.csproj.vspscc" />
+      <None Remove="Transaction.jpg" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.Data.SqlClient" Version="5.1.2" />
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+        <PackageReference Include="RestSharp" Version="110.2.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\GMailService\GMailService.csproj" />
+      <ProjectReference Include="..\Profsvc_AppTrack\Profsvc_AppTrack\Profsvc_AppTrack.csproj" />
+      <ProjectReference Include="..\ProfSvc_Classes\ProfSvc_Classes.csproj" />
+    </ItemGroup>
+
+    <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+      <Exec Command="taskkill /f /im &quot;w3wp.exe&quot; 2&gt;nul 1&gt;nul&#xD;&#xA;exit 0" />
+    </Target>
+
+</Project>

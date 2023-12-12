@@ -1,0 +1,38 @@
+﻿<SfDialog Header="Edit Rating" Height="600px" IsModal="true" MinHeight="300px" @ref="Dialog" Target="#divTarget" Visible="false" Width="600px">
+	<ChildContent>
+		<SfSpinner CssClass="spinnerHeight" @ref="Spinner" Type="SpinnerType.Fabric" ZIndex="12000" />
+		<DialogPositionData X="right" Y="center" />
+		<DialogAnimationSettings Duration="500" Effect="DialogEffect.SlideRight" />
+		<DialogEvents OnOpen="OpenDialog"></DialogEvents>
+		<EditForm Model="Model" OnValidSubmit="SaveRatingDialog" @ref="EditRatingForm">
+			<DataAnnotationsValidator />
+			<div style="height: 100%">
+				<div class="divContainerTable">
+					<div style="width: 100%">
+						<SfGrid AllowPaging="false" DataSource="@RatingGrid" EnableHeaderFocus="true" EnableHover="true" Height="145px" ID="gridRating" RowHeight="@RowHeight" 
+								SelectedRowIndex="0" TValue="CandidateRating" Width="99%">
+							<GridSelectionSettings EnableToggle="false" Mode="SelectionMode.Row" Type="SelectionType.Single" />
+							<GridColumns>
+								<GridColumn Field="@nameof(CandidateRating.Date)" HeaderText="Date" Width="20%" />
+								<GridColumn Field="@nameof(CandidateRating.User)" HeaderText="User" IsPrimaryKey="true" Visible="false" Width="0" />
+								<GridColumn Field="@nameof(CandidateRating.Rating)" HeaderText="Rating" Width="20%" />
+								<GridColumn Field="@nameof(CandidateRating.Comments)" HeaderText="Comments" Width="20%" />
+							</GridColumns>
+						</SfGrid>
+					</div>
+					<div class="divFlex" style="margin-top: 25px">
+						<div class="divFlexLabel">
+							<label class="labelStatus" for="candidateRating">Rating:</label>
+						</div>
+						<div class="divFlexSmall">
+							<SfRating @bind-Value="@Model.Rating" ID="candidateRating" ItemsCount="5" CssClass="ratingBasicInfoCandidate" ShowTooltip="false"></SfRating>
+						</div>
+					</div>
+					<TextBoxControl @bind-Value="@(Model.RatingComments)" @bind-Value:event="ValueChanged" CreateDivTag="true" Height="100px" ID="textComments"
+									MaxLength="500" MinLength="1" Multiline="true" Placeholder="Comments" ValidationMessage="@(() => Model.RatingComments)" />
+				</div>
+			</div>
+			<DialogFooter CancelMethod="CancelRatingDialog" @ref="FooterDialog" />
+		</EditForm>
+	</ChildContent>
+</SfDialog>

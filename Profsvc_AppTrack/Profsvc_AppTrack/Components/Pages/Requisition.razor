@@ -1,0 +1,157 @@
+﻿@page "/requisition"
+@using AnimationEffect = Syncfusion.Blazor.AnimationEffect
+@layout ProfSvcLayout
+@inject IJSRuntime Runtime;
+
+<Header RoleID="@RoleID" ViewCandidate="UserRights.ViewCandidate" ViewRequisition="UserRights.ViewRequisition" ViewCompany="UserRights.ViewCompany"></Header>
+<div class="gridHolder">
+	<GridHeader ACBValue="@AutocompleteValue" Add="() => EditRequisition(true)" AdvancedSearch="AdvancedSearch" AutocompleteMethod="SearchRequisition" AutocompleteParameterName="@("@Requisition")" ControlID="numericPage" 
+				CurrentPage="_currentPage" DisplayAdd="@DisplayAdd" DisplaySubmit="none" DropdownBindValue="@SearchModel.ItemCount" Entity="Requisition" FilterGrid="FilterGrid" FirstClick="FirstClick" LastClick="LastClick" 
+				NextClick="NextClick" PageCount="PageCount" PageNumberChanged="PageNumberChanged" PreviousClick="PreviousClick" RefreshGrid="RefreshGrid" ValueChange="ChangeItemCount" Width="720px" />
+	<SfGrid AllowMultiSorting="false" AllowPaging="false" AllowSorting="true" EnableHover="true" EnableStickyHeader="true" Height="100%" @ref="Grid" TValue="Requisitions" Width="99.75%">
+		<GridSelectionSettings EnableToggle="false" Mode="SelectionMode.Row" Type="SelectionType.Single" />
+		<SfDataManager Adaptor="Adaptors.CustomAdaptor" AdaptorInstance="@typeof(AdminRequisitionAdaptor)" Key="ID" />
+		<GridEvents DataBound="DataHandler" DetailDataBound="DetailDataBind" OnActionBegin="OnActionBegin" TValue="Requisitions" />@* *@
+		<GridSortSettings AllowUnsort="false">
+			<GridSortColumns>
+				<GridSortColumn Direction="@SortDirectionProperty" Field="@SortField"></GridSortColumn>
+			</GridSortColumns>
+		</GridSortSettings>
+		<GridColumns>
+			<GridColumn Field="@nameof(Requisitions.ID)" HeaderText="ID" IsPrimaryKey="true" Visible="false" Width="0" />
+			<GridColumn AllowSorting="true" Field="@nameof(Requisitions.Code)" HeaderText="Code" Width="12%">
+				<Template Context="aCon">
+					@{
+						if (aCon is Requisitions _con)
+						{
+							<span style="color: @(_con.PriorityColor)">@_con.Code</span>
+						}
+					}
+				</Template>
+			</GridColumn>
+			<GridColumn AllowSorting="true" Field="@nameof(Requisitions.Title)" HeaderText="Title" Width="24%">
+				<Template Context="aCon">
+					@{
+						if (aCon is Requisitions _con)
+						{
+							<span style="color: @(_con.PriorityColor)">@_con.Title</span>
+						}
+					}
+				</Template>
+			</GridColumn>
+			<GridColumn AllowSorting="true" Field="@nameof(Requisitions.Company)" HeaderText="Company" Width="18%">
+				<Template Context="aCon">
+					@{
+						if (aCon is Requisitions _con)
+						{
+							<span style="color: @(_con.PriorityColor)">@_con.Company</span>
+						}
+					}
+				</Template>
+			</GridColumn>
+			<GridColumn AllowSorting="false" Field="@nameof(Requisitions.JobOptions)" HeaderText="Type" Width="22%">
+				<Template Context="aCon">
+					@{
+						if (aCon is Requisitions _con)
+						{
+							<span style="color: @(_con.PriorityColor)">@_con.JobOptions</span>
+						}
+					}
+				</Template>
+			</GridColumn>
+			<GridColumn AllowSorting="true" Field="@nameof(Requisitions.Updated)" HeaderText="Updated" Width="12%">
+				<Template Context="aCon">
+					@{
+						if (aCon is Requisitions _con)
+						{
+							<span style="color: @(_con.PriorityColor)">@_con.Updated</span>
+						}
+					}
+				</Template>
+			</GridColumn>
+			<GridColumn AllowSorting="true" Field="@nameof(Requisitions.Status)" HeaderText="Status" Width="12%">
+				<Template Context="aCon">
+					@{
+						if (aCon is Requisitions _con)
+						{
+							<span style="color: @(_con.PriorityColor)">@_con.Status</span>
+						}
+					}
+				</Template>
+			</GridColumn>
+		</GridColumns>
+		<GridTemplates Context="context">
+			<DetailTemplate>
+				<SfSpeedDial CloseIconCss="speeddial-icons speeddial-icon-close" IsModal="true" ItemClicked="SpeedDialItemClicked" Mode="SpeedDialMode.Linear"
+							 OpenIconCss="speeddial-icons speeddial-icon-menu" Position="FabPosition.TopRight" Target="#tabRequisition" title="Action" Visible="@(UserRights.EditRequisition || UserRights.SubmitCandidate)">
+					<SpeedDialRadialSettings Direction="RadialDirection.AntiClockwise" EndAngle="360" OffSet="100px" StartAngle="180" />
+					<SpeedDialItems>
+						@{
+							if (context is Requisitions _con)
+							{
+								<SpeedDialItem IconCss="speeddial-icons speeddial-icon-edit" ID="itemEditRequisition" Text="Edit Requisition" Title="Edit Requisition" 
+											   style="@("display:" + (UserRights.EditCandidate && _con.UpdatedBy == User ? "unset" : "none"))" />
+								<SpeedDialItem IconCss="speeddial-icons speeddial-icon-attachment" ID="itemAddDocument" Text="Add Document" Title="Add Document" 
+											   style="@("display:" + (UserRights.EditCandidate && _con.UpdatedBy == User ? "unset" : "none"))" />
+								<SpeedDialItem IconCss="speeddial-icons speeddial-icon-rating" ID="itemSubmitExisting" Text="Submit Existing Candidate" Title="Submit Existing Candidate"
+											   style="@("display:" + (UserRights.SubmitCandidate ? "unset" : "none"))" />
+								<SpeedDialItem IconCss="speeddial-icons speeddial-icon-rating" ID="itemSubmitNew" Text="Submit New Candidate" Title="Submit New Candidate"
+											   style="@("display:" + (UserRights.SubmitCandidate ? "unset" : "none"))" />
+							}
+						}
+					</SpeedDialItems>
+				</SfSpeedDial>
+				<SfTab CssClass="e-fill" Height="520" ID="tabRequisition" LoadOn="ContentLoad.Init" SelectedItem="_selectedTab" ShowCloseButton="false" Width="95%">
+					<TabAnimationSettings>
+						<TabAnimationPrevious Effect="AnimationEffect.None"></TabAnimationPrevious>
+						<TabAnimationNext Effect="AnimationEffect.None"></TabAnimationNext>
+						<TabEvents Selected="TabSelected"></TabEvents>
+					</TabAnimationSettings>
+					<TabItems>
+						<TabItem>
+							<ChildContent>
+								<TabHeader Text="Requisition Info" />
+							</ChildContent>
+							<ContentTemplate>
+								<BasicInfoRequisitionPanel Model="_requisitionDetailsObject" SkillsText="_requisitionDetailSkills" States="_states" />
+							</ContentTemplate>
+						</TabItem>
+						<TabItem>
+							<ChildContent>
+								<TabHeader Text="Documents" />
+							</ChildContent>
+							<ContentTemplate>
+								<DocumentsPanel DeleteDocument="DeleteDocument" DownloadDocument="DownloadDocument" EditRights="@UserRights.EditRequisition" User="@User" Model="@_requisitionDocumentsObject" 
+												@ref="DocumentsPanel" />
+							</ContentTemplate>
+						</TabItem>
+						<TabItem>
+							<ChildContent>
+								<TabHeader Text="Candidate Activity" />
+							</ChildContent>
+							<ContentTemplate>
+								<ActivityPanelRequisition EditActivity="EditActivity" Model="_candidateActivityObject" @ref="ActivityPanel" UndoCandidateActivity="UndoActivity" RoleID="@RoleID" User="@User" />
+							</ContentTemplate>
+						</TabItem>
+					</TabItems>
+					<SfSpinner CssClass="spinnerHeight" @ref="@Spinner" Type="SpinnerType.Fabric" ZIndex="12000" />
+				</SfTab>
+			</DetailTemplate>
+		</GridTemplates>
+	</SfGrid>
+
+	<SfSpinner CssClass="spinnerHeight" @ref="@SpinnerTop" Type="SpinnerType.Fabric" ZIndex="12000" />
+
+	<RequisitionDetailsPanel Companies="Companies" CompanyContacts="CompanyContacts" Education="_education" Eligibility="_eligibility" Experience="_experience" JobOptions="_jobOptions"
+							 Model="_requisitionDetailsObjectClone" Recruiters="_recruiters" @ref="DialogEditRequisition" Save="SaveRequisition" Skills="Skills"
+							 States="_states" Title="@Title" Tools="_tools1" />
+
+    <AddRequisitionDocument AfterUpload="AfterDocument" BeforeUpload="BeforeDocument" Model="NewDocument" OnFileUpload="UploadDocument" @ref="DialogDocument" Save="SaveDocument" />
+
+	<EditActivityDialog IsCandidate="false" Model="SelectedActivity" ModelSteps="NextSteps" @ref="DialogActivity" Save="SaveActivity" Status="_workflows" />
+
+	<AdvancedRequisitionSearch Companies="_companies" JobOption="_jobOptions" Model="SearchModelClone" @ref="DialogSearch" Search="RequisitionAdvancedSearch" StatusDropDown="_statusSearch" />
+
+	<GridFooter AllAlphabet="AllAlphabet" AlphabetMethod="SetAlphabet" ClearFilter="ClearFilter" ClearLinkClicked="ClearLinkClicked" Count="Count" EndRecord="EndRecord" IsRequisition="true"
+				LinkClicked="LinkClicked" Name="@SearchModel.Title" StartRecord="StartRecord" StatusLinks="StatusList" />
+</div>

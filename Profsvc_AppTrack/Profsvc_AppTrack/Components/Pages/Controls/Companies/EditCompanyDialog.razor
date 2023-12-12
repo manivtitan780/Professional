@@ -1,0 +1,74 @@
+﻿<SfDialog Header="@(Title + " Company")" Height="98vh" IsModal="true" MinHeight="98vh" @ref="Dialog" Target="#divTarget" Visible="false" Width="832px">
+	<ChildContent>
+		<SfSpinner CssClass="spinnerHeight" @ref="Spinner" Type="SpinnerType.Fabric" ZIndex="12000" />
+		<DialogPositionData X="right" Y="center" />
+		<DialogAnimationSettings Duration="500" Effect="DialogEffect.SlideRight" />
+		<DialogEvents OnOpen="DialogOpen" />
+		<EditForm Model="Model" OnValidSubmit="SaveCompanyDialog" @ref="EditCompanyForm">
+			<FluentValidationValidator />
+			<div style="height: 100%">
+				<div class="divContainerTable">
+					<TextBoxControl @bind-Value="@(Model.CompanyName)" @bind-Value:event="ValueChanged" CreateDivTag="true" CreateTooltip="true" ID="textCompanyName" MaxLength="200" MinLength="1"
+									Placeholder="Company Name" Readonly="@(Model.ID > 0)" Width="100%" ValidationMessage="@(() => Model.CompanyName)" />
+					<TextBoxControl @bind-Value="@(Model.Address)" @bind-Value:event="ValueChanged" CreateDivTag="true" CreateTooltip="false" ID="textAddress" MaxLength="500" MinLength="1"
+									Placeholder="Street Address" Width="100%" />
+					<div class="divFlex">
+						<div style="display: flex; width: 100%">
+							<div class="divFlexLabel" style="width: 24%;">
+								<label class="labelStatus" for="autoZip">Zip Code:</label>
+							</div>
+							<div class="divFlexLabel" style="margin-left: 3%; width: 35%">
+								<label class="labelStatus" for="textCity">City:</label>
+							</div>
+							<div class="divFlexLabel" style="margin-left: 3%; width: 35%;">
+								<label class="labelStatus" for="dropState">State:</label>
+							</div>
+						</div>
+						<div style="display: flex; width: 100%">
+							<div class="divFlexSmall" style="width: 24%;">
+								<AutoCompleteButton @bind-Value="@(Model.ZipCode)" @bind-Value:event="ValueChanged" Created="OnCreate" CreateTooltip="true" EnablePersistence="false" ID="autoZip" MaxLength="5" ModelValue="true"
+													PlaceholderText="Select a Zip Code" @ref="AutoCompleteControl" Ref="AutoCompleteControl" SetLeft="false" TypeInstance="@typeof(ZipDropDownAdaptor)"
+													ValueChange="ZipChange" ValidationMessage="@(() => Model.ZipCode)" />
+							</div>
+							<div class="divFlexSmall" style="margin-left: 3%; width: 35%">
+								<TextBoxControl @bind-Value="@(Model.City)" @bind-Value:event="ValueChanged" CreateDivTag="false" CreateTooltip="true" ID="textCity" MaxLength="50" Placeholder="City" Width="100%" 
+												ValidationMessage="@(() => Model.City)" />
+							</div>
+							<div class="divFlexSmall" style="margin-left: 3%; width: 35%;">
+								<DropDownControl @bind-Value="@Model.StateID" @bind-Value:event="ValueChanged" DataSource="States" DropDownValueChange="StateIDChanged" ID="dropState" 
+												 TextField="Value" TItem="IntValues" TValue="int" ValueField="Key" />
+							</div>
+						</div>
+					</div>
+					<TextBoxControl @bind-Value="@(Model.EmailAddress)" @bind-Value:event="ValueChanged" CreateDivTag="true" CreateTooltip="false" ID="textEmailAddress" MaxLength="255"
+									Placeholder="Email Address" Width="100%" />
+					<TextBoxControl @bind-Value="@(Model.Website)" @bind-Value:event="ValueChanged" CreateDivTag="true" CreateTooltip="false" ID="textWebsite" MaxLength="200"
+									Placeholder="Website Address" Width="100%" />
+					<div class="divFlex">
+						<div style="display: flex; width: 100%">
+							<div class="divFlexLabel" style="width: 48%">
+								<label class="labelStatus" for="textPhone">Phone:</label>
+							</div>
+							<div class="divFlexLabel" style="margin-left: 4%; width: 48%;">
+								<label class="labelStatus" for="textFax">Fax:</label>
+							</div>
+						</div>
+						<div style="display: flex; width: 100%">
+							<div class="divFlexSmall" style="width: 48%">
+								<MaskedTextBoxControl @bind-Value="@(Model.Phone)" @bind-Value:event="ValueChanged" CreateTooltip="true" ID="textPhone" Mask="(000) 000-0000" Placeholder="Phone"
+													  ValidationMessage="@(() => Model.Phone)" />
+							</div>
+							<div class="divFlexSmall" style="margin-left: 4%; width: 48%;">
+								<MaskedTextBoxControl @bind-Value="@(Model.Fax)" @bind-Value:event="ValueChanged" CreateTooltip="false" ID="textFax" Mask="(000) 000-0000" Placeholder="Fax" />
+							</div>
+						</div>
+					</div>
+					<SwitchControl @bind-BindValue="@(Model.IsHot)" ID="checkedHot" OffLabel="NO" OnLabel="YES" Placeholder="Preferred Client?" />
+					<TextBoxControl @bind-Value="@(Model.Notes)" @bind-Value:event="ValueChanged" CreateDivTag="true" CreateTooltip="false" ID="textNotes" MaxLength="2000" MinLength="1"
+									Multiline="true" Placeholder="Notes" Rows="5" Width="100%" />
+				</div>
+			</div>
+			<DialogFooter CancelMethod="CancelDialog" @ref="FooterDialog" />
+		</EditForm>
+	</ChildContent>
+</SfDialog>

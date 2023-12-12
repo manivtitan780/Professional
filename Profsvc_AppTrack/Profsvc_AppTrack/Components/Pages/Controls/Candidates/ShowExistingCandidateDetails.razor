@@ -1,0 +1,35 @@
+﻿<SfDialog Height="380px" IsModal="true" MinHeight="100px" @ref="Dialog" Target="#divTarget" Visible="false" Width="620px">
+	<DialogTemplates>
+		<Header>Matching Candidates</Header>
+		<Content>
+			<SfSpinner CssClass="spinnerHeight" @ref="Spinner" Type="SpinnerType.Fabric" ZIndex="12000" />
+			<div style="margin: 20px; text-align: center">
+				<SfListBox CssClass="listBox" DataSource="@ExistingCandidates" @ref="ListBox" TItem="ExistingCandidate" TValue="int" @bind-Value="@Value">
+					<ListBoxSelectionSettings Mode="Syncfusion.Blazor.DropDowns.SelectionMode.Single" />
+					<ListBoxFieldSettings Text="Name" Value="ID" />
+					<ListBoxTemplates TItem="ExistingCandidate">
+						<ItemTemplate>
+							<div>
+								<div class="divContextName">
+									@context.Name
+								</div>
+								<div class="divContextEmail">
+									@context.Email
+								</div>
+								<div class="divContextPhone">
+									@context.Phone
+								</div>
+							</div>
+						</ItemTemplate>
+					</ListBoxTemplates>
+				</SfListBox>
+			</div>
+		</Content>
+		<FooterTemplate>
+			<SfButton Content="Continue Parsing" Disabled="@SaveDisabled" IconCss="parseIconButton" IconPosition="IconPosition.Left" IsPrimary="true" type="submit" OnClick="Parse" />
+		</FooterTemplate>
+	</DialogTemplates>
+	<DialogPositionData X="center" Y="center" />
+	<DialogAnimationSettings Duration="500" Effect="DialogEffect.Zoom" />
+	<DialogEvents OnOverlayModalClick="ModalClick" />
+</SfDialog>

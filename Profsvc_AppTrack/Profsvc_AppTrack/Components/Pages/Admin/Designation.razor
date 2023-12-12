@@ -1,0 +1,44 @@
+@page "/Admin/Title"
+@layout ProfSvcLayout
+
+<AdminGrid AdaptorInstance="@typeof(AdminDesignationAdaptor)" AddMethod="() => EditDesignationAsync()" AutocompleteMethod="Admin_SearchDesignation" AutocompleteParameter="@("@Designation")" Count="@Count"
+		   DataHandler="DataHandler" Entity="Title" FilterGrid="FilterGrid" HeaderContentPlural="Candidate Titles" HeaderContentSingular="Title" Height="140px" Key="ID" Page="Designation" @ref="AdminGrid" RefreshGrid="RefreshGrid"
+		   RoleID="@RoleID" RowSelected="RowSelected" ToggleMethod="() => ToggleStatusAsync(_selectedID)" ToggleValue="_toggleValue" TValue="AdminList" Width="346px">
+	<GridColumn Field="Text" HeaderText="Designation" Width="50%">
+		<Template Context="aCon">
+			@{
+				if (aCon is AdminList _con)
+				{
+					<span class="point" @onclick="() => EditDesignationAsync(_con.ID)">@_con.Text</span>
+				}
+			}
+		</Template>
+	</GridColumn>
+	<GridColumn Field="@nameof(AdminList.ID)" HeaderText="ID" IsPrimaryKey="true" Visible="false" Width="0" />
+	<GridColumn Field="@nameof(AdminList.Enabled)" HeaderText="Status" Width="10%">
+		<Template Context="aCon">
+			@{
+				if (aCon is AdminList _con)
+				{
+					<span>@(_con.IsEnabled ? "Active" : "Inactive")</span>
+				}
+			}
+		</Template>
+	</GridColumn>
+	<GridColumn Field="@nameof(AdminList.UpdatedDate)" Format="d" HeaderText="Last Updated" Width="15%" />
+	<GridColumn Field="@nameof(AdminList.CreatedDate)" HeaderText="Created" Width="15%" />
+	<GridColumn Width="10%">
+		<Template Context="aCon">
+			@{
+				if (aCon is AdminList _con)
+				{
+					<SfButton Content="" IconCss="editIcon" @onclick="() => EditDesignationAsync(_con.ID)" title="Edit Title" />
+					<SfButton Content="" IconCss="@(_con.IsEnabled ? "statusOnIcon" : "statusOffIcon")" @onclick="() => ToggleMethod(_con.ID, _con.IsEnabled)"
+							  title="@($"{(_con.IsEnabled ? "Disable" : "Enable")} Title")" />
+				}
+			}
+		</Template>
+	</GridColumn>
+</AdminGrid>
+
+<AdminListDialog HeaderString="@($"{Title} Title")" Model="DesignationRecordClone" Placeholder="Title" @ref="AdminDialog" Save="SaveDesignation" />

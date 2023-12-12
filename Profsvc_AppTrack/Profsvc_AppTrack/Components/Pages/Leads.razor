@@ -1,0 +1,149 @@
+﻿@page "/lead"
+@using AnimationEffect = Syncfusion.Blazor.AnimationEffect
+@layout ProfSvcLayout
+@inject IJSRuntime Runtime;
+
+<Header RoleID="@RoleID" ViewCandidate="UserRights.ViewCandidate" ViewCompany="UserRights.ViewCompany" ViewRequisition="UserRights.ViewRequisition"></Header>
+<div class="gridHolder">
+	<GridHeader ACBValue="@AutocompleteValue" Add="() => EditLead(true)" AdvancedSearch="AdvancedSearch" AdvancedSearchDisabled="true" AutocompleteMethod="SearchLeads" AutocompleteParameterName="@("@Lead")"
+				ControlID="numericPage" CurrentPage="_currentPage" DisplayAdd="@DisplayAdd" DisplaySubmit="none" DropdownBindValue="@SearchModel.ItemCount" Entity="Lead" FilterGrid="FilterGrid"
+				FirstClick="FirstClick" LastClick="LastClick" NextClick="NextClick" PageCount="PageCount" PageNumberChanged="PageNumberChanged" PreviousClick="PreviousClick"
+				RefreshGrid="RefreshGrid" ValueChange="ChangeItemCount" Width="720px" />
+	<SfGrid AllowMultiSorting="false" AllowPaging="false" AllowSorting="true" EnableHover="true" EnableStickyHeader="true" Height="100%" @ref="Grid" TValue="LeadClass" Width="99.75%">
+		<GridSelectionSettings EnableToggle="false" Mode="SelectionMode.Row" Type="SelectionType.Single" />
+		<SfDataManager Adaptor="Adaptors.CustomAdaptor" AdaptorInstance="@typeof(AdminLeadAdaptor)" Key="ID" />
+		<GridEvents DataBound="DataHandler" DetailDataBound="DetailDataBind" OnActionBegin="ActionBegin" TValue="LeadClass" />@* *@
+		<GridSortSettings AllowUnsort="false">
+			<GridSortColumns>
+				<GridSortColumn Direction="SortDirectionProperty" Field="@SortField"></GridSortColumn>
+			</GridSortColumns>
+		</GridSortSettings>
+		<GridColumns>
+			<GridColumn Field="@nameof(LeadClass.ID)" HeaderText="ID" IsPrimaryKey="true" Visible="false" Width="0"></GridColumn>
+			<GridColumn AllowSorting="true" Field="@nameof(LeadClass.Company)" HeaderText="Company" Width="20%">
+				<Template Context="aCon">
+					@{
+						if (aCon is LeadClass _con)
+						{
+							<span>@_con.Company</span>
+						}
+					}
+				</Template>
+			</GridColumn>
+			<GridColumn AllowSorting="false" Field="@nameof(LeadClass.Phone)" HeaderText="Phone" Width="14%">
+				<Template Context="aCon">
+					@{
+						if (aCon is LeadClass _con)
+						{
+							<span>@_con.Phone</span>
+						}
+					}
+				</Template>
+			</GridColumn>
+			<GridColumn AllowSorting="true" Field="@nameof(LeadClass.Location)" HeaderText="Location" Width="19%">
+				<Template Context="aCon">
+					@{
+						if (aCon is LeadClass _con)
+						{
+							<span>@_con.Location</span>
+						}
+					}
+				</Template>
+			</GridColumn>
+			<GridColumn AllowSorting="true" Field="@nameof(LeadClass.Industry)" HeaderText="Industry" Width="19%">
+				<Template Context="aCon">
+					@{
+						if (aCon is LeadClass _con)
+						{
+							<span>@_con.Industry</span>
+						}
+					}
+				</Template>
+			</GridColumn>
+			<GridColumn AllowSorting="true" Field="@nameof(LeadClass.Status)" HeaderText="Status" Width="14%">
+				<Template Context="aCon">
+					@{
+						if (aCon is LeadClass _con)
+						{
+							<span>@_con.Status</span>
+						}
+					}
+				</Template>
+			</GridColumn>
+			<GridColumn AllowSorting="true" Field="@nameof(LeadClass.LastUpdated)" HeaderText="Updated" Width="14%">
+				<Template Context="aCon">
+					@{
+						if (aCon is LeadClass _con)
+						{
+							<span>@_con.LastUpdated</span>
+						}
+					}
+				</Template>
+			</GridColumn>
+		</GridColumns>
+		<GridTemplates Context="context">
+			<DetailTemplate>
+				@* Add Buttons Start *@
+				@{
+					if (context is LeadClass _con)
+					{
+						<SfSpeedDial CloseIconCss="speeddial-icons speeddial-icon-close" IsModal="true" ItemClicked="SpeedDialItemClicked" Mode="SpeedDialMode.Linear"
+									 OpenIconCss="speeddial-icons speeddial-icon-menu" Position="FabPosition.TopRight" Target="#tabLeads" title="Action" Visible="@(UserRights.EditCompany && _con.Owner == User)">
+							<SpeedDialRadialSettings Direction="RadialDirection.AntiClockwise" EndAngle="360" OffSet="100px" StartAngle="180" />
+							<SpeedDialItems>
+								<SpeedDialItem IconCss="speeddial-icons speeddial-icon-edit" ID="itemEditLead" Text="Edit Lead" Title="Edit Lead" />
+								<SpeedDialItem IconCss="speeddial-icons speeddial-icon-notes" ID="itemAddNotes" Text="Add Notes" Title="Add Notes" />
+								<SpeedDialItem IconCss="speeddial-icons speeddial-icon-attachment" ID="itemAddDocument" Text="Add Attachment" Title="Add Attachment" />
+								<SpeedDialItem IconCss="speeddial-icons speeddial-icon-convert" ID="itemConvertLead" Text="Convert Lead to Company" Title="Convert Lead to Company" />
+							</SpeedDialItems>
+						</SfSpeedDial>
+					}
+				}
+				@* Add Buttons End *@
+				<SfTab CssClass="e-fill" Height="304" ID="tabLeads" LoadOn="ContentLoad.Init" SelectedItem="_selectedTab" ShowCloseButton="false" Width="95%">
+					<TabAnimationSettings>
+						<TabAnimationPrevious Effect="AnimationEffect.None"></TabAnimationPrevious>
+						<TabAnimationNext Effect="AnimationEffect.None"></TabAnimationNext>
+						<TabEvents Selected="TabSelected"></TabEvents>
+					</TabAnimationSettings>
+					<TabItems>
+						<TabItem>
+							<ChildContent>
+								<TabHeader Text="Lead Info" />
+							</ChildContent>
+							<ContentTemplate>
+								<BasicLeadsPanel Model="_leadDetailsObject" />
+							</ContentTemplate>
+						</TabItem>
+						<TabItem>
+							<ChildContent>
+								<TabHeader Text="Notes" />
+							</ChildContent>
+							<ContentTemplate>
+								<LeadNotesPanel DeleteNotes="DeleteNotes" EditNotes="EditNotes" EditRights="@UserRights.EditCompany" User="@User" Model="@LeadNotesObject" @ref="PanelNotes" />
+							</ContentTemplate>
+						</TabItem>
+						<TabItem>
+							<ChildContent>
+								<TabHeader Text="Lead Attachment" />
+							</ChildContent>
+							<ContentTemplate>
+								<DocumentsPanel DeleteDocument="DeleteDocument" DownloadDocument="DownloadDocument" EditRights="@UserRights.EditCompany" User="@User" EntityTypeName="EntityType.Leads" Model="@_leadDocumentsObject" @ref="PanelDocument" />
+							</ContentTemplate>
+						</TabItem>
+					</TabItems>
+					<SfSpinner CssClass="spinnerHeight" @ref="@Spinner" Type="SpinnerType.Fabric" ZIndex="12000" />
+				</SfTab>
+			</DetailTemplate>
+		</GridTemplates>
+	</SfGrid>
+
+	<GridFooter AllAlphabet="AllAlphabet" AlphabetMethod="SetAlphabet" ClearFilter="ClearFilter" Count="Count" EndRecord="EndRecord" Name="@SearchModel.Name" StartRecord="StartRecord" />
+
+	<AddRequisitionDocument AfterUpload="AfterDocument" BeforeUpload="BeforeDocument" Model="NewDocument" OnFileUpload="UploadDocument" @ref="DialogDocument" Save="SaveDocument" />
+
+	<EditNotesDialog Entity="Leads" Model="SelectedNotes" @ref="NotesDialog" Save="SaveNotes" Title="@Title" />
+
+	<EditLeadDetails HeaderString="@($"{Title} Lead")" Industries="_industries" Model="_leadDetailsObjectClone" @ref="DialogEditLead" Save="SaveLead" Sources="_sources" States="_states"
+					 Status="_status" />
+</div>

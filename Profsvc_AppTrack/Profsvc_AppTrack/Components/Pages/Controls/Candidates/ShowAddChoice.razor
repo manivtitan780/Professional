@@ -1,0 +1,13 @@
+﻿<SfDialog Header="Add Candidate" Height="170px" IsModal="true" MinHeight="100px" @ref="Dialog" Target="#divTarget" Visible="false" Width="422px">
+	<ChildContent>
+		<SfSpinner CssClass="spinnerHeight" @ref="Spinner" Type="SpinnerType.Fabric" ZIndex="12000" />
+		<DialogPositionData X="center" Y="center" />
+		<DialogAnimationSettings Duration="500" Effect="DialogEffect.None" />
+		<DialogEvents OnOverlayModalClick="ModalClick"/>
+		<div style="margin: 20px; text-align: center">
+			<label class="wishNewCandidate">How do you want to create a new Candidate?</label>
+			<SfButton Content="Manual" CssClass="manualButton" Disabled="@ManualDisabled" IsPrimary="true" @onclick="Manual" @ref="ManualButton"/>
+			<SfButton Content="Parse Resume" CssClass="parseButton" Disabled="@ParseDisabled" IsPrimary="true" @onclick="Parse" @ref="ParseButton" />
+		</div>
+	</ChildContent>
+</SfDialog>

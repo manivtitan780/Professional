@@ -1,0 +1,46 @@
+﻿<div class="notesContainerBox">
+	<div>
+		<div>
+			<SfGrid AllowPaging="false" DataSource="@Model" EnableHeaderFocus="true" EnableHover="true" Height="255px" ID="gridNotes" @ref="GridNotes" RowHeight="@RowHeight"
+					SelectedRowIndex="0" TValue="CandidateNotes" Width="99%">
+				<GridSelectionSettings EnableToggle="false" Mode="SelectionMode.Row" Type="SelectionType.Single" />
+				<GridEvents RowSelected="RowSelected" TValue="CandidateNotes" />
+				<GridColumns>
+					<GridColumn Field="@nameof(CandidateNotes.Notes)" HeaderText="Notes" Width="75%">
+						<Template Context="aCon">
+							@{
+								if (aCon is CandidateNotes _con)
+								{
+									<span title="@_con.Notes.Replace("<br>", Environment.NewLine).Replace("<br/>", Environment.NewLine)">@(_con.Notes)</span>
+								}
+							}
+						</Template>
+					</GridColumn>
+					<GridColumn Field="@nameof(CandidateNotes.ID)" HeaderText="ID" IsPrimaryKey="true" Visible="false" />
+					<GridColumn HeaderText="Updated" Width="15%">
+						<Template Context="aCon">
+							@{
+								if (aCon is CandidateNotes _con)
+								{
+									<span>@($"{_con.UpdatedDate.ToString("d", new CultureInfo("en-us"))} [{_con.UpdatedBy}]")</span>
+								}
+							}
+						</Template>
+					</GridColumn>
+					<GridColumn Width="10%">
+						<Template Context="bCon">
+							@{
+								if (bCon is CandidateNotes _con && _con.UpdatedBy == User)
+								{
+									<SfButton Content="" IconCss="editIconInner" @onclick="() => EditNotesDialog(_con.ID)" />
+									<SfButton Content="" IconCss="deleteIconInner" @onclick="() => DeleteNotesMethod(_con.ID)" />
+								}
+							}
+						</Template>
+					</GridColumn>
+				</GridColumns>
+			</SfGrid>
+		</div>
+	</div>
+</div>
+<ConfirmDialog @ref="DialogConfirm" Entity="Note" Delete="() => DeleteNotes.InvokeAsync(_selectedID)" Width="349px" Height="165px"></ConfirmDialog>

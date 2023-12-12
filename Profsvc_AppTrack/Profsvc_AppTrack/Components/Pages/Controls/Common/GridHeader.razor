@@ -1,0 +1,32 @@
+﻿<div class="divGridToolBar">
+	<div style="display: flex">
+		<div style="flex: 1; text-align: left">
+			<div style="display: flex; height: 25px; margin-top: 12px">
+				<div style="display: flex; width: 350px;">
+					<SfButton CssClass="buttonFirst" @onclick="FirstClick"></SfButton>
+					<SfButton CssClass="buttonPrevious" @onclick="PreviousClick" style="margin-right: 5px;"></SfButton>
+					<NumericControl @bind-Value="CurrentPage" @bind-Value:event="ValueChanged" CreateDivTag="false" CreateTooltip="false" Decimals="0" Format="g" ID="@ControlID"
+									Max="PageCount" Min="1" OnChanged="PageNumberChanged" Placeholder="Page" ShowSpinButton="false" TValue="int" Width="40px" />
+					<div style="font-weight: bold; margin-left: 10px; margin-top: 3px; padding-right: 0; width: 10px;">of</div>
+					<div style="font-weight: bold; margin-left: 10px; margin-top: 3px; padding-right: 10px; text-align: center; width: auto;">@PageCount</div>
+					<SfButton CssClass="buttonNext" @onclick="NextClick"></SfButton>
+					<SfButton CssClass="buttonLast" @onclick="LastClick"></SfButton>
+				</div>
+				<div style="font-weight: bold; margin-left: 120px; margin-top: 4px; padding-right: 0; width: 50px;">Show: </div>
+				<DropDownControl @bind-Value="DropdownBindValue" @bind-Value:event="ValueChanged" CssClass="dropItem" DataSource="_showRecords" DropDownValueChange="ValueChange" ID="dropItemCount"
+								 TextField="Value" TItem="IntValues" TValue="int" ValueField="Key" Width="100px" />
+			</div>
+		</div>
+		<div class="divRightControls" style="@($"width:{Width}")">
+			<SfButton Content="Refresh" CssClass="topToolButton" IconCss="refreshButton" @onclick="RefreshGrid"></SfButton>
+			<SfButton CssClass="topToolButton" IconCss="newButton" @onclick="Add" style="@($"display:{DisplayAdd}")">Add @Entity</SfButton>
+			<SfButton CssClass="topToolButton" IconCss="newButton" @onclick="Submit" style="@($"display:{DisplaySubmit}")">Submit Selected @Entity</SfButton>
+			@if (!AdvancedSearchDisabled)
+			{
+				<SfButton CssClass="topToolButton" IconCss="searchButton" @onclick="AdvancedSearch">Advanced Search</SfButton>
+			}
+			<AutoCompleteButton @bind-Value="@ACBValue" @bind-Value:event="ValueChanged" EnablePersistence="false" ID="@($"auto{Entity.Replace(" ", "")}")" ModelValue="true"
+								PlaceholderText="@($"Select a {Entity}")" @ref="AutoCompleteControl" Ref="AutoCompleteControl" TypeInstance="typeof(DropDownAdaptor)" ValueChange="FilterGrid" />
+		</div>
+	</div>
+</div>

@@ -1,0 +1,41 @@
+﻿@if (CreateDivTag)
+{
+    <div class="divFlex">
+        <div class="divFlexLabel">
+            <label class="labelStatus" for="@ID" title="@Tooltip">@(Placeholder.NullOrWhiteSpace() ? "&nbsp;" : Placeholder.EndsWith(":") ? Placeholder : $"{Placeholder}:")</label>
+        </div>
+        <div class="@(Multiline ? "divFlexBig" : "divFlexSmall")" style="height: @Height;">
+            <SfTooltip CloseDelay="0" OnOpen="ToolTipOpen" OpenDelay="0" OpensOn="Hover" Position="Position.TopCenter" Target="@("#" + ID)" Width="100%" WindowCollision="true" @ref="ToolTipObj">
+                <ChildContent>
+                    <SfTextBox Created="Created" CssClass="@CssClass" FloatLabelType="FloatLabelType.Never" HtmlAttributes="@(new Dictionary<string, object> { { "maxlength", MaxLength }, {"minlength", MinLength}, {"rows", Multiline ? Rows : 1} })"
+                               ID="@ID" Multiline="@Multiline" Placeholder="@Placeholder" Readonly="@Readonly" @ref="Box" Type="@TextBoxType" ValidateOnInput="@ValidateOnInput" Value="@Value"
+                               ValueChanged="ValueChanged" ValueExpression="@ValueExpression" Width="@Width" Focus="OnFocus" Blur="OnBlur" Autocomplete="AutoComplete.Off">
+                    </SfTextBox>
+                </ChildContent>
+                <ContentTemplate>
+                    @if (CreateTooltip)
+                    {
+                        <ValidationMessage For="@ValidationMessage"></ValidationMessage>
+                    }
+                </ContentTemplate>
+            </SfTooltip>
+        </div>
+    </div>
+}
+else
+{
+    <SfTooltip CloseDelay="0" OnOpen="ToolTipOpen" OpenDelay="0" OpensOn="Hover" Position="Position.TopCenter" Target="@("#" + ID)" Width="100%" WindowCollision="true" @ref="ToolTipObj">
+        <ChildContent>
+            <SfTextBox Created="Created" CssClass="@CssClass" FloatLabelType="FloatLabelType.Never" HtmlAttributes="@(new Dictionary<string, object> { { "maxlength", MaxLength }, {"minlength", MinLength}, {"rows", Multiline ? Rows : 1} })"
+                       ID="@ID" Multiline="@Multiline" Placeholder="@Placeholder" Readonly="@Readonly" @ref="Box" Type="@TextBoxType" ValidateOnInput="@ValidateOnInput" Value="@Value" ValueChanged="ValueChanged"
+                       ValueExpression="@ValueExpression" Width="@Width" Focus="OnFocus" Blur="OnBlur" Autocomplete="AutoComplete.Off">
+            </SfTextBox>
+        </ChildContent>
+        <ContentTemplate>
+            @if (CreateTooltip)
+            {
+                <ValidationMessage For="@ValidationMessage"></ValidationMessage>
+            }
+        </ContentTemplate>
+    </SfTooltip>
+}

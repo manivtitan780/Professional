@@ -1,0 +1,35 @@
+﻿@if (CreateDivTag)
+{
+	<div class="divFlex">
+		<div class="divFlexLabel">
+			<label class="labelStatus" for="@ID">@(Placeholder.NullOrWhiteSpace() ? "&nbsp;" : Placeholder.EndsWith(":") ? Placeholder : $"{Placeholder}:")</label>
+		</div>
+		<div class="divFlexSmall">
+			<SfMaskedTextBox CssClass="@CssClass" FloatLabelType="FloatLabelType.Never" ID="@ID" Mask="@Mask" Placeholder="@Placeholder" Readonly="@Readonly" Value="@Value" ValueChanged="ValueChanged"
+							 ValueExpression="@ValueExpression" Width="@Width">
+			</SfMaskedTextBox>
+			@if (CreateTooltip)
+			{
+				<SfTooltip CloseDelay="0" OnOpen="ToolTipOpen" OpenDelay="0" OpensOn="Hover" Position="Position.TopCenter" Target="@("#" + ID)" Width="100%" WindowCollision="true">
+					<ContentTemplate>
+						<ValidationMessage For="@ValidationMessage"></ValidationMessage>
+					</ContentTemplate>
+				</SfTooltip>
+			}
+		</div>
+	</div>
+}
+else
+{
+	<SfMaskedTextBox CssClass="@CssClass" FloatLabelType="FloatLabelType.Never" ID="@ID" Mask="@Mask" Placeholder="@Placeholder" Readonly="@Readonly" Value="@Value"ValueChanged="ValueChanged" ValueExpression="@ValueExpression"
+					 Width="@Width">
+	</SfMaskedTextBox>
+	@if (CreateTooltip)
+	{
+		<SfTooltip CloseDelay="0" OnOpen="ToolTipOpen" OpenDelay="0" OpensOn="Hover" Position="Position.TopCenter" Target="@("#" + ID)" Width="100%" WindowCollision="true">
+			<ContentTemplate>
+				<ValidationMessage For="@ValidationMessage"></ValidationMessage>
+			</ContentTemplate>
+		</SfTooltip>
+	}
+}

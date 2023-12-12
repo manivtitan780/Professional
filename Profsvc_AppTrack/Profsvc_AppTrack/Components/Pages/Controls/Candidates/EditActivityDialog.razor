@@ -1,0 +1,30 @@
+﻿<SfDialog Header="Edit Activity" Height="@(IsShow ? "98vh" : "460px")" IsModal="true" MinHeight="@(IsShow ? "98vh" : "460px")" @ref="Dialog" Target="#divTarget" Visible="false" Width="640px">
+	<ChildContent>
+		<SfSpinner CssClass="spinnerHeight" @ref="Spinner" Type="SpinnerType.Fabric" ZIndex="12000" />
+		<DialogPositionData X="right" Y="center" />
+		<DialogAnimationSettings Duration="500" Effect="DialogEffect.SlideRight" />
+		<DialogEvents OnOpen="OpenDialog"></DialogEvents>
+		<EditForm Model="@Model" OnValidSubmit="SaveActivityDialog" @ref="EditActivityForm">
+			<DataAnnotationsValidator />
+			<div class="divContainerTable">
+				<TextBoxControl @bind-Value="@(Model.Status)" @bind-Value:event="ValueChanged" CreateTooltip="false" ID="textStatus" MaxLength="255" MinLength="1" Placeholder="Status" Readonly="true" Width="100%" />
+				<DropDownControl @bind-Value="Model.NewStatusCode" @bind-Value:event="ValueChanged" CreateDivTag="true" DataSource="@ModelSteps" DropDownValueChange="ChangeStatus" ID="dropStatus"
+								 Placeholder="Set New Status" TextField="Key" TItem="KeyValues" TValue="string" ValueField="Value" />
+				<TextBoxControl @bind-Value="@(Model.Notes)" @bind-Value:event="ValueChanged" ID="textNotes" MaxLength="1000" MinLength="1" Multiline="true" Placeholder="Notes"
+								Rows="5" ValidationMessage="@(() => Model.Notes)" Width="100%" />
+				<div style="display: @(IsShow ? "inherit" : "none")">
+					<SwitchControl @bind-BindValue="@(Model.ShowCalendar)" ID="checkedShowCalendar" OffLabel="NO" OnLabel="YES" Placeholder="Show Calendar?" />
+					<DateTimeControl @bind-Value="@Model.DateTimeInterview" @bind-Value:event="ValueChanged" CreateTooltip="false" ID="dateInterview" Max="@Max" Min="@Min" Placeholder="Interview Date/Time"
+									 Width="220px" />
+					<DropDownControl @bind-Value="Model.TypeOfInterview" @bind-Value:event="ValueChanged" CreateDivTag="true" DataSource="@InterviewTypes" ID="dropType" Placeholder="Type of Interview"
+									 TextField="Key" TItem="KeyValues"TValue="string" ValueField="Value" />
+					<MaskedTextBoxControl @bind-Value="@(Model.PhoneNumber)" @bind-Value:event="ValueChanged" CreateDivTag="true" CreateTooltip="false" ID="textPhoneNumber" Mask="(000) 000-0000"
+										  Placeholder="Interview Phone Number" />
+					<TextBoxControl CreateDivTag="true" CreateTooltip="false" ID="textInterviewDetails" MaxLength="2000" MinLength="0" Multiline="true" Placeholder="Interview Details"
+									Rows="5" Value="@(Model.InterviewDetails)" Width="100%" />
+				</div>
+			</div>
+			<DialogFooter CancelMethod="CancelDialog" @ref="FooterDialog" />
+		</EditForm>
+	</ChildContent>
+</SfDialog>

@@ -1,0 +1,48 @@
+﻿@typeparam TValue
+@using FilterType = Syncfusion.Blazor.DropDowns.FilterType
+@typeparam TItem
+@if (CreateDivTag)
+{
+    <div class="divFlex">
+        <div class="divFlexLabel">
+            <label class="labelStatus" for="@ID">@(Placeholder.NullOrWhiteSpace() ? "&nbsp;" : Placeholder.EndsWith(":") ? Placeholder : $"{Placeholder}:")</label>
+        </div>
+        <div class="divFlexSmall dropDownTooltip">
+            <SfTooltip CloseDelay="0" OnOpen="ToolTipOpen" OpenDelay="0" OpensOn="Hover" Position="Position.TopCenter" Target="@(".e-input-group")" Width="100%" WindowCollision="true">
+                <ChildContent>
+					<SfDropDownList AllowFiltering="@AllowFilter" CssClass="CssClass" DataSource="@DataSource" FilterBarPlaceholder="Search..." FilterType="FilterType.Contains" ID="@ID" Query="@Query" ref="_drop" 
+									ShowClearButton="@ShowClearButton" TItem="TItem" TValue="TValue" Value="@Value" ValueChanged="@ValueChanged" ValueExpression="@ValueExpression" Width="@Width">
+                        <DropDownListEvents TItem="TItem" TValue="TValue" ValueChange="@DropDownValueChange" />
+                        <DropDownListFieldSettings Text="@TextField" Value="@ValueField" />
+                    </SfDropDownList>
+                </ChildContent>
+                <ContentTemplate>
+                    @if (CreateTooltip)
+                    {
+                        <ValidationMessage For="@ValidationMessage"></ValidationMessage>
+                    }
+                </ContentTemplate>
+            </SfTooltip>
+        </div>
+    </div>
+}
+else
+{
+    <div class="dropDownTooltip">
+        <SfTooltip CloseDelay="0" OnOpen="ToolTipOpen" OpenDelay="0" OpensOn="Hover" Position="Position.TopCenter" Target="@(".e-input-group")" Width="100%" WindowCollision="true">
+            <ChildContent>
+                <SfDropDownList AllowFiltering="@AllowFilter" CssClass="CssClass" DataSource="@DataSource" FilterBarPlaceholder="Search..." FilterType="FilterType.Contains" ID="@ID" Query="@Query" @ref="_drop"
+                                ShowClearButton="@ShowClearButton" TItem="TItem" TValue="TValue" Value="@Value" ValueChanged="@ValueChanged" ValueExpression="@ValueExpression" Width="@Width">
+                    <DropDownListEvents TItem="TItem" TValue="TValue" ValueChange="@DropDownValueChange" />
+                    <DropDownListFieldSettings Text="@TextField" Value="@ValueField" />
+                </SfDropDownList>
+            </ChildContent>
+            <ContentTemplate>
+                @if (CreateTooltip)
+                {
+                    <ValidationMessage For="@ValidationMessage"></ValidationMessage>
+                }
+            </ContentTemplate>
+        </SfTooltip>
+    </div>
+}

@@ -1,0 +1,24 @@
+﻿<SfDialog Header="Search Candidate" Height="785px" IsModal="true" MinHeight="400px" @ref="Dialog" Target="#divTarget" Visible="false" Width="800px">
+	<ChildContent>
+		<SfSpinner CssClass="spinnerHeight" @ref="Spinner" Type="SpinnerType.Fabric" ZIndex="12000" />
+		<DialogPositionData X="center" Y="center"></DialogPositionData>
+		<DialogAnimationSettings Duration="500" Effect="DialogEffect.FadeZoom"></DialogAnimationSettings>
+		<EditForm Model="Model" OnValidSubmit="SearchCompanyDialog">
+			<DataAnnotationsValidator />
+			<div class="divContainerTable">
+				<TextBoxControl @bind-Value="@(Model.CompanyName)" @bind-Value:event="ValueChanged" CreateDivTag="true" CreateTooltip="false" ID="textCompanyName" MaxLength="255" MinLength="0" Multiline="false"
+								Placeholder="Enter full or Partial Company Name" />
+				<TextBoxControl @bind-Value="@(Model.Phone)" @bind-Value:event="ValueChanged" Created="NumbersOnly" CreateDivTag="true" CreateTooltip="false" ID="textPhone" MaxLength="255" MinLength="0"
+								Multiline="false" Placeholder="Enter full or Partial Phone Number" />
+				<TextBoxControl @bind-Value="@(Model.EmailAddress)" @bind-Value:event="ValueChanged" CreateDivTag="true" CreateTooltip="false" ID="textEmail" MaxLength="255" MinLength="0" Multiline="false"
+								Placeholder="Enter full or Partial Email Address" />
+				<MultiSelectControl @bind-Value="@(Model.Status)" @bind-Value:event="ValueChanged" CreateDivTag="true" CreateTooltip="false" DataSource="StatusDropDown" FilterBarPlaceholder="Search Status&hellip;"
+									ID="multiStatus" KeyField="Value" Multiline="false" Placeholder="Select Status(s)" TItem="KeyValues" TValue="string" ValueField="Key" />
+				<MultiSelectControl @bind-Value="@(Model.State)" @bind-Value:event="ValueChanged" CreateDivTag="true" CreateTooltip="false" DataSource="StateDropDown" FilterBarPlaceholder="Search State&hellip;"
+									ID="multiState" KeyField="Key" Placeholder="Select State(s)" TItem="IntValues" TValue="string" ValueField="Value" />
+				<SwitchControl @bind-BindValue="@(Model.MyCompanies)" ID="checkedCompanies" OffLabel="NO" OnLabel="YES" Placeholder="Show My Companies?" />
+			</div>
+			<DialogFooter CancelMethod="CancelSearchDialog" @ref="FooterDialog" Save="Search" />
+		</EditForm>
+	</ChildContent>
+</SfDialog>

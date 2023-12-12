@@ -1,0 +1,56 @@
+﻿<SfDialog Header="Preferences" Height="300px" IsModal="true" MinHeight="300px" @ref="Dialog" Target="#divTarget" Visible="false" Width="400px" ZIndex="50000" ID="dialogColor">
+	<ChildContent>
+		<SfSpinner CssClass="spinnerHeight" @ref="Spinner" Type="SpinnerType.Fabric" ZIndex="12000" />
+		<DialogPositionData X="right" Y="center"></DialogPositionData>
+		<DialogAnimationSettings Effect="DialogEffect.None"></DialogAnimationSettings>
+		<DialogEvents OnOpen="OpenDialog"></DialogEvents>
+		<EditForm Model="Model" OnValidSubmit="SavePreferences" @ref="EditPreferenceForm">
+			<FluentValidationValidator />
+			<div class="divContainerTable" id="divContTable">
+				<div class="divP">
+					<div class="divL">
+						<label class="labelStatus">High Priority Color:</label>
+					</div>
+					<div class="divR">
+						<SfColorPicker @bind-Value="@Model.HighPriorityColor" Mode="ColorPickerMode.Picker" ModeSwitcher="false" ShowButtons="false"></SfColorPicker>
+					</div>
+				</div>
+				<div class="divP">
+					<div class="divL">
+						<label class="labelStatus">Normal Priority Color:</label>
+					</div>
+					<div class="divR">
+						<SfColorPicker @bind-Value="@Model.NormalPriorityColor" Mode="ColorPickerMode.Picker" ModeSwitcher="false" ShowButtons="false"></SfColorPicker>
+					</div>
+				</div>
+				<div class="divP">
+					<div class="divL">
+						<label class="labelStatus">Low Priority Color:</label>
+					</div>
+					<div class="divR">
+						<SfColorPicker @bind-Value="@Model.LowPriorityColor" Mode="ColorPickerMode.Picker" ModeSwitcher="false" ShowButtons="false"></SfColorPicker>
+					</div>
+				</div>
+				<div class="divP">
+					<div class="divL">
+						<label class="labelStatus">Page Size:</label>
+					</div>
+					<div class="divR">
+						<DropDownControl @bind-Value="@Model.PageSize" @bind-Value:event="ValueChanged" CreateDivTag="false" CreateTooltip="false" DataSource="_pageSizeDropItems" ID="dropPageSize" Placeholder="Page Size"
+										 TextField="Value" TItem="ByteValues" TValue="byte" ValueField="Key" Width="100px" />
+					</div>
+				</div>
+
+			</div>
+			<DialogFooter Cancel="Cancel" CancelMethod="CancelPreferences" @ref="DialogFooter" Save="Save" />
+		</EditForm>
+	</ChildContent>
+</SfDialog>
+<style type="text/css">
+
+	.e-color-picker {
+		left: -180px;
+		position: relative;
+	}
+
+</style>

@@ -1,0 +1,11 @@
+######################################
+ShowMe.txt
+.cr\*
+.vs\*
+*.DotSettings
+*.DotSettings.user
+*.bak
+*.zip
+*.7z
+#!*.dll
+ProfSvc_AppTrack\log\errorLog*.txt

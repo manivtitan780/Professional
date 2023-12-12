@@ -1,0 +1,3410 @@
+{
+  "homepages": [],
+  "source_base_path": "D:/a/sovren-dotnet/sovren-dotnet/docfx",
+  "xrefmap": "xrefmap.yml",
+  "files": [
+    {
+      "type": "Resource",
+      "source_relative_path": "images/favicon.ico",
+      "output": {
+        "resource": {
+          "relative_path": "images/favicon.ico"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "index.md",
+      "output": {
+        ".html": {
+          "relative_path": "index.html",
+          "hash": "UnNu5nAfT4tK7GiflbySYAMR9U2P+Itf6PQ4Zro+8tQ="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Batches.BatchErrorResult.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Batches.BatchErrorResult.html",
+          "hash": "sStLmvYNGLvQI5isGkec+bRPV9oWqn9XhM5JqFKZi/U="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Batches.BatchParser.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Batches.BatchParser.html",
+          "hash": "btrCATSI6XkJ8JsgBOuDLuKI+Q5S2hPOi9aVFAy+0ys="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Batches.BatchParsingRules.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Batches.BatchParsingRules.html",
+          "hash": "2RPd+xzJiJ8uJ5he8hWcCGQejfx5lHa6HuIHtXBWWXY="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Batches.BatchResult.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Batches.BatchResult.html",
+          "hash": "LndK1IwJIrzWuzDC29xKX3gR036//BNFHOdFzVr0J6A="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Batches.JobBatchPartialSuccessResult.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Batches.JobBatchPartialSuccessResult.html",
+          "hash": "dVPbZ7rGn9Fv1jw7EMVQVLs7vEM7cQnE3SgEjYYhmAY="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Batches.JobBatchSuccessResult.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Batches.JobBatchSuccessResult.html",
+          "hash": "UYVdFJNexuT5RszJJwZU67bsyjO6kneBwZ4EsiiLa2k="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Batches.ResumeBatchPartialSuccessResult.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Batches.ResumeBatchPartialSuccessResult.html",
+          "hash": "qaejoaAT1RlU7OZ8HquPH6EdtmBzEgrDuVIXUKvkCTk="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Batches.ResumeBatchSuccessResult.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Batches.ResumeBatchSuccessResult.html",
+          "hash": "MIar++Na3nL8bWycGtKr1OPge2JgHnHyix/xosT9y3I="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Batches.SovrenInvalidBatchException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Batches.SovrenInvalidBatchException.html",
+          "hash": "un7QPEEdxV87vERGFx7NDqn5InUeILECFgsu9YwMkIk="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Batches.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Batches.html",
+          "hash": "ctaQLjdBbMRXvpDLgjQIV22PQQ4r2CQtQ44AoKI3MHQ="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.DataCenter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.DataCenter.html",
+          "hash": "u0C5dfJnjQZRxEohT/DGiOMUb35RJTrUpdhIPjhSK2g="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.ISovrenClient.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.ISovrenClient.html",
+          "hash": "8vPDaYMzIoIzAm8IkfLi4I8zmiRraTqaehYIs88AoLA="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Account.GetAccountInfoResponse.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Account.GetAccountInfoResponse.html",
+          "hash": "+utbbEvA+nVD3jdOSOta6XGYheQ3/df15AvsIl31QvE="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Account.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Account.html",
+          "hash": "q2oYvwDu08Fqf2SeIHWQVDvwpyJFCICseU9Y6xaRSy0="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.AccountInfo.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.AccountInfo.html",
+          "hash": "EQ4uKPlf5fJKO8MKXIIMfYLFCdxzVZoMhizZ4NthqYQ="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.ApiResponse-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.ApiResponse-1.html",
+          "hash": "cunNFqs+r9KPr9CG7g8zBS5gylSK1FFmmxO9xzGGRHo="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.ApiResponseInfo.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.ApiResponseInfo.html",
+          "hash": "H3IHzSJk2pmWucB87C1cFnSHYYs4QZhm6mTsKFdi8t8="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.ApiResponseInfoLite.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.ApiResponseInfoLite.html",
+          "hash": "XtlCDjrodMjMs6gjIqknW9QkQFHsDgpW64Td/kDH5N4="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.BimetricScoring.BimetricScoreJobRequest.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.BimetricScoring.BimetricScoreJobRequest.html",
+          "hash": "6mHHCekX7Z0bLtdZtpseb3Uc4mTeGjq/7rVOeGHIhb8="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.BimetricScoring.BimetricScoreRequest.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.BimetricScoring.BimetricScoreRequest.html",
+          "hash": "leIVGUwo0kwJEIVqiqBXOGMtTPSk7/TXu0J5xKpTpEA="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.BimetricScoring.BimetricScoreResponse.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.BimetricScoring.BimetricScoreResponse.html",
+          "hash": "SXN9gbwLgo26Dus2LCQbc+pxWCHDNfSaujyhqmYYeyM="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.BimetricScoring.BimetricScoreResponseValue.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.BimetricScoring.BimetricScoreResponseValue.html",
+          "hash": "BoyKFZdfxDdQ/CuwyMwD+WavN/Vj3FysC65fhQVCZcA="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.BimetricScoring.BimetricScoreResult.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.BimetricScoring.BimetricScoreResult.html",
+          "hash": "jak9JuhB0DwDmtLH+sgvNnzSyk74PpCxrrTvBrEbt1s="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.BimetricScoring.BimetricScoreResumeRequest.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.BimetricScoring.BimetricScoreResumeRequest.html",
+          "hash": "CILTc62EzFMnBnwKb5Rm/bhz48eBSBuPL5ti221AaxY="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.BimetricScoring.IParsedDocWithId.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.BimetricScoring.IParsedDocWithId.html",
+          "hash": "MvZx+g9WJq2A+Qtla0VHck6oyxymmdqOws5RbDwQGhk="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.BimetricScoring.ParsedJobWithId.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.BimetricScoring.ParsedJobWithId.html",
+          "hash": "++/lzOoNoYQwItvS4nAVSlOlo2xcTDHHyrNTAhP+Z4A="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.BimetricScoring.ParsedResumeWithId.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.BimetricScoring.ParsedResumeWithId.html",
+          "hash": "AyDCP4CfldvyMUfjwyQL4k8JUJdyDKbzmqVb4m1aaKQ="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.BimetricScoring.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.BimetricScoring.html",
+          "hash": "cpvc4cHc3KXuUkK6H1CeFKUyipn2A+ZeJp+1uewEup4="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Formatter.CompanyInfo.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Formatter.CompanyInfo.html",
+          "hash": "VozHVd8xI5QFJHVOgIa2vC285QmBdH+bazX2pluWDFs="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Formatter.CompanyInfoPlacement.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Formatter.CompanyInfoPlacement.html",
+          "hash": "5yw7eRIPCkedEbCbU1V8P0kc3DIAUTFdJtR55jHe7PM="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Formatter.EmployerNameOptions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Formatter.EmployerNameOptions.html",
+          "hash": "oj330gtxaATqqevCsYYOdukUo5op16sRsA8uRl3DU6c="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Formatter.FormatResumeOptions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Formatter.FormatResumeOptions.html",
+          "hash": "9HH+3USiPExGYuEJ4t3URnyDeow710pYXjfBnY8QtL0="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Formatter.FormatResumeRequest.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Formatter.FormatResumeRequest.html",
+          "hash": "Hrl7IZwXXob+HyYRSVvTcWg13hA4rF1tJvnAqRaZtHs="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Formatter.FormatResumeResponse.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Formatter.FormatResumeResponse.html",
+          "hash": "fFmBQcAp6T0mPMQREt49Fn2IndqezqKkhLyy8OQFqjM="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Formatter.FormatResumeResponseValue.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Formatter.FormatResumeResponseValue.html",
+          "hash": "jbWngYGnnk9Ii9Iorw3HOfa1CimpzkHJDBASt42Efyc="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Formatter.MetadataOptions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Formatter.MetadataOptions.html",
+          "hash": "W9ue+hNbJIULPH2up0xtR5hGrjDhapu6aJDmrneXcak="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Formatter.ResumeLogo.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Formatter.ResumeLogo.html",
+          "hash": "KSDElKePM2ZAmSpzWs/IKgKfE3VAf1G88qcdZ2VZnBA="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Formatter.ResumeType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Formatter.ResumeType.html",
+          "hash": "LmnHGMJ4xCG7oooavZ7ma8zPwyvt3B0cYp9M3y2Do9Y="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Formatter.WorkHistoryOptions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Formatter.WorkHistoryOptions.html",
+          "hash": "TyNQQqYIXaIAF/NCPyfr0+LrWCJy2/6znKfMOupYzt0="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Formatter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Formatter.html",
+          "hash": "qyw++7MWsZUmH0udRmYmSJMcC8W/+TH8/5Pe8jgYwEs="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Geocoding.Address.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Geocoding.Address.html",
+          "hash": "0FB8vzjw5JY7dq+r61RpkD1nY0I1S7gZQkhhvjV1ECQ="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Geocoding.GeocodeAndIndexJobRequest.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Geocoding.GeocodeAndIndexJobRequest.html",
+          "hash": "F4v7vvLCOpk1iT+bWjdXULbjuwy7FsbWWMPK01BvUy0="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Geocoding.GeocodeAndIndexJobResponse.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Geocoding.GeocodeAndIndexJobResponse.html",
+          "hash": "A0f7QIXTCmiVvk2Dy+NvxYQjkulj3atvKJT/QJtTEGY="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Geocoding.GeocodeAndIndexJobResponseValue.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Geocoding.GeocodeAndIndexJobResponseValue.html",
+          "hash": "xIDTwfspY8/pfibwI/48iz2zRJwl8IX4LvVd5czMYak="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Geocoding.GeocodeAndIndexRequest.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Geocoding.GeocodeAndIndexRequest.html",
+          "hash": "CISJtWJk8KHgryRZFKGbmXXF2+fIREg1mKD9uJ2Yg/0="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Geocoding.GeocodeAndIndexResponseValue.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Geocoding.GeocodeAndIndexResponseValue.html",
+          "hash": "zY80o7qc4UDWRhdkgAUxfjz8CeqVXKxIUxKIVrue4ls="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Geocoding.GeocodeAndIndexResumeRequest.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Geocoding.GeocodeAndIndexResumeRequest.html",
+          "hash": "UD1YsWVbzh/qPybPp/yWBkgdZO3/y1i1b3QXakB8xGs="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Geocoding.GeocodeAndIndexResumeResponse.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Geocoding.GeocodeAndIndexResumeResponse.html",
+          "hash": "zOJGRS2gavYsFbuLWI5B7kyukvoGJeGXLRjSV+3ZlW4="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Geocoding.GeocodeAndIndexResumeResponseValue.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Geocoding.GeocodeAndIndexResumeResponseValue.html",
+          "hash": "SjftWfF3vSgulMZhPNj5UTRMPddQ4ULhQzki9XgEvB4="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Geocoding.GeocodeCredentials.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Geocoding.GeocodeCredentials.html",
+          "hash": "dGr3yKY5hw1+xMVQtzfUHmm0ww5+r4dCJwya9ByJijg="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Geocoding.GeocodeJobRequest.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Geocoding.GeocodeJobRequest.html",
+          "hash": "ecDRiVCLUMr+HDIYpUYamdDap8r0BZT8F30Pzbl642k="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Geocoding.GeocodeJobResponse.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Geocoding.GeocodeJobResponse.html",
+          "hash": "CmvLv2W4+gG81HP4dTH0EtpRU/e9TPjIO34bbvwUA0I="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Geocoding.GeocodeJobResponseValue.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Geocoding.GeocodeJobResponseValue.html",
+          "hash": "ca/bEXAxth7Ut6I/vaEoQxKr3IFDVMblOmAUoZkxCGU="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Geocoding.GeocodeOptions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Geocoding.GeocodeOptions.html",
+          "hash": "b0czJ5vAbzn76dITcGaGOFDfO2sVvm9chzJLLtozy+A="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Geocoding.GeocodeOptionsBase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Geocoding.GeocodeOptionsBase.html",
+          "hash": "7CNfkRdLD0s79wbuq9brvSJexVw/nRy8CV5V1tmtbK0="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Geocoding.GeocodeProvider.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Geocoding.GeocodeProvider.html",
+          "hash": "GPJsd1WgoiGMOj0441cdRLSOl8U+QX5abr4hl9QyBm4="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Geocoding.GeocodeResumeRequest.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Geocoding.GeocodeResumeRequest.html",
+          "hash": "US1wbSdPUUGGqdoB8mOLoqShURs6LhIJnl7komHVuLs="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Geocoding.GeocodeResumeResponse.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Geocoding.GeocodeResumeResponse.html",
+          "hash": "6VcTUZG3sS2do3uwyysPsXpj5Tw0IbqrfJn/Yh61txc="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Geocoding.GeocodeResumeResponseValue.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Geocoding.GeocodeResumeResponseValue.html",
+          "hash": "IsOokMEn3rTYiwRNIOSxuxGS970RW4f64V+Pz2efMo0="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Geocoding.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Geocoding.html",
+          "hash": "nLWryq1aRNw2mCiVJEOX0TFoE8htZbscXpzN7r52s3g="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.ISovrenResponse.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.ISovrenResponse.html",
+          "hash": "wZPxC32Wp85QVh6pHF4T82rXt6PQQ2B0hXM49X/0WQU="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Indexes.CreateIndexRequest.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Indexes.CreateIndexRequest.html",
+          "hash": "H3MTHiBhHmEZxNhJcneCf5om/tpWnGlh6ebcHe2ZSnI="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Indexes.CreateIndexResponse.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Indexes.CreateIndexResponse.html",
+          "hash": "MUdbix8AkWkvN9HXT2xpm0PvX90DFMzL321DOtQzcTY="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Indexes.DeleteDocumentResponse.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Indexes.DeleteDocumentResponse.html",
+          "hash": "W0Z+EB3WxbH3x0eF3Vy6xVPSEEhaDibrIVShF7rHMmo="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Indexes.DeleteIndexResponse.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Indexes.DeleteIndexResponse.html",
+          "hash": "3BKf5FcFgPu7VvB7WHzEAq7PAkVNZrneEAafHaOmYXc="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Indexes.DeleteMultipleDocumentsResponse.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Indexes.DeleteMultipleDocumentsResponse.html",
+          "hash": "UifueY9DdnU10K+lXv9fsF+eWj/HLPvEhfEeHZLeIuw="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Indexes.GetAllIndexesResponse.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Indexes.GetAllIndexesResponse.html",
+          "hash": "sbOFnAyjZpwD2RyJ3WygCFE0qLNP9FVTolmsnMqnYbE="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Indexes.GetIndexResponse.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Indexes.GetIndexResponse.html",
+          "hash": "6q7loPBFicmlje3tzXl3g0GLxLpWpPdjkHgDZEt7xSs="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Indexes.GetJobResponse.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Indexes.GetJobResponse.html",
+          "hash": "TlVQzfDHQiUcrOyQH1F9Ax+qXn2kr3tAo80zsNNQmgo="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Indexes.GetResumeResponse.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Indexes.GetResumeResponse.html",
+          "hash": "ltdhj5wAQWiqyWnxSZAXaLacPigiI1epGXsNmjUQ5w0="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Indexes.IndexDocumentRequest.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Indexes.IndexDocumentRequest.html",
+          "hash": "zF//Za2Xnqsmg5upqNOP/Ta5V+CuQ5sIBPbVtokLckc="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Indexes.IndexDocumentResponse.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Indexes.IndexDocumentResponse.html",
+          "hash": "T5l0/SeresPzdXgvPXYltmzTydax5Aa98Uf1NYyKOoU="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Indexes.IndexJobInfo.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Indexes.IndexJobInfo.html",
+          "hash": "e3wDmFvVn+MU/K6D+MEfBw08bgSbzpmjqNQcw/vFngA="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Indexes.IndexJobRequest.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Indexes.IndexJobRequest.html",
+          "hash": "OJMnMZCv3wGWtPb6JvklH8aMr16UeQwdG9DQtiamVYA="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Indexes.IndexMultipleDocumentInfo.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Indexes.IndexMultipleDocumentInfo.html",
+          "hash": "NEd5E7xIGe39r91xmHUomA0AEdWhrsihSVhUAcjOrbU="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Indexes.IndexMultipleDocumentsResponse.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Indexes.IndexMultipleDocumentsResponse.html",
+          "hash": "COBN3xrZS1I7kao7DhpaFNDX1LoSZ0E/zqfDKivIMBY="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Indexes.IndexMultipleDocumentsResponseValue.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Indexes.IndexMultipleDocumentsResponseValue.html",
+          "hash": "T6kKKd+sDSMSqNtmsI0RGg0M14kVx91zDJiZdk/hRXg="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Indexes.IndexMultipleJobsRequest.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Indexes.IndexMultipleJobsRequest.html",
+          "hash": "zfClR24Y016KneWFMkj71UIDpC7Ap8TX7TcB1Dnnq6Y="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Indexes.IndexMultipleResumesRequest.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Indexes.IndexMultipleResumesRequest.html",
+          "hash": "l0tdCZB9ZgyuxulR5yw/1hpUcsZcin86g7G12chAdzo="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Indexes.IndexResumeInfo.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Indexes.IndexResumeInfo.html",
+          "hash": "Lq0k+fCSpvBbDaegQbQeQnjpWzMap/Qdp/Q38hkoBJc="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Indexes.IndexResumeRequest.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Indexes.IndexResumeRequest.html",
+          "hash": "cvzhcRCIVqwB01cUfIypAeAF/pDDvghtSN9JQ/oEaTo="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Indexes.IndexSingleDocumentInfo.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Indexes.IndexSingleDocumentInfo.html",
+          "hash": "RDK/xeI90jYpgwom8uZUvFA95kUwSCiz+QfwyUScYhk="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Indexes.UpdateUserDefinedTagsRequest.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Indexes.UpdateUserDefinedTagsRequest.html",
+          "hash": "ETLLkdih4R5HH1moRQIY9VtQHRonDxk2ENzpdYe13Zg="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Indexes.UpdateUserDefinedTagsResponse.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Indexes.UpdateUserDefinedTagsResponse.html",
+          "hash": "6sYP+sH0oSytLNPs9YIPru5wvQGVza0j1yFoqP1qFmA="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Indexes.UserDefinedTagsMethod.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Indexes.UserDefinedTagsMethod.html",
+          "hash": "jgKZjx+BlEhuzZBqrQdskboTZ6D1LdW7oucHEKvdN54="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Indexes.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Indexes.html",
+          "hash": "j3cnXuJXpEBmTXeySbMh1kuzfP7nlcyX8FPtzCTAmkI="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Matching.BaseScoredResponseValue-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Matching.BaseScoredResponseValue-1.html",
+          "hash": "5E798O/6yQAdH1QiZcKBRAXQnyicxihbk1Ri4kZUGk8="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Matching.BaseSearchMatchResponseValue-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Matching.BaseSearchMatchResponseValue-1.html",
+          "hash": "QIPaXUKoPkwLeGIBLcWlNIL8jJq0thhLLnJMCj/Nhc4="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Matching.CategoryWeights.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Matching.CategoryWeights.html",
+          "hash": "3HO3Hc/sr/0SLGCJ/jZFr4BcCZSG5h9dBvj+98Xrabo="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Matching.MatchJobRequest.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Matching.MatchJobRequest.html",
+          "hash": "s0PBjP+jY93cP0/nq5N+yMjhWmeAxksPCIGmP7yw7nw="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Matching.MatchResponse.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Matching.MatchResponse.html",
+          "hash": "1VBo66L1LOgFzJQ3+McZQOjOI4IvkS/OiDGZMVmUEow="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Matching.MatchResponseValue.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Matching.MatchResponseValue.html",
+          "hash": "FmTek5+An0ELKy4+kjDQjghsrjQLCBPuUkoOVc/lHV0="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Matching.MatchResumeRequest.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Matching.MatchResumeRequest.html",
+          "hash": "1i56QvHrC2dn23OksVV9gf71khxLpeweggatObEzcyA="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Matching.Request.DistanceUnit.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Matching.Request.DistanceUnit.html",
+          "hash": "/ylsjtVhIU+ktU79KvU3vqTJmMIfR1BtUiWOEUZkvXY="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Matching.Request.FilterCriteria.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Matching.Request.FilterCriteria.html",
+          "hash": "KB+m/tAvkk+ilFnqN8mR3iIKkFyCKb5hOwS04bC+xlg="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Matching.Request.FilterLocation.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Matching.Request.FilterLocation.html",
+          "hash": "eopo2q+qm3/dOWGPxUl7+rpdI4/SHguWmx8Ae4IWYX0="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Matching.Request.IntegerRange.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Matching.Request.IntegerRange.html",
+          "hash": "85r+quHk31z/zje0i7gHq8zA62xOdlnqx4CCV5eBbDI="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Matching.Request.JobTitleFilter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Matching.Request.JobTitleFilter.html",
+          "hash": "Vatp9Wi0Zh7+7XpFhICoC+DHndjRCUvSiGHd2C5dej8="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Matching.Request.LocationCriteria.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Matching.Request.LocationCriteria.html",
+          "hash": "Oz1Jnc+3JRtAaji5TvPfmJH7sT/SoaCC6frUDzsy6Jc="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Matching.Request.MatchByDocumentIdOptions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Matching.Request.MatchByDocumentIdOptions.html",
+          "hash": "gHN1bg9S0CfBmqJf0sxwlBU5Q1dxNZJxpwBp3TeqQRQ="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Matching.Request.MatchRequest.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Matching.Request.MatchRequest.html",
+          "hash": "cBaa8K+iD/1LqyWaaIIRoJIE7ZU2rJVDSqUteP7+O4c="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Matching.Request.PaginationSettings.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Matching.Request.PaginationSettings.html",
+          "hash": "U3wVvcL5PDTusEgEjyo3wAuQOGV5NENggWIZDAz/B4k="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Matching.Request.RevisionDateRange.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Matching.Request.RevisionDateRange.html",
+          "hash": "8b3tGQMsyE/fAbDVbzZ4eWoACo6YZjbciFX6li8U6pA="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Matching.Request.SearchMatchRequestBase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Matching.Request.SearchMatchRequestBase.html",
+          "hash": "TkIEoUXt0F3UMB5jQttBLu4sBU1/8S+IoTYyGcXsdx0="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Matching.Request.SearchMatchSettings.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Matching.Request.SearchMatchSettings.html",
+          "hash": "A6OmR4/qJibOEBcj/JsPk52SqEp7h6Ux5gvBsK22xA0="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Matching.Request.SkillExperienceLevel.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Matching.Request.SkillExperienceLevel.html",
+          "hash": "+VKPyBywB6CwGe8syJsDwXBOIYMykJWTCuTCvHuLm2w="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Matching.Request.SkillFilter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Matching.Request.SkillFilter.html",
+          "hash": "/eONvNGTnGM7sVDPqjH4gX65Lily/6ESy4t5ZYpoowM="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Matching.Request.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Matching.Request.html",
+          "hash": "wR7s97aFApr/Jukf/IYtxRnzpjTWIEE/UE5PygjzIoc="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Matching.Response.CategoryScoreData.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Matching.Response.CategoryScoreData.html",
+          "hash": "VzCAePlZ+lMwU2ouOUnzFFSsvvpcS3CLN3qtjCiZgTQ="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Matching.Response.CategoryScoreEvidence.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Matching.Response.CategoryScoreEvidence.html",
+          "hash": "KvfVvo1+h2E8aa99NgkePcJAGUFuqFESq/G5bK+enac="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Matching.Response.DocumentTaxonomies.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Matching.Response.DocumentTaxonomies.html",
+          "hash": "sTYfEXXO/jm9XnJFLx4/vmNK9VWvvn3l4+/s4xBdetA="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Matching.Response.EducationScoreData.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Matching.Response.EducationScoreData.html",
+          "hash": "kILC+dt2nIXm/H/9+4rtfOqm+/vojOW0658gD3VajEw="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Matching.Response.EnrichedScoreData.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Matching.Response.EnrichedScoreData.html",
+          "hash": "q/mxQH95uexUuPQXyoOQJo118YJDxthl36HcXR9F3Tc="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Matching.Response.FoundJobTitle.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Matching.Response.FoundJobTitle.html",
+          "hash": "TogKMazA0ysn6CuslSTTS55vQGjnGNn1MrsOBEMbkd4="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Matching.Response.FoundSkill.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Matching.Response.FoundSkill.html",
+          "hash": "vaO5lylNTZGNgdE6EdCAmC6uHrYmolOyxRY4Z/ieNII="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Matching.Response.IBimetricScoredResult.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Matching.Response.IBimetricScoredResult.html",
+          "hash": "fNQ7RZT2ZJKNlwlIJ5qR2Hnisy/tdcTpX6/wzJ4yUIA="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Matching.Response.JobTitlesScoreData.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Matching.Response.JobTitlesScoreData.html",
+          "hash": "Aeq9pf8yfpnnuB1MMfbNvG1l9gObMmK/EUeTVRUfP+A="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Matching.Response.ManagementLevelScoreData.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Matching.Response.ManagementLevelScoreData.html",
+          "hash": "OrVc0imPkhwzz2xeJPEiw5gwPMQWewUkUOzT0sWCgqE="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Matching.Response.MatchResult.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Matching.Response.MatchResult.html",
+          "hash": "jH4C5CfrnISNEWefdffKXXippC9CfFjj0niFEo1BYAU="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Matching.Response.SearchResult.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Matching.Response.SearchResult.html",
+          "hash": "47v0byGFdqGXu5rV3MUmHiG5kf3FGqvlLD8P4GlfSLY="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Matching.Response.SimpleCategoryScoreData.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Matching.Response.SimpleCategoryScoreData.html",
+          "hash": "Vf1AYhN9IgpthdXcSO8T8fLrF8P88VUDtoA1T2sg8TU="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Matching.Response.SkillsScoreData.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Matching.Response.SkillsScoreData.html",
+          "hash": "TUrvbaVsHr4t9cXL7QxgegOBDC233cB7YkPXHSXpk68="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Matching.Response.TaxonomiesScoreData.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Matching.Response.TaxonomiesScoreData.html",
+          "hash": "tnn0cHbV+wQS78pnIyrWwhvWbDA1/K1uNMfy2dueA4w="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Matching.Response.TaxonomyEvidence.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Matching.Response.TaxonomyEvidence.html",
+          "hash": "8BmYIA5aaJM7nWfjEa2aMKP3RUQ0eQPY5qEKwuGNU50="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Matching.Response.TaxonomyInfo.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Matching.Response.TaxonomyInfo.html",
+          "hash": "8yWfCec1rCTlCa2ZpnuITXcmy+E/X0KevTjBc6aMXG0="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Matching.Response.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Matching.Response.html",
+          "hash": "UYbniFIA8aCHYlACit5K9f+oNgAS6vog45wqHYsn2C4="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Matching.SearchRequest.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Matching.SearchRequest.html",
+          "hash": "m6AQ+xFjIgP+MbJhWfKeUVf13GkLgqmcL+RcBMcpRFI="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Matching.SearchResponse.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Matching.SearchResponse.html",
+          "hash": "0B2viaAPdNpqjbYeTV9GzIspx9fDukAP21GItoB5fcg="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Matching.SearchResponseValue.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Matching.SearchResponseValue.html",
+          "hash": "nKcQVRQgfFAnKPqs/Zt/cYSUI1U2g/ejFpIIiU3CXRo="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Matching.UI.AIMatchDetails.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Matching.UI.AIMatchDetails.html",
+          "hash": "14lYhWJvmTXiNXGoXk3FhzVLqULj7a1T02fNxLduwsw="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Matching.UI.BasicUIOptions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Matching.UI.BasicUIOptions.html",
+          "hash": "o+ApiB36PuaMpmhIqnzhh8CMdRckdwA01d5vqsY3UZ8="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Matching.UI.BimetricScoreDetails.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Matching.UI.BimetricScoreDetails.html",
+          "hash": "aXIYe5jh11yyIMLzy/ixlyXDl0A/JTeXqXafh5vDVLU="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Matching.UI.BimetricScoreJobDetails.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Matching.UI.BimetricScoreJobDetails.html",
+          "hash": "ibt6CRfGekKt2U/PRWMQSqyPQWmB4GDGhwWpA+samCA="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Matching.UI.BimetricScoreResumeDetails.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Matching.UI.BimetricScoreResumeDetails.html",
+          "hash": "IykjSrJ64EodFrwWDORkPFvk+f741usAkRdfwslfUds="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Matching.UI.GenerateUIDetailsRequest-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Matching.UI.GenerateUIDetailsRequest-1.html",
+          "hash": "6U/hNIV1TI2Zv5YwHQEcDFN/4iuzAudTKTAZMqi5uVI="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Matching.UI.GenerateUIRequest-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Matching.UI.GenerateUIRequest-1.html",
+          "hash": "PzQFNCON42w2n6B5QIDadyTYK1ntbXjJuCGLDRTKUbY="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Matching.UI.GenerateUIResponse.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Matching.UI.GenerateUIResponse.html",
+          "hash": "QJjQ7rroMW7kBqm3eOU/ikTwZBMLJAzLERdsrenALwo="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Matching.UI.Hooks.BulkHookPostBody-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Matching.UI.Hooks.BulkHookPostBody-1.html",
+          "hash": "zDL8QqfShDHqWX8MrUfWrvZoxxHXdTJaqQWBweQGW1Q="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Matching.UI.Hooks.ClientSideHook.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Matching.UI.Hooks.ClientSideHook.html",
+          "hash": "alqzs9SsSUV18ft3pmcektPqCP0RdYjylezPQxMcVxs="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Matching.UI.Hooks.DocumentIdentifier.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Matching.UI.Hooks.DocumentIdentifier.html",
+          "hash": "GO+IvBsViRcpJ3e0VJsdapISStYYvhXBqBaf4kA5o1U="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Matching.UI.Hooks.HookPostBody-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Matching.UI.Hooks.HookPostBody-1.html",
+          "hash": "jO2v7UcjyA2wxJAToBBKG1V9yUOfIGe6qYG2CacCJww="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Matching.UI.Hooks.JsAction.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Matching.UI.Hooks.JsAction.html",
+          "hash": "lXreZYgTkZoq8XCA4Zt42rADQrjetNrW55Aa2SxwNC4="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Matching.UI.Hooks.OnUpdateHookPostBody-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Matching.UI.Hooks.OnUpdateHookPostBody-1.html",
+          "hash": "OclIg7cfmJ+DPrF7zpGcCabgBJSWLA2P+MHpJ6DJVQ4="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Matching.UI.Hooks.OnUpdateHooks.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Matching.UI.Hooks.OnUpdateHooks.html",
+          "hash": "WJx+dgzKiwe5jJDuIBQ9FqtmJLyB+XSCJudkaM47YWA="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Matching.UI.Hooks.OnUpdateServerSideHook.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Matching.UI.Hooks.OnUpdateServerSideHook.html",
+          "hash": "kFSX2cmRiqs2B0HtB4UUA1R575gG8IBeIbJpMcg3Kmc="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Matching.UI.Hooks.ServerSideHook.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Matching.UI.Hooks.ServerSideHook.html",
+          "hash": "hP3sMHAteRIwzgmJh7xOOfZmbPec0dgeC0L+b9hHctI="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Matching.UI.Hooks.SourcingHook.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Matching.UI.Hooks.SourcingHook.html",
+          "hash": "FqrxE+r6hq05PZAqdTkcY/RxFHsYJ0IdUBY0+BSHadg="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Matching.UI.Hooks.SourcingHookPostBody-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Matching.UI.Hooks.SourcingHookPostBody-1.html",
+          "hash": "RgtQJBj3Q9NnxV2Vn+K95fCepvq+ZV6/hIXCsAkdCw0="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Matching.UI.Hooks.UrlAction.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Matching.UI.Hooks.UrlAction.html",
+          "hash": "+zW7AyN7RWCjAlsr8sGoTxm4t2tTBCrAbQ6G4UVx/3M="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Matching.UI.Hooks.UserActionHook.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Matching.UI.Hooks.UserActionHook.html",
+          "hash": "d6LTnKir6b/jgU5+UmwKZ6Zdjz54hYpVGdx1LDbO8rM="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Matching.UI.Hooks.UserActionHookCollection.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Matching.UI.Hooks.UserActionHookCollection.html",
+          "hash": "9PJLTGNR09RPlNKIJiqivzk1ZRd1JaTsvfDBv0RiuQA="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Matching.UI.Hooks.UserActionHookPostBody-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Matching.UI.Hooks.UserActionHookPostBody-1.html",
+          "hash": "maeRk1MSh+ijFX8ORamlhCPoUiTvkI+BJUW7pBg1FjE="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Matching.UI.Hooks.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Matching.UI.Hooks.html",
+          "hash": "2FMdNVyB7STvAJA5cor9ErD3ByWJ0CkvPi8Rb0/Whg4="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Matching.UI.MatchDetails.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Matching.UI.MatchDetails.html",
+          "hash": "FiA+hy+xQwska9ttk9F7xBI4FwexTBKFqbFBJ8iKiXE="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Matching.UI.MatchUISettings.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Matching.UI.MatchUISettings.html",
+          "hash": "HG/lfy6WYbRXbrEE84MbxIFAkPDCn29+/xCb4QsWTV8="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Matching.UI.StyleOptions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Matching.UI.StyleOptions.html",
+          "hash": "8byo6ZYWM12j4x/i7F8mUg3RA+WQshfV9mQMlcbQwKY="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Matching.UI.UIBimetricScoreJobDetailsRequest.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Matching.UI.UIBimetricScoreJobDetailsRequest.html",
+          "hash": "1+gpPExeygdJPtF5Mt3ZfXqQBcQi6FTPvSLQRm9+hKs="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Matching.UI.UIBimetricScoreJobRequest.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Matching.UI.UIBimetricScoreJobRequest.html",
+          "hash": "1j7arOPVHqIc2T6efLaBptpGbVPC2FAdqIOdwSoGQQc="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Matching.UI.UIBimetricScoreResumeDetailsRequest.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Matching.UI.UIBimetricScoreResumeDetailsRequest.html",
+          "hash": "MtTpZqBvVqrszT5DNUG/mcDzm+agnEkcVdmGyDczh/A="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Matching.UI.UIBimetricScoreResumeRequest.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Matching.UI.UIBimetricScoreResumeRequest.html",
+          "hash": "Bznq1FuoDNCic2bkl3FlN76E3AlbCJ0fQzG9BFQvPgM="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Matching.UI.UIMatchByDocumentIdOptions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Matching.UI.UIMatchByDocumentIdOptions.html",
+          "hash": "CwPuMA3ixoe65sJj/Ir49L0LOMwD+Qy9YK+tljwSNvg="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Matching.UI.UIMatchDetailsRequest.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Matching.UI.UIMatchDetailsRequest.html",
+          "hash": "3L4mu485Xo/wmZmd3nsvRUJWseDayfvmHICvLk3QFwI="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Matching.UI.UIMatchJobRequest.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Matching.UI.UIMatchJobRequest.html",
+          "hash": "taVWe5b3zea1acvfKjFCi93H6Js/pU1Okj6r2GcOwR0="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Matching.UI.UIMatchResumeRequest.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Matching.UI.UIMatchResumeRequest.html",
+          "hash": "STV/x94w111sZ990vghoDloc5UlO9Jq0oAcd6QxGZDc="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Matching.UI.UIOptions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Matching.UI.UIOptions.html",
+          "hash": "5aouIXd3BmA3Xh8TmpsEAsSCuKphjlt/zG+gdpd69Qk="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Matching.UI.UISearchRequest.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Matching.UI.UISearchRequest.html",
+          "hash": "L82bwx0ZZtlW9MyQetRBUQkhSc3RzL21E+SBgR1x2lk="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Matching.UI.UserDefinedTagOption.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Matching.UI.UserDefinedTagOption.html",
+          "hash": "unn/qd71+HwRbWGaD116TfWq1fIfZ2JjsKGNKE+w4yQ="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Matching.UI.UserDefinedTagsPicklist.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Matching.UI.UserDefinedTagsPicklist.html",
+          "hash": "ZU99WLyVCtRvHnlxgVSYbj7RK+OdTWymAgHMF8Xt/5s="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Matching.UI.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Matching.UI.html",
+          "hash": "mWkMs3PWV08UnKkWx1pupNYX+CP1YeYE501oPzYfMmY="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Matching.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Matching.html",
+          "hash": "JsV0foHUnXaQvp6jOmN3dmbk9JVlSA4CKrobziU0hjw="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Parsing.BaseParseResponseValue.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Parsing.BaseParseResponseValue.html",
+          "hash": "AavlHMxxA2aXoGLxmoOB5GFXfnM4OPjSDc+ceaK3zXM="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Parsing.BasicParseOptions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Parsing.BasicParseOptions.html",
+          "hash": "LOR6K7Njue+zTAY9oVPzHsnexx0xUHmjCTeBPQwP8Rg="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Parsing.ConversionMetadata.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Parsing.ConversionMetadata.html",
+          "hash": "J4lzblC5Z37rYHji3sV5nIopQ6hTd8aeRF4XrFBvwYM="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Parsing.Conversions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Parsing.Conversions.html",
+          "hash": "kenEpdU3nhDMuEsjZG9c3hFP561OU0BVI9RPaB9orlU="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Parsing.ParseJobResponse.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Parsing.ParseJobResponse.html",
+          "hash": "tMIJh/k59Mr0tPrSd0Lw0447/pPmEQTRoywBT2/h+MQ="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Parsing.ParseJobResponseValue.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Parsing.ParseJobResponseValue.html",
+          "hash": "l+UR/EGh7mon4FLV/ORYkKMyAw0lDYq+iKCYrsppNoI="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Parsing.ParseOptions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Parsing.ParseOptions.html",
+          "hash": "nEuzZyUulvdcvRVpC3osNFYO35/emaq9c/hkPCFlpac="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Parsing.ParseRequest.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Parsing.ParseRequest.html",
+          "hash": "hsV2zD2ONSEqYmijoyxmIE9xivf6K38zmFL51rRguNE="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Parsing.ParseResumeResponse.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Parsing.ParseResumeResponse.html",
+          "hash": "qS1pgn+ew9MTAcO3GasFYvs4+1e/0+7k5OG6JjUVoys="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Parsing.ParseResumeResponseValue.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Parsing.ParseResumeResponseValue.html",
+          "hash": "6+B8CQ24cveaqoIxRNRH7muKR7AMC+JufTiQD3QaV6w="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Parsing.ParsingMetadata.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Parsing.ParsingMetadata.html",
+          "hash": "xgD+LDs82Q3xWCSwbM6j7pnFfBYt43A4FGcvTWhdF+M="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.Parsing.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.Parsing.html",
+          "hash": "8PRpXkmCjz1g0TGlCd8sLFz2Mrf99d+nnDNfKkIqw4M="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.API.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.API.html",
+          "hash": "2v2sqCLa0TEeQKuf5nwgCqo8gCAVj5DLPSjX2rbrfRA="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.Document.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.Document.html",
+          "hash": "7geIwu0RTxOjIcJyJTyQaD23OEDo6H9SUU+z8jxpEYk="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.GeoCoordinates.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.GeoCoordinates.html",
+          "hash": "lZGYCcQtjJYLyXF0yqGz1wl/7wwklSbWLPQX5RNA2ww="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.GeocodedCoordinates.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.GeocodedCoordinates.html",
+          "hash": "vKE66lGPG1tNJ4kZcNBJ/s0dkkMqVchi7ewmlhyX5l8="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.Job.EmployerNames.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.Job.EmployerNames.html",
+          "hash": "nlupgU3RXrOAoVhNvhz+mpMGl0E3A9tWyscLYsKGAFA="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.Job.JobDegree.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.Job.JobDegree.html",
+          "hash": "sAlj9zIBCy/mtYBkQatWgmfDXLqNhgqdveg1znaBb3g="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.Job.JobMetadata.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.Job.JobMetadata.html",
+          "hash": "Z/xmsFdRZSHunUS2ayFeaoMPZKLqFFj24ARiRg39epM="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.Job.JobTitles.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.Job.JobTitles.html",
+          "hash": "/BXVtSX33cNJ4zLyxcCVwIIdKFi4yaSMx3+o9Ixk6FI="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.Job.ParsedJob.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.Job.ParsedJob.html",
+          "hash": "fumpNAJq3yEFQG2gMlcSo6wMVtLzkNwCAwIPQpscwkU="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.Job.Skills.JobSkill.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.Job.Skills.JobSkill.html",
+          "hash": "/U2PzuYVEFUdiYxuR6BQ5VkFPb9ae392Wr4kLGFWZtM="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.Job.Skills.JobSkillVariation.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.Job.Skills.JobSkillVariation.html",
+          "hash": "m9GjWiKc1jN2HcttagGkVvMkCKo0I/eJJFtfLBsXD20="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.Job.Skills.JobSubTaxonomy.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.Job.Skills.JobSubTaxonomy.html",
+          "hash": "L3nTJ5ZPb1mrb+0amcRtP0f+DM7w1Hk+y1bO6VvinCY="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.Job.Skills.JobTaxonomy.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.Job.Skills.JobTaxonomy.html",
+          "hash": "sKtnDyRMxy+M/wIUHwR8US7pEJdUQHXvoO0s41jBA8s="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.Job.Skills.JobTaxonomyRoot.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.Job.Skills.JobTaxonomyRoot.html",
+          "hash": "aFDrZAw//PYHDdiDMg3+KurMjGd5dD1nl++7L2IOJ0I="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.Job.Skills.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.Job.Skills.html",
+          "hash": "XL3MQ+JJ7bu7TdOoZk7IJtHp37ok0n3ejNo8yrdWin0="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.Job.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.Job.html",
+          "hash": "lGGKhzh7lhdWUuKWdtc02CP74TFvj5YM+fmVM1TzErw="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.Location.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.Location.html",
+          "hash": "ixCXBNI3ntr2zCNCg73GM3l7xu5pJfagf9x6KfaUKLk="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.Matching.Index.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.Matching.Index.html",
+          "hash": "qoQKK94wYzmoIntBCdWKD6WptDsY8NavOL5RrDVD2lA="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.Matching.IndexType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.Matching.IndexType.html",
+          "hash": "IYiNG2OPan55z60HB6WrtV39J9Ec7MXU3/BbAYBQR+A="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.Matching.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.Matching.html",
+          "hash": "/IM4laJEKVpggmyphNAm8YShUsdpotAdPWb5Gke4+EQ="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.ParsedDocument.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.ParsedDocument.html",
+          "hash": "WcXzoXmWNfB2sgamakmnV/7Tlo1EZiSlSE0raZhPSKc="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.ParsedDocumentMetadata.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.ParsedDocumentMetadata.html",
+          "hash": "tEoASsGISO6/uccmEuRHCI/6QMomIVandMODhyD/L/k="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.Resume.Association.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.Resume.Association.html",
+          "hash": "gQdEgU97X+MPSzQd4o1ar9KnzzZr2y4lyL+m68iYaMk="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.Resume.CandidateReference.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.Resume.CandidateReference.html",
+          "hash": "yoRMpyHYR/G8gFmUcJloY2VwDvsDVnoTLLA1cALUmiQ="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.Resume.Certification.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.Resume.Certification.html",
+          "hash": "7yoz+OniAxGoNrzmEwpzaL+qf7FPLOlFjwigrORA/VU="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.Resume.ContactInfo.ContactInformation.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.Resume.ContactInfo.ContactInformation.html",
+          "hash": "g+TU2qhEADgIEeeYuFZn0W8fhNRDjfcR4jDGwNjMHLU="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.Resume.ContactInfo.PersonName.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.Resume.ContactInfo.PersonName.html",
+          "hash": "9SJiZ4je5yYCB2aNgGceO7x8yuiNjI65rG2nzf30+A4="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.Resume.ContactInfo.Telephone.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.Resume.ContactInfo.Telephone.html",
+          "hash": "NBB+hf6QvQWYGKvy998h5JO/trA7++I7Qgg4e4LMFbs="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.Resume.ContactInfo.WebAddress.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.Resume.ContactInfo.WebAddress.html",
+          "hash": "xQdVr+/87qQHKy+bA2fnGVcamWs8Gx8Y4HzIdxfBs+E="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.Resume.ContactInfo.WebAddressType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.Resume.ContactInfo.WebAddressType.html",
+          "hash": "Ye7ymjckRnIPw5jKMoxUXT05X/6Vy2NVBvbUTKuObGM="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.Resume.ContactInfo.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.Resume.ContactInfo.html",
+          "hash": "7IipXb4Jk21nXO3hdDzuBrBmPF7CTyHRDTYdGoaXF8E="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.Resume.Education.Degree.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.Resume.Education.Degree.html",
+          "hash": "2XKlfEDz+R4l1BNWo+OgguhChCdFRPiIisiMZlJG+sQ="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.Resume.Education.EducationDetails.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.Resume.Education.EducationDetails.html",
+          "hash": "Ep4DIIgKeVaPJhzpzQPjMrhJaohJkGe65svZS2JCBEk="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.Resume.Education.EducationHistory.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.Resume.Education.EducationHistory.html",
+          "hash": "P8HiJ7TNW5J7nQhB95nTi5OWXNZJHC7pTPTYBb77CAU="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.Resume.Education.GradePointAverage.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.Resume.Education.GradePointAverage.html",
+          "hash": "OpEes1Zoc2l4km2PKf+vthERSQ3OE7iYA9LFvIkk+3w="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.Resume.Education.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.Resume.Education.html",
+          "hash": "rUnW5apdP21zAigfwo0PKg6jdPt5lRIaYCIGApULZ/A="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.Resume.Employment.Bullet.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.Resume.Employment.Bullet.html",
+          "hash": "cpjM9qnBENW2L2Ei5dhwlQTAVYGQFnGIfpLSPDKEzRU="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.Resume.Employment.CompanyNameWithProbability.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.Resume.Employment.CompanyNameWithProbability.html",
+          "hash": "cOhE+r/STIOV6n5DIGcHJm2mEo6WPb7OA6T9SQVWbIg="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.Resume.Employment.Employer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.Resume.Employment.Employer.html",
+          "hash": "YWQ/f2Jfh/iWsHo+XmEvecKMbMDay2pQ5fpKSnvIAD0="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.Resume.Employment.EmploymentHistory.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.Resume.Employment.EmploymentHistory.html",
+          "hash": "1nDvPtbTDNBNd66BC9jRO3g+GiqNlIrEypkyI1YNpGs="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.Resume.Employment.ExperienceSummary.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.Resume.Employment.ExperienceSummary.html",
+          "hash": "nvV7qBq97Z3q5XOH7P5TGs1zsrDoKLptAArg9MeTm7c="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.Resume.Employment.JobTitle.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.Resume.Employment.JobTitle.html",
+          "hash": "wBGJXE6d5C8KsbJJ1w/gU0KtUgP2BgxSHbPGYezhuaM="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.Resume.Employment.Position.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.Resume.Employment.Position.html",
+          "hash": "qOPz89BD6ZBnyVSv+NUhnDnN66WqIwZFPCGlq/FWC1U="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.Resume.Employment.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.Resume.Employment.html",
+          "hash": "3ETuRWPG5NN2+KzxNRLw4OMAwYcGIV6ZEAU3WmmZJDI="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.Resume.LanguageCompetency.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.Resume.LanguageCompetency.html",
+          "hash": "Ny+53/jCOeJXIFmF8vElKcRG/ZEl0rtkBLDQsj2fDlE="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.Resume.LicenseDetails.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.Resume.LicenseDetails.html",
+          "hash": "pFgmM2kh+C+1G9+JeEHsDxzCyMbgjJdCQxh1WCZHm1k="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.Resume.Metadata.ReservedData.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.Resume.Metadata.ReservedData.html",
+          "hash": "Vd3J9E6237Di+HyM+8Y5YfLF079PMD5z16VrGOqLvRk="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.Resume.Metadata.ResumeMetadata.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.Resume.Metadata.ResumeMetadata.html",
+          "hash": "WA6G2/rCT+TqKW6Z/UAsavpXztKWNNwL0tbPdEv1nqA="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.Resume.Metadata.ResumeQualityAssessment.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.Resume.Metadata.ResumeQualityAssessment.html",
+          "hash": "E8B6wTVzVUzJPE5683s2rTmJM+vcPSFdKIuHqgVyPpU="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.Resume.Metadata.ResumeQualityFinding.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.Resume.Metadata.ResumeQualityFinding.html",
+          "hash": "lvguqSqre4prH735AmI88KctMv12UWoenOw+p5LvkiA="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.Resume.Metadata.ResumeQualityLevel.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.Resume.Metadata.ResumeQualityLevel.html",
+          "hash": "PFYG1jrOvoVZDpzCWYzncTrWoo2+Abb2ogZw9zUjraM="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.Resume.Metadata.ResumeSection.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.Resume.Metadata.ResumeSection.html",
+          "hash": "JinS3eLasq15xEoL89GJq1ZDKaDjJLoWW4Qo7ZbFz4s="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.Resume.Metadata.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.Resume.Metadata.html",
+          "hash": "boQfqBKIhiDUJACdOeNgOKH67BhcbMOR1IEfrSSPC6U="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.Resume.Military.MilitaryDetails.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.Resume.Military.MilitaryDetails.html",
+          "hash": "bQtQ5qqtJMJCy65/rJDQFZDUkh3E3tnAlS6373EjLZQ="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.Resume.Military.MilitaryService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.Resume.Military.MilitaryService.html",
+          "hash": "rIhR+RnUqP6P5NVjXSaRX7QzLPbyKPKPJYorTVVs81c="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.Resume.Military.SecurityCredential.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.Resume.Military.SecurityCredential.html",
+          "hash": "Sa/lJVLoeYBiiig860wSOPzWSs8IkNeBlJSqf3ypHyE="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.Resume.Military.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.Resume.Military.html",
+          "hash": "HR0FhjLLGJynYnrTaC1VYMwjpdBNvk1pc0UsdglBkg4="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.Resume.NationalIdentity.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.Resume.NationalIdentity.html",
+          "hash": "Zi47Ip1eSMmQJfsNlo04osY0+4jSTGxO/OGZOYBaW+I="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.Resume.NormalizedString.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.Resume.NormalizedString.html",
+          "hash": "xNSttuz5O7XbBXpxWwrMbyLMVq0c9xsWv/bq7qUFkW0="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.Resume.ParsedResume.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.Resume.ParsedResume.html",
+          "hash": "WoA7QHZDwkOfSghqeBcWr1bQo04jsCkDRDKB6349byA="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.Resume.PersonalAttributes.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.Resume.PersonalAttributes.html",
+          "hash": "khSv9YXR2hcipC6ZK/pXTATbDeQRb7Q3SvXZxvj35Ls="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.Resume.Salary.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.Resume.Salary.html",
+          "hash": "Lf5ppVye2c7pvAtkR7AxXq+VTSVkeOR22i+cfauB4yg="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.Resume.SectionIdentifier.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.Resume.SectionIdentifier.html",
+          "hash": "eyi2z7iHbaG8rUjeNySGNA7qvKnGmB8ZUXoln//NNyc="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.Resume.Skills.ResumeSkill.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.Resume.Skills.ResumeSkill.html",
+          "hash": "MhWZoROVzt62bA1vYS4FBYOcfta0ZBlpzFhYqG+cE4s="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.Resume.Skills.ResumeSkillVariation.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.Resume.Skills.ResumeSkillVariation.html",
+          "hash": "7UvvJm1Ns0t3ZRwbwyZQmJ5nGfDcx7iNUVwcntHczVg="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.Resume.Skills.ResumeSubTaxonomy.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.Resume.Skills.ResumeSubTaxonomy.html",
+          "hash": "sWck8R0cy2OuFmux8E4HGwBd1N8SWEH+Hqn01JdWG7U="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.Resume.Skills.ResumeTaxonomy.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.Resume.Skills.ResumeTaxonomy.html",
+          "hash": "M6FC+IFLOpMYRxYK2Dw+uhz6ZulpyeBJCBfazK9vHNA="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.Resume.Skills.ResumeTaxonomyRoot.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.Resume.Skills.ResumeTaxonomyRoot.html",
+          "hash": "hhmHTkDWdnqSz6WLS3Mb+qc87VZiebpqxAz3ap0w1oE="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.Resume.Skills.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.Resume.Skills.html",
+          "hash": "B5mRf4LtkBCdx42gPuYOnRIGrzM28CdkNr98tTnHO3A="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.Resume.TrainingDetails.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.Resume.TrainingDetails.html",
+          "hash": "mnKWxLD8riElEkfzGmivKmNRUNkyQGdmRKullWUsjZE="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.Resume.TrainingHistory.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.Resume.TrainingHistory.html",
+          "hash": "GgJV/OaoZOr54W72jK9tBE1ySMtP4FrXORRYICMRGX8="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.Resume.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.Resume.html",
+          "hash": "lTb7S82ypSvR0VCsp4+9D4Zn4HedhgnVp8owLpHnOHU="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.Skills.FoundSubTaxonomy.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.Skills.FoundSubTaxonomy.html",
+          "hash": "Fze63aI1JCDW2Mavo6cpVv8/x3GpYTDnDrl+lfk6GPI="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.Skills.FoundTaxonomy-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.Skills.FoundTaxonomy-1.html",
+          "hash": "mZjb/6REfmTTqImbhUiMyHi++pP8x9K3LLWcKwAJJbc="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.Skills.ITaxonomy-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.Skills.ITaxonomy-1.html",
+          "hash": "0Dbci4gXbBibhCDHOffl/glsQm+ZdUXdLsChZX99eHI="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.Skills.Skill.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.Skills.Skill.html",
+          "hash": "O7fOc5ubEbMqAeP4CmT/rUSdruC0/W7/epwxUkH/xLM="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.Skills.SubTaxonomy.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.Skills.SubTaxonomy.html",
+          "hash": "FueUhk8A6Kp2O1zywXfEVkleeNmW0mUQxvzyC7IkTPs="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.Skills.Taxonomy.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.Skills.Taxonomy.html",
+          "hash": "PklhJmVZuGzh/H4xCGJdbvo4R1tNl9zUAwzaHZglOLo="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.Skills.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.Skills.html",
+          "hash": "Y5ls6sbF8rUZkZWu67nPOlnmMIsGAZjZfXr3qt1OY6A="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.SovrenDate.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.SovrenDate.html",
+          "hash": "mLHQy8JeLlJ0sRzt4zyuecvExbmGXaXzMncdWVWcjfY="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.SovrenPrimitive-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.SovrenPrimitive-1.html",
+          "hash": "Jlo9SbbkSOaMSUqVatMX6xSQETZe1KtS3fxfwRwE/7o="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.Models.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.Models.html",
+          "hash": "kdBg1ro0q0jB8JWXwSL7K5SquiZwGY8/opIatKdSpRM="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.RestResponse.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.RestResponse.html",
+          "hash": "fYGsE8WgAwn59xsivKmHyG9CWdkiLWZ0ZypeLvaCSpY="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.SovrenClient.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.SovrenClient.html",
+          "hash": "6oeCFy8+2QFTGdeJu5S6k3yalJg/6N7GlMGR+HPxji4="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.SovrenException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.SovrenException.html",
+          "hash": "Ny/RPJJt8Z6IM+bePG04bqvkMuPeBpmqJUSJAduXpQQ="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.SovrenGeocodeJobException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.SovrenGeocodeJobException.html",
+          "hash": "c2PSBN/Kr5cWKiNOSo0LMfCTDHU6Em6zSe3OU06UsJc="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.SovrenGeocodeResumeException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.SovrenGeocodeResumeException.html",
+          "hash": "xTCov8618TDVRHRXestK8Uji/3DLSmAFDSVAT8xRS5g="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.SovrenIndexJobException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.SovrenIndexJobException.html",
+          "hash": "fZ7lUtK6piS+NK9YQUcqlW/Fab0s7k0UYAlI8H1hn1w="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.SovrenIndexResumeException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.SovrenIndexResumeException.html",
+          "hash": "azlWTLkyqC+jmhubSpz5qaEYkwEi0gqQBLHHYQydCIE="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.SovrenUsableJobException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.SovrenUsableJobException.html",
+          "hash": "8YcRhRddULkhrcr0RK68Y6nPNwGxuGCDNNNkjzjjsYI="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.SovrenUsableResumeException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.SovrenUsableResumeException.html",
+          "hash": "f9hIT5AsXM4meHQ7pW2TvBPNUi5P+6fAOVNyeTteGfA="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "sdk/Sovren.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/Sovren.html",
+          "hash": "goHB2WhFpGpCQuVLdd5MpFC5txU6goW/mvt5EalovkA="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "sdk/index.md",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/index.html",
+          "hash": "tZpvE3qwvdARsJdRkl2xSSQd+2PcfBo/wgYIJdGWeVE="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "sdk/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "sdk/toc.html",
+          "hash": "Nk7KplxoB7ht51uBdDrmUoCWfJdTg7g6cPFdjMrEd8Q="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "toc.html",
+          "hash": "KfBLmqzFjTWiqh3z4Wavw/udgiNKGjx112kIRlTKfn0="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    }
+  ],
+  "incremental_info": [
+    {
+      "status": {
+        "can_incremental": false,
+        "details": "Cannot build incrementally because last build info is missing.",
+        "incrementalPhase": "build",
+        "total_file_count": 0,
+        "skipped_file_count": 0,
+        "full_build_reason_code": "NoAvailableBuildCache"
+      },
+      "processors": {
+        "ConceptualDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 2,
+          "skipped_file_count": 0
+        },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 274,
+          "skipped_file_count": 0
+        },
+        "ResourceDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
+          "skipped_file_count": 0
+        },
+        "TocDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
+          "skipped_file_count": 0
+        }
+      }
+    },
+    {
+      "status": {
+        "can_incremental": false,
+        "details": "Cannot support incremental post processing, the reason is: last post processor info is null.",
+        "incrementalPhase": "postProcessing",
+        "total_file_count": 0,
+        "skipped_file_count": 0
+      },
+      "processors": {}
+    }
+  ],
+  "version_info": {},
+  "groups": [
+    {
+      "xrefmap": "xrefmap.yml"
+    }
+  ]
+}

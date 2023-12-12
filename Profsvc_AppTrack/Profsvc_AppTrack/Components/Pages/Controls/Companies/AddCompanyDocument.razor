@@ -1,0 +1,39 @@
+﻿<SfDialog Header="Add New Document" Height="655px" IsModal="true" MinHeight="300px" @ref="Dialog" Target="#divTarget" Visible="false" Width="480px">
+	<ChildContent>
+		<SfSpinner CssClass="spinnerHeight" @ref="Spinner" Type="SpinnerType.Fabric" ZIndex="12000" />
+		<DialogPositionData X="right" Y="center" />
+		<DialogAnimationSettings Duration="500" Effect="DialogEffect.SlideRight" />
+		<DialogEvents OnOpen="DialogOpen" />
+		<EditForm Model="Model" OnValidSubmit="SaveDocumentDialog" @ref="EditDocumentForm">
+			<FluentValidationValidator />
+			<div class="divContainerTable">
+				<TextBoxControl @bind-Value="@(Model.DocumentName)" @bind-Value:event="ValueChanged" CreateTooltip="true" ID="textName" MaxLength="255" MinLength="1" Multiline="false" Placeholder="Name"
+								ValidationMessage="@(() => Model.DocumentName)" />
+				<TextBoxControl @bind-Value="@(Model.DocumentNotes)" @bind-Value:event="ValueChanged" CreateTooltip="true" ID="textNotes" MaxLength="2000" MinLength="1" Multiline="true" Placeholder="Notes"
+								Rows="5" ValidationMessage="@(() => Model.DocumentNotes)" />
+				<UploaderControl AfterUpload="AfterUpload" BeforeUpload="BeforeUpload" FileSelected="OnFileSelected" ID="uploadDocument" OnFileUpload="OnFileUpload" OnRemove="OnFileRemoved" Placeholder="Select a Document to upload"
+								 SetFlex="false">
+					<ValidationMessage For="() => Model.Files" />
+				</UploaderControl>
+
+				@*				<div class="divFlex" style="height: 100px">
+					<div class="divFlexLabel">
+						<label class="labelStatus" for="uploadDocument">Select a Document to upload:</label>
+					</div>
+					<div class="divFlexSmall" style="display: flex; height: auto; margin-top: 10px;">
+						<div class="uploadDocument" style="width: 100%">
+							<SfUploader AllowMultiple="false" AutoUpload="true" ID="uploadDocument" MaxFileSize="31457280" SequentialUpload="true">
+								<UploaderEvents BeforeUpload="BeforeUpload" FileSelected="FileSelect" OnActionComplete="AfterUpload" OnFailure="Failure" OnUploadStart="UploadStart" Success="Success"
+												ValueChange="OnFileUpload"></UploaderEvents>
+								@*<UploaderAsyncSettings SaveUrl="http://localhost/ProfSvc_API/api/Candidates/ParseResume" RemoveUrl="http://localhost/ProfSvc_API/api/Candidates/CancelParseResume" 
+														 ChunkSize="5000000"></UploaderAsyncSettings>* @
+							</SfUploader>
+						</div>
+					</div>
+				</div>
+*@
+			</div>
+			<DialogFooter CancelMethod="CancelDocumentDialog" @ref="FooterDialog" />
+		</EditForm>
+	</ChildContent>
+</SfDialog>

@@ -1,0 +1,43 @@
+@page "/Admin/Eligibility"
+@layout ProfSvcLayout
+
+<AdminGrid AdaptorInstance="@typeof(AdminEligibilityAdaptor)" AddMethod="() => EditEligibility()" AutocompleteMethod="Admin_SearchEligibility" AutocompleteParameter="@("@Eligibility")" Count="@Count" DataHandler="DataHandler" 
+		   Entity="Eligibility" FilterGrid="FilterGrid" HeaderContentPlural="Eligibilities" HeaderContentSingular="Eligibility" Height="140px" Key="ID" Page="Eligibility" @ref="AdminGrid" RefreshGrid="RefreshGrid" 
+		   RoleID="@RoleID" RowSelected="RowSelected" ToggleMethod="() => ToggleStatusAsync(_selectedID)" ToggleValue="_toggleValue" TValue="AdminList" Width="381px">
+        <GridColumn Field="@nameof(AdminList.Text)" HeaderText="Eligibility" Width="50%">
+            <Template Context="aCon">
+                @{
+                    if (aCon is AdminList _con)
+                    {
+                        <span class="point" @onclick="() => EditEligibility(_con.ID)">@_con.Text</span>
+                    }
+                }
+            </Template>
+        </GridColumn>
+        <GridColumn Field="@nameof(AdminList.ID)" HeaderText="Last Updated" IsPrimaryKey="true" Visible="false" Width="0" />
+        <GridColumn Field="@nameof(AdminList.Enabled)" HeaderText="Status" Width="10%">
+            <Template Context="aCon">
+                @{
+                    if (aCon is AdminList _con)
+                    {
+                        <span>@(_con.IsEnabled ? "Active" : "Inactive")</span>
+                    }
+                }
+            </Template>
+        </GridColumn>
+        <GridColumn Field="@nameof(AdminList.UpdatedDate)" Format="d" HeaderText="Last Updated" Width="15%" />
+        <GridColumn Field="@nameof(AdminList.CreatedDate)" HeaderText="Created" Width="15%" />
+        <GridColumn Width="10%">
+            <Template Context="aCon">
+                @{
+                    if (aCon is AdminList _con)
+                    {
+                        <SfButton Content="" IconCss="editIcon" @onclick="() => EditEligibility(_con.ID)" />
+                        <SfButton Content="" IconCss="@(_con.IsEnabled ? "statusOnIcon" : "statusOffIcon")" @onclick="() => ToggleMethod(_con.ID, _con.IsEnabled)"
+                                  title="@($"{(_con.IsEnabled ? "Disable" : "Enable")} Eligibility")" />
+                    }
+                }
+            </Template>
+        </GridColumn>
+</AdminGrid>
+<AdminListDialog HeaderString="@($"{Title} Eligibility")" Model="EligibilityRecordClone" Placeholder="Eligibility" @ref="AdminDialog" Save="SaveEligibility" />

@@ -1,0 +1,121 @@
+﻿<div class="containerBox companyBox">
+	<div>
+		<div>
+			<div>Address:</div>
+			<div>@Address</div>
+		</div>
+		<div>
+			<div>Email Address:</div>
+			<div>@Model.EmailAddress</div>
+		</div>
+		<div>
+			<div>Phone #:</div>
+			<div>@($"{Model.Phone.FormatPhoneNumber()}" + (Model.Extension.NullOrWhiteSpace() ? "" : $"ext.-{Model.Extension}"))</div>
+		</div>
+		<div>
+			<div>Fax #:</div>
+			<div>@(Model.Fax == "" ? "-" : $"{Model.Fax.FormatPhoneNumber()}")</div>
+		</div>
+		<div>
+			<div>Website:</div>
+			<div>@(Model.Website)</div>
+		</div>
+		<div>
+			<div>Preferred Client:</div>
+			<div>@(Model.IsHot ? "Yes" : "No")</div>
+		</div>
+		<div>
+			<div>Status:</div>
+			<div>@(Model.Status)</div>
+		</div>
+		<div>
+			<div>Created By:</div>
+			<div>@(Model.CreatedDate.CultureDate() + " [" + Model.CreatedBy + "]")</div>
+		</div>
+		<div>
+			<div>Last Updated By:</div>
+			<div>@(Model.UpdatedDate.CultureDate() + " [" + Model.UpdatedBy + "]")</div>
+		</div>
+		<div>
+			<div>Notes:</div>
+			<div style="height: 140px; overflow-wrap: break-word; overflow-x: hidden; overflow-y: auto; padding-right: 10px">@(Model.Notes)</div>
+		</div>
+		@*<div>
+        <SfButton Content="Edit Candidate Information" CssClass="editSectionButton" @onclick="EditCandidate" style="@("display:" + (IsRequisition ? "none" : "unset"))"></SfButton>
+        </div>*@
+	</div>
+	<div>
+		<div>
+			<SfGrid AllowPaging="false" DataSource="@ModelContact" EnableHeaderFocus="true" EnableHover="true" Height="400px" ID="gridExperience" @ref="GridContacts" RowHeight="@RowHeight"
+					SelectedRowIndex="0" TValue="CompanyContact" Width="99%">
+				<GridSelectionSettings EnableToggle="false" Mode="SelectionMode.Row" Type="SelectionType.Single"></GridSelectionSettings>
+				<GridEvents RowDataBound="RowDataBound" RowSelected="RowSelected" TValue="CompanyContact" />
+				<GridColumns>
+					<GridColumn Field="@nameof(CompanyContact.FirstName)" HeaderText="Name" Width="20%">
+						<Template Context="aCon">
+							@{
+								if (aCon is CompanyContact _con)
+								{
+									<span>@($"{_con.FirstName} {_con.LastName}")</span>
+								}
+							}
+						</Template>
+					</GridColumn>
+					<GridColumn Field="@nameof(CompanyContact.ID)" HeaderText="ID" IsPrimaryKey="true" Visible="false" Width="0" />
+					<GridColumn HeaderText="Email Address" Width="20%">
+						<Template Context="aCon">
+							@{
+								if (aCon is CompanyContact _con)
+								{
+									<span>
+										<a href="mailto:@(_con.EmailAddress)">@(_con.EmailAddress)</a>
+									</span>
+								}
+							}
+						</Template>
+					</GridColumn>
+					<GridColumn Field="@nameof(CompanyContact.Phone)" HeaderText="Phone" Width="17%">
+						<Template Context="aCon">
+							@{
+								if (aCon is CompanyContact _con)
+								{
+									<span>
+										<a href="tel:@(_con.Phone)">@(_con.Phone)</a>
+									</span>
+								}
+							}
+						</Template>
+					</GridColumn>
+					<GridColumn Field="@nameof(CompanyContact.Title)" HeaderText="Title" Width="17%" />
+					<GridColumn Field="@nameof(CompanyContact.UpdatedBy)" HeaderText="Last Update" Width="16%">
+						<Template Context="aCon">
+							@{
+								if (aCon is CompanyContact _con)
+								{
+									<span>@($"{_con.UpdatedDate.CultureDate()} [{_con.UpdatedBy}]")</span>
+								}
+							}
+						</Template>
+					</GridColumn>
+					<GridColumn Width="10%">
+						<Template Context="bCon">
+							@{
+								if (bCon is CompanyContact _con && (_con.UpdatedBy == UserName.ToUpperInvariant() || _con.CreatedBy == UserName.ToUpperInvariant()))
+								{
+									<SfButton Content="" IconCss="editIconInner" @onclick="() => EditContactDialog(_con.ID)" />
+									if (!_con.IsPrimary)
+									{
+										<SfButton Content="" IconCss="@(_con.StatusCode == "ACT" ? "statusOnIcon" : "statusOffIcon")" @onclick="() => DeleteContactMethod(_con.ID)"
+												  title="@($"{(_con.StatusCode == "ACT" ? "Deactivate" : "Activate")} Contact")" />
+										<ConfirmDialog Delete="() => DeleteContact.InvokeAsync(_selectedID)" Entity="Contact" Height="135px" @ref="DialogConfirm" ToggleStatus="true" 
+													   ToggleValue="@(_con.StatusCode == "ACT" ? (byte)2 : (byte)1)" Width="375px" />
+									}
+								}
+							}
+						</Template>
+					</GridColumn>
+				</GridColumns>
+			</SfGrid>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,30 @@
+﻿@page "/Admin/Roles"
+@layout ProfSvcLayout
+
+<AdminGrid AdaptorInstance="@typeof(AdminRoleAdaptor)" AddMethod="() => EditRole()" AutocompleteMethod="Admin_SearchRole" AutocompleteParameter="@("@Role")" Count="@Count" DataHandler="DataHandler" Entity="Role"
+		   FilterGrid="FilterGrid" HeaderContentPlural="Roles" HeaderContentSingular="Role" Key="ID" Page="Roles" @ref="AdminGrid" RefreshGrid="RefreshGrid" RoleID="@RoleID" RowSelected="RowSelected" ShowConfirm="false" 
+		   TValue="Role">
+	<GridColumn Field="@nameof(Role.ID)" HeaderText="Code" IsPrimaryKey="true" Visible="false" Width="10%"></GridColumn>
+	<GridColumn Field="ID" HeaderText="Role" Width="40%">
+		<Template Context="aCon">
+			@{
+				if (aCon is Role _con)
+				{
+					<span class="point" @onclick="() => EditRole(_con.ID)">@($"[{_con.ID}] - {_con.RoleName}")</span>
+				}
+			}
+		</Template>
+	</GridColumn>
+	<GridColumn Field="@nameof(Role.Description)" HeaderText="Description" Width="50%"></GridColumn>
+	<GridColumn Width="10%">
+		<Template Context="bCon">
+			@{
+				if (bCon is Role _con)
+				{
+					<SfButton Content="" IconCss="editIcon" @onclick="() => EditRole(_con.ID)"></SfButton>
+				}
+			}
+		</Template>
+	</GridColumn>
+</AdminGrid>
+<RoleDialog HeaderString="@($"{Title} Role")" Model="RoleRecordClone" @ref="DialogRole" Save="SaveRole" />

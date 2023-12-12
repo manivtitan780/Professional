@@ -1,0 +1,56 @@
+﻿<SfDialog Header="Search Candidate" Height="785px" IsModal="true" MinHeight="400px" @ref="Dialog" Target="#divTarget" Visible="false" Width="800px">
+	<ChildContent>
+		<SfSpinner CssClass="spinnerHeight" @ref="Spinner" Type="SpinnerType.Fabric" ZIndex="12000" />
+		<DialogPositionData X="center" Y="center"></DialogPositionData>
+		<DialogAnimationSettings Duration="500" Effect="DialogEffect.FadeZoom"></DialogAnimationSettings>
+		<DialogEvents OnOpen="OpenDialog"></DialogEvents>
+		<EditForm Model="Model" OnValidSubmit="SearchCandidateDialog" @ref="EditSearchForm">
+			<DataAnnotationsValidator />
+			<div class="divContainerTable">
+				<TextBoxControl @bind-Value="@(Model.Code)" @bind-Value:event="ValueChanged" CreateDivTag="true" CreateTooltip="false" ID="textCode" MaxLength="255" MinLength="0" Multiline="false"
+								Placeholder="Code" />
+				<TextBoxControl @bind-Value="@(Model.Title)" @bind-Value:event="ValueChanged" CreateDivTag="true" CreateTooltip="false" ID="textTitle" MaxLength="255" MinLength="0" Multiline="false"
+								Placeholder="Job Position / Title" />
+				<DropDownControl AllowFilter="true" @bind-Value="@Model.Company" @bind-Value:event="ValueChanged" CreateDivTag="true" DataSource="@Companies" ID="dropCompany" Placeholder="Company"
+								 ShowClearButton="true" TextField="Key" TItem="KeyValues" TValue="string" ValueField="Value" Width="450px" />
+				<DropDownControl @bind-Value="@Model.Option" @bind-Value:event="ValueChanged" CreateDivTag="true" DataSource="@JobOption" ID="dropJobOption" Placeholder="Job Option" TextField="Value"
+								 TItem="KeyValues" TValue="string" ValueField="Key" Width="350px" />
+				<MultiSelectControl @bind-Value="@(Model.Status)" @bind-Value:event="ValueChanged" CreateDivTag="true" CreateTooltip="false" DataSource="StatusDropDown" FilterBarPlaceholder="Search Status&hellip;"
+									ID="multiStatus" KeyField="Value" Multiline="false" Placeholder="Select Status(s)" TItem="KeyValues" TValue="string" ValueField="Key" />
+				<DropDownControl @bind-Value="@Model.CreatedBy" @bind-Value:event="ValueChanged" CreateDivTag="true" DataSource="@ShowRequisitions" ID="dropCreatedBy" Placeholder="Show Requisitions:"
+								 TextField="Key" TItem="KeyValues" TValue="string" ValueField="Value" Width="300px" />
+				<div class="divFlex" id="divCreatedOn">
+					<div class="divFlexLabel">
+						<label class="labelStatus">Requisition Created Date Between:</label>
+					</div>
+					<div style="display: flex; width: 100%">
+						<div class="divFlexSmall" style="width: 45%;">
+							<DateControl @bind-Value="@Model.CreatedOn" @bind-Value:event="ValueChanged" CreateDivTag="false" CreateTooltip="false" ID="dateCreatedStart" Max="@(DateTime.Today.AddMonths(6))"
+										 OnChange="CreatedOnSelect" Placeholder="Created Date Start" Width="220px" />
+						</div>
+						<div class="divFlexSmall" style="margin-left: 3%; width: 45%;">
+							<DateControl @bind-Value="@Model.CreatedOnEnd" @bind-Value:event="ValueChanged" CreateDivTag="false" CreateTooltip="false" ID="dateCreatedEnd" Max="@CreatedEndMax" Min="@CreatedEndMin" 
+										 Placeholder="Created Date End" @ref="CreatedMax" Width="220px" />
+						</div>
+					</div>
+				</div>
+				<div class="divFlex" id="divDueOn">
+					<div class="divFlexLabel">
+						<label class="labelStatus">Requisition Due Date Between:</label>
+					</div>
+					<div style="display: flex; width: 100%">
+						<div class="divFlexSmall" style="width: 45%;">
+							<DateControl @bind-Value="@Model.Due" @bind-Value:event="ValueChanged" CreateDivTag="false" CreateTooltip="false" ID="dateDueStart" Max="@(DateTime.Today.AddMonths(6))"
+										 OnChange="DueOnSelect" Placeholder="Due Date Start" Width="220px" />
+						</div>
+						<div class="divFlexSmall" style="margin-left: 3%; width: 45%;">
+							<DateControl @bind-Value="@(Model.DueEnd)" @bind-Value:event="ValueChanged" CreateDivTag="false" CreateTooltip="false" ID="dateDueEnd" Max="@DueEndMax" Min="@DueEndMin" Placeholder="Due Date End" 
+										 @ref="DueMax" Width="220px" />
+						</div>
+					</div>
+				</div>
+			</div>
+			<DialogFooter CancelMethod="CancelSearchDialog" @ref="FooterDialog" Save="Search" />
+		</EditForm>
+	</ChildContent>
+</SfDialog>

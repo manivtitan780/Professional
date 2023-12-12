@@ -1,0 +1,79 @@
+﻿@page "/Admin/Workflow"
+@layout ProfSvcLayout
+
+<AdminGrid AdaptorInstance="@typeof(AdminWorkflowAdaptor)" AddMethod="() => EditWorkflow()" AutocompleteMethod="Admin_SearchWorkflow" AutocompleteParameter="@("@Workflow")" Count="@Count" DataHandler="DataHandler"
+		   Entity="Workflow" FilterGrid="FilterGrid" HeaderContentPlural="Workflow Activities" HeaderContentSingular="Workflow" Key="ID" Page="Workflow" @ref="AdminGrid" RefreshGrid="RefreshGrid" RoleID="@RoleID"
+		   RowSelected="RowSelected" ShowConfirm="false" TValue="AppWorkflow">
+	<GridColumn HeaderText="Stage" Width="20%">
+		<Template Context="aCon">
+			@{
+				if (aCon is AppWorkflow _con)
+				{
+					<span class="point" @onclick="() => EditWorkflow(_con.ID)">@_con.StepFull</span>
+				}
+			}
+		</Template>
+	</GridColumn>
+	<GridColumn Field="@nameof(AppWorkflow.ID)" HeaderText="Last Updated" IsPrimaryKey="true" Visible="false" Width="0" />
+	<GridColumn Field="@nameof(AppWorkflow.NextFull)" HeaderText="Next Step" Width="20%">
+		<Template Context="aCon">
+			@{
+				if (aCon is AppWorkflow _con)
+				{
+					<span>@(_con.NextFull.ToMarkupString())</span>
+				}
+			}
+		</Template>
+	</GridColumn>
+	<GridColumn HeaderText="Is Last?" Width="10%">
+		<Template Context="aCon">
+			@{
+				if (aCon is AppWorkflow _con)
+				{
+					<span title="@(_con.IsLast ? "This is the last step." : "This is not the last step.")">@(_con.IsLast ? "Yes" : "No")</span>
+				}
+			}
+		</Template>
+	</GridColumn>
+	<GridColumn Field="@nameof(AppWorkflow.RoleFull)" HeaderText="Roles" Width="20%">
+		<Template Context="aCon">
+			@{
+				if (aCon is AppWorkflow _con)
+				{
+					<span>@(_con.RoleFull.ToMarkupString())</span>
+				}
+			}
+		</Template>
+	</GridColumn>
+	<GridColumn HeaderText="Schedule?" Width="10%">
+		<Template Context="aCon">
+			@{
+				if (aCon is AppWorkflow _con)
+				{
+					<span>@(_con.Schedule ? "Yes" : "No")</span>
+				}
+			}
+		</Template>
+	</GridColumn>
+	<GridColumn HeaderText="All Stage?" Width="10%">
+		<Template Context="aCon">
+			@{
+				if (aCon is AppWorkflow _con)
+				{
+					<span>@(_con.AnyStage ? "Yes" : "No")</span>
+				}
+			}
+		</Template>
+	</GridColumn>
+	<GridColumn Width="10%">
+		<Template Context="aCon">
+			@{
+				if (aCon is AppWorkflow _con)
+				{
+					<SfButton Content="" IconCss="editIcon" @onclick="() => EditWorkflow(_con.ID)" />
+				}
+			}
+		</Template>
+	</GridColumn>
+</AdminGrid>
+<WorkflowDialog HeaderString="@($"{Title} Workflow")" Model="WorkflowRecordClone" @ref="DialogWorkflow" RolesList="Roles" Save="SaveWorkflow" Steps="Status" />

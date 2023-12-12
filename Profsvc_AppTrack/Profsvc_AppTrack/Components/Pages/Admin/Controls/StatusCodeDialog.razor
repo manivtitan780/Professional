@@ -1,0 +1,42 @@
+﻿@using Position = Syncfusion.Blazor.Popups.Position
+<SfDialog Header="@HeaderString" Height="98vh" IsModal="true" MinHeight="98vh" @ref="Dialog" Target="#divTarget" Visible="false" Width="480px">
+    <ChildContent>
+        <SfSpinner CssClass="spinnerHeight" @ref="Spinner" Type="SpinnerType.Fabric" ZIndex="12000" />
+        <DialogPositionData X="right" Y="center"></DialogPositionData>
+        <DialogAnimationSettings Effect="DialogEffect.SlideRight"></DialogAnimationSettings>
+        <DialogEvents OnOpen="OpenDialog"></DialogEvents>
+        <EditForm Model="Model" OnValidSubmit="SaveStatusCode" @ref="EditStatusCodeForm">
+            <FluentValidationValidator />
+            <div class="divContainerTable">
+                <TextBoxControl @bind-Value="@(Model.Code)" @bind-Value:event="ValueChanged" CreateDivTag="true" CreateTooltip="true" ID="textStatusCode" MaxLength="3" MinLength="1"
+                                Multiline="false" Placeholder="Status Code" Readonly="@(!HeaderString.StartsWith("Add"))" ValidationMessage="@(() => Model.Code)" />
+                <TextBoxControl @bind-Value="@(Model.Status)" @bind-Value:event="ValueChanged" CreateDivTag="true" CreateTooltip="true" ID="textStatus" MaxLength="50" MinLength="1"
+                                Multiline="false" Placeholder="Status" ValidationMessage="@(() => Model.Status)" />
+                <TextBoxControl @bind-Value="@(Model.Description)" @bind-Value:event="ValueChanged" CreateDivTag="true" CreateTooltip="true" ID="textDescription" MaxLength="100" MinLength="1"
+                                Multiline="false" Placeholder="Description" ValidationMessage="@(() => Model.Status)" />
+                <DropDownControl @bind-Value="@Model.AppliesToCode" @bind-Value:event="ValueChanged" CreateDivTag="true" CreateTooltip="true" DataSource="_statusDropItems" ID="dropAppliesTo" Placeholder="Applies To"
+                                 TextField="Value" TItem="KeyValues" TValue="string" ValidationMessage="@(() => Model.AppliesToCode)" ValueField="Key" DropDownValueChange="SetValidators" />
+                <TextBoxControl @bind-Value="@(Model.Icon)" @bind-Value:event="ValueChanged" CreateDivTag="true" CreateTooltip="true" ID="textIcon" MaxLength="255" MinLength="1"
+                                Multiline="false" Placeholder="Icon" ValidationMessage="@(() => Model.Icon)" />
+                <div class="divFlex">
+                    <div class="divFlexLabel">
+                        <label class="labelStatus" for="textIcon">Color</label>
+                    </div>
+                    <div class="divFlexSmall">
+                        <SfTooltip CloseDelay="0" OnOpen="ToolTipOpen" OpenDelay="0" OpensOn="Hover" Position="Position.TopCenter" Target="#textIcon" Width="100%" WindowCollision="true">
+                            <ChildContent>
+                                <SfColorPicker @bind-Value="@Model.Color" Mode="ColorPickerMode.Picker" ModeSwitcher="false" ShowButtons="false"></SfColorPicker>
+                            </ChildContent>
+                            <ContentTemplate>
+                                <ValidationMessage For="@(() => Model.Color)"></ValidationMessage>
+                            </ContentTemplate>
+                        </SfTooltip>
+                    </div>
+                </div>
+                <SwitchControl @bind-BindValue="@(Model.SubmitCandidate)" ID="checkedSubmitCandidate" OffLabel="NO" OnLabel="YES" Placeholder="Submit Candidate?" />
+                <SwitchControl @bind-BindValue="@(Model.ShowCommission)" ID="checkedShowCommission" OffLabel="NO" OnLabel="YES" Placeholder="Show Commission?" />
+            </div>
+            <DialogFooter Cancel="Cancel" CancelMethod="CancelStatusCode" @ref="DialogFooter" Save="Save" />
+        </EditForm>
+    </ChildContent>
+</SfDialog>

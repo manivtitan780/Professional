@@ -1,0 +1,202 @@
+﻿@page "/candidate"
+@using AnimationEffect = Syncfusion.Blazor.AnimationEffect
+@layout ProfSvcLayout
+@inject IJSRuntime Runtime;
+
+<Header RoleID="@RoleID" ViewCandidate="UserRights.ViewCandidate" ViewCompany="UserRights.ViewCompany" ViewRequisition="UserRights.ViewRequisition"></Header>
+<div class="gridHolder">
+	<GridHeader ACBValue="@AutocompleteValue" Add="AddNewCandidate" AdvancedSearch="AdvancedSearch" AutocompleteMethod="SearchCandidate" AutocompleteParameterName="@("@Candidate")"
+				ControlID="numericPage" CurrentPage="_currentPage" DisplayAdd="@DisplayAdd" DisplaySubmit="@DisplaySubmit" DropdownBindValue="@SearchModel.ItemCount" Entity="Candidate" FilterGrid="FilterGrid"
+				FirstClick="FirstClick" LastClick="LastClick" NextClick="NextClick" PageCount="PageCount" PageNumberChanged="PageNumberChanged" PreviousClick="PreviousClick" RefreshGrid="RefreshGrid"
+				Submit="SubmitSelectedCandidate" ValueChange="ChangeItemCount" Width="@(RequisitionID > 0 ? "902px" : "720px")" />
+	<SfGrid AllowMultiSorting="false" AllowPaging="false" AllowSorting="true" EnableHover="true" EnableStickyHeader="true" Height="100%" @ref="Grid" TValue="Candidates" Width="99.75%">
+		<GridSelectionSettings EnableToggle="false" Mode="SelectionMode.Row" Type="SelectionType.Single" />
+		<SfDataManager Adaptor="Adaptors.CustomAdaptor" AdaptorInstance="@typeof(CandidateAdaptor)" Key="ID" />
+		<GridEvents DataBound="DataHandler" DetailDataBound="DetailDataBind" OnActionBegin="OnActionBegin" RowSelected="RowSelected" TValue="Candidates" />@* *@
+		<GridColumns>
+			<GridColumn Field="@nameof(Candidates.ID)" HeaderText="ID" IsPrimaryKey="true" Visible="false" Width="0"></GridColumn>
+			<GridSortSettings AllowUnsort="false">
+				<GridSortColumns>
+					<GridSortColumn Direction="SortDirectionProperty" Field="@SortField"></GridSortColumn>
+				</GridSortColumns>
+			</GridSortSettings>
+			<GridColumn AllowSorting="true" HeaderText="Name" Width="20%">
+				<Template Context="aCon">
+					@{
+						if (aCon is Candidates _con)
+						{
+							<span class="@(_con.Mpc ? "mpcicon" : "")">@_con.Name</span>
+						}
+					}
+				</Template>
+			</GridColumn>
+			<GridColumn AllowSorting="true" Field="@nameof(Candidates.Phone)" HeaderText="Phone" Width="14%" />
+			<GridColumn AllowSorting="true" Field="@nameof(Candidates.Email)" HeaderText="Email" Width="19%">
+				<Template Context="aCon">
+					@{
+						if (aCon is Candidates _con)
+						{
+							<a href="mailto:@(_con.Email)">@_con.Email</a>
+						}
+					}
+				</Template>
+			</GridColumn>
+			<GridColumn AllowSorting="true" Field="@nameof(Candidates.Location)" HeaderText="Location" Width="19%" />
+			<GridColumn AllowSorting="true" Field="@nameof(Candidates.Updated)" HeaderText="Updated" Width="14%" />
+			<GridColumn AllowSorting="true" Field="@nameof(Candidates.Status)" HeaderText="Status" Width="14%" />
+		</GridColumns>
+		<GridTemplates Context="context">
+			<DetailTemplate>
+				@* Add Buttons Start *@
+				<SfSpeedDial CloseIconCss="speeddial-icons speeddial-icon-close" IsModal="true" ItemClicked="SpeedDialItemClicked" Mode="SpeedDialMode.Linear"
+							 OpenIconCss="speeddial-icons speeddial-icon-menu" Position="FabPosition.TopRight" Target="#tabCandidates" title="Action" Visible="UserRights.EditCandidate">
+					<SpeedDialItems>
+						<SpeedDialItem IconCss="speeddial-icons speeddial-icon-edit" ID="itemEditCandidate" Text="Edit Candidate" Title="Edit Candidate" />
+						<SpeedDialItem IconCss="speeddial-icons speeddial-icon-rating" ID="itemEditRating" Text="Edit Rating" Title="Edit Rating" />
+						<SpeedDialItem IconCss="speeddial-icons speeddial-icon-mpc" ID="itemEditMPC" Text="Edit M.P.C." Title="Edit M.P.C." />
+						<SpeedDialItem IconCss="speeddial-icons speeddial-icon-skill" ID="itemAddSkill" Text="Add Skill" Title="Add Skill" />
+						<SpeedDialItem IconCss="speeddial-icons speeddial-icon-education" ID="itemAddEducation" Text="Add Education" Title="Add Education" />
+						<SpeedDialItem IconCss="speeddial-icons speeddial-icon-experience" ID="itemAddExperience" Text="Add Experience" Title="Add Experience" />
+						<SpeedDialItem IconCss="speeddial-icons speeddial-icon-notes" ID="itemAddNotes" Text="Add Notes" Title="Add Notes" />
+						<SpeedDialItem IconCss="speeddial-icons speeddial-icon-originalresume" ID="itemOriginalResume" Text="Update Original Resume" Title="Update Original Resume" />
+						<SpeedDialItem IconCss="speeddial-icons speeddial-icon-formatresume" ID="itemFormattedResume" Text="Update Formatted Resume" Title="Update Formatted Resume" />
+						<SpeedDialItem IconCss="speeddial-icons speeddial-icon-attachment" ID="itemAddAttachment" Text="Add Attachment" Title="Add Attachment" />
+					</SpeedDialItems>
+				</SfSpeedDial>
+				@* Add Buttons End *@
+				<SfTab CssClass="e-fill" Height="365" ID="tabCandidates" LoadOn="ContentLoad.Init" SelectedItem="_selectedTab" ShowCloseButton="false" Width="95%">
+					<TabAnimationSettings>
+						<TabAnimationPrevious Effect="AnimationEffect.None"></TabAnimationPrevious>
+						<TabAnimationNext Effect="AnimationEffect.None"></TabAnimationNext>
+						<TabEvents Selected="TabSelected"></TabEvents>
+					</TabAnimationSettings>
+					<TabItems>
+						<TabItem>
+							<ChildContent>
+								<TabHeader Text="Basic Info" />
+							</ChildContent>
+							<ContentTemplate>
+								<BasicInfoPanel GetMPCDate="MPCDate" GetMPCNote="MPCNote" GetRatingDate="RatingDate" GetRatingNote="RatingNote" IsRequisition="@(RequisitionID > 0)"
+												Model="_candidateDetailsObject" SetCommunication="CandidateCommunication" SetEligibility="CandidateEligibility" SetExperience="CandidateExperience"
+												SetJobOption="CandidateJobOptions" SetTaxTerm="CandidateTaxTerms" SetupAddress="Address" />
+							</ContentTemplate>
+						</TabItem>
+						<TabItem>
+							<ChildContent>
+								<TabHeader Text="Skills" />
+							</ChildContent>
+							<ContentTemplate>
+								<SkillPanel DeleteSkill="DeleteSkill" EditRights="UserRights.EditCandidate" EditSkill="EditSkill" IsRequisition="@(RequisitionID > 0)" Model="_candidateDetailsObject"
+											ModelSkill="_candidateSkillsObject" @ref="SkillPanel" />
+							</ContentTemplate>
+						</TabItem>
+						<TabItem>
+							<ChildContent>
+								<TabHeader Text="Education" />
+							</ChildContent>
+							<ContentTemplate>
+								<EducationPanel DeleteEducation="DeleteEducation" EditEducation="EditEducation" EditRights="UserRights.EditCandidate" IsRequisition="@(RequisitionID > 0)" Model="@_candidateEducationObject"
+												@ref="EducationPanel" />
+							</ContentTemplate>
+						</TabItem>
+						<TabItem>
+							<ChildContent>
+								<TabHeader Text="Experience" />
+							</ChildContent>
+							<ContentTemplate>
+								<ExperiencePanel DeleteExperience="DeleteExperience" EditExperience="EditExperience" EditRights="UserRights.EditCandidate" IsRequisition="@(RequisitionID > 0)" Model="@_candidateExperienceObject"
+												 @ref="ExperiencePanel" />
+							</ContentTemplate>
+						</TabItem>
+						<TabItem>
+							<ChildContent>
+								<TabHeader Text="Notes" />
+							</ChildContent>
+							<ContentTemplate>
+								<NotesPanel DeleteNotes="DeleteNotes" EditNotes="EditNotes" EditRights="UserRights.EditCandidate" IsRequisition="@(RequisitionID > 0)" Model="@_candidateNotesObject" @ref="PanelNotes" />
+							</ContentTemplate>
+						</TabItem>
+						<TabItem>
+							<ChildContent>
+								<TabHeader Text="Resume" />
+							</ChildContent>
+							<ContentTemplate>
+								<div class="resumeContainerBox">
+									<SfRichTextEditor Height="300px" Readonly="true" Value="@_candidateDetailsObject.TextResume">
+										<RichTextEditorToolbarSettings Items="@_tools1">
+											<RichTextEditorCustomToolbarItems>
+												<RichTextEditorCustomToolbarItem Name="Original">
+													<Template>
+														<SfButton Content="Show Original Resume" CssClass="original" Disabled="@(!OriginalExists || !UserRights.DownloadResume)" OnClick="OriginalClick" />
+													</Template>
+												</RichTextEditorCustomToolbarItem>
+												<RichTextEditorCustomToolbarItem Name="Formatted">
+													<Template>
+														<SfButton Content="Show Formatted Resume" CssClass="formatted" Disabled="@(!FormattedExists || !UserRights.DownloadResume)" OnClick="FormattedClick" />
+													</Template>
+												</RichTextEditorCustomToolbarItem>
+											</RichTextEditorCustomToolbarItems>
+										</RichTextEditorToolbarSettings>
+									</SfRichTextEditor>
+								</div>
+							</ContentTemplate>
+						</TabItem>
+						<TabItem>
+							<ChildContent>
+								<TabHeader Text="Attachment" />
+							</ChildContent>
+							<ContentTemplate>
+								<DownloadsPanel DeleteDocument="DeleteDocument" DownloadDocument="DownloadDocument" EditRights="@UserRights.EditCandidate" Model="@_candidateDocumentsObject" @ref="DownloadsPanel" />
+							</ContentTemplate>
+						</TabItem>
+						<TabItem>
+							<ChildContent>
+								<TabHeader Text="Candidate Activity" />
+							</ChildContent>
+							<ContentTemplate>
+								<ActivityPanel EditActivity="EditActivity" IsRequisition="@(RequisitionID > 0)" Model="@_candidateActivityObject" @ref="ActivityPanel" RoleID="@RoleID" User="@User"
+											   UndoCandidateActivity="UndoActivity" /> @*TODO: Activity Panel Rights to be set*@
+							</ContentTemplate>
+						</TabItem>
+					</TabItems>
+					<SfSpinner CssClass="spinnerHeight" @ref="@Spinner" Type="SpinnerType.Fabric" ZIndex="12000" />@**@
+				</SfTab>
+			</DetailTemplate>
+		</GridTemplates>
+	</SfGrid>
+
+	<ShowAddChoice ClickManual="ManualCandidate" ClickParse="ParseCandidate" @ref="AddChoice" />
+
+	<EditCandidateDialog Communication="_communication" Eligibility="_eligibility" Experience="_experience" JobOptions="_jobOptions"
+						 Model="_candidateDetailsObjectClone" @ref="DialogEditCandidate" Save="SaveCandidate" States="_states" TaxTerms="_taxTerms" />
+
+	<ParseCandidateDialog OnFileUpload="OnFileUpload" @ref="DialogParseCandidate" />
+
+	<RatingCandidateDialog Model="RatingMPC" RatingGrid="_candidateRatingObject" @ref="DialogRating" Save="SaveRating" />
+
+	<MPCCandidateDialog Model="RatingMPC" MPCGrid="_candidateMPCObject" @ref="DialogMPC" Save="SaveMPC" />
+
+	<EditSkillDialog Model="SelectedSkill" @ref="DialogSkill" Save="SaveSkill" />
+
+	<EditEducationDialog Model="SelectedEducation" @ref="DialogEducation" Save="SaveEducation" />
+
+	<EditExperienceDialog Model="SelectedExperience" @ref="DialogExperience" Save="SaveExperience" />
+
+	<EditNotesDialog Entity="Candidate" Model="SelectedNotes" @ref="DialogNotes" Save="SaveNotes" />
+
+	<EditActivityDialog IsCandidate="true" Model="SelectedActivity" ModelSteps="NextSteps" @ref="DialogActivity" Save="SaveActivity" Status="_workflows" />
+
+	<AddDocumentDialog AfterUpload="AfterDocument" BeforeUpload="BeforeDocument" DocumentTypes="_documentTypes"
+					   Model="NewDocument" OnFileUpload="UploadDocument" @ref="DialogDocument" Save="SaveDocument" />@**@
+
+	<AdvancedCandidateSearch EligibilityDropDown="_eligibilityCopy" JobOptionsDropDown="_jobOptionsCopy" Model="SearchModelClone" @ref="DialogSearch" Save="SearchCandidate"
+							 StateDropDown="_statesCopy" />
+
+	<SubmitCandidate Model="SubmitCandidateModel" @ref="DialogSubmitCandidate" Save="SubmitCandidateToRequisition" />
+
+	<GridFooter AllAlphabet="AllAlphabet" AlphabetMethod="SetAlphabet" ClearFilter="ClearFilter" Count="Count" EndRecord="EndRecord" Name="@SearchModel.Name" StartRecord="StartRecord" />
+
+	<AddResume Model="ResumeObject" OnFileUpload="UploadDocument" @ref="ResumeAdd" ResumeType="@ResumeType" Save="SaveResume" />
+
+	<ShowExistingCandidateDetails ContinueParsing="ContinueParsing" ExistingCandidates="ExistingCandidateList" @ref="ExistingCandidateDetailsDialog"></ShowExistingCandidateDetails>
+</div>

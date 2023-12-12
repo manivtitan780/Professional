@@ -1,0 +1,243 @@
+﻿@page "/home"
+@using AppointmentData = ProfSvc_Classes.AppointmentData
+@using AnimationEffect = Syncfusion.Blazor.AnimationEffect
+@using ValueType = Syncfusion.Blazor.Charts.ValueType
+<Header RoleID="@RoleID"></Header>
+<div class="gridHolder">
+	<div class="containerBoxHome">
+		<div class="fullDiv">
+			<div class="dashboardHeader">@($"Interviews Scheduled [{DateTime.Today.AddDays(-7).CultureDate()} - {DateTime.Today.AddYears(1).CultureDate()}]")</div>
+			<div style="height: 350px">
+				<SfSchedule AllowMultiRowSelection="false" @bind-SelectedDate="@CurrentDate" Height="100%" MaxDate="@MaxDate" MinDate="@MinDate" TValue="AppointmentData" Width="100%">
+					<ScheduleEventSettings AllowAdding="false" AllowDeleting="false" AllowEditFollowingEvents="false" AllowEditing="false" DataSource="@DataSource">
+					</ScheduleEventSettings>
+					<ScheduleEvents EventRendered="OnEventRendered" TValue="AppointmentData"></ScheduleEvents>
+					<ScheduleViews>
+						<ScheduleView Option="View.Day" />
+						<ScheduleView Option="View.Week" />
+						<ScheduleView Option="View.Month" />
+						<ScheduleView Option="View.Year" />
+						<ScheduleView Option="View.Agenda" />
+						<ScheduleView Option="View.MonthAgenda" />
+					</ScheduleViews>
+				</SfSchedule>
+			</div>
+		</div>
+		<div class="halfDiv">
+			<div class="dashboardHeader">Activities for all users</div>
+			<div style="position: relative; height: 350px">
+				<SfTab Height="40px" ID="tabActivitiesDashboard" LoadOn="ContentLoad.Demand" Width="100%">
+					<TabEvents Selected="ActivitiesTabSelected" />
+					<TabAnimationSettings>
+						<TabAnimationNext Effect="AnimationEffect.None"></TabAnimationNext>
+						<TabAnimationPrevious Effect="AnimationEffect.None"></TabAnimationPrevious>
+					</TabAnimationSettings>
+					<TabItems>
+						<TabItem>
+							<ChildContent>
+								<TabHeader Text="7 days"></TabHeader>
+							</ChildContent>
+							<ContentTemplate>
+							</ContentTemplate>
+						</TabItem>
+						<TabItem>
+							<ChildContent>
+								<TabHeader Text="1 month"></TabHeader>
+							</ChildContent>
+							<ContentTemplate>
+							</ContentTemplate>
+						</TabItem>
+						<TabItem>
+							<ChildContent>
+								<TabHeader Text="3 months"></TabHeader>
+							</ChildContent>
+							<ContentTemplate>
+							</ContentTemplate>
+						</TabItem>
+						<TabItem>
+							<ChildContent>
+								<TabHeader Text="1 year"></TabHeader>
+							</ChildContent>
+							<ContentTemplate>
+							</ContentTemplate>
+						</TabItem>
+					</TabItems>
+				</SfTab>
+				<SfSpinner CssClass="spinnerHeight" @ref="Spinner" Type="SpinnerType.Fabric" ZIndex="12000" />
+				<SfChart DataSource="@ChartActivitiesDataSource" EnableAnimation="false" Height="310px" @ref="ChartActivities">
+					<ChartCommonScrollbarSettings Enable="false"></ChartCommonScrollbarSettings>
+					<ChartPrimaryXAxis ValueType="ValueType.Category">
+						<ChartAxisMajorGridLines Width="0"></ChartAxisMajorGridLines>
+					</ChartPrimaryXAxis>
+					<ChartPrimaryYAxis>
+						<ChartAxisMajorGridLines Width="0"></ChartAxisMajorGridLines>
+						<ChartAxisMinorGridLines Width="0"></ChartAxisMinorGridLines>
+					</ChartPrimaryYAxis>
+					<ChartSeriesCollection>
+						<ChartSeries DataSource="SubmissionStatus7" PointColorMapping="Color" TooltipMappingName="Status" Type="ChartSeriesType.Column" XName="StatusCode" YName="Count" />
+					</ChartSeriesCollection>
+					<ChartLegendSettings EnableHighlight="true" Visible="true" />
+					<ChartTooltipSettings Enable="true" Header="<b>${point.tooltip}</b>" Shared="true" />
+				</SfChart>
+			</div>
+		</div>
+		<div class="halfDiv">
+			<div class="dashboardHeader">Activities by users</div>
+			<div style="position: relative; height: 350px">
+				<SfTab Height="40px" ID="tabStatusDashboard" LoadOn="ContentLoad.Demand" Width="100%">
+					<TabEvents Selected="StatusTabSelected" />
+					<TabAnimationSettings>
+						<TabAnimationNext Effect="AnimationEffect.None"></TabAnimationNext>
+						<TabAnimationPrevious Effect="AnimationEffect.None"></TabAnimationPrevious>
+					</TabAnimationSettings>
+					<TabItems>
+						<TabItem>
+							<ChildContent>
+								<TabHeader Text="7 days"></TabHeader>
+							</ChildContent>
+							<ContentTemplate>
+							</ContentTemplate>
+						</TabItem>
+						<TabItem>
+							<ChildContent>
+								<TabHeader Text="1 month"></TabHeader>
+							</ChildContent>
+							<ContentTemplate>
+							</ContentTemplate>
+						</TabItem>
+						<TabItem>
+							<ChildContent>
+								<TabHeader Text="3 months"></TabHeader>
+							</ChildContent>
+							<ContentTemplate>
+							</ContentTemplate>
+						</TabItem>
+						<TabItem>
+							<ChildContent>
+								<TabHeader Text="1 year"></TabHeader>
+							</ChildContent>
+							<ContentTemplate>
+							</ContentTemplate>
+						</TabItem>
+					</TabItems>
+				</SfTab>
+				<SfSpinner CssClass="spinnerHeight" @ref="SpinnerStatus" Type="SpinnerType.Fabric" ZIndex="12000" />
+				<SfChart DataSource="@StatusChartDataSource" EnableAnimation="false" Height="310px" @ref="StatusChart">
+					<ChartCommonScrollbarSettings Enable="false"></ChartCommonScrollbarSettings>
+					<ChartPrimaryXAxis ValueType="ValueType.Category">
+						<ChartAxisMajorGridLines Width="0"></ChartAxisMajorGridLines>
+					</ChartPrimaryXAxis>
+					<ChartPrimaryYAxis>
+						<ChartAxisMajorGridLines Width="0"></ChartAxisMajorGridLines>
+						<ChartAxisMinorGridLines Width="0"></ChartAxisMinorGridLines>
+					</ChartPrimaryYAxis>
+					<ChartSeriesCollection>
+                        <ChartSeries DataSource="UserStatus7" Fill="@ChartStatus.PenColor" Name="@ChartStatus.PenStatus" TooltipMappingName="Name" Type="ChartSeriesType.Column" XName="UserID" YName="Pending" />
+                        <ChartSeries DataSource="UserStatus7" Fill="@ChartStatus.HirColor" Name="@ChartStatus.HirStatus" TooltipMappingName="Name" Type="ChartSeriesType.Column" XName="UserID" YName="Hired" />
+                        <ChartSeries DataSource="UserStatus7" Fill="@ChartStatus.OexColor" Name="@ChartStatus.OexStatus" TooltipMappingName="Name" Type="ChartSeriesType.Column" XName="UserID" YName="OfferExtended" />
+                        <ChartSeries DataSource="UserStatus7" Fill="@ChartStatus.WDRColor" Name="@ChartStatus.WDRStatus" TooltipMappingName="Name" Type="ChartSeriesType.Column" XName="UserID" YName="Withdrawn" />
+                    </ChartSeriesCollection>
+					<ChartLegendSettings EnableHighlight="true" Visible="true" />
+					<ChartTooltipSettings Enable="true" Header="<b>${point.tooltip}</b>" Shared="true" />
+				</SfChart>
+			</div>
+		</div>
+		<div class="fullDiv">
+			<div class="dashboardHeader">My Requisitions</div>
+			<div style="height: 245px; padding: 0 5px;">
+				<SfGrid AllowMultiSorting="false" AllowPaging="false" AllowSorting="true" DataSource="MyRequisitions" EnableHeaderFocus="true" EnableHover="true" EnableStickyHeader="true" Height="100%" ID="gridMyRequisitions"
+						@ref="GridMyRequisitions" TValue="Requisitions" Width="calc(100% - 15px)">
+					<GridSelectionSettings EnableToggle="false" Mode="SelectionMode.Row" Type="SelectionType.Single" />
+					<GridColumns>
+						<GridColumn Field="@nameof(Requisitions.ID)" HeaderText="ID" IsPrimaryKey="true" Visible="false" Width="0" />
+						<GridColumn AllowSorting="true" Field="@nameof(Requisitions.Code)" HeaderText="Code" Width="12%">
+							<Template Context="aCon">
+								@{
+									if (aCon is Requisitions _con)
+									{
+										<a href="" @onclick="() => ClickRequisition(_con.ID)" @onclick:preventDefault>@_con.Code</a>
+									}
+								}
+							</Template>
+						</GridColumn>
+						<GridColumn AllowSorting="true" Field="@nameof(Requisitions.Title)" HeaderText="Title" Width="24%" />
+						<GridColumn AllowSorting="false" Field="@nameof(Requisitions.Company)" HeaderText="Company" Width="18%" />
+						<GridColumn AllowSorting="false" Field="@nameof(Requisitions.JobOptions)" HeaderText="Type" Width="22%" />
+						<GridColumn AllowSorting="true" Field="@nameof(Requisitions.Updated)" HeaderText="Updated" Width="12%" />
+						<GridColumn AllowSorting="true" Field="@nameof(Requisitions.Status)" HeaderText="Status" Width="12%" />
+					</GridColumns>
+				</SfGrid>
+			</div>
+		</div>
+		<div class="fullDiv" style=@($"display: {(RoleName is "RC" or "RS" or "AD" ? "block" : "none")};")>
+			<div class="dashboardHeader">Candidates submitted by me in last 2 months @RoleName</div>
+			<div style="height: 245px; padding: 0 5px;">
+				<SfGrid AllowMultiSorting="false" AllowPaging="false" AllowSorting="true" DataSource="CandidatesSubmitted" EnableHover="true" EnableStickyHeader="true" Height="100%" ID="gridSubmittedCandidates"
+						@ref="GridCandidatesSubmitted" TValue="Candidates" Width="99.75%">
+					<GridSelectionSettings EnableToggle="false" Mode="SelectionMode.Row" Type="SelectionType.Single" />
+					<GridColumns>
+						<GridColumn Field="@nameof(Candidates.ID)" HeaderText="ID" IsPrimaryKey="true" Visible="false" Width="0"></GridColumn>
+						<GridColumn AllowSorting="true" Field="@nameof(Candidates.Name)" HeaderText="Name" Width="20%">
+							<Template Context="aCon">
+								@{
+									if (aCon is Candidates _con)
+									{
+										<a href="" @onclick="() => ClickCandidate(_con.ID)" @onclick:preventDefault>@_con.Name</a>
+									}
+								}
+							</Template>
+						</GridColumn>
+						<GridColumn AllowSorting="true" Field="@nameof(Candidates.Phone)" HeaderText="Phone" Width="14%" />
+						<GridColumn AllowSorting="true" Field="@nameof(Candidates.Email)" HeaderText="Email" Width="19%">
+							<Template Context="aCon">
+								@{
+									if (aCon is Candidates _con)
+									{
+										<a href="mailto:@(_con.Email)">@_con.Email</a>
+									}
+								}
+							</Template>
+						</GridColumn>
+						<GridColumn AllowSorting="true" Field="@nameof(Candidates.Location)" HeaderText="Location" Width="19%" />
+					</GridColumns>
+				</SfGrid>
+			</div>
+		</div>
+		<div class="fullDiv" style=@($"display: {(RoleName is "SM" or "RS" or "AD" ? "block" : "none")};")>
+			<div class="dashboardHeader">My Requisitions for which submissions done in last 2 months</div>
+			<div style="height: 245px; padding: 0 5px;">
+				<SfGrid AllowMultiSorting="false" AllowPaging="false" AllowSorting="true" DataSource="SubmittedRequisitions" EnableHeaderFocus="true" EnableHover="true" EnableStickyHeader="true" Height="100%"
+						ID="gridMySubmittedRequisitions" ref="GridSubmittedRequisitions" TValue="Requisitions" Width="calc(100% - 15px)">
+					<GridSelectionSettings EnableToggle="false" Mode="SelectionMode.Row" Type="SelectionType.Single" />
+					<GridColumns>
+						<GridColumn Field="@nameof(Requisitions.ID)" HeaderText="ID" IsPrimaryKey="true" Visible="false" Width="0" />
+						<GridColumn AllowSorting="true" Field="@nameof(Requisitions.Code)" HeaderText="Code" Width="12%">
+							<Template Context="aCon">
+								@{
+									if (aCon is Requisitions _con)
+									{
+										<a href="" @onclick="() => ClickRequisition(_con.ID)" @onclick:preventDefault>@_con.Code</a>
+									}
+								}
+							</Template>
+						</GridColumn>
+						<GridColumn AllowSorting="true" Field="@nameof(Requisitions.Title)" HeaderText="Title" Width="24%">
+							<Template Context="aCon">
+								@{
+									if (aCon is Requisitions _con)
+									{
+										<a href="" @onclick="() => ClickRequisition(_con.ID)" @onclick:preventDefault>@_con.Code</a>
+									}
+								}
+							</Template>
+						</GridColumn>
+						<GridColumn AllowSorting="false" Field="@nameof(Requisitions.Company)" HeaderText="Company" Width="18%" />
+						<GridColumn AllowSorting="false" Field="@nameof(Requisitions.JobOptions)" HeaderText="Type" Width="22%" />
+						<GridColumn AllowSorting="true" Field="@nameof(Requisitions.Updated)" HeaderText="Updated" Width="12%" />
+						<GridColumn AllowSorting="true" Field="@nameof(Requisitions.Status)" HeaderText="Status" Width="12%" />
+					</GridColumns>
+				</SfGrid>
+			</div>
+		</div>
+	</div>
+</div>

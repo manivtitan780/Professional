@@ -1,0 +1,76 @@
+﻿@* System *@
+
+@using System;
+@using System.Collections.Generic;
+@using System.ComponentModel.DataAnnotations;
+@using System.Globalization;
+@using System.Linq;
+@using System.Net.Http;
+@using System.Net.Http.Json;
+@using System.Text.Encodings.Web;
+@using System.Threading.Tasks;
+
+@* Microsoft *@
+
+@using Microsoft.AspNetCore.Authentication;
+@using Microsoft.AspNetCore.Authorization;
+@using Microsoft.AspNetCore.Components.Authorization;
+@using Microsoft.AspNetCore.Components.Forms;
+@using Microsoft.AspNetCore.Components.Routing;
+@using Microsoft.AspNetCore.Components.Web;
+@using Microsoft.AspNetCore.Components.Web.Virtualization;
+@using Microsoft.AspNetCore.Http;
+@using Microsoft.AspNetCore.Identity;
+@using Microsoft.AspNetCore.Mvc;
+@using Microsoft.AspNetCore.Mvc.RazorPages;
+@using Microsoft.Extensions.Caching.Memory;
+@using Microsoft.Extensions.Logging;
+@using Microsoft.JSInterop;
+@using static RenderMode;
+
+@* ProfSvc *@
+
+@using LabelComponents.Areas.MyFeature.Pages;
+@using Profsvc_AppTrack;
+@using Profsvc_AppTrack.Components;
+@using Profsvc_AppTrack.Components.Layout;
+@using Profsvc_AppTrack.Components.Pages.Admin.Controls;
+@using Profsvc_AppTrack.Components.Pages.Controls;
+@using Profsvc_AppTrack.Components.Pages.Controls.Candidates;
+@using Profsvc_AppTrack.Components.Pages.Controls.Companies;
+@using Profsvc_AppTrack.Components.Pages.Controls.Common;
+@using Profsvc_AppTrack.Components.Pages.Controls.Leads;
+@using Profsvc_AppTrack.Components.Pages.Controls.Requisitions;
+@using ProfSvc_Classes;
+
+@* Blazored *@
+
+@using Blazored.FluentValidation;
+
+@* FluentValidation *@
+
+@using FluentValidation;
+
+@* Syncfusion *@
+
+@using Syncfusion.Blazor;
+@using Syncfusion.Blazor.Buttons;
+@using Syncfusion.Blazor.Calendars;
+@using Syncfusion.Blazor.Charts;
+@using Syncfusion.Blazor.Data;
+@using Syncfusion.Blazor.DocumentEditor;
+@using Syncfusion.Blazor.DropDowns;
+@using Syncfusion.Blazor.Grids;
+@using Syncfusion.Blazor.Inputs;
+@using Syncfusion.Blazor.Layouts;
+@using Syncfusion.Blazor.Navigations;
+@using Syncfusion.Blazor.Notifications;
+@using Syncfusion.Blazor.Popups;
+@using Syncfusion.Blazor.RichTextEditor;
+@using Syncfusion.Blazor.Schedule;
+@using Syncfusion.Blazor.SfPdfViewer;
+@using Syncfusion.Blazor.Spinner;
+@using Syncfusion.Blazor.SplitButtons;
+@using InputType = InputType;
+@using SelectionMode = Syncfusion.Blazor.Grids.SelectionMode;
+@using SelectionType = Syncfusion.Blazor.Grids.SelectionType;

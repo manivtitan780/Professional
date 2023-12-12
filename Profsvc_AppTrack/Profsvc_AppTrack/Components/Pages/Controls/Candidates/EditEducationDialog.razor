@@ -1,0 +1,25 @@
+﻿<SfDialog Header="Edit Education" Height="505px" IsModal="true" MinHeight="400px" @ref="Dialog" Target="#divTarget" Visible="false" Width="480px">
+	<ChildContent>
+		<SfSpinner CssClass="spinnerHeight" @ref="Spinner" Type="SpinnerType.Fabric" ZIndex="12000" />
+		<DialogPositionData X="right" Y="center" />
+		<DialogAnimationSettings Duration="500" Effect="DialogEffect.SlideRight" />
+		<DialogEvents OnOpen="OpenDialog"></DialogEvents>
+		<EditForm Model="Model" OnValidSubmit="SaveEducationDialog" @ref="EditEducationForm">
+			<DataAnnotationsValidator />
+			<div class="divContainerTable">
+				<TextBoxControl @bind-Value="@(Model.College)" @bind-Value:event="ValueChanged" ID="textCollege" MaxLength="100" MinLength="1" Multiline="false"
+								Placeholder="School / College"
+								ValidationMessage="@(() => Model.College)" />
+				<TextBoxControl @bind-Value="@(Model.Degree)" @bind-Value:event="ValueChanged" ID="textDegree" MaxLength="100" MinLength="1" Multiline="false" Placeholder="Degree"
+                                ValidationMessage="@(() => Model.Degree)" Created='() => TextOnly("textDegree", false)' />
+				<TextBoxControl @bind-Value="@(Model.State)" @bind-Value:event="ValueChanged" ID="textState" MaxLength="100" MinLength="1" Multiline="false" Placeholder="State"
+								ValidationMessage="@(() => Model.State)" Created='() => TextOnly("textState", false)' />
+				<TextBoxControl @bind-Value="@(Model.Country)" @bind-Value:event="ValueChanged" ID="textCountry" MaxLength="100" MinLength="1" Multiline="false" Placeholder="Country"
+								ValidationMessage="@(() => Model.Country)" Created='() => TextOnly("textCountry", false)' />
+				<TextBoxControl @bind-Value="@(Model.Year)" @bind-Value:event="ValueChanged" ID="textYear" MaxLength="100" MinLength="1" Multiline="false" Placeholder="Graduation Year"
+								ValidationMessage="@(() => Model.Year)" />
+			</div>
+			<DialogFooter CancelMethod="CancelEducationDialog" @ref="FooterDialog" />
+		</EditForm>
+	</ChildContent>
+</SfDialog>

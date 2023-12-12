@@ -1,0 +1,21 @@
+@using Position = Syncfusion.Blazor.Popups.Position
+<div id="divContainer" style="margin: 15px;">
+    <div class="loginRowDialog">
+        <SfTooltip CloseDelay="0" OnOpen="ToolTipOpen" OpenDelay="0" OpensOn="Hover" Position="Position.TopCenter" Target="@("#" + ID)" WindowCollision="true">
+            <ChildContent>
+                <SfTextBox @bind-Value="@(AdminContext.Text)" FloatLabelType="FloatLabelType.Always" HtmlAttributes="@Attributes" ID="@ID" Placeholder="@Placeholder" Readonly="@Readonly"></SfTextBox>
+            </ChildContent>
+            <ContentTemplate>
+                <ValidationMessage For="@(() => AdminContext.Text)"></ValidationMessage>
+            </ContentTemplate>
+        </SfTooltip>
+    </div>
+    <div class="form-group loginRowDialogSwitch">
+        <div class="loginStatusRow" style="width: 70%">
+            <label class="labelStatus">Status</label>
+        </div>
+        <div class="loginStatusRow">
+            <SfSwitch @bind-Checked="@(AdminContext.IsEnabled)" CssClass="switchStatus taxEnabledSwitch" OffLabel="INACTIVE" OnLabel="ACTIVE"></SfSwitch>
+        </div>
+    </div>
+</div>

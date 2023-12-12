@@ -1,0 +1,32 @@
+﻿<SfDialog Header="@HeaderString" Height="98vh" IsModal="true" MinHeight="98vh" @ref="Dialog" Target="#divTarget" Visible="false" Width="480px">
+	<ChildContent>
+		<SfSpinner CssClass="spinnerHeight" @ref="Spinner" Type="SpinnerType.Fabric" ZIndex="12000" />
+		<DialogPositionData X="right" Y="center"></DialogPositionData>
+		<DialogAnimationSettings Effect="DialogEffect.SlideRight"></DialogAnimationSettings>
+		<DialogEvents OnOpen="OpenDialog"></DialogEvents>
+		<EditForm Model="Model" OnValidSubmit="SaveRole" @ref="EditRoleForm">
+			<FluentValidationValidator />
+			<div class="divContainerTable">
+				<TextBoxControl @bind-Value="@(Model.ID)" @bind-Value:event="ValueChanged" CreateDivTag="true" CreateTooltip="true" ID="textID" MaxLength="2" MinLength="1"
+								Multiline="false" Placeholder="Role ID" Readonly="@(!HeaderString.StartsWith("Add"))" ValidationMessage="@(() => Model.ID)" />
+				<TextBoxControl @bind-Value="@(Model.RoleName)" @bind-Value:event="ValueChanged" CreateDivTag="true" CreateTooltip="true" ID="textRole" MaxLength="50" MinLength="1"
+								Multiline="false" Placeholder="Role Name" ValidationMessage="@(() => Model.RoleName)" />
+				<TextBoxControl @bind-Value="@(Model.Description)" @bind-Value:event="ValueChanged" CreateDivTag="true" CreateTooltip="true" ID="textDescription" MaxLength="200" MinLength="1"
+								Multiline="false" Placeholder="Description" ValidationMessage="@(() => Model.Description)" />
+				<SwitchControl @bind-BindValue="@(Model.ViewCandidate)" ID="checkedViewCandidate" OffLabel="NO" OnLabel="YES" Placeholder="View Candidate?" />
+				<SwitchControl @bind-BindValue="@(Model.EditCandidate)" ID="checkedEditCandidate" OffLabel="NO" OnLabel="YES" Placeholder="Edit Candidate?" />
+				<SwitchControl @bind-BindValue="@(Model.ViewRequisition)" ID="checkedViewRequisition" OffLabel="NO" OnLabel="YES" Placeholder="View Requisition?" />
+				<SwitchControl @bind-BindValue="@(Model.EditRequisition)" ID="checkedEditRequisition" OffLabel="NO" OnLabel="YES" Placeholder="Edit Requisition?" />
+				<SwitchControl @bind-BindValue="@(Model.ViewClients)" ID="checkedViewClients" OffLabel="NO" OnLabel="YES" Placeholder="View Clients?" />
+				<SwitchControl @bind-BindValue="@(Model.EditClients)" ID="checkedEditClient" OffLabel="NO" OnLabel="YES" Placeholder="Edit Clients?" />
+				<SwitchControl @bind-BindValue="@(Model.ChangeCandidateStatus)" ID="checkedChangeCandidateStatus" OffLabel="NO" OnLabel="YES" Placeholder="Change Candidate Status?" />
+				<SwitchControl @bind-BindValue="@(Model.ChangeRequisitionStatus)" ID="checkedChangeRequisitionStatus" OffLabel="NO" OnLabel="YES" Placeholder="Change Requisition Status?" />
+				<SwitchControl @bind-BindValue="@(Model.SendEmailCandidate)" ID="checkedSendEmail" OffLabel="NO" OnLabel="YES" Placeholder="Send Email?" />
+				<SwitchControl @bind-BindValue="@(Model.ForwardResume)" ID="checkedForwardResume" OffLabel="NO" OnLabel="YES" Placeholder="Forward Resume?" />
+				<SwitchControl @bind-BindValue="@(Model.DownloadResume)" ID="checkedDownloadResume" OffLabel="NO" OnLabel="YES" Placeholder="Download Resume?" />
+				<SwitchControl @bind-BindValue="@(Model.SubmitCandidate)" ID="checkedSubmitCandidates" OffLabel="NO" OnLabel="YES" Placeholder="Submit Candidate?" />
+			</div>
+			<DialogFooter Cancel="Cancel" CancelMethod="CancelRole" @ref="DialogFooter" Save="Save" />
+		</EditForm>
+	</ChildContent>
+</SfDialog>

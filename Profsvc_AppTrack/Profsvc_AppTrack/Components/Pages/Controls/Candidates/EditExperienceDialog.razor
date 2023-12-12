@@ -1,0 +1,26 @@
+﻿<SfDialog Header="Edit Experience" Height="619px" IsModal="true" MinHeight="400px" @ref="Dialog" Target="#divTarget" Visible="false" Width="480px">
+	<ChildContent>
+		<SfSpinner CssClass="spinnerHeight" @ref="Spinner" Type="SpinnerType.Fabric" ZIndex="12000" />
+		<DialogPositionData X="right" Y="center" />
+		<DialogAnimationSettings Duration="500" Effect="DialogEffect.SlideRight" />
+		<DialogEvents OnOpen="OpenDialog"></DialogEvents>
+		<EditForm Model="Model" OnValidSubmit="SaveExperienceDialog" @ref="EditExperienceForm">
+			<DataAnnotationsValidator />
+			<div class="divContainerTable">
+				<TextBoxControl @bind-Value="@(Model.Employer)" @bind-Value:event="ValueChanged" ID="textEmployer" MaxLength="100" MinLength="1" Multiline="false" Placeholder="Employer Name"
+								ValidationMessage="@(() => Model.Employer)" />
+				<TextBoxControl @bind-Value="@(Model.Description)" @bind-Value:event="ValueChanged" ID="textDescription" MaxLength="1000" MinLength="1" Multiline="true" Placeholder="Description"
+								ValidationMessage="@(() => Model.Description)" />
+				<TextBoxControl @bind-Value="@(Model.Location)" @bind-Value:event="ValueChanged" ID="textLocation" MaxLength="100" MinLength="1" Multiline="false" Placeholder="Location"
+								ValidationMessage="@(() => Model.Location)" />
+				<TextBoxControl @bind-Value="@(Model.Title)" @bind-Value:event="ValueChanged" ID="textTitle" MaxLength="100" MinLength="1" Multiline="false" Placeholder="Job Title"
+								ValidationMessage="@(() => Model.Title)" />
+				<TextBoxControl @bind-Value="@(Model.Start)" @bind-Value:event="ValueChanged" ID="textStart" MaxLength="100" MinLength="1" Multiline="false" Placeholder="Experience Start Date"
+								ValidationMessage="@(() => Model.Start)" />
+				<TextBoxControl @bind-Value="@(Model.End)" @bind-Value:event="ValueChanged" ID="textEnd" MaxLength="100" MinLength="1" Multiline="false" Placeholder="Experience Ending Date"
+								ValidationMessage="@(() => Model.End)" />
+			</div>
+			<DialogFooter CancelMethod="CancelExperienceDialog" @ref="FooterDialog" />
+		</EditForm>
+	</ChildContent>
+</SfDialog>

@@ -1,0 +1,318 @@
+#region Header
+
+// /*****************************************
+// Copyright:           Titan-Techs.
+// Location:            Newtown, PA, USA
+// Solution:            ProfSvc_AppTrack
+// Project:             ProfSvc_AppTrack
+// File Name:           JobOptions.razor.cs
+// Created By:          Narendra Kumaran Kadhirvelu, Jolly Joseph Paily, DonBosco Paily
+// Created On:          08-15-2021 16:16
+// Last Updated On:     08-15-2021 16:23
+// *****************************************/
+
+#endregion
+
+#region Using
+
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+using System.Threading.Tasks;
+using Blazored.LocalStorage;
+using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
+using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Configuration;
+using Microsoft.JSInterop;
+using ProfSvc_AppTrack.Code;
+using ProfSvc_AppTrack.Data;
+using ProfSvc_AppTrack.Pages.Admin.Controls;
+using Syncfusion.Blazor;
+using Syncfusion.Blazor.Data;
+using Syncfusion.Blazor.DropDowns;
+using Syncfusion.Blazor.Grids;
+using Syncfusion.Blazor.Popups;
+
+#endregion
+
+namespace ProfSvc_AppTrack.Pages.Admin
+{
+	public partial class JobOptions
+	{
+		private static string _connectionString = "";
+
+		//private readonly DialogSettings _dialogParams = new()
+		//												{
+		//													AllowDragging = false, AnimationEffect = DialogEffect.SlideRight, EnableResize = false,
+		//													Height = "98vh", MinHeight = "98vh", ShowCloseIcon = false, Width = "480px", XValue = "right"
+		//												};
+
+		private bool _valueChanged;
+
+		private AutoCompleteButton AutoCompleteControl
+		{
+			get;
+			set;
+		}
+
+		[Inject]
+		private IConfiguration Configuration
+		{
+			get;
+			set;
+		}
+
+		private static int Count
+		{
+			get;
+			set;
+		}
+
+		private static string Filter
+		{
+			get;
+			set;
+		}
+
+		private SfGrid<JobOptionsClass> Grid
+		{
+			get;
+			set;
+		}
+
+		private int ID
+		{
+			get;
+			set;
+		} = -1;
+
+		[Inject]
+		private IJSRuntime JsRuntime
+		{
+			get;
+			set;
+		}
+
+		[Inject]
+		private ILocalStorageService LocalStorageBlazored
+		{
+			get;
+			set;
+		}
+
+		[Inject]
+		private ProtectedLocalStorage SessionStorage
+		{
+			get;
+			set;
+		}
+
+		private static string Title
+		{
+			get;
+			set;
+		} = "Edit";
+
+		private async void ActionBegin(ActionEventArgs<JobOptionsClass> jobOptionAction)
+		{
+			if (jobOptionAction.RequestType != Action.Save)
+			{
+				return;
+			}
+
+			/*await using SqlConnection _con = new(_connectionString);
+			_con.Open();
+			int _id = -1;
+			try
+			{
+				await using SqlCommand _command = new("Admin_SaveJobOption", _con)
+												  {
+													  CommandType = CommandType.StoredProcedure
+												  };
+				//_command.AddIntParameter("@ID", adminList.ID.DbNull());
+				//_command.AddVarcharParameter(parameterName, 100, adminList.Text);
+				//_command.AddVarcharParameter("@User", 10, userName);
+				//_command.AddBitParameter("@Enabled", adminList.IsEnabled);
+				await using SqlDataReader _reader = await _command.ExecuteReaderAsync();
+				if (!_reader.HasRows)
+				{
+					_id = -1;
+				}
+				else
+				{
+					_reader.Read();
+					_id = _reader.GetInt32(0);
+				}
+			}
+			catch
+			{
+				// ignored
+			}
+
+			ID = _id;
+
+			//ID = await General.Save(jobOptionAction.Data, _connectionString, "Admin_SaveJobOption", "@JobOption", "ADMIN", Grid);
+			Grid.Refresh();*/
+		}
+
+		private async void ActionComplete(ActionEventArgs<JobOptionsClass> jobOptionAction)
+		{
+			if (jobOptionAction.RequestType != Action.Refresh || ID == -1)
+			{
+				return;
+			}
+
+			/*double _index = await Grid.GetRowIndexByPrimaryKeyAsync(ID);
+			await JsRuntime.InvokeVoidAsync("scroll", _index);
+			await Grid.SelectRowAsync(_index);
+			ID = -1;*/
+		}
+
+		private async void Cancel() => await Grid.CloseEdit();
+
+		private void DataHandler(object obj) => Count = Grid.CurrentViewData.Count();
+
+		private async void EditJobOption(long code)
+		{
+			double _index = await Grid.GetRowIndexByPrimaryKey(code);
+			await Grid.SelectRowAsync(_index);
+			if (code.NullOrWhiteSpace())
+			{
+				Title = "Add";
+				await Grid.AddRecordAsync();
+			}
+			else
+			{
+				Title = "Edit";
+				await Grid.StartEditAsync();
+			}
+		}
+
+		private void FilterGrid(ChangeEventArgs<string, KeyValues> jobOption)
+		{
+			FilterSet(jobOption.Value);
+
+			_valueChanged = true;
+			Grid.Refresh();
+		}
+
+		private static void FilterSet(string value)
+		{
+			Filter = !value.NullOrWhiteSpace() && value != "null" ? value : "";
+
+			if (Filter.Length <= 0)
+			{
+				return;
+			}
+
+			if (Filter.StartsWith("\""))
+			{
+				Filter = Filter[1..];
+			}
+
+			if (Filter.EndsWith("\""))
+			{
+				Filter = Filter[..^1];
+			}
+		}
+
+		protected override async void OnAfterRender(bool firstRender)
+		{
+			if (!firstRender)
+			{
+				return;
+			}
+
+			_connectionString = Configuration.GetConnectionString("DBConnect");
+			string _result = await LocalStorageBlazored.GetItemAsStringAsync("autocomplete");
+
+			FilterSet(_result);
+		}
+
+		protected override async void OnInitialized()
+		{
+			StorageCompression _compression = new(SessionStorage);
+			Cooky _cooky = await _compression.Get("GridVal");
+			if (_cooky.UserID.NullOrWhiteSpace())
+			{
+				//NavManager?.NavigateTo($"{NavManager.BaseUri}", true);
+			}
+
+			await base.OnInitializedAsync();
+		}
+
+		private void RefreshGrid() => Grid.Refresh();
+
+		private async void SaveJobOption() => await Grid.EndEditAsync();
+
+		private void SearchClicked()
+		{
+			if (_valueChanged)
+			{
+				_valueChanged = false;
+
+				return;
+			}
+
+			FilterSet(AutoCompleteControl.Value);
+
+			Grid.Refresh();
+		}
+
+		private void ToggleStatus(int jobOptionID) => General.Toggle(_connectionString, "Admin_ToggleJobOptionStatus", jobOptionID, "ADMIN", Grid);
+
+		public class AdminJobOptionAdaptor : DataAdaptor
+		{
+			/// <summary>Performs data Read operation synchronously.</summary>
+			public override object Read(DataManagerRequest dm, string key = null)
+			{
+				List<JobOptionsClass> _dataSource = new();
+				using SqlConnection _con = new(_connectionString);
+				_con.Open();
+				try
+				{
+					using SqlCommand _command = new("Admin_GetJobOptions", _con)
+												{
+													CommandType = CommandType.StoredProcedure
+												};
+					if (!Filter.NullOrWhiteSpace())
+					{
+						_command.AddVarcharParameter("@Filter", 100, Filter);
+					}
+
+					using SqlDataReader _read = _command.ExecuteReader();
+					while (_read.Read())
+					{
+						_dataSource.Add(new JobOptionsClass(_read.GetInt64(0), _read.GetString(1), _read.GetString(2), _read.GetString(3), _read.GetString(4), _read.GetBoolean(5),
+															_read.GetBoolean(6), _read.GetBoolean(7), _read.GetString(8), _read.GetBoolean(9), _read.GetBoolean(10), _read.GetBoolean(11), _read.GetBoolean(12), _read.GetString(13), _read.GetString(14), _read.GetDecimal(15), _read.GetBoolean(16)));
+					}
+
+					_read.NextResult();
+					_read.Read();
+					int _count = _read.GetInt32(0);
+
+					return dm.RequiresCounts ? new DataResult
+											   {
+												   Result = _dataSource, Count = _count
+											   } : _dataSource;
+				}
+				catch
+				{
+					_dataSource.Add(new JobOptionsClass(0, "", ""));
+
+					return dm.RequiresCounts ? new DataResult
+											   {
+												   Result = _dataSource, Count = 1
+											   } : _dataSource;
+				}
+			}
+		}
+
+		public class AdminJobOptionDropDownAdaptor : DataAdaptor
+		{
+			public override object Read(DataManagerRequest dm, string key = null) =>
+				General.SetAutocompleteAdaptor(_connectionString, "Admin_SearchJobOption", "@JobOption", dm);
+		}
+	}
+}

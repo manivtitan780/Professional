@@ -1,0 +1,90 @@
+@typeparam TItem
+@using FilterType = Syncfusion.Blazor.DropDowns.FilterType
+@typeparam TValue
+
+@if (UseCustomTemplate)
+{
+    if (CreateDivTag)
+    {
+        <div class="divFlex" style="height: auto">
+            <div class="divFlexLabel">
+                <label class="labelStatus" for="@ID">@(Placeholder.NullOrWhiteSpace() ? "&nbsp;" : Placeholder.EndsWith(":") ? Placeholder : $"{Placeholder}:")</label>
+            </div>
+            <div class="@(Multiline ? "divFlexBig" : "divFlexSmall")" id="@($"div{ID}")" style="height: auto">
+                <SfMultiSelect AllowFiltering="true" DataSource="@DataSource" FilterBarPlaceholder="@FilterBarPlaceholder" FilterType="FilterType.Contains" ID="@ID" Mode="@Mode"
+                               Placeholder="@Placeholder" ShowDropDownIcon="@DropDownIcon" TItem="TItem" TValue="TValue" Value="@Value" ValueChanged="ValueChanged" ValueExpression="@ValueExpression" Width="@Width">
+                    <ItemTemplate>@ItemTemplate</ItemTemplate>
+                    <ValueTemplate>@ValueTemplate</ValueTemplate>
+                </SfMultiSelect>
+                @if (CreateTooltip)
+                {
+                    <SfTooltip CloseDelay="0" OnOpen="ToolTipOpen" OpenDelay="0" OpensOn="Hover" Position="Position.TopCenter" Target="@($"#div{ID} .e-multiselect")" Width="100%" WindowCollision="true">
+                        <ContentTemplate>
+                            <ValidationMessage For="@ValidationMessage" />
+                        </ContentTemplate>
+                    </SfTooltip>
+                }
+            </div>
+        </div>
+    }
+    else
+    {
+        <div id="@($"div{ID}")">
+            <SfMultiSelect AllowFiltering="true" DataSource="@DataSource" FilterBarPlaceholder="@FilterBarPlaceholder" FilterType="FilterType.Contains" ID="@ID" Mode="@Mode"
+                           Placeholder="@Placeholder" ShowDropDownIcon="@DropDownIcon" TItem="TItem" TValue="TValue" Value="@Value" ValueChanged="ValueChanged" ValueExpression="@ValueExpression" Width="@Width">
+                <ItemTemplate>@ItemTemplate</ItemTemplate>
+                <ValueTemplate>@ValueTemplate</ValueTemplate>
+            </SfMultiSelect>
+            @if (CreateTooltip)
+            {
+                <SfTooltip CloseDelay="0" OnOpen="ToolTipOpen" OpenDelay="0" OpensOn="Hover" Position="Position.TopCenter" Target="@($"#div{ID} .e-multiselect")" Width="100%" WindowCollision="true">
+                    <ContentTemplate>
+                        <ValidationMessage For="@ValidationMessage" />
+                    </ContentTemplate>
+                </SfTooltip>
+            }
+        </div>
+    }
+}
+else
+{
+    if (CreateDivTag)
+    {
+        <div class="divFlex" style="height: auto">
+            <div class="divFlexLabel">
+                <label class="labelStatus" for="@ID">@(Placeholder.NullOrWhiteSpace() ? "&nbsp;" : Placeholder.EndsWith(":") ? Placeholder : $"{Placeholder}:")</label>
+            </div>
+            <div class="@(Multiline ? "divFlexBig" : "divFlexSmall")" id="@($"div{ID}")" style="height: auto">
+                <SfMultiSelect AllowFiltering="true" DataSource="@DataSource" FilterBarPlaceholder="@FilterBarPlaceholder" FilterType="FilterType.Contains" ID="@ID" Mode="@Mode"
+                               Placeholder="@Placeholder" ShowDropDownIcon="@DropDownIcon" TItem="TItem" TValue="TValue" Value="@Value" ValueChanged="ValueChanged" ValueExpression="@ValueExpression" Width="@Width">
+                    <MultiSelectFieldSettings Text="@ValueField" Value="@KeyField" />
+                </SfMultiSelect>
+                @if (CreateTooltip)
+                {
+                    <SfTooltip CloseDelay="0" OnOpen="ToolTipOpen" OpenDelay="0" OpensOn="Hover" Position="Position.TopCenter" Target="@($"#div{ID} .e-multiselect")" Width="100%" WindowCollision="true">
+                        <ContentTemplate>
+                            <ValidationMessage For="@ValidationMessage" />
+                        </ContentTemplate>
+                    </SfTooltip>
+                }
+            </div>
+        </div>
+    }
+    else
+    {
+        <div id="@($"div{ID}")">
+            <SfMultiSelect AllowFiltering="true" DataSource="@DataSource" FilterBarPlaceholder="@FilterBarPlaceholder" FilterType="FilterType.Contains" ID="@ID" Mode="@Mode"
+                           Placeholder="@Placeholder" ShowDropDownIcon="@DropDownIcon" TItem="TItem" TValue="TValue" Value="@Value" ValueChanged="ValueChanged" ValueExpression="@ValueExpression" Width="@Width">
+                <MultiSelectFieldSettings Text="@ValueField" Value="@KeyField" />
+            </SfMultiSelect>
+            @if (CreateTooltip)
+            {
+                <SfTooltip CloseDelay="0" OnOpen="ToolTipOpen" OpenDelay="0" OpensOn="Hover" Position="Position.TopCenter" Target="@($"#div{ID} .e-multiselect")" Width="100%" WindowCollision="true">
+                    <ContentTemplate>
+                        <ValidationMessage For="@ValidationMessage" />
+                    </ContentTemplate>
+                </SfTooltip>
+            }
+        </div>
+    }
+}

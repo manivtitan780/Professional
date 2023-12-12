@@ -1,0 +1,30 @@
+﻿@page "/Admin/Document"
+@layout ProfSvcLayout
+
+<AdminGrid AdaptorInstance="@typeof(AdminDocumentTypeAdaptor)" AddMethod="() => EditDocumentType()" AutocompleteMethod="Admin_SearchDocumentTypes" AutocompleteParameter="@("@DocumentType")" Count="@Count"
+		   DataHandler="DataHandler" Entity="DocumentType" FilterGrid="FilterGrid" HeaderContentPlural="Document Types" HeaderContentSingular="Document Type" Key="ID" Page="Document Type" @ref="AdminGrid" 
+		   RefreshGrid="RefreshGrid" RoleID="@RoleID" RowSelected="RowSelected" ShowConfirm="false" TValue="DocumentType">
+	<GridColumn Field="Text" HeaderText="Document Type" Width="100%">
+		<Template Context="aCon">
+			@{
+				if (aCon is DocumentType _con)
+				{
+					<span class="point" @onclick="() => EditDocumentType(_con.ID)">@_con.DocType</span>
+				}
+			}
+		</Template>
+	</GridColumn>
+	<GridColumn Field="@nameof(DocumentType.ID)" HeaderText="ID" IsPrimaryKey="true" Visible="false" Width="0"></GridColumn>
+	<GridColumn Width="100px">
+		<Template Context="bCon">
+			@{
+				if (bCon is DocumentType _con)
+				{
+					<SfButton Content="" IconCss="editIcon" @onclick="() => EditDocumentType(_con.ID)"></SfButton>
+				}
+			}
+		</Template>
+	</GridColumn>
+
+</AdminGrid>
+<DocumentTypeDialog HeaderString="@($"{Title} Document Type")" Model="DocTypeRecordClone" Placeholder="Document Type" @ref="DocumentTypeDialog" Save="SaveDocumentType" />

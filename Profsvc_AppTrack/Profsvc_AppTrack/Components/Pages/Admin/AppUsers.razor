@@ -1,0 +1,44 @@
+﻿@page "/Admin/User"
+@layout ProfSvcLayout
+
+<AdminGrid AdaptorInstance="@typeof(AdminUserAdaptor)" AddMethod="() => EditUserAsync()" AutocompleteMethod="Admin_SearchUser" AutocompleteParameter="@("@User")" Count="@Count" DataHandler="DataHandler" Entity="User"
+		   FilterGrid="FilterGrid" HeaderContentPlural="Users" HeaderContentSingular="User" Height="140px" Key="ID" Page="User" @ref="AdminGrid" RefreshGrid="RefreshGrid" RoleID="@RoleID" RowSelected="RowSelected"
+		   ToggleMethod="() => ToggleStatusAsync(_selectedID)" ToggleValue="_toggleValue" TValue="User" Width="347px">
+	<GridColumn Field="Text" HeaderText="Name" Width="30%">
+		<Template Context="aCon">
+			@{
+				if (aCon is User _con)
+				{
+					<span class="point" @onclick="() => EditUserAsync(_con.UserName)">@_con.FullName</span>
+				}
+			}
+		</Template>
+	</GridColumn>
+	<GridColumn Field="@nameof(User.EmailAddress)" HeaderText="Email" Width="30%" />
+	<GridColumn Field="@nameof(User.UserName)" HeaderText="ID" IsPrimaryKey="true" Visible="true" Width="0" />
+	<GridColumn Field="@nameof(User.Role)" HeaderText="Role" Width="15%" />
+	<GridColumn Field="@nameof(User.Status)" HeaderText="Status" Width="15%">
+		<Template Context="aCon">
+			@{
+				if (aCon is User _con)
+				{
+					<span>@(_con.Status)</span>
+				}
+			}
+		</Template>
+	</GridColumn>
+	<GridColumn Width="10%">
+		<Template Context="aCon">
+			@{
+				if (aCon is User _con)
+				{
+					<SfButton Content="" IconCss="editIcon" @onclick="() => EditUserAsync(_con.UserName)" title="Edit Title" />
+					<SfButton Content="" IconCss="@(_con.Status == "Active" ? "statusOnIcon" : "statusOffIcon")" @onclick="() => ToggleMethod(_con.UserName, _con.StatusEnabled)"
+							  title="@($"{(_con.StatusEnabled ? "Disable" : "Enable")} User")" />
+				}
+			}
+		</Template>
+	</GridColumn>
+</AdminGrid>
+
+<UserDialog HeaderString="@($"{Title} User")" Model="UserRecordClone" @ref="DialogUser" RolesList="Roles" Save="Save" />

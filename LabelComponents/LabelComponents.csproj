@@ -1,0 +1,84 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <PropertyGroup Label="Globals">
+    <SccProjectName>SAK</SccProjectName>
+    <SccProvider>SAK</SccProvider>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccLocalPath>SAK</SccLocalPath>
+    <Configurations>Debug;Release;India;US</Configurations>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
+    <EnableNETAnalyzers>False</EnableNETAnalyzers>
+    <Platforms>AnyCPU;x64</Platforms>
+	  <StaticWebAssetProjectMode>Default</StaticWebAssetProjectMode>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <NoWarn>1701;1702;BL0007</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='US|AnyCPU'">
+    <NoWarn>1701;1702;BL0007</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='India|AnyCPU'">
+    <NoWarn>1701;1702;BL0007</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <NoWarn>1701;1702;BL0007</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='US|x64'">
+    <NoWarn>1701;1702;BL0007</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='India|x64'">
+    <NoWarn>1701;1702;BL0007</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <NoWarn>1701;1702;BL0007</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <NoWarn>1701;1702;BL0007</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="LabelComponents.csproj.vspscc" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Syncfusion.Blazor.Buttons" Version="23.2.7" />
+    <PackageReference Include="Syncfusion.Blazor.Calendars" Version="23.2.7" />
+    <PackageReference Include="Syncfusion.Blazor.Charts" Version="23.2.7" />
+    <PackageReference Include="Syncfusion.Blazor.Data" Version="23.2.7" />
+    <PackageReference Include="Syncfusion.Blazor.DropDowns" Version="23.2.7" />
+    <PackageReference Include="Syncfusion.Blazor.Grid" Version="23.2.7" />
+    <PackageReference Include="Syncfusion.Blazor.Inputs" Version="23.2.7" />
+    <PackageReference Include="Syncfusion.Blazor.Layouts" Version="23.2.7" />
+    <PackageReference Include="Syncfusion.Blazor.Popups" Version="23.2.7" />
+    <PackageReference Include="Syncfusion.Blazor.RichTextEditor" Version="23.2.7" />
+    <PackageReference Include="Syncfusion.Blazor.Schedule" Version="23.2.7" />
+    <PackageReference Include="Syncfusion.Blazor.SfPdfViewer" Version="23.2.7" />
+    <PackageReference Include="Syncfusion.Blazor.Themes" Version="23.2.7" />
+    <PackageReference Include="Syncfusion.Blazor.WordProcessor" Version="23.2.7" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ProfSvc_Classes\ProfSvc_Classes.csproj" />
+  </ItemGroup>
+
+
+
+</Project>

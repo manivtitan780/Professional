@@ -1,0 +1,132 @@
+﻿@page "/company"
+@using Microsoft.IdentityModel.Tokens
+@using AnimationEffect = Syncfusion.Blazor.AnimationEffect
+@layout ProfSvcLayout
+@inject IJSRuntime Runtime;
+
+<Header RoleID="@RoleID" ViewCandidate="UserRights.ViewCandidate" ViewCompany="UserRights.ViewCompany" ViewRequisition="UserRights.ViewRequisition"></Header>
+<div class="gridHolder">
+	<GridHeader ACBValue="@AutocompleteValue" Add="() => EditCompany(0)" AdvancedSearch="AdvancedSearch" AutocompleteMethod="SearchCompany" AutocompleteParameterName="@("@Company")"
+				ControlID="numericPage" CurrentPage="_currentPage" DisplayAdd="@DisplayAdd" DisplaySubmit="none" DropdownBindValue="@SearchModel.ItemCount" Entity="Company" FilterGrid="FilterGrid"
+				FirstClick="FirstClick" LastClick="LastClick" NextClick="NextClick" PageCount="PageCount" PageNumberChanged="PageNumberChanged" PreviousClick="PreviousClick"
+				RefreshGrid="RefreshGrid" ValueChange="ChangeItemCount" Width="720px" />
+	<SfGrid AllowMultiSorting="false" AllowPaging="false" AllowSorting="true" EnableHover="true" EnableStickyHeader="true" Height="100%" @ref="Grid" TValue="Company" Width="99.75%">
+		<GridSelectionSettings EnableToggle="false" Mode="SelectionMode.Row" Type="SelectionType.Single" />
+		<SfDataManager Adaptor="Adaptors.CustomAdaptor" AdaptorInstance="@typeof(CompanyAdaptor)" Key="ID" />
+		<GridEvents DataBound="DataHandler" DetailDataBound="DetailDataBind" OnActionBegin="OnActionBegin" TValue="Company" />@* OnActionComplete="OnActionComplete" *@
+		<GridColumns>
+			<GridColumn Field="@nameof(Company.ID)" HeaderText="ID" IsPrimaryKey="true" Visible="false" Width="0" />
+			<GridSortSettings AllowUnsort="false">
+				<GridSortColumns>
+					<GridSortColumn Direction="@SortDirectionProperty" Field="@SortField"></GridSortColumn>
+				</GridSortColumns>
+			</GridSortSettings>
+			<GridColumn AllowSorting="true" Field="@nameof(Company.CompanyName)" HeaderText="Name" Width="20%" />
+			<GridColumn AllowSorting="false" HeaderText="Email" Width="18%">
+				<Template Context="aCon">
+					@{
+						if (aCon is Company _con)
+						{
+							<span>
+								@(_con.EmailAddress)
+							</span>
+						}
+					}
+				</Template>
+			</GridColumn>
+			<GridColumn AllowSorting="true" Field="@nameof(Company.Phone)" HeaderText="Phone" Width="15%">
+				<Template Context="aCon">
+					@{
+						if (aCon is Company _con)
+						{
+							<span>
+								@(_con.Phone?.StripPhoneNumber().FormatPhoneNumber())
+							</span>
+						}
+					}
+				</Template>
+			</GridColumn>
+			<GridColumn AllowSorting="true" Field="@nameof(Company.StateID)" HeaderText="Location" Width="47%">
+				<Template Context="aCon">
+					@{
+						if (aCon is Company _con)
+						{
+							<span>
+								@(($"{(_con.Address.IsNullOrEmpty() ? "" : _con.Address)}, {(_con.City.IsNullOrEmpty() ? "" : _con.City)}, {(_con.State.IsNullOrEmpty() ? "" : _con.State)}, " +
+								   $"{(_con.ZipCode.IsNullOrEmpty() ? "" : _con.ZipCode)}").RemoveLeadingComma())
+							</span>
+						}
+					}
+				</Template>
+			</GridColumn>
+		</GridColumns>
+		<GridTemplates Context="context">
+			<DetailTemplate>
+				@* Add Buttons Start *@
+				@{
+					if (context is Company _con)
+					{
+						<SfSpeedDial CloseIconCss="speeddial-icons speeddial-icon-close" IsModal="true" ItemClicked="SpeedDialItemClicked" Mode="SpeedDialMode.Linear"
+									 OpenIconCss="speeddial-icons speeddial-icon-menu" Position="FabPosition.TopRight" Target="#tabCompany" title="Action" Visible="@(UserRights.EditCompany && _con.Owner == User)">
+							<SpeedDialAnimationSettings Duration="150"></SpeedDialAnimationSettings>
+							<SpeedDialRadialSettings Direction="RadialDirection.AntiClockwise" EndAngle="360" OffSet="100px" StartAngle="180" />
+							<SpeedDialItems>
+								<SpeedDialItem IconCss="speeddial-icons speeddial-icon-edit" ID="itemEditCompany" Text="Edit Company" Title="Edit Company" />
+								<SpeedDialItem IconCss="speeddial-icons speeddial-icon-contact" ID="itemAddContact" Text="Add Contact" Title="Add Contact" />
+								<SpeedDialItem IconCss="speeddial-icons speeddial-icon-document" ID="itemAddDocument" Text="Add Attachment" Title="Add Document" />
+							</SpeedDialItems>
+						</SfSpeedDial>
+					}
+				}
+				@* Add Buttons End *@
+				<SfTab CssClass="e-fill" Height="540" ID="tabCompany" LoadOn="ContentLoad.Init" SelectedItem="_selectedTab" ShowCloseButton="false" Width="95%">
+					<TabAnimationSettings>
+						<TabAnimationPrevious Effect="AnimationEffect.None"></TabAnimationPrevious>
+						<TabAnimationNext Effect="AnimationEffect.None"></TabAnimationNext>
+						<TabEvents Selected="TabSelected"></TabEvents>
+					</TabAnimationSettings>
+					<TabItems>
+						<TabItem>
+							<ChildContent>
+								<TabHeader Text="Company Info" />
+							</ChildContent>
+							<ContentTemplate>
+								<BasicInfoCompanyPanel Address="Address" DeleteContact="DeleteContact" EditContact="EditContact" Model="_companyDetailsObject"
+													   ModelContact="_companyContactsObject" @ref="ContactPanel" UserName="@LoginCookyUser.UserID" />
+							</ContentTemplate>
+						</TabItem>
+						<TabItem>
+							<ChildContent>
+								<TabHeader Text="Documents" />
+							</ChildContent>
+							<ContentTemplate>
+								<DocumentsCompanyPanel DeleteDocument="DeleteDocument" DownloadDocument="DownloadDocument" EditRights="@UserRights.EditCompany" Model="@_companyDocumentsObject" @ref="DocumentsPanel" User="@User" />
+							</ContentTemplate>
+						</TabItem>
+						<TabItem>
+							<ChildContent>
+								<TabHeader Text="Requisitions" />
+							</ChildContent>
+							<ContentTemplate>
+								<CompanyRequisitions CompaniesList="CompaniesList" CompanyContacts="CompanyContacts" Education="_education" Eligibility="_eligibility" Experience="_experience"
+													 JobOptions="_jobOptions" Model="_companyRequisitionsObject" Recruiters="_recruiters" RoleID="@RoleID" Skills="_skills"
+													 States="_states" StatusCodes="_statusCodes" User="@LoginCookyUser.UserID" Workflows="_workflows" />
+							</ContentTemplate>
+						</TabItem>
+					</TabItems>
+					<SfSpinner CssClass="spinnerHeight" @ref="@Spinner" Type="SpinnerType.Fabric" ZIndex="12000" />@**@
+				</SfTab>
+			</DetailTemplate>
+		</GridTemplates>
+	</SfGrid>
+
+	<EditCompanyDialog Model="_companyDetailsObjectClone" @ref="DialogEditCompany" Save="SaveCompany" States="_states" Title="@Title" />
+
+	<EditContactDialog Model="SelectedContactClone" @ref="DialogEditContact" Save="SaveCompanyContact" States="_states" Title="@Title" TitleTypes="_titles" />
+
+	<AddCompanyDocument AfterUpload="AfterDocument" BeforeUpload="BeforeDocument" FileSelect="FileSelect" Model="NewDocument" OnFileUpload="UploadDocument" @ref="DialogDocument" Save="SaveDocument" /> @**@
+
+	<AdvancedCompanySearch Model="SearchModelClone" @ref="DialogSearch" Search="SearchCompany" StateDropDown="_statesCopy" />
+
+	<GridFooter AllAlphabet="AllAlphabet" AlphabetMethod="SetAlphabet" ClearFilter="ClearFilter" Count="Count" EndRecord="EndRecord" Name="@SearchModel.CompanyName" StartRecord="StartRecord" />
+</div>

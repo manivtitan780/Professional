@@ -1,0 +1,47 @@
+﻿<div class="divGridFooter">
+	<div style="display: flex">
+		@{
+			if (!IsRequisition)
+			{
+				<div style="flex: 1; padding-left: 15px; text-align: left;">
+					@{
+						for (char _alphabet = 'A'; _alphabet <= 'Z'; _alphabet++)
+						{
+							char _localAlpha = _alphabet;
+							string _additionalClass = _localAlpha.ToString() == Name ? "buttonAlphabet selectedAlphabet" : "buttonAlphabet";
+							<SfButton CssClass="@_additionalClass" @onclick="() => AlphabetMethod.InvokeAsync(_localAlpha)">
+								@_localAlpha
+							</SfButton>
+						}
+					}
+					<SfButton CssClass="buttonAlphabetClear" @onclick="AllAlphabet" style="width: 30px">All</SfButton>
+					<SfButton CssClass="buttonAlphabetClear" @onclick="ClearFilter">Clear</SfButton>
+				</div>
+			}
+			else
+			{
+				<div style="flex: 1; padding-left: 15px; text-align: left; margin-top: -3px;">
+					@{
+						if (StatusLinks.Count > 0)
+						{
+							foreach (KeyValues _statusLink in StatusLinks)
+							{
+								<SfButton CssClass="buttonAlphabet linkDisplay" @onclick="() => LinkClicked.InvokeAsync(_statusLink.Key)">
+									@_statusLink.Value
+								</SfButton>
+							}
+							<SfButton CssClass="buttonAlphabet linkDisplay" @onclick="() => ClearLinkClicked.InvokeAsync()">Clear Statuses</SfButton>
+							<SfButton CssClass="buttonAlphabetClear" @onclick="ClearFilter">Clear</SfButton>
+						}
+					}
+				</div>
+			}
+		}
+		<div style="width: 520px">
+			Items
+			<b>@StartRecord</b> to
+			<b>@EndRecord</b> of
+			<b>@Count</b> rows
+		</div>
+	</div>
+</div>

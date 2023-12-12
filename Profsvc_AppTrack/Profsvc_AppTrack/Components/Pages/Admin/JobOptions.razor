@@ -1,0 +1,31 @@
+@page "/Admin/JobOptions"
+@layout ProfSvcLayout
+
+<AdminGrid AdaptorInstance="@typeof(AdminJobOptionAdaptor)" AddMethod="() => EditJobOption()" AutocompleteMethod="Admin_SearchJobOption" AutocompleteParameter="@("@JobOption")" Count="@Count" DataHandler="DataHandler"
+		   Entity="JobOption" FilterGrid="FilterGrid" HeaderContentPlural="Job Options" HeaderContentSingular="Job Option" Key="Code" Page="Job Option" @ref="AdminGrid" RefreshGrid="RefreshGrid" RoleID="@RoleID"
+		   RowSelected="RowSelected" ShowConfirm="false" TValue="JobOption">
+	<GridColumn HeaderText="Job Option" Width="30%">
+		<Template Context="aCon">
+			@{
+				if (aCon is JobOption _con)
+				{
+					<span class="point" @onclick="() => EditJobOption(_con.Code)">@_con.Option</span>
+				}
+			}
+		</Template>
+	</GridColumn>
+	<GridColumn Field="@nameof(JobOption.Code)" HeaderText="Last Updated" IsPrimaryKey="true" Visible="false" Width="40%" />
+	<GridColumn Field="@nameof(JobOption.Description)" HeaderText="Description" Width="45%" />
+	<GridColumn Field="@nameof(JobOption.UpdatedDate)" Format="d" HeaderText="Last Updated" Width="15%" />
+	<GridColumn Width="10%">
+		<Template Context="bCon">
+			@{
+				if (bCon is JobOption _con)
+				{
+					<SfButton Content="" IconCss="editIcon" OnClick="() => EditJobOption(_con.Code)" />
+				}
+			}
+		</Template>
+	</GridColumn>
+</AdminGrid>
+<JobOptionDialog HeaderString="@($"{Title} Job Option")" Model="JobOptionsRecordClone" @ref="DialogJobOption" Save="SaveJobOption" TaxTerm="TaxTermKeyValues" />

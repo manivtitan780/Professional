@@ -1,0 +1,25 @@
+﻿<SfDialog Header="@HeaderString" Height="600px" IsModal="true" MinHeight="300px" @ref="Dialog" Target="#divTarget" Visible="false" Width="700px">
+    <ChildContent>
+        <SfSpinner CssClass="spinnerHeight" @ref="Spinner" Type="SpinnerType.Fabric" ZIndex="12000" />
+        <DialogPositionData X="right" Y="center"></DialogPositionData>
+        <DialogAnimationSettings Effect="DialogEffect.SlideRight"></DialogAnimationSettings>
+        <DialogEvents OnOpen="OpenDialog"></DialogEvents>
+        <EditForm Model="@Model" OnValidSubmit="SaveWorkflow" @ref="EditWorkflowForm">
+            <FluentValidationValidator />
+            <div class="divContainerTable">
+                <TextBoxControl @bind-Value="@(Model.Step)" @bind-Value:event="ValueChanged" CreateDivTag="true" CreateTooltip="true" ID="textText" MaxLength="3" MinLength="1" Multiline="false" Placeholder="Step"
+                                Readonly="@(HeaderString.Contains("Edit"))" ValidationMessage="@(() => Model.Step)" />
+                <MultiSelectControl @bind-Value="@(Model.Next)" @bind-Value:event="ValueChanged" CreateDivTag="true" CreateTooltip="false" DataSource="Steps"
+                                    FilterBarPlaceholder="Search Steps&hellip;" ID="multiNext" KeyField="Key" Placeholder="Select Step(s)" TItem="KeyValues" TValue="string"
+                                    ValueField="Value" />
+                <SwitchControl @bind-BindValue="@(Model.IsLast)" ID="checkedIsLast" OffLabel="NO" OnLabel="YES" Placeholder="Is Last Step?" />
+                <MultiSelectControl @bind-Value="@(Model.RoleIDs)" @bind-Value:event="ValueChanged" CreateDivTag="true" CreateTooltip="true" DataSource="RolesList"
+                                    FilterBarPlaceholder="Search Roles&hellip;" ID="multiRole" KeyField="Key" Placeholder="Select Role(s)" TItem="KeyValues" TValue="string"
+                                    ValueField="Value" ValidationMessage="@(() => Model.RoleIDs)" />
+                <SwitchControl @bind-BindValue="@(Model.Schedule)" ID="checkedIsSchedule" OffLabel="NO" OnLabel="YES" Placeholder="Has Schedule?" />
+                <SwitchControl @bind-BindValue="@(Model.AnyStage)" ID="checkedAnyStage" OffLabel="NO" OnLabel="YES" Placeholder="Show in All Steps?" />
+                <DialogFooter Cancel="Cancel" CancelMethod="CancelWorkflow" @ref="DialogFooter" Save="Save" />
+            </div>
+        </EditForm>
+    </ChildContent>
+</SfDialog>

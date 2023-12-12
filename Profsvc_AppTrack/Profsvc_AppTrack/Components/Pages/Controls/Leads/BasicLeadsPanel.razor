@@ -1,0 +1,22 @@
+﻿<div class="containerBox cbLeads" style="height: 242px">
+	<div>
+		<PanelText Label="Company Name" Text="@Model.Company" />
+		<PanelText Label="Contact Name" Text="@($"{Model.FirstName} {Model.LastName}")" />
+		<PanelText IsEmail="true" Label="Email Address" Text="@Model.Email" />
+		<PanelText IsTel="true" Label="Phone Number" Text="@Model.Phone" />
+		<PanelText Label="Adress" MarkupText="ShowAddress()" />
+		<PanelText Label="Created By" Text="@($"{Model.CreatedBy} [{Model.CreatedDate.CultureDate()}]")" />
+	</div>
+	<div>
+		<PanelText Label="Website" Text="@Model.Website" />
+        <PanelText Label="Source" Text="@Model.LeadSource" />
+        <PanelText Label="Industry" Text="@Model.LeadIndustry" />
+		<PanelText IntValue="@Model.NoOfEmployees" Label="No. of Employees" />
+		<PanelText DecimalValue="@Model.Revenue" FormatCurrency="true" Label="Revenue" />
+		<PanelText Label="Status" Text="@Model.LeadStatus" />
+		<PanelText Label="Updated By" Text="@($"{Model.UpdatedBy} [{Model.UpdatedDate.CultureDate()}]")" />
+	</div>
+	<div>
+		<PanelText Label="Description" MarkupText="Model.Description.ToMarkupString()" ID="divDescription" />
+	</div>
+</div>

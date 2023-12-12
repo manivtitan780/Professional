@@ -1,0 +1,43 @@
+@page "/Admin/Education"
+@layout ProfSvcLayout
+
+<AdminGrid AdaptorInstance="@typeof(AdminEducationAdaptor)" AddMethod="() => EditEducation()" AutocompleteMethod="Admin_SearchEducation" AutocompleteParameter="@("@Education")" Count="@Count" DataHandler="DataHandler"
+		   Entity="Education" FilterGrid="FilterGrid" HeaderContentPlural="Education" HeaderContentSingular="Education" Height="140px" Key="ID" Page="Education" @ref="AdminGrid" RefreshGrid="RefreshGrid" RoleID="@RoleID"
+		   RowSelected="RowSelected" ToggleMethod="() => ToggleStatus(_selectedID)" ToggleValue="_toggleValue" TValue="AdminList" Width="386px">
+	<GridColumn HeaderText="Education" Width="50%">
+		<Template Context="aCon">
+			@{
+				if (aCon is AdminList _con)
+				{
+					<span class="point" @onclick="() => EditEducation(_con.ID)">@_con.Text</span>
+				}
+			}
+		</Template>
+	</GridColumn>
+	<GridColumn Field="@nameof(AdminList.ID)" HeaderText="Last Updated" IsPrimaryKey="true" Visible="false" Width="0" />
+	<GridColumn Field="@nameof(AdminList.Enabled)" HeaderText="Status" Width="10%">
+		<Template Context="aCon">
+			@{
+				if (aCon is AdminList _con)
+				{
+					<span>@(_con.IsEnabled ? "Active" : "Inactive")</span>
+				}
+			}
+		</Template>
+	</GridColumn>
+	<GridColumn Field="@nameof(AdminList.UpdatedDate)" Format="d" HeaderText="Last Updated" Width="15%" />
+	<GridColumn Field="@nameof(AdminList.CreatedDate)" HeaderText="Created" Width="15%" />
+	<GridColumn Width="10%">
+		<Template Context="aCon">
+			@{
+				if (aCon is AdminList _con)
+				{
+					<SfButton Content="" IconCss="editIcon" @onclick="() => EditEducation(_con.ID)" title="Edit Education" />
+					<SfButton Content="" IconCss="@(_con.IsEnabled ? "statusOnIcon" : "statusOffIcon")" @onclick="() => ToggleMethod(_con.ID, _con.IsEnabled)"
+							  title="@($"{(_con.IsEnabled ? "Disable" : "Enable")} Education")" />
+				}
+			}
+		</Template>
+	</GridColumn>
+</AdminGrid>
+<AdminListDialog HeaderString="@($"{Title} Education")" Model="EducationRecordClone" Placeholder="Education" @ref="AdminDialog" Save="SaveEducation" />

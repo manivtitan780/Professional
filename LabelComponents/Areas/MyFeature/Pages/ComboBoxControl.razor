@@ -1,0 +1,27 @@
+﻿@using FilterType = FilterType;
+@typeparam TValue;
+		   @typeparam TItem;
+
+@if (CreateDivTag)
+{
+	<div class="divFlex">
+		<div class="divFlexLabel">
+			<label class="labelStatus" for="@ID">@(Placeholder.NullOrWhiteSpace() ? "&nbsp;" : Placeholder.EndsWith(":") ? Placeholder : $"{Placeholder}:")</label>
+		</div>
+		<div class="divFlexSmall">
+			<SfComboBox AllowFiltering="@AllowFilter" DataSource="@DataSource" FilterBarPlaceholder="Search..." FilterType="FilterType.Contains" ID="@ID" Query="@Query" @ref="Combo" ShowClearButton="@ShowClearButton"
+						TItem="TItem" TValue="TValue" Value="@Value" ValueChanged="@ValueChanged" ValueExpression="@ValueExpression" Width="@Width">
+				<ComboBoxEvents TItem="TItem" TValue="TValue" ValueChange="@ComboValueChange" />
+				<ComboBoxFieldSettings Text="@TextField" Value="@ValueField" />
+			</SfComboBox>
+		</div>
+	</div>
+}
+else
+{
+	<SfComboBox AllowFiltering="@AllowFilter" DataSource="@DataSource" FilterBarPlaceholder="Search..." FilterType="FilterType.Contains" ID="@ID" Query="@Query" @ref="Combo" ShowClearButton="@ShowClearButton" TItem="TItem"
+				TValue="TValue" Value="@Value" ValueChanged="@ValueChanged" ValueExpression="@ValueExpression" Width="@Width">
+		<ComboBoxEvents TItem="TItem" TValue="TValue" ValueChange="@ComboValueChange" />
+		<ComboBoxFieldSettings Text="@TextField" Value="@ValueField" />
+	</SfComboBox>
+}

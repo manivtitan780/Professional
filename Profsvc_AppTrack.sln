@@ -1,0 +1,157 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34316.72
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Profsvc_AppTrack", "Profsvc_AppTrack\Profsvc_AppTrack\Profsvc_AppTrack.csproj", "{DD40F8C5-079B-4C6C-8819-047AC4BC347D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Extensions", "Extensions\Extensions.csproj", "{AE799E6A-DBCF-485B-A6C2-DA50AEC24E77}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GMailService", "GMailService\GMailService.csproj", "{662D0073-6CD9-4A11-B894-9BA09965CA14}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LabelComponents", "LabelComponents\LabelComponents.csproj", "{ECAE9C5E-397E-4C0F-A261-24267D3BE9F8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProfSvc_Classes", "ProfSvc_Classes\ProfSvc_Classes.csproj", "{40B4A8AA-D86B-472F-8897-C05EC8CCE8A6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProfSvc_WebAPI", "ProfSvc_WebAPI\ProfSvc_WebAPI.csproj", "{EDBB0883-B396-4295-93E8-FB6B6ECB0A56}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		India|Any CPU = India|Any CPU
+		India|x64 = India|x64
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+		US|Any CPU = US|Any CPU
+		US|x64 = US|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DD40F8C5-079B-4C6C-8819-047AC4BC347D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD40F8C5-079B-4C6C-8819-047AC4BC347D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DD40F8C5-079B-4C6C-8819-047AC4BC347D}.Debug|x64.ActiveCfg = Debug|x64
+		{DD40F8C5-079B-4C6C-8819-047AC4BC347D}.Debug|x64.Build.0 = Debug|x64
+		{DD40F8C5-079B-4C6C-8819-047AC4BC347D}.India|Any CPU.ActiveCfg = India|Any CPU
+		{DD40F8C5-079B-4C6C-8819-047AC4BC347D}.India|Any CPU.Build.0 = India|Any CPU
+		{DD40F8C5-079B-4C6C-8819-047AC4BC347D}.India|x64.ActiveCfg = India|x64
+		{DD40F8C5-079B-4C6C-8819-047AC4BC347D}.India|x64.Build.0 = India|x64
+		{DD40F8C5-079B-4C6C-8819-047AC4BC347D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DD40F8C5-079B-4C6C-8819-047AC4BC347D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DD40F8C5-079B-4C6C-8819-047AC4BC347D}.Release|x64.ActiveCfg = Release|x64
+		{DD40F8C5-079B-4C6C-8819-047AC4BC347D}.Release|x64.Build.0 = Release|x64
+		{DD40F8C5-079B-4C6C-8819-047AC4BC347D}.US|Any CPU.ActiveCfg = US|Any CPU
+		{DD40F8C5-079B-4C6C-8819-047AC4BC347D}.US|Any CPU.Build.0 = US|Any CPU
+		{DD40F8C5-079B-4C6C-8819-047AC4BC347D}.US|x64.ActiveCfg = US|Any CPU
+		{DD40F8C5-079B-4C6C-8819-047AC4BC347D}.US|x64.Build.0 = US|Any CPU
+		{AE799E6A-DBCF-485B-A6C2-DA50AEC24E77}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE799E6A-DBCF-485B-A6C2-DA50AEC24E77}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE799E6A-DBCF-485B-A6C2-DA50AEC24E77}.Debug|x64.ActiveCfg = Debug|x64
+		{AE799E6A-DBCF-485B-A6C2-DA50AEC24E77}.Debug|x64.Build.0 = Debug|x64
+		{AE799E6A-DBCF-485B-A6C2-DA50AEC24E77}.India|Any CPU.ActiveCfg = India|Any CPU
+		{AE799E6A-DBCF-485B-A6C2-DA50AEC24E77}.India|Any CPU.Build.0 = India|Any CPU
+		{AE799E6A-DBCF-485B-A6C2-DA50AEC24E77}.India|x64.ActiveCfg = India|x64
+		{AE799E6A-DBCF-485B-A6C2-DA50AEC24E77}.India|x64.Build.0 = India|x64
+		{AE799E6A-DBCF-485B-A6C2-DA50AEC24E77}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE799E6A-DBCF-485B-A6C2-DA50AEC24E77}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE799E6A-DBCF-485B-A6C2-DA50AEC24E77}.Release|x64.ActiveCfg = Release|x64
+		{AE799E6A-DBCF-485B-A6C2-DA50AEC24E77}.Release|x64.Build.0 = Release|x64
+		{AE799E6A-DBCF-485B-A6C2-DA50AEC24E77}.US|Any CPU.ActiveCfg = US|Any CPU
+		{AE799E6A-DBCF-485B-A6C2-DA50AEC24E77}.US|Any CPU.Build.0 = US|Any CPU
+		{AE799E6A-DBCF-485B-A6C2-DA50AEC24E77}.US|x64.ActiveCfg = US|x64
+		{AE799E6A-DBCF-485B-A6C2-DA50AEC24E77}.US|x64.Build.0 = US|x64
+		{662D0073-6CD9-4A11-B894-9BA09965CA14}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{662D0073-6CD9-4A11-B894-9BA09965CA14}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{662D0073-6CD9-4A11-B894-9BA09965CA14}.Debug|x64.ActiveCfg = Debug|x64
+		{662D0073-6CD9-4A11-B894-9BA09965CA14}.Debug|x64.Build.0 = Debug|x64
+		{662D0073-6CD9-4A11-B894-9BA09965CA14}.India|Any CPU.ActiveCfg = India|Any CPU
+		{662D0073-6CD9-4A11-B894-9BA09965CA14}.India|Any CPU.Build.0 = India|Any CPU
+		{662D0073-6CD9-4A11-B894-9BA09965CA14}.India|x64.ActiveCfg = India|x64
+		{662D0073-6CD9-4A11-B894-9BA09965CA14}.India|x64.Build.0 = India|x64
+		{662D0073-6CD9-4A11-B894-9BA09965CA14}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{662D0073-6CD9-4A11-B894-9BA09965CA14}.Release|Any CPU.Build.0 = Release|Any CPU
+		{662D0073-6CD9-4A11-B894-9BA09965CA14}.Release|x64.ActiveCfg = Release|x64
+		{662D0073-6CD9-4A11-B894-9BA09965CA14}.Release|x64.Build.0 = Release|x64
+		{662D0073-6CD9-4A11-B894-9BA09965CA14}.US|Any CPU.ActiveCfg = US|Any CPU
+		{662D0073-6CD9-4A11-B894-9BA09965CA14}.US|Any CPU.Build.0 = US|Any CPU
+		{662D0073-6CD9-4A11-B894-9BA09965CA14}.US|x64.ActiveCfg = US|x64
+		{662D0073-6CD9-4A11-B894-9BA09965CA14}.US|x64.Build.0 = US|x64
+		{ECAE9C5E-397E-4C0F-A261-24267D3BE9F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ECAE9C5E-397E-4C0F-A261-24267D3BE9F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ECAE9C5E-397E-4C0F-A261-24267D3BE9F8}.Debug|x64.ActiveCfg = Debug|x64
+		{ECAE9C5E-397E-4C0F-A261-24267D3BE9F8}.Debug|x64.Build.0 = Debug|x64
+		{ECAE9C5E-397E-4C0F-A261-24267D3BE9F8}.India|Any CPU.ActiveCfg = India|Any CPU
+		{ECAE9C5E-397E-4C0F-A261-24267D3BE9F8}.India|Any CPU.Build.0 = India|Any CPU
+		{ECAE9C5E-397E-4C0F-A261-24267D3BE9F8}.India|x64.ActiveCfg = India|x64
+		{ECAE9C5E-397E-4C0F-A261-24267D3BE9F8}.India|x64.Build.0 = India|x64
+		{ECAE9C5E-397E-4C0F-A261-24267D3BE9F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ECAE9C5E-397E-4C0F-A261-24267D3BE9F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ECAE9C5E-397E-4C0F-A261-24267D3BE9F8}.Release|x64.ActiveCfg = Release|x64
+		{ECAE9C5E-397E-4C0F-A261-24267D3BE9F8}.Release|x64.Build.0 = Release|x64
+		{ECAE9C5E-397E-4C0F-A261-24267D3BE9F8}.US|Any CPU.ActiveCfg = US|Any CPU
+		{ECAE9C5E-397E-4C0F-A261-24267D3BE9F8}.US|Any CPU.Build.0 = US|Any CPU
+		{ECAE9C5E-397E-4C0F-A261-24267D3BE9F8}.US|x64.ActiveCfg = US|x64
+		{ECAE9C5E-397E-4C0F-A261-24267D3BE9F8}.US|x64.Build.0 = US|x64
+		{40B4A8AA-D86B-472F-8897-C05EC8CCE8A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{40B4A8AA-D86B-472F-8897-C05EC8CCE8A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{40B4A8AA-D86B-472F-8897-C05EC8CCE8A6}.Debug|x64.ActiveCfg = Debug|x64
+		{40B4A8AA-D86B-472F-8897-C05EC8CCE8A6}.Debug|x64.Build.0 = Debug|x64
+		{40B4A8AA-D86B-472F-8897-C05EC8CCE8A6}.India|Any CPU.ActiveCfg = India|Any CPU
+		{40B4A8AA-D86B-472F-8897-C05EC8CCE8A6}.India|Any CPU.Build.0 = India|Any CPU
+		{40B4A8AA-D86B-472F-8897-C05EC8CCE8A6}.India|x64.ActiveCfg = India|x64
+		{40B4A8AA-D86B-472F-8897-C05EC8CCE8A6}.India|x64.Build.0 = India|x64
+		{40B4A8AA-D86B-472F-8897-C05EC8CCE8A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{40B4A8AA-D86B-472F-8897-C05EC8CCE8A6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{40B4A8AA-D86B-472F-8897-C05EC8CCE8A6}.Release|x64.ActiveCfg = Release|x64
+		{40B4A8AA-D86B-472F-8897-C05EC8CCE8A6}.Release|x64.Build.0 = Release|x64
+		{40B4A8AA-D86B-472F-8897-C05EC8CCE8A6}.US|Any CPU.ActiveCfg = US|Any CPU
+		{40B4A8AA-D86B-472F-8897-C05EC8CCE8A6}.US|Any CPU.Build.0 = US|Any CPU
+		{40B4A8AA-D86B-472F-8897-C05EC8CCE8A6}.US|x64.ActiveCfg = US|x64
+		{40B4A8AA-D86B-472F-8897-C05EC8CCE8A6}.US|x64.Build.0 = US|x64
+		{EDBB0883-B396-4295-93E8-FB6B6ECB0A56}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EDBB0883-B396-4295-93E8-FB6B6ECB0A56}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EDBB0883-B396-4295-93E8-FB6B6ECB0A56}.Debug|x64.ActiveCfg = Debug|x64
+		{EDBB0883-B396-4295-93E8-FB6B6ECB0A56}.Debug|x64.Build.0 = Debug|x64
+		{EDBB0883-B396-4295-93E8-FB6B6ECB0A56}.India|Any CPU.ActiveCfg = India|Any CPU
+		{EDBB0883-B396-4295-93E8-FB6B6ECB0A56}.India|Any CPU.Build.0 = India|Any CPU
+		{EDBB0883-B396-4295-93E8-FB6B6ECB0A56}.India|x64.ActiveCfg = India|x64
+		{EDBB0883-B396-4295-93E8-FB6B6ECB0A56}.India|x64.Build.0 = India|x64
+		{EDBB0883-B396-4295-93E8-FB6B6ECB0A56}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EDBB0883-B396-4295-93E8-FB6B6ECB0A56}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EDBB0883-B396-4295-93E8-FB6B6ECB0A56}.Release|x64.ActiveCfg = Release|x64
+		{EDBB0883-B396-4295-93E8-FB6B6ECB0A56}.Release|x64.Build.0 = Release|x64
+		{EDBB0883-B396-4295-93E8-FB6B6ECB0A56}.US|Any CPU.ActiveCfg = US|Any CPU
+		{EDBB0883-B396-4295-93E8-FB6B6ECB0A56}.US|Any CPU.Build.0 = US|Any CPU
+		{EDBB0883-B396-4295-93E8-FB6B6ECB0A56}.US|x64.ActiveCfg = US|x64
+		{EDBB0883-B396-4295-93E8-FB6B6ECB0A56}.US|x64.Build.0 = US|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {045DCDD5-02D3-418D-A2B1-009F88269FF8}
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 7
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://maniv.visualstudio.com/
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = Extensions\\Extensions.csproj
+		SccProjectName1 = Extensions
+		SccLocalPath1 = Extensions
+		SccProjectUniqueName2 = GMailService\\GMailService.csproj
+		SccProjectName2 = GMailService
+		SccLocalPath2 = GMailService
+		SccProjectUniqueName3 = LabelComponents\\LabelComponents.csproj
+		SccProjectName3 = LabelComponents
+		SccLocalPath3 = LabelComponents
+		SccProjectUniqueName4 = Profsvc_AppTrack\\Profsvc_AppTrack\\Profsvc_AppTrack.csproj
+		SccProjectName4 = Profsvc_AppTrack/Profsvc_AppTrack
+		SccLocalPath4 = Profsvc_AppTrack\\Profsvc_AppTrack
+		SccProjectUniqueName5 = ProfSvc_Classes\\ProfSvc_Classes.csproj
+		SccProjectName5 = ProfSvc_Classes
+		SccLocalPath5 = ProfSvc_Classes
+		SccProjectUniqueName6 = ProfSvc_WebAPI\\ProfSvc_WebAPI.csproj
+		SccProjectName6 = ProfSvc_WebAPI
+		SccLocalPath6 = ProfSvc_WebAPI
+	EndGlobalSection
+EndGlobal

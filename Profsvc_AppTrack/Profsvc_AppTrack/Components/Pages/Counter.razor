@@ -1,0 +1,92 @@
+﻿@page "/counter"
+@*@using Google.Apis.Services;
+@using GMailService;
+@using Google.Apis.Auth.OAuth2
+@using Google.Apis.Gmail.v1
+@using Google.Apis.Gmail.v1.Data;
+@using Syncfusion.Blazor.DropDowns
+*@<h1>Counter</h1>
+
+<p>Current count: @_currentCount</p>
+
+<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+<SfListBox Value="@value" DataSource="@vehicleData" TItem="KeyValues" TValue="string[]">
+	<ListBoxSelectionSettings ShowCheckbox="true" Mode="Syncfusion.Blazor.DropDowns.SelectionMode.Single"></ListBoxSelectionSettings>
+	<ListBoxFieldSettings Text="Key" Value="Value"></ListBoxFieldSettings>
+</SfListBox>
+@code {
+	private int _currentCount;
+
+	private string[] value = new string[]
+							 {
+								 "List-01"
+							 };
+
+	private List<KeyValues> vehicleData = new List<KeyValues>	
+										 {
+											 new KeyValues
+											 {
+												 Key = "Hennessey Venom", Value = "List-01"
+											 },
+											 new KeyValues
+											 {
+												 Key = "Bugatti Chiron", Value = "List-02"
+											 },
+											 new KeyValues
+											 {
+												 Key = "Bugatti Veyron Super Sport", Value = "List-03"
+											 },
+											 new KeyValues
+											 {
+												 Key = "SSC Ultimate Aero", Value = "List-04"
+											 },
+											 new KeyValues
+											 {
+												 Key = "Koenigsegg CCR", Value = "List-05"
+											 },
+											 new KeyValues
+											 {
+												 Key = "McLaren F1", Value = "List-06"
+											 },
+											 new KeyValues
+											 {
+												 Key = "Aston Martin One-77", Value = "List-07"
+											 },
+											 new KeyValues
+											 {
+												 Key = "Jaguar XJ220", Value = "List-08"
+											 },
+											 new KeyValues
+											 {
+												 Key = "McLaren P1", Value = "List-09"
+											 },
+											 new KeyValues
+											 {
+												 Key = "Ferrari LaFerrari", Value = "List-10"
+											 }
+										 };
+
+	private string Messages
+	{
+		get;
+		set;
+	}
+
+	private void IncrementCount()
+	{
+		_currentCount++;
+	//GMailUsers _users = new(Start.JsonPath, "maniv@titan-techs.com");
+	//List<string> _usersList = _users.GetUsers();
+	//Messages = _usersList.Aggregate("", (current, next) => current + $"<br/>{next}");
+	//List<string> _recipient = new List<string>();
+	//_recipient.Add("manivenkit@gmail.com");
+	//GMailSend _send = new GMailSend();
+	//_send.SendEmail(Start.JsonPath, "maniv@titan-techs.com", _recipient, "This is a test Message using Workspace", "<h1>Test</h1><p>Test Message</p>",null);
+	//foreach (string _s in _usersList)
+	//{
+	//	Messages += $"<br/>{_s}";
+	//}
+
+	}
+
+}

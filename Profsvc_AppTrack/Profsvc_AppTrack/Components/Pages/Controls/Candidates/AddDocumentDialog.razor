@@ -1,0 +1,24 @@
+﻿<SfDialog Header="Add New Document" Height="640px" IsModal="true" MinHeight="300px" @ref="Dialog" Target="#divTarget" Visible="false" Width="480px">
+	<ChildContent>
+		<SfSpinner CssClass="spinnerHeight" @ref="Spinner" Type="SpinnerType.Fabric" ZIndex="12000" />
+		<DialogPositionData X="right" Y="center"></DialogPositionData>
+		<DialogAnimationSettings Duration="500" Effect="DialogEffect.SlideRight"></DialogAnimationSettings>
+		<DialogEvents OnOpen="OpenDialog"></DialogEvents>
+		<EditForm Model="Model" OnValidSubmit="SaveDocumentDialog" @ref="EditDocumentForm">
+			<FluentValidationValidator />
+			<div class="divContainerTable">
+				<TextBoxControl @bind-Value="@(Model.Name)" @bind-Value:event="ValueChanged" ID="textName" MaxLength="255" MinLength="1" Multiline="false" Placeholder="Name"
+								ValidationMessage="@(() => Model.Name)" />
+				<TextBoxControl @bind-Value="@(Model.Notes)" @bind-Value:event="ValueChanged" ID="textNotes" MaxLength="2000" MinLength="1" Multiline="true" Placeholder="Notes" Rows="5"
+								ValidationMessage="@(() => Model.Notes)" />
+				<DropDownControl @bind-Value="@Model.DocumentTypeID" @bind-Value:event="ValueChanged" CreateDivTag="true" DataSource="DocumentTypes" ID="dropDocumentTypes" Placeholder="Document Type"
+								 TextField="Value" TItem="IntValues" TValue="int" ValueField="Key" />
+				<UploaderControl AfterUpload="AfterUpload" BeforeUpload="BeforeUpload" FileSelected="OnFileSelected" ID="uploadDocument" OnFileUpload="OnFileUpload" OnRemove="OnFileRemoved"
+								 Placeholder="Select a Document to upload" SetFlex="false">
+					<ValidationMessage For="() => Model.Files" />
+				</UploaderControl>
+			</div>
+			<DialogFooter CancelMethod="CancelDocumentDialog" @ref="DialogFooter" />
+		</EditForm>
+	</ChildContent>
+</SfDialog>

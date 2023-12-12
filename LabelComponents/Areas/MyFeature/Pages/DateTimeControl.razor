@@ -1,0 +1,35 @@
+﻿@if (CreateDivTag)
+{
+	<div class="divFlex">
+		<div class="divFlexLabel">
+			<label class="labelStatus" for="@ID">@(Placeholder.NullOrWhiteSpace() ? "&nbsp;" : Placeholder.EndsWith(":") ? Placeholder : $"{Placeholder}:")</label>
+		</div>
+		<div class="divFlexSmall">
+			<SfDateTimePicker CssClass="@CssClass" DayHeaderFormat="DayHeaderFormats.Abbreviated" Depth="CalendarView.Month" FirstDayOfWeek="1" FloatLabelType="FloatLabelType.Never" Format="MM/dd/yyyy hh:mm" ID="@ID" Max="@Max"
+							  Min="@Min" OnFocus="DTFocus" Placeholder="@Placeholder" Readonly="@Readonly" @ref="DateTimeBox" ShowClearButton="true" ShowTodayButton="true" TValue="DateTime" ValidateOnInput="true" Value="@Value"
+							  ValueChanged="ValueChanged" ValueExpression="@ValueExpression" Width="@Width" />
+			@if (CreateTooltip)
+			{
+				<SfTooltip CloseDelay="0" OnOpen="ToolTipOpen" OpenDelay="0" OpensOn="Hover" Position="Position.TopCenter" Target="@("#" + ID)" Width="100%" WindowCollision="true">
+					<ContentTemplate>
+						<ValidationMessage For="@ValidationMessage" />
+					</ContentTemplate>
+				</SfTooltip>
+			}
+		</div>
+	</div>
+}
+else
+{
+	<SfDateTimePicker CssClass="@CssClass" DayHeaderFormat="DayHeaderFormats.Abbreviated" Depth="CalendarView.Month" FirstDayOfWeek="1" FloatLabelType="FloatLabelType.Never" Format="MM/dd/yyyy hh:mm" ID="@ID" Max="@Max"
+					  Min="@Min" OnFocus="DTFocus" Placeholder="@Placeholder" Readonly="@Readonly" @ref="DateTimeBox" ShowClearButton="true" ShowTodayButton="true" TValue="DateTime" ValidateOnInput="true" Value="@Value"
+					  ValueChanged="ValueChanged" ValueExpression="@ValueExpression" Width="@Width" />
+	@if (CreateTooltip)
+	{
+		<SfTooltip CloseDelay="0" OnOpen="ToolTipOpen" OpenDelay="0" OpensOn="Hover" Position="Position.TopCenter" Target="@("#" + ID)" Width="100%" WindowCollision="true">
+			<ContentTemplate>
+				<ValidationMessage For="@ValidationMessage" />
+			</ContentTemplate>
+		</SfTooltip>
+	}
+}
