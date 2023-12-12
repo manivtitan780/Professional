@@ -19,9 +19,13 @@
 
 	<ItemGroup>
 		<Compile Remove="Components\Pages\Validation\**" />
+		<Compile Remove="log\**" />
 		<Content Remove="Components\Pages\Validation\**" />
+		<Content Remove="log\**" />
 		<EmbeddedResource Remove="Components\Pages\Validation\**" />
+		<EmbeddedResource Remove="log\**" />
 		<None Remove="Components\Pages\Validation\**" />
+		<None Remove="log\**" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -40,6 +44,10 @@
 		<Content Remove="Components\Pages\Home.razor" />
 		<Content Remove="Components\Pages\Index.razor" />
 		<Content Remove="Components\Pages\_Host.cshtml" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Remove="Profsvc_AppTrack.csproj.vspscc" />
 	</ItemGroup>
 
 	<ItemGroup>
