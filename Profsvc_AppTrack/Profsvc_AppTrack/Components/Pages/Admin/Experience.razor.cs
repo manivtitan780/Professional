@@ -3,17 +3,21 @@
 // /*****************************************
 // Copyright:           Titan-Techs.
 // Location:            Newtown, PA, USA
-// Solution:            ProfSvc_AppTrack
-// Project:             ProfSvc_AppTrack
+// Solution:            Profsvc_AppTrack
+// Project:             Profsvc_AppTrack
 // File Name:           Experience.razor.cs
 // Created By:          Narendra Kumaran Kadhirvelu, Jolly Joseph Paily, DonBosco Paily, Mariappan Raja
-// Created On:          09-17-2022 20:01
-// Last Updated On:     11-04-2023 20:33
+// Created On:          11-23-2023 19:53
+// Last Updated On:     12-13-2023 19:51
 // *****************************************/
 
 #endregion
 
+#region Using
+
 using AdminListDialog = Profsvc_AppTrack.Components.Pages.Admin.Controls.AdminListDialog;
+
+#endregion
 
 namespace Profsvc_AppTrack.Components.Pages.Admin;
 
@@ -205,7 +209,7 @@ public partial class Experience
     }
 
     /// <summary>
-    ///     Gets or sets the RoleID of the currently logged in user.
+    ///     Gets or sets the RoleID of the currently logged-in user.
     /// </summary>
     /// <remarks>
     ///     This property is used to store the RoleID of the user retrieved from the login information.
@@ -241,16 +245,13 @@ public partial class Experience
     /// <returns>
     ///     A Task representing the asynchronous operation.
     /// </returns>
-    private async Task DataHandler(object obj)
+    private Task DataHandler(object obj)
     {
-        await ExecuteMethod(async () =>
-                            {
-                                Count = AdminGrid.Grid.CurrentViewData.Count();
-                                if (Count > 0)
-                                {
-                                    await AdminGrid.Grid.SelectRowAsync(0);
-                                }
-                            });
+        return ExecuteMethod(() =>
+                             {
+                                 Count = AdminGrid.Grid.CurrentViewData.Count();
+                                 return Count > 0 ? AdminGrid.Grid.SelectRowAsync(0) : Task.CompletedTask;
+                             });
     }
 
     /// <summary>
@@ -264,40 +265,40 @@ public partial class Experience
     /// <returns>
     ///     A Task representing the asynchronous operation.
     /// </returns>
-    private async Task EditExperience(int id = 0)
+    private Task EditExperience(int id = 0)
     {
-        await ExecuteMethod(async () =>
-                            {
-                                List<AdminList> _selectedList = await AdminGrid.Grid.GetSelectedRecordsAsync();
-                                if (_selectedList.Any() && _selectedList.First().ID != id)
-                                {
-                                    int _index = await AdminGrid.Grid.GetRowIndexByPrimaryKeyAsync(id);
-                                    await AdminGrid.Grid.SelectRowAsync(_index);
-                                }
+        return ExecuteMethod(async () =>
+                             {
+                                 List<AdminList> _selectedList = await AdminGrid.Grid.GetSelectedRecordsAsync();
+                                 if (_selectedList.Any() && _selectedList.First().ID != id)
+                                 {
+                                     int _index = await AdminGrid.Grid.GetRowIndexByPrimaryKeyAsync(id);
+                                     await AdminGrid.Grid.SelectRowAsync(_index);
+                                 }
 
-                                if (id == 0)
-                                {
-                                    Title = "Add";
-                                    if (ExperienceRecordClone == null)
-                                    {
-                                        ExperienceRecordClone = new();
-                                    }
-                                    else
-                                    {
-                                        ExperienceRecordClone.Clear();
-                                    }
-                                }
-                                else
-                                {
-                                    Title = "Edit";
-                                    ExperienceRecordClone = ExperienceRecord.Copy();
-                                }
+                                 if (id == 0)
+                                 {
+                                     Title = "Add";
+                                     if (ExperienceRecordClone == null)
+                                     {
+                                         ExperienceRecordClone = new();
+                                     }
+                                     else
+                                     {
+                                         ExperienceRecordClone.Clear();
+                                     }
+                                 }
+                                 else
+                                 {
+                                     Title = "Edit";
+                                     ExperienceRecordClone = ExperienceRecord.Copy();
+                                 }
 
-                                ExperienceRecordClone.Entity = "Experience";
+                                 ExperienceRecordClone.Entity = "Experience";
 
-                                StateHasChanged();
-                                await AdminDialog.ShowDialog();
-                            });
+                                 StateHasChanged();
+                                 await AdminDialog.ShowDialog();
+                             });
     }
 
     /// <summary>
@@ -309,10 +310,7 @@ public partial class Experience
     /// <returns>
     ///     A task that represents the asynchronous operation.
     /// </returns>
-    private async Task ExecuteMethod(Func<Task> task)
-    {
-        await General.ExecuteMethod(_semaphore, task, Logger);
-    }
+    private Task ExecuteMethod(Func<Task> task) => General.ExecuteMethod(_semaphore, task, Logger);
 
     /// <summary>
     ///     This method is responsible for filtering the grid of the Experience page based on the experience criteria.
@@ -324,13 +322,13 @@ public partial class Experience
     ///     the value represents the filter value.
     /// </param>
     /// <returns>A Task representing the asynchronous operation.</returns>
-    private async Task FilterGrid(ChangeEventArgs<string, KeyValues> experience)
+    private Task FilterGrid(ChangeEventArgs<string, KeyValues> experience)
     {
-        await ExecuteMethod(async () =>
-                            {
-                                FilterSet(experience.Value);
-                                await AdminGrid.Grid.Refresh();
-                            });
+        return ExecuteMethod(() =>
+                             {
+                                 FilterSet(experience.Value);
+                                 return AdminGrid.Grid.Refresh();
+                             });
     }
 
     /// <summary>
@@ -398,9 +396,9 @@ public partial class Experience
     ///     - The injected JavaScript runtime.
     /// </remarks>
     /// <returns>A task that represents the asynchronous operation.</returns>
-    private async Task SaveExperience(EditContext context)
+    private Task SaveExperience(EditContext context)
     {
-        await ExecuteMethod(async () => { await General.SaveAdminListAsync("Admin_SaveExperience", "Experience", false, false, ExperienceRecordClone, AdminGrid.Grid, ExperienceRecord, JsRuntime); });
+        return ExecuteMethod(() => General.SaveAdminListAsync("Admin_SaveExperience", "Experience", false, false, ExperienceRecordClone, AdminGrid.Grid, ExperienceRecord, JsRuntime));
     }
 
     /// <summary>
@@ -414,21 +412,21 @@ public partial class Experience
     /// <returns>
     ///     A Task representing the asynchronous operation.
     /// </returns>
-    private async Task ToggleMethod(int id, bool enabled)
+    private Task ToggleMethod(int id, bool enabled)
     {
-        await ExecuteMethod(async () =>
-                            {
-                                _selectedID = id;
-                                _toggleValue = enabled ? (byte)2 : (byte)1;
-                                List<AdminList> _selectedList = await AdminGrid.Grid.GetSelectedRecordsAsync();
-                                if (_selectedList.Any() && _selectedList.First().ID != id)
-                                {
-                                    int _index = await AdminGrid.Grid.GetRowIndexByPrimaryKeyAsync(id);
-                                    await AdminGrid.Grid.SelectRowAsync(_index);
-                                }
+        return ExecuteMethod(async () =>
+                             {
+                                 _selectedID = id;
+                                 _toggleValue = enabled ? (byte)2 : (byte)1;
+                                 List<AdminList> _selectedList = await AdminGrid.Grid.GetSelectedRecordsAsync();
+                                 if (_selectedList.Any() && _selectedList.First().ID != id)
+                                 {
+                                     int _index = await AdminGrid.Grid.GetRowIndexByPrimaryKeyAsync(id);
+                                     await AdminGrid.Grid.SelectRowAsync(_index);
+                                 }
 
-                                await AdminGrid.DialogConfirm.ShowDialog();
-                            });
+                                 await AdminGrid.DialogConfirm.ShowDialog();
+                             });
     }
 
     /// <summary>
@@ -443,9 +441,9 @@ public partial class Experience
     ///     The status is toggled only if there is no ongoing toggle operation.
     ///     After the toggle operation, the grid is refreshed to reflect the changes.
     /// </remarks>
-    private async Task ToggleStatusAsync(int experienceID)
+    private Task ToggleStatusAsync(int experienceID)
     {
-        await ExecuteMethod(async () => { await General.PostToggleAsync("Admin_ToggleExperienceStatus", experienceID, "ADMIN", false, AdminGrid.Grid, runtime: JsRuntime); });
+        return ExecuteMethod(() => General.PostToggleAsync("Admin_ToggleExperienceStatus", experienceID, "ADMIN", false, AdminGrid.Grid, runtime: JsRuntime));
     }
 
     /// <summary>

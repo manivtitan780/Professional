@@ -207,7 +207,7 @@ public partial class Education
     }
 
     /// <summary>
-    ///     Gets or sets the RoleID of the currently logged in user.
+    ///     Gets or sets the RoleID of the currently logged-in user.
     /// </summary>
     /// <remarks>
     ///     This property is used to store the RoleID of the user retrieved from the login information.
@@ -247,16 +247,13 @@ public partial class Education
     /// <returns>
     ///     A Task representing the asynchronous operation.
     /// </returns>
-    private async Task DataHandler(object obj)
+    private Task DataHandler(object obj)
     {
-        await ExecuteMethod(async () =>
-                            {
-                                Count = AdminGrid.Grid.CurrentViewData.Count();
-                                if (Count > 0)
-                                {
-                                    await AdminGrid.Grid.SelectRowAsync(0);
-                                }
-                            });
+        return ExecuteMethod(() =>
+                             {
+                                 Count = AdminGrid.Grid.CurrentViewData.Count();
+                                 return Count > 0 ? AdminGrid.Grid.SelectRowAsync(0) : Task.CompletedTask;
+                             });
     }
 
     /// <summary>
@@ -272,40 +269,40 @@ public partial class Education
     ///     the AdminDialog for data entry.
     /// </remarks>
     /// <returns>A Task representing the asynchronous operation.</returns>
-    private async Task EditEducation(int id = 0)
+    private Task EditEducation(int id = 0)
     {
-        await ExecuteMethod(async () =>
-                            {
-                                List<AdminList> _selectedList = await AdminGrid.Grid.GetSelectedRecordsAsync();
-                                if (_selectedList.Any() && _selectedList.First().ID != id)
-                                {
-                                    int _index = await AdminGrid.Grid.GetRowIndexByPrimaryKeyAsync(id);
-                                    await AdminGrid.Grid.SelectRowAsync(_index);
-                                }
+        return ExecuteMethod(async () =>
+                             {
+                                 List<AdminList> _selectedList = await AdminGrid.Grid.GetSelectedRecordsAsync();
+                                 if (_selectedList.Any() && _selectedList.First().ID != id)
+                                 {
+                                     int _index = await AdminGrid.Grid.GetRowIndexByPrimaryKeyAsync(id);
+                                     await AdminGrid.Grid.SelectRowAsync(_index);
+                                 }
 
-                                if (id == 0)
-                                {
-                                    Title = "Add";
-                                    if (EducationRecordClone == null)
-                                    {
-                                        EducationRecordClone = new();
-                                    }
-                                    else
-                                    {
-                                        EducationRecordClone.Clear();
-                                    }
-                                }
-                                else
-                                {
-                                    Title = "Edit";
-                                    EducationRecordClone = EducationRecord.Copy();
-                                }
+                                 if (id == 0)
+                                 {
+                                     Title = "Add";
+                                     if (EducationRecordClone == null)
+                                     {
+                                         EducationRecordClone = new();
+                                     }
+                                     else
+                                     {
+                                         EducationRecordClone.Clear();
+                                     }
+                                 }
+                                 else
+                                 {
+                                     Title = "Edit";
+                                     EducationRecordClone = EducationRecord.Copy();
+                                 }
 
-                                EducationRecordClone.Entity = "Education";
+                                 EducationRecordClone.Entity = "Education";
 
-                                StateHasChanged();
-                                await AdminDialog.ShowDialog();
-                            });
+                                 StateHasChanged();
+                                 await AdminDialog.ShowDialog();
+                             });
     }
 
     /// <summary>
@@ -317,9 +314,9 @@ public partial class Education
     /// <returns>
     ///     A task that represents the asynchronous operation.
     /// </returns>
-    private async Task ExecuteMethod(Func<Task> task)
+    private Task ExecuteMethod(Func<Task> task)
     {
-        await General.ExecuteMethod(_semaphore, task, Logger);
+        return General.ExecuteMethod(_semaphore, task, Logger);
     }
 
     /// <summary>
@@ -333,13 +330,13 @@ public partial class Education
     ///     This method sets the filter value and refreshes the grid. It uses a toggling mechanism to prevent multiple
     ///     simultaneous invocations.
     /// </remarks>
-    private async Task FilterGrid(ChangeEventArgs<string, KeyValues> education)
+    private Task FilterGrid(ChangeEventArgs<string, KeyValues> education)
     {
-        await ExecuteMethod(async () =>
-                            {
-                                FilterSet(education.Value);
-                                await AdminGrid.Grid.Refresh();
-                            });
+        return ExecuteMethod(() =>
+                             {
+                                 FilterSet(education.Value);
+                                 return AdminGrid.Grid.Refresh();
+                             });
     }
 
     /// <summary>
@@ -392,7 +389,7 @@ public partial class Education
     ///     It should be called whenever there is a change in the data that needs to be reflected in the grid.
     /// </remarks>
     /// <returns>A Task representing the asynchronous operation.</returns>
-    private async Task RefreshGrid() => await AdminGrid.Grid.Refresh();
+    private Task RefreshGrid() => AdminGrid.Grid.Refresh();
 
     /// <summary>
     ///     Handles the event when a row is selected in the education admin list.
@@ -413,13 +410,10 @@ public partial class Education
     ///     The method 'SaveAdminListAsync' is responsible for saving the admin list to the database and refreshing the grid.
     /// </remarks>
     /// <returns>A Task representing the asynchronous operation.</returns>
-    private async Task SaveEducation(EditContext context)
+    private Task SaveEducation(EditContext context)
     {
-        await ExecuteMethod(async () =>
-                            {
-                                await General.SaveAdminListAsync("Admin_SaveEducation", "Education", false, false, EducationRecordClone, AdminGrid.Grid,
-                                                                 EducationRecord, JsRuntime);
-                            });
+        return ExecuteMethod(() => General.SaveAdminListAsync("Admin_SaveEducation", "Education", false, false, EducationRecordClone, AdminGrid.Grid,
+                                                              EducationRecord, JsRuntime));
     }
 
     /// <summary>
@@ -436,21 +430,21 @@ public partial class Education
     ///     confirmation dialog.
     /// </remarks>
     /// <returns>A Task representing the asynchronous operation.</returns>
-    private async Task ToggleMethod(int id, bool enabled)
+    private Task ToggleMethod(int id, bool enabled)
     {
-        await ExecuteMethod(async () =>
-                            {
-                                _selectedID = id;
-                                _toggleValue = enabled ? (byte)2 : (byte)1;
-                                List<AdminList> _selectedList = await AdminGrid.Grid.GetSelectedRecordsAsync();
-                                if (_selectedList.Any() && _selectedList.First().ID != id)
-                                {
-                                    int _index = await AdminGrid.Grid.GetRowIndexByPrimaryKeyAsync(id);
-                                    await AdminGrid.Grid.SelectRowAsync(_index);
-                                }
+        return ExecuteMethod(async () =>
+                             {
+                                 _selectedID = id;
+                                 _toggleValue = enabled ? (byte)2 : (byte)1;
+                                 List<AdminList> _selectedList = await AdminGrid.Grid.GetSelectedRecordsAsync();
+                                 if (_selectedList.Any() && _selectedList.First().ID != id)
+                                 {
+                                     int _index = await AdminGrid.Grid.GetRowIndexByPrimaryKeyAsync(id);
+                                     await AdminGrid.Grid.SelectRowAsync(_index);
+                                 }
 
-                                await AdminGrid.DialogConfirm.ShowDialog();
-                            });
+                                 await AdminGrid.DialogConfirm.ShowDialog();
+                             });
     }
 
     /// <summary>
@@ -464,9 +458,9 @@ public partial class Education
     ///     by checking the _toggling flag.
     /// </remarks>
     /// <returns>A Task representing the asynchronous operation.</returns>
-    private async Task ToggleStatus(int educationID)
+    private Task ToggleStatus(int educationID)
     {
-        await ExecuteMethod(async () => { await General.PostToggleAsync("Admin_ToggleEducationStatus", educationID, "ADMIN", false, AdminGrid.Grid, runtime: JsRuntime); });
+        return ExecuteMethod(() => General.PostToggleAsync("Admin_ToggleEducationStatus", educationID, "ADMIN", false, AdminGrid.Grid, runtime: JsRuntime));
     }
 
     /// <summary>

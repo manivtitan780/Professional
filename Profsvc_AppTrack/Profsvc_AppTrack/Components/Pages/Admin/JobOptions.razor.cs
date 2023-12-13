@@ -3,17 +3,21 @@
 // /*****************************************
 // Copyright:           Titan-Techs.
 // Location:            Newtown, PA, USA
-// Solution:            ProfSvc_AppTrack
-// Project:             ProfSvc_AppTrack
+// Solution:            Profsvc_AppTrack
+// Project:             Profsvc_AppTrack
 // File Name:           JobOptions.razor.cs
 // Created By:          Narendra Kumaran Kadhirvelu, Jolly Joseph Paily, DonBosco Paily, Mariappan Raja
-// Created On:          09-17-2022 20:01
-// Last Updated On:     11-04-2023 20:39
+// Created On:          11-23-2023 19:53
+// Last Updated On:     12-13-2023 19:51
 // *****************************************/
 
 #endregion
 
+#region Using
+
 using JobOptionDialog = Profsvc_AppTrack.Components.Pages.Admin.Controls.JobOptionDialog;
+
+#endregion
 
 namespace Profsvc_AppTrack.Components.Pages.Admin;
 
@@ -255,7 +259,7 @@ public partial class JobOptions
     /// <remarks>
     ///     The title is used to distinguish between "Add" and "Edit" operations on the Job Options page.
     ///     When a new job option is being added, the title is set to "Add".
-    ///     When an existing job option is being edited, the title is set to "Edit".
+    ///     When an existing job option is being edited, the title set to "Edit".
     /// </remarks>
     private static string Title
     {
@@ -273,16 +277,13 @@ public partial class JobOptions
     ///     grid.
     ///     If there are any items, it selects the first row asynchronously.
     /// </remarks>
-    private async Task DataHandler(object obj)
+    private Task DataHandler(object obj)
     {
-        await ExecuteMethod(async () =>
-                            {
-                                Count = AdminGrid.Grid.CurrentViewData.Count();
-                                if (Count > 0)
-                                {
-                                    await AdminGrid.Grid.SelectRowAsync(0);
-                                }
-                            });
+        return ExecuteMethod(() =>
+                             {
+                                 Count = AdminGrid.Grid.CurrentViewData.Count();
+                                 return Count > 0 ? AdminGrid.Grid.SelectRowAsync(0) : Task.CompletedTask;
+                             });
     }
 
     /// <summary>
@@ -300,41 +301,41 @@ public partial class JobOptions
     ///     editing.
     ///     Finally, it triggers a state change and shows the job option dialog.
     /// </remarks>
-    private async Task EditJobOption(string code = "")
+    private Task EditJobOption(string code = "")
     {
-        await ExecuteMethod(async () =>
-                            {
-                                List<JobOption> _selectedList = await AdminGrid.Grid.GetSelectedRecordsAsync();
-                                if (_selectedList.Any() && _selectedList.First().Code != code)
-                                {
-                                    int _index = await AdminGrid.Grid.GetRowIndexByPrimaryKeyAsync(code);
-                                    await AdminGrid.Grid.SelectRowAsync(_index);
-                                }
+        return ExecuteMethod(async () =>
+                             {
+                                 List<JobOption> _selectedList = await AdminGrid.Grid.GetSelectedRecordsAsync();
+                                 if (_selectedList.Any() && _selectedList.First().Code != code)
+                                 {
+                                     int _index = await AdminGrid.Grid.GetRowIndexByPrimaryKeyAsync(code);
+                                     await AdminGrid.Grid.SelectRowAsync(_index);
+                                 }
 
-                                if (code.NullOrWhiteSpace())
-                                {
-                                    Title = "Add";
-                                    if (JobOptionsRecordClone == null)
-                                    {
-                                        JobOptionsRecordClone = new();
-                                    }
-                                    else
-                                    {
-                                        JobOptionsRecordClone.Clear();
-                                    }
+                                 if (code.NullOrWhiteSpace())
+                                 {
+                                     Title = "Add";
+                                     if (JobOptionsRecordClone == null)
+                                     {
+                                         JobOptionsRecordClone = new();
+                                     }
+                                     else
+                                     {
+                                         JobOptionsRecordClone.Clear();
+                                     }
 
-                                    JobOptionsRecordClone.IsAdd = true;
-                                }
-                                else
-                                {
-                                    Title = "Edit";
-                                    JobOptionsRecordClone = JobOptionsRecord.Copy();
-                                    JobOptionsRecordClone.IsAdd = false;
-                                }
+                                     JobOptionsRecordClone.IsAdd = true;
+                                 }
+                                 else
+                                 {
+                                     Title = "Edit";
+                                     JobOptionsRecordClone = JobOptionsRecord.Copy();
+                                     JobOptionsRecordClone.IsAdd = false;
+                                 }
 
-                                StateHasChanged();
-                                await DialogJobOption.Dialog.ShowAsync();
-                            });
+                                 StateHasChanged();
+                                 await DialogJobOption.Dialog.ShowAsync();
+                             });
     }
 
     /// <summary>
@@ -346,10 +347,7 @@ public partial class JobOptions
     /// <returns>
     ///     A task that represents the asynchronous operation.
     /// </returns>
-    private async Task ExecuteMethod(Func<Task> task)
-    {
-        await General.ExecuteMethod(_semaphore, task, Logger);
-    }
+    private Task ExecuteMethod(Func<Task> task) => General.ExecuteMethod(_semaphore, task, Logger);
 
     /// <summary>
     ///     Filters the grid based on the selected job option.
@@ -365,13 +363,13 @@ public partial class JobOptions
     /// <returns>
     ///     A <see cref="Task" /> representing the asynchronous operation.
     /// </returns>
-    private async Task FilterGrid(ChangeEventArgs<string, KeyValues> jobOption)
+    private Task FilterGrid(ChangeEventArgs<string, KeyValues> jobOption)
     {
-        await ExecuteMethod(async () =>
-                            {
-                                FilterSet(jobOption.Value);
-                                await AdminGrid.Grid.Refresh();
-                            });
+        return ExecuteMethod(() =>
+                             {
+                                 FilterSet(jobOption.Value);
+                                 return AdminGrid.Grid.Refresh();
+                             });
     }
 
     /// <summary>
@@ -427,7 +425,7 @@ public partial class JobOptions
     /// <returns>
     ///     A Task that represents the asynchronous operation.
     /// </returns>
-    private async Task RefreshGrid() => await AdminGrid.Grid.Refresh();
+    private Task RefreshGrid() => AdminGrid.Grid.Refresh();
 
     /// <summary>
     ///     Handles the event when a row is selected in the job options grid.
@@ -448,27 +446,27 @@ public partial class JobOptions
     ///     This method sends a POST request to the 'Admin/SaveJobOptions' endpoint with the modified JobOption record.
     ///     After the server-side operation is completed, it refreshes the grid, selects the modified row, and scrolls to it.
     /// </remarks>
-    private async Task SaveJobOption(EditContext context)
+    private Task SaveJobOption(EditContext context)
     {
-        await ExecuteMethod(async () =>
-                            {
-                                string _response = await General.PostRest<string>("Admin/SaveJobOptions", null, JobOptionsRecordClone);
+        return ExecuteMethod(async () =>
+                             {
+                                 string _response = await General.PostRest<string>("Admin/SaveJobOptions", null, JobOptionsRecordClone);
 
-                                //RestClient _restClient = new($"{Start.ApiHost}");
-                                //RestRequest _request = new("Admin/SaveJobOptions", Method.Post)
-                                //                       {
-                                //                           RequestFormat = DataFormat.Json
-                                //                       };
-                                //_request.AddJsonBody(JobOptionsRecordClone);
-                                //string _response = await _restClient.PostAsync<string>(_request);
+                                 //RestClient _restClient = new($"{Start.ApiHost}");
+                                 //RestRequest _request = new("Admin/SaveJobOptions", Method.Post)
+                                 //                       {
+                                 //                           RequestFormat = DataFormat.Json
+                                 //                       };
+                                 //_request.AddJsonBody(JobOptionsRecordClone);
+                                 //string _response = await _restClient.PostAsync<string>(_request);
 
-                                JobOptionsRecord = JobOptionsRecordClone.Copy();
-                                await AdminGrid.Grid.Refresh();
+                                 JobOptionsRecord = JobOptionsRecordClone.Copy();
+                                 await AdminGrid.Grid.Refresh();
 
-                                int _index = await AdminGrid.Grid.GetRowIndexByPrimaryKeyAsync(_response);
-                                await AdminGrid.Grid.SelectRowAsync(_index);
-                                await JsRuntime.InvokeVoidAsync("scroll", _index);
-                            });
+                                 int _index = await AdminGrid.Grid.GetRowIndexByPrimaryKeyAsync(_response);
+                                 await AdminGrid.Grid.SelectRowAsync(_index);
+                                 await JsRuntime.InvokeVoidAsync("scroll", _index);
+                             });
     }
 
     /// <summary>

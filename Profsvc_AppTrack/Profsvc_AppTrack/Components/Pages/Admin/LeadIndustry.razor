@@ -1,9 +1,9 @@
 ﻿@page "/Admin/LeadIndustry"
 @layout ProfSvcLayout
 
-<AdminGrid AdaptorInstance="@typeof(AdminIndustryAdaptor)" AddMethod="() => EditIndustry()" AutocompleteMethod="Admin_SearchIndustry" AutocompleteParameter="@("@Industry")" Count="@Count" DataHandler="DataHandler" Entity="Industry"
-		   FilterGrid="FilterGrid" HeaderContentPlural="Lead Industries" HeaderContentSingular="Lead Industry" Height="140px" Key="ID" Page="Lead Industry" @ref="AdminGrid" RefreshGrid="RefreshGrid" RoleID="@RoleID"
-		   RowSelected="RowSelected" ToggleMethod="() => ToggleStatusAsync(_selectedID)" ToggleValue="_toggleValue" TValue="AdminList" Width="413px">
+<AdminGrid AdaptorInstance="@typeof(AdminIndustryAdaptor)" AddMethod="() => EditIndustry()" AutocompleteMethod="Admin_SearchIndustry" AutocompleteParameter="@("@Industry")" Count="@Count" DataHandler="DataHandler"
+		   Entity="Industry" FilterGrid="FilterGrid" HeaderContentPlural="Lead Industries" HeaderContentSingular="Lead Industry" Height="140px" Key="ID" Page="Lead Industry" @ref="AdminGrid" RefreshGrid="RefreshGrid"
+		   RoleID="@RoleID" RowSelected="RowSelected" ToggleMethod="() => ToggleStatusAsync(_selectedID)" ToggleValue="_toggleValue" TValue="AdminList" Width="413px">
 	<GridColumn Field="Text" HeaderText="Industry" Width="50%">
 		<Template Context="aCon">
 			@{

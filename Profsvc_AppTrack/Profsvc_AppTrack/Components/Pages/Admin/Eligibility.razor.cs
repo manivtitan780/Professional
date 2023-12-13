@@ -3,17 +3,21 @@
 // /*****************************************
 // Copyright:           Titan-Techs.
 // Location:            Newtown, PA, USA
-// Solution:            ProfSvc_AppTrack
-// Project:             ProfSvc_AppTrack
+// Solution:            Profsvc_AppTrack
+// Project:             Profsvc_AppTrack
 // File Name:           Eligibility.razor.cs
 // Created By:          Narendra Kumaran Kadhirvelu, Jolly Joseph Paily, DonBosco Paily, Mariappan Raja
-// Created On:          09-17-2022 20:01
-// Last Updated On:     11-04-2023 20:27
+// Created On:          11-23-2023 19:53
+// Last Updated On:     12-13-2023 15:51
 // *****************************************/
 
 #endregion
 
+#region Using
+
 using AdminListDialog = Profsvc_AppTrack.Components.Pages.Admin.Controls.AdminListDialog;
+
+#endregion
 
 namespace Profsvc_AppTrack.Components.Pages.Admin;
 
@@ -206,7 +210,7 @@ public partial class Eligibility
     }
 
     /// <summary>
-    ///     Gets or sets the RoleID of the currently logged in user.
+    ///     Gets or sets the RoleID of the currently logged-in user.
     /// </summary>
     /// <remarks>
     ///     This property is used to store the RoleID of the user retrieved from the login information.
@@ -242,16 +246,13 @@ public partial class Eligibility
     /// <returns>
     ///     A Task representing the asynchronous operation.
     /// </returns>
-    private async Task DataHandler()
+    private Task DataHandler()
     {
-        await ExecuteMethod(async () =>
-                            {
-                                Count = AdminGrid.Grid.CurrentViewData.Count();
-                                if (Count > 0)
-                                {
-                                    await AdminGrid.Grid.SelectRowAsync(0);
-                                }
-                            });
+        return ExecuteMethod(() =>
+                             {
+                                 Count = AdminGrid.Grid.CurrentViewData.Count();
+                                 return Count > 0 ? AdminGrid.Grid.SelectRowAsync(0) : Task.CompletedTask;
+                             });
     }
 
     /// <summary>
@@ -265,40 +266,40 @@ public partial class Eligibility
     /// <returns>
     ///     A Task representing the asynchronous operation.
     /// </returns>
-    private async Task EditEligibility(int id = 0)
+    private Task EditEligibility(int id = 0)
     {
-        await ExecuteMethod(async () =>
-                            {
-                                List<AdminList> _selectedList = await AdminGrid.Grid.GetSelectedRecordsAsync();
-                                if (_selectedList.Any() && _selectedList.First().ID != id)
-                                {
-                                    int _index = await AdminGrid.Grid.GetRowIndexByPrimaryKeyAsync(id);
-                                    await AdminGrid.Grid.SelectRowAsync(_index);
-                                }
+        return ExecuteMethod(async () =>
+                             {
+                                 List<AdminList> _selectedList = await AdminGrid.Grid.GetSelectedRecordsAsync();
+                                 if (_selectedList.Any() && _selectedList.First().ID != id)
+                                 {
+                                     int _index = await AdminGrid.Grid.GetRowIndexByPrimaryKeyAsync(id);
+                                     await AdminGrid.Grid.SelectRowAsync(_index);
+                                 }
 
-                                if (id == 0)
-                                {
-                                    Title = "Add";
-                                    if (EligibilityRecordClone == null)
-                                    {
-                                        EligibilityRecordClone = new();
-                                    }
-                                    else
-                                    {
-                                        EligibilityRecordClone.Clear();
-                                    }
-                                }
-                                else
-                                {
-                                    Title = "Edit";
-                                    EligibilityRecordClone = EligibilityRecord.Copy();
-                                }
+                                 if (id == 0)
+                                 {
+                                     Title = "Add";
+                                     if (EligibilityRecordClone == null)
+                                     {
+                                         EligibilityRecordClone = new();
+                                     }
+                                     else
+                                     {
+                                         EligibilityRecordClone.Clear();
+                                     }
+                                 }
+                                 else
+                                 {
+                                     Title = "Edit";
+                                     EligibilityRecordClone = EligibilityRecord.Copy();
+                                 }
 
-                                EligibilityRecordClone.Entity = "Eligibility";
+                                 EligibilityRecordClone.Entity = "Eligibility";
 
-                                StateHasChanged();
-                                await AdminDialog.ShowDialog();
-                            });
+                                 StateHasChanged();
+                                 await AdminDialog.ShowDialog();
+                             });
     }
 
     /// <summary>
@@ -310,10 +311,7 @@ public partial class Eligibility
     /// <returns>
     ///     A task that represents the asynchronous operation.
     /// </returns>
-    private async Task ExecuteMethod(Func<Task> task)
-    {
-        await General.ExecuteMethod(_semaphore, task, Logger);
-    }
+    private Task ExecuteMethod(Func<Task> task) => General.ExecuteMethod(_semaphore, task, Logger);
 
     /// <summary>
     ///     This method is responsible for filtering the grid of the Eligibility page based on the eligibility criteria.
@@ -325,13 +323,13 @@ public partial class Eligibility
     ///     the filter value.
     /// </param>
     /// <returns>A Task representing the asynchronous operation.</returns>
-    private async Task FilterGrid(ChangeEventArgs<string, KeyValues> eligibility)
+    private Task FilterGrid(ChangeEventArgs<string, KeyValues> eligibility)
     {
-        await ExecuteMethod(async () =>
-                            {
-                                FilterSet(eligibility.Value);
-                                await AdminGrid.Grid.Refresh();
-                            });
+        return ExecuteMethod(() =>
+                             {
+                                 FilterSet(eligibility.Value);
+                                 return AdminGrid.Grid.Refresh();
+                             });
     }
 
     /// <summary>
@@ -372,7 +370,7 @@ public partial class Eligibility
     ///     Asynchronously refreshes the data grid on the Eligibility admin page.
     /// </summary>
     /// <returns>A Task representing the asynchronous operation.</returns>
-    private async Task RefreshGrid() => await AdminGrid.Grid.Refresh();
+    private Task RefreshGrid() => AdminGrid.Grid.Refresh();
 
     /// <summary>
     ///     Handles the event when a row is selected in the Eligibility grid.
@@ -397,12 +395,9 @@ public partial class Eligibility
     ///     - The injected JavaScript runtime.
     /// </remarks>
     /// <returns>A task that represents the asynchronous operation.</returns>
-    private async Task SaveEligibility(EditContext context)
+    private Task SaveEligibility(EditContext context)
     {
-        await ExecuteMethod(async () =>
-                            {
-                                await General.SaveAdminListAsync("Admin_SaveEligibility", "Eligibility", false, false, EligibilityRecordClone, AdminGrid.Grid, EligibilityRecord, JsRuntime);
-                            });
+        return ExecuteMethod(() => General.SaveAdminListAsync("Admin_SaveEligibility", "Eligibility", false, false, EligibilityRecordClone, AdminGrid.Grid, EligibilityRecord, JsRuntime));
     }
 
     /// <summary>
@@ -413,21 +408,21 @@ public partial class Eligibility
     ///     The new status to be set for the record. If true, the status will be set to 2, otherwise it will be set to 1.
     /// </param>
     /// <returns>A Task representing the asynchronous operation.</returns>
-    private async Task ToggleMethod(int id, bool enabled)
+    private Task ToggleMethod(int id, bool enabled)
     {
-        await ExecuteMethod(async () =>
-                            {
-                                _selectedID = id;
-                                _toggleValue = enabled ? (byte)2 : (byte)1;
-                                List<AdminList> _selectedList = await AdminGrid.Grid.GetSelectedRecordsAsync();
-                                if (_selectedList.Any() && _selectedList.First().ID != id)
-                                {
-                                    int _index = await AdminGrid.Grid.GetRowIndexByPrimaryKeyAsync(id);
-                                    await AdminGrid.Grid.SelectRowAsync(_index);
-                                }
+        return ExecuteMethod(async () =>
+                             {
+                                 _selectedID = id;
+                                 _toggleValue = enabled ? (byte)2 : (byte)1;
+                                 List<AdminList> _selectedList = await AdminGrid.Grid.GetSelectedRecordsAsync();
+                                 if (_selectedList.Any() && _selectedList.First().ID != id)
+                                 {
+                                     int _index = await AdminGrid.Grid.GetRowIndexByPrimaryKeyAsync(id);
+                                     await AdminGrid.Grid.SelectRowAsync(_index);
+                                 }
 
-                                await AdminGrid.DialogConfirm.ShowDialog();
-                            });
+                                 await AdminGrid.DialogConfirm.ShowDialog();
+                             });
     }
 
     /// <summary>
@@ -440,9 +435,9 @@ public partial class Eligibility
     ///     After the toggle operation, the grid is refreshed to reflect the changes.
     /// </remarks>
     /// <returns>A <see cref="Task" /> representing the asynchronous operation.</returns>
-    private async Task ToggleStatusAsync(int eligibilityID)
+    private Task ToggleStatusAsync(int eligibilityID)
     {
-        await ExecuteMethod(async () => { await General.PostToggleAsync("Admin_ToggleEligibilityStatus", eligibilityID, "ADMIN", false, AdminGrid.Grid, runtime: JsRuntime); });
+        return ExecuteMethod(() => General.PostToggleAsync("Admin_ToggleEligibilityStatus", eligibilityID, "ADMIN", false, AdminGrid.Grid, runtime: JsRuntime));
     }
 
     /// <summary>
