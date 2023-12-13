@@ -2,34 +2,34 @@
 <Header Page="@Page" RoleID="@RoleID"></Header>
 
 <div class="gridHolder">
-    <AdminGridHeader Add="AddMethod" AutocompleteMethod="@AutocompleteMethod" AutocompleteParameterName="@AutocompleteParameter" Entity="@Entity" HeaderContentPlural="@HeaderContentPlural"
-                     HeaderContentSingular="@HeaderContentSingular" RefreshGrid="RefreshGrid" ValueChange="FilterGrid" />
-    <SfGrid AllowPaging="false" EnableHeaderFocus="true" EnableHover="true" EnableVirtualization="@EnableVirtualization" Height="100%" ID="Grid" @ref="Grid" SelectedRowIndex="0" TValue="TValue" Width="100%">
-        <GridSelectionSettings EnableToggle="false" Mode="SelectionMode.Row" Type="SelectionType.Single" />
-        <SfDataManager Adaptor="Adaptors.CustomAdaptor" AdaptorInstance="@AdaptorInstance" Key="@Key" />
-        <GridEvents DataBound="DataHandler" RowSelected="RowSelected" TValue="TValue" />@*OnActionBegin="ActionBegin"*@
-        @{
-            if (EnableVirtualization)
-            {
-                <GridPageSettings PageSize="50" />
-            }
-        }
-        <GridColumns>
-            @ChildContent
-        </GridColumns>
-    </SfGrid>
-    @{
-        if (ShowConfirm)
-        {
-            <ConfirmDialog Delete="ToggleMethod" Entity="@Entity" Height="@Height" @ref="DialogConfirm" ToggleStatus="true" ToggleValue="@ToggleValue" Width="@Width" />
-        }
-    }
-    <div class="divGridFooter">
-        <div>
-            Items
-            <b>1</b> to
-            <b>@Count</b> of
-            <b>@Count</b> rows
-        </div>
-    </div>
+	<AdminGridHeader Add="AddMethod" AutocompleteMethod="@AutocompleteMethod" AutocompleteParameterName="@AutocompleteParameter" Entity="@Entity" HeaderContentPlural="@HeaderContentPlural"
+					 HeaderContentSingular="@HeaderContentSingular" RefreshGrid="RefreshGrid" ValueChange="FilterGrid" />
+	<SfGrid AllowPaging="false" EnableHeaderFocus="true" EnableHover="true" EnableVirtualization="@EnableVirtualization" Height="100%" ID="Grid" @ref="Grid" SelectedRowIndex="0" TValue="TValue" Width="100%">
+		<GridSelectionSettings EnableToggle="false" Mode="SelectionMode.Row" Type="SelectionType.Single" />
+		<SfDataManager Adaptor="Adaptors.CustomAdaptor" AdaptorInstance="@AdaptorInstance" Key="@Key" />
+		<GridEvents DataBound="DataHandler" RowSelected="RowSelected" TValue="TValue" />@*OnActionBegin="ActionBegin"*@
+		@{
+			if (EnableVirtualization)
+			{
+				<GridPageSettings PageSize="50" />
+			}
+		}
+		<GridColumns>
+			@ChildContent
+		</GridColumns>
+	</SfGrid>
+	@{
+		if (ShowConfirm)
+		{
+			<ConfirmDialog Delete="ToggleMethod" Entity="@Entity" Height="@Height" @ref="DialogConfirm" ToggleStatus="true" ToggleValue="@ToggleValue" Width="@Width" />
+		}
+	}
+	<div class="divGridFooter">
+		<div>
+			Items
+			<b>1</b> to
+			<b>@Count</b> of
+			<b>@Count</b> rows
+		</div>
+	</div>
 </div>

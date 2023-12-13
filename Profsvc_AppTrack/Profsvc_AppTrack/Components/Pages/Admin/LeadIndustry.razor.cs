@@ -3,17 +3,21 @@
 // /*****************************************
 // Copyright:           Titan-Techs.
 // Location:            Newtown, PA, USA
-// Solution:            ProfSvc_AppTrack
-// Project:             ProfSvc_AppTrack
+// Solution:            Profsvc_AppTrack
+// Project:             Profsvc_AppTrack
 // File Name:           LeadIndustry.razor.cs
 // Created By:          Narendra Kumaran Kadhirvelu, Jolly Joseph Paily, DonBosco Paily, Mariappan Raja
-// Created On:          09-17-2022 20:01
-// Last Updated On:     11-04-2023 20:45
+// Created On:          11-23-2023 19:53
+// Last Updated On:     12-13-2023 19:55
 // *****************************************/
 
 #endregion
 
+#region Using
+
 using AdminListDialog = Profsvc_AppTrack.Components.Pages.Admin.Controls.AdminListDialog;
+
+#endregion
 
 namespace Profsvc_AppTrack.Components.Pages.Admin;
 
@@ -138,10 +142,10 @@ public partial class LeadIndustry
     } = new();
 
     /// <summary>
-    ///     Gets or sets a clone of an lead industry record in the administration list.
+    ///     Gets or sets a clone of a lead industry record in the administration list.
     /// </summary>
     /// <remarks>
-    ///     This property is used to hold a copy of an lead industry record from the administration list.
+    ///     This property is used to hold a copy of a lead industry record from the administration list.
     ///     It is utilized during the editing process, where a copy of the record is made and manipulated
     ///     before being saved back to the list. This ensures that the original record remains unaltered
     ///     in case the editing process is cancelled or an error occurs.
@@ -211,7 +215,7 @@ public partial class LeadIndustry
     }
 
     /// <summary>
-    ///     Gets or sets the RoleID of the currently logged in user.
+    ///     Gets or sets the RoleID of the currently logged-in user.
     /// </summary>
     /// <remarks>
     ///     This property is used to store the RoleID of the user retrieved from the login information.
@@ -245,16 +249,13 @@ public partial class LeadIndustry
     ///     If there are records, it selects the first row.
     /// </summary>
     /// <returns>A Task that represents the asynchronous operation.</returns>
-    private async Task DataHandler()
+    private Task DataHandler()
     {
-        await ExecuteMethod(async () =>
-                            {
-                                Count = AdminGrid.Grid.CurrentViewData.Count();
-                                if (Count > 0)
-                                {
-                                    await AdminGrid.Grid.SelectRowAsync(0);
-                                }
-                            });
+        return ExecuteMethod(() =>
+                             {
+                                 Count = AdminGrid.Grid.CurrentViewData.Count();
+                                 return Count > 0 ? AdminGrid.Grid.SelectRowAsync(0) : Task.CompletedTask;
+                             });
     }
 
     /// <summary>
@@ -273,40 +274,40 @@ public partial class LeadIndustry
     ///     - Triggers a state change.
     ///     - Shows the admin dialog.
     /// </remarks>
-    private async Task EditIndustry(int id = 0)
+    private Task EditIndustry(int id = 0)
     {
-        await ExecuteMethod(async () =>
-                            {
-                                List<AdminList> _selectedList = await AdminGrid.Grid.GetSelectedRecordsAsync();
-                                if (_selectedList.Any() && _selectedList.First().ID != id)
-                                {
-                                    int _index = await AdminGrid.Grid.GetRowIndexByPrimaryKeyAsync(id);
-                                    await AdminGrid.Grid.SelectRowAsync(_index);
-                                }
+        return ExecuteMethod(async () =>
+                             {
+                                 List<AdminList> _selectedList = await AdminGrid.Grid.GetSelectedRecordsAsync();
+                                 if (_selectedList.Any() && _selectedList.First().ID != id)
+                                 {
+                                     int _index = await AdminGrid.Grid.GetRowIndexByPrimaryKeyAsync(id);
+                                     await AdminGrid.Grid.SelectRowAsync(_index);
+                                 }
 
-                                if (id == 0)
-                                {
-                                    Title = "Add";
-                                    if (LeadIndustryRecordClone == null)
-                                    {
-                                        LeadIndustryRecordClone = new();
-                                    }
-                                    else
-                                    {
-                                        LeadIndustryRecordClone.Clear();
-                                    }
-                                }
-                                else
-                                {
-                                    Title = "Edit";
-                                    LeadIndustryRecordClone = LeadIndustryRecord.Copy();
-                                }
+                                 if (id == 0)
+                                 {
+                                     Title = "Add";
+                                     if (LeadIndustryRecordClone == null)
+                                     {
+                                         LeadIndustryRecordClone = new();
+                                     }
+                                     else
+                                     {
+                                         LeadIndustryRecordClone.Clear();
+                                     }
+                                 }
+                                 else
+                                 {
+                                     Title = "Edit";
+                                     LeadIndustryRecordClone = LeadIndustryRecord.Copy();
+                                 }
 
-                                LeadIndustryRecordClone.Entity = "Lead Industry";
+                                 LeadIndustryRecordClone.Entity = "Lead Industry";
 
-                                StateHasChanged();
-                                await AdminDialog.ShowDialog();
-                            });
+                                 StateHasChanged();
+                                 await AdminDialog.ShowDialog();
+                             });
     }
 
     /// <summary>
@@ -318,10 +319,7 @@ public partial class LeadIndustry
     /// <returns>
     ///     A task that represents the asynchronous operation.
     /// </returns>
-    private async Task ExecuteMethod(Func<Task> task)
-    {
-        await General.ExecuteMethod(_semaphore, task, Logger);
-    }
+    private Task ExecuteMethod(Func<Task> task) => General.ExecuteMethod(_semaphore, task, Logger);
 
     /// <summary>
     ///     Handles the filtering of the grid based on the provided lead industry.
@@ -331,13 +329,13 @@ public partial class LeadIndustry
     /// </summary>
     /// <param name="industry">The selected lead industry in the grid, encapsulated in a ChangeEventArgs object.</param>
     /// <returns>A Task representing the asynchronous operation of refreshing the grid.</returns>
-    private async Task FilterGrid(ChangeEventArgs<string, KeyValues> industry)
+    private Task FilterGrid(ChangeEventArgs<string, KeyValues> industry)
     {
-        await ExecuteMethod(async () =>
-                            {
-                                FilterSet(industry.Value);
-                                await AdminGrid.Grid.Refresh();
-                            });
+        return ExecuteMethod(() =>
+                             {
+                                 FilterSet(industry.Value);
+                                 return AdminGrid.Grid.Refresh();
+                             });
     }
 
     /// <summary>
@@ -378,7 +376,7 @@ public partial class LeadIndustry
     ///     This method is used to update the grid component and reflect any changes made to the data.
     /// </summary>
     /// <returns>A Task that represents the asynchronous operation.</returns>
-    private async Task RefreshGrid() => await AdminGrid.Grid.Refresh();
+    private Task RefreshGrid() => AdminGrid.Grid.Refresh();
 
     /// <summary>
     ///     Handles the event of a row being selected in the Lead Industry grid.
@@ -396,9 +394,9 @@ public partial class LeadIndustry
     ///     made to the DesignationRecordClone.
     ///     After the save operation, it refreshes the grid and selects the updated row.
     /// </remarks>
-    private async Task SaveIndustry(EditContext context)
+    private Task SaveIndustry(EditContext context)
     {
-        await ExecuteMethod(async () => { await General.SaveAdminListAsync("Admin_SaveIndustry", "Industry", false, false, LeadIndustryRecordClone, AdminGrid.Grid, LeadIndustryRecord, JsRuntime); });
+        return ExecuteMethod(() => General.SaveAdminListAsync("Admin_SaveIndustry", "Industry", false, false, LeadIndustryRecordClone, AdminGrid.Grid, LeadIndustryRecord, JsRuntime));
     }
 
     /// <summary>
@@ -410,21 +408,21 @@ public partial class LeadIndustry
     ///     set to 1.
     /// </param>
     /// <returns>A Task representing the asynchronous operation.</returns>
-    private async Task ToggleMethod(int id, bool enabled)
+    private Task ToggleMethod(int id, bool enabled)
     {
-        await ExecuteMethod(async () =>
-                            {
-                                _selectedID = id;
-                                _toggleValue = enabled ? (byte)2 : (byte)1;
-                                List<AdminList> _selectedList = await AdminGrid.Grid.GetSelectedRecordsAsync();
-                                if (_selectedList.Any() || _selectedList.First().ID != id)
-                                {
-                                    int _index = await AdminGrid.Grid.GetRowIndexByPrimaryKeyAsync(id);
-                                    await AdminGrid.Grid.SelectRowAsync(_index);
-                                }
+        return ExecuteMethod(async () =>
+                             {
+                                 _selectedID = id;
+                                 _toggleValue = enabled ? (byte)2 : (byte)1;
+                                 List<AdminList> _selectedList = await AdminGrid.Grid.GetSelectedRecordsAsync();
+                                 if (_selectedList.Any() || _selectedList.First().ID != id)
+                                 {
+                                     int _index = await AdminGrid.Grid.GetRowIndexByPrimaryKeyAsync(id);
+                                     await AdminGrid.Grid.SelectRowAsync(_index);
+                                 }
 
-                                await AdminGrid.DialogConfirm.ShowDialog();
-                            });
+                                 await AdminGrid.DialogConfirm.ShowDialog();
+                             });
     }
 
     /// <summary>
@@ -438,9 +436,9 @@ public partial class LeadIndustry
     ///     The status toggle operation is not performed if it is already in progress.
     ///     After the status is toggled, the method refreshes the grid and selects the row with the toggled lead industry.
     /// </remarks>
-    private async Task ToggleStatusAsync(int industryID)
+    private Task ToggleStatusAsync(int industryID)
     {
-        await ExecuteMethod(async () => { await General.PostToggleAsync("Admin_ToggleIndustryStatus", industryID, "ADMIN", false, AdminGrid.Grid); });
+        return ExecuteMethod(() => General.PostToggleAsync("Admin_ToggleIndustryStatus", industryID, "ADMIN", false, AdminGrid.Grid));
     }
 
     /// <summary>

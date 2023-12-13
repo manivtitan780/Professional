@@ -3,17 +3,21 @@
 // /*****************************************
 // Copyright:           Titan-Techs.
 // Location:            Newtown, PA, USA
-// Solution:            ProfSvc_AppTrack
-// Project:             ProfSvc_AppTrack
+// Solution:            Profsvc_AppTrack
+// Project:             Profsvc_AppTrack
 // File Name:           Skills.razor.cs
 // Created By:          Narendra Kumaran Kadhirvelu, Jolly Joseph Paily, DonBosco Paily, Mariappan Raja
-// Created On:          09-17-2022 20:01
-// Last Updated On:     11-04-2023 21:15
+// Created On:          11-23-2023 19:53
+// Last Updated On:     12-13-2023 20:0
 // *****************************************/
 
 #endregion
 
+#region Using
+
 using AdminListDialog = Profsvc_AppTrack.Components.Pages.Admin.Controls.AdminListDialog;
+
+#endregion
 
 namespace Profsvc_AppTrack.Components.Pages.Admin;
 
@@ -28,11 +32,11 @@ namespace Profsvc_AppTrack.Components.Pages.Admin;
 /// </remarks>
 public partial class Skills
 {
+    private const bool Virtualization = false;
     private static TaskCompletionSource<bool> _initializationTaskSource;
     private int _selectedID;
     private readonly SemaphoreSlim _semaphore = new(1, 1);
     private byte _toggleValue;
-    private const bool Virtualization = false;
 
     /// <summary>
     ///     Gets or sets the AdminListDialog instance used for managing administrative tasks in the Skills
@@ -181,7 +185,7 @@ public partial class Skills
     }
 
     /// <summary>
-    ///     Gets or sets the RoleID of the currently logged in user.
+    ///     Gets or sets the RoleID of the currently logged-in user.
     /// </summary>
     /// <remarks>
     ///     This property is used to store the RoleID of the user retrieved from the login information.
@@ -210,10 +214,10 @@ public partial class Skills
     } = new();
 
     /// <summary>
-    ///     Gets or sets a clone of an skills record in the administration list.
+    ///     Gets or sets a clone of a skills record in the administration list.
     /// </summary>
     /// <remarks>
-    ///     This property is used to hold a copy of an skills record from the administration list.
+    ///     This property is used to hold a copy of a skills record from the administration list.
     ///     It is utilized during the editing process, where a copy of the record is made and manipulated
     ///     before being saved back to the list. This ensures that the original record remains unaltered
     ///     in case the editing process is cancelled or an error occurs.
@@ -246,16 +250,13 @@ public partial class Skills
     ///     If there are records, it selects the first row.
     /// </summary>
     /// <returns>A Task that represents the asynchronous operation.</returns>
-    private async Task DataHandler(object obj)
+    private Task DataHandler(object obj)
     {
-        await ExecuteMethod(async () =>
-                            {
-                                Count = AdminGrid.Grid.CurrentViewData.Count();
-                                if (Count > 0)
-                                {
-                                    await AdminGrid.Grid.SelectRowAsync(0);
-                                }
-                            });
+        return ExecuteMethod(() =>
+                             {
+                                 Count = AdminGrid.Grid.CurrentViewData.Count();
+                                 return Count > 0 ? AdminGrid.Grid.SelectRowAsync(0) : Task.CompletedTask;
+                             });
     }
 
     /// <summary>
@@ -319,26 +320,23 @@ public partial class Skills
     /// <returns>
     ///     A task that represents the asynchronous operation.
     /// </returns>
-    private async Task ExecuteMethod(Func<Task> task)
-    {
-        await General.ExecuteMethod(_semaphore, task, Logger);
-    }
+    private Task ExecuteMethod(Func<Task> task) => General.ExecuteMethod(_semaphore, task, Logger);
 
     /// <summary>
     ///     Handles the filtering of the grid based on the provided skills.
-    ///     This method is triggered when a skills is selected in the grid.
+    ///     This method is triggered when a skill is selected in the grid.
     ///     It sets the filter value to the selected skills and refreshes the grid to update the displayed data.
     ///     The method ensures that the grid is not refreshed multiple times simultaneously by using a toggling flag.
     /// </summary>
     /// <param name="skill">The selected skills in the grid, encapsulated in a ChangeEventArgs object.</param>
     /// <returns>A Task representing the asynchronous operation of refreshing the grid.</returns>
-    private async Task FilterGrid(ChangeEventArgs<string, KeyValues> skill)
+    private Task FilterGrid(ChangeEventArgs<string, KeyValues> skill)
     {
-        await ExecuteMethod(async () =>
-                            {
-                                FilterSet(skill.Value);
-                                await AdminGrid.Grid.Refresh();
-                            });
+        return ExecuteMethod(() =>
+                             {
+                                 FilterSet(skill.Value);
+                                 return AdminGrid.Grid.Refresh();
+                             });
     }
 
     /// <summary>
@@ -378,7 +376,7 @@ public partial class Skills
     ///     This method is used to update the grid component and reflect any changes made to the data.
     /// </summary>
     /// <returns>A Task that represents the asynchronous operation.</returns>
-    private async Task RefreshGrid() => await AdminGrid.Grid.Refresh();
+    private Task RefreshGrid() => AdminGrid.Grid.Refresh();
 
     /// <summary>
     ///     Handles the event of a row being selected in the Skills grid.
@@ -395,13 +393,10 @@ public partial class Skills
     ///     made to the DesignationRecordClone.
     ///     After the save operation, it refreshes the grid and selects the updated row.
     /// </remarks>
-    private async Task SaveSkill()
+    private Task SaveSkill()
     {
-        await ExecuteMethod(async () =>
-                            {
-                                await General.SaveAdminListAsync("Admin_SaveSkill", "Skill", false, false, SkillRecordClone, AdminGrid.Grid,
-                                                                 SkillRecord, JsRuntime);
-                            });
+        return ExecuteMethod(() => General.SaveAdminListAsync("Admin_SaveSkill", "Skill", false, false, SkillRecordClone, AdminGrid.Grid,
+                                                              SkillRecord, JsRuntime));
     }
 
     /// <summary>
@@ -413,21 +408,21 @@ public partial class Skills
     ///     set to 1.
     /// </param>
     /// <returns>A Task representing the asynchronous operation.</returns>
-    private async Task ToggleMethod(int id, bool enabled)
+    private Task ToggleMethod(int id, bool enabled)
     {
-        await ExecuteMethod(async () =>
-                            {
-                                _selectedID = id;
-                                _toggleValue = enabled ? (byte)2 : (byte)1;
-                                List<AdminList> _selectedList = await AdminGrid.Grid.GetSelectedRecordsAsync();
-                                if (_selectedList.Any() && _selectedList.First().ID != id)
-                                {
-                                    int _index = await AdminGrid.Grid.GetRowIndexByPrimaryKeyAsync(id);
-                                    await AdminGrid.Grid.SelectRowAsync(_index);
-                                }
+        return ExecuteMethod(async () =>
+                             {
+                                 _selectedID = id;
+                                 _toggleValue = enabled ? (byte)2 : (byte)1;
+                                 List<AdminList> _selectedList = await AdminGrid.Grid.GetSelectedRecordsAsync();
+                                 if (_selectedList.Any() && _selectedList.First().ID != id)
+                                 {
+                                     int _index = await AdminGrid.Grid.GetRowIndexByPrimaryKeyAsync(id);
+                                     await AdminGrid.Grid.SelectRowAsync(_index);
+                                 }
 
-                                await AdminGrid.DialogConfirm.ShowDialog();
-                            });
+                                 await AdminGrid.DialogConfirm.ShowDialog();
+                             });
     }
 
     /// <summary>
@@ -441,9 +436,9 @@ public partial class Skills
     ///     The status toggle operation is not performed if it is already in progress.
     ///     After the status is toggled, the method refreshes the grid and selects the row with the toggled skills.
     /// </remarks>
-    private async Task ToggleStatusAsync(int skillID)
+    private Task ToggleStatusAsync(int skillID)
     {
-        await ExecuteMethod(async () => { await General.PostToggleAsync("Admin_ToggleSkillStatus", skillID, "ADMIN", false, AdminGrid.Grid, runtime: JsRuntime); });
+        return ExecuteMethod(() => General.PostToggleAsync("Admin_ToggleSkillStatus", skillID, "ADMIN", false, AdminGrid.Grid, runtime: JsRuntime));
     }
 
     /// <summary>
@@ -481,6 +476,7 @@ public partial class Skills
 
             try
             {
+                // ReSharper disable once RedundantArgumentDefaultValue
                 object _returnValue = await General.GetReadAsync("Admin_GetSkills", Filter, dm, false, Virtualization);
                 return _returnValue;
             }

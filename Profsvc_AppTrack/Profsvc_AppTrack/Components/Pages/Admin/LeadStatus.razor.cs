@@ -3,17 +3,21 @@
 // /*****************************************
 // Copyright:           Titan-Techs.
 // Location:            Newtown, PA, USA
-// Solution:            ProfSvc_AppTrack
-// Project:             ProfSvc_AppTrack
+// Solution:            Profsvc_AppTrack
+// Project:             Profsvc_AppTrack
 // File Name:           LeadStatus.razor.cs
 // Created By:          Narendra Kumaran Kadhirvelu, Jolly Joseph Paily, DonBosco Paily, Mariappan Raja
-// Created On:          09-17-2022 20:01
-// Last Updated On:     11-04-2023 21:08
+// Created On:          11-23-2023 19:53
+// Last Updated On:     12-13-2023 19:57
 // *****************************************/
 
 #endregion
 
+#region Using
+
 using AdminListDialog = Profsvc_AppTrack.Components.Pages.Admin.Controls.AdminListDialog;
+
+#endregion
 
 namespace Profsvc_AppTrack.Components.Pages.Admin;
 
@@ -134,10 +138,10 @@ public partial class LeadStatus
     } = new();
 
     /// <summary>
-    ///     Gets or sets a clone of an lead status record in the administration list.
+    ///     Gets or sets a clone of n lead status record in the administration list.
     /// </summary>
     /// <remarks>
-    ///     This property is used to hold a copy of an lead status record from the administration list.
+    ///     This property is used to hold a copy of a lead status record from the administration list.
     ///     It is utilized during the editing process, where a copy of the record is made and manipulated
     ///     before being saved back to the list. This ensures that the original record remains unaltered
     ///     in case the editing process is cancelled or an error occurs.
@@ -207,7 +211,7 @@ public partial class LeadStatus
     }
 
     /// <summary>
-    ///     Gets or sets the RoleID of the currently logged in user.
+    ///     Gets or sets the RoleID of the currently logged-in user.
     /// </summary>
     /// <remarks>
     ///     This property is used to store the RoleID of the user retrieved from the login information.
@@ -241,16 +245,13 @@ public partial class LeadStatus
     ///     If there are records, it selects the first row.
     /// </summary>
     /// <returns>A Task that represents the asynchronous operation.</returns>
-    private async Task DataHandler()
+    private Task DataHandler()
     {
-        await ExecuteMethod(async () =>
-                            {
-                                Count = AdminGrid.Grid.CurrentViewData.Count();
-                                if (Count > 0)
-                                {
-                                    await AdminGrid.Grid.SelectRowAsync(0);
-                                }
-                            });
+        return ExecuteMethod(() =>
+                             {
+                                 Count = AdminGrid.Grid.CurrentViewData.Count();
+                                 return Count > 0 ? AdminGrid.Grid.SelectRowAsync(0) : Task.CompletedTask;
+                             });
     }
 
     /// <summary>
@@ -269,40 +270,40 @@ public partial class LeadStatus
     ///     - Triggers a state change.
     ///     - Shows the admin dialog.
     /// </remarks>
-    private async Task EditLeadStatus(int id = 0)
+    private Task EditLeadStatus(int id = 0)
     {
-        await ExecuteMethod(async () =>
-                            {
-                                List<AdminList> _selectedList = await AdminGrid.Grid.GetSelectedRecordsAsync();
-                                if (_selectedList.Any() && _selectedList.First().ID != id)
-                                {
-                                    int _index = await AdminGrid.Grid.GetRowIndexByPrimaryKeyAsync(id);
-                                    await AdminGrid.Grid.SelectRowAsync(_index);
-                                }
+        return ExecuteMethod(async () =>
+                             {
+                                 List<AdminList> _selectedList = await AdminGrid.Grid.GetSelectedRecordsAsync();
+                                 if (_selectedList.Any() && _selectedList.First().ID != id)
+                                 {
+                                     int _index = await AdminGrid.Grid.GetRowIndexByPrimaryKeyAsync(id);
+                                     await AdminGrid.Grid.SelectRowAsync(_index);
+                                 }
 
-                                if (id == 0)
-                                {
-                                    Title = "Add";
-                                    if (LeadStatusRecordClone == null)
-                                    {
-                                        LeadStatusRecordClone = new();
-                                    }
-                                    else
-                                    {
-                                        LeadStatusRecordClone.Clear();
-                                    }
-                                }
-                                else
-                                {
-                                    Title = "Edit";
-                                    LeadStatusRecordClone = LeadStatusRecord.Copy();
-                                }
+                                 if (id == 0)
+                                 {
+                                     Title = "Add";
+                                     if (LeadStatusRecordClone == null)
+                                     {
+                                         LeadStatusRecordClone = new();
+                                     }
+                                     else
+                                     {
+                                         LeadStatusRecordClone.Clear();
+                                     }
+                                 }
+                                 else
+                                 {
+                                     Title = "Edit";
+                                     LeadStatusRecordClone = LeadStatusRecord.Copy();
+                                 }
 
-                                LeadStatusRecordClone.Entity = "Lead Status";
+                                 LeadStatusRecordClone.Entity = "Lead Status";
 
-                                StateHasChanged();
-                                await AdminDialog.ShowDialog();
-                            });
+                                 StateHasChanged();
+                                 await AdminDialog.ShowDialog();
+                             });
     }
 
     /// <summary>
@@ -314,10 +315,7 @@ public partial class LeadStatus
     /// <returns>
     ///     A task that represents the asynchronous operation.
     /// </returns>
-    private async Task ExecuteMethod(Func<Task> task)
-    {
-        await General.ExecuteMethod(_semaphore, task, Logger);
-    }
+    private Task ExecuteMethod(Func<Task> task) => General.ExecuteMethod(_semaphore, task, Logger);
 
     /// <summary>
     ///     Handles the filtering of the grid based on the provided lead status.
@@ -327,13 +325,13 @@ public partial class LeadStatus
     /// </summary>
     /// <param name="leadStatus">The selected lead status in the grid, encapsulated in a ChangeEventArgs object.</param>
     /// <returns>A Task representing the asynchronous operation of refreshing the grid.</returns>
-    private async Task FilterGrid(ChangeEventArgs<string, KeyValues> leadStatus)
+    private Task FilterGrid(ChangeEventArgs<string, KeyValues> leadStatus)
     {
-        await ExecuteMethod(async () =>
-                            {
-                                FilterSet(leadStatus.Value);
-                                await AdminGrid.Grid.Refresh();
-                            });
+        return ExecuteMethod(() =>
+                             {
+                                 FilterSet(leadStatus.Value);
+                                 return AdminGrid.Grid.Refresh();
+                             });
     }
 
     /// <summary>
@@ -374,7 +372,7 @@ public partial class LeadStatus
     ///     This method is used to update the grid component and reflect any changes made to the data.
     /// </summary>
     /// <returns>A Task that represents the asynchronous operation.</returns>
-    private async Task RefreshGrid() => await AdminGrid.Grid.Refresh();
+    private Task RefreshGrid() => AdminGrid.Grid.Refresh();
 
     /// <summary>
     ///     Handles the event of a row being selected in the Lead Status grid.
@@ -391,13 +389,10 @@ public partial class LeadStatus
     ///     made to the DesignationRecordClone.
     ///     After the save operation, it refreshes the grid and selects the updated row.
     /// </remarks>
-    private async Task SaveLeadStatus()
+    private Task SaveLeadStatus()
     {
-        await ExecuteMethod(async () =>
-                            {
-                                await General.SaveAdminListAsync("Admin_SaveLeadStatus", "LeadStatus", false, false, LeadStatusRecordClone, AdminGrid.Grid,
-                                                                 LeadStatusRecord, JsRuntime);
-                            });
+        return ExecuteMethod(() => General.SaveAdminListAsync("Admin_SaveLeadStatus", "LeadStatus", false, false, LeadStatusRecordClone, AdminGrid.Grid,
+                                                              LeadStatusRecord, JsRuntime));
     }
 
     /// <summary>
@@ -409,21 +404,21 @@ public partial class LeadStatus
     ///     set to 1.
     /// </param>
     /// <returns>A Task representing the asynchronous operation.</returns>
-    private async Task ToggleMethod(int id, bool enabled)
+    private Task ToggleMethod(int id, bool enabled)
     {
-        await ExecuteMethod(async () =>
-                            {
-                                _selectedID = id;
-                                _toggleValue = enabled ? (byte)2 : (byte)1;
-                                List<AdminList> _selectedList = await AdminGrid.Grid.GetSelectedRecordsAsync();
-                                if (_selectedList.Any() && _selectedList.First().ID != id)
-                                {
-                                    int _index = await AdminGrid.Grid.GetRowIndexByPrimaryKeyAsync(id);
-                                    await AdminGrid.Grid.SelectRowAsync(_index);
-                                }
+        return ExecuteMethod(async () =>
+                             {
+                                 _selectedID = id;
+                                 _toggleValue = enabled ? (byte)2 : (byte)1;
+                                 List<AdminList> _selectedList = await AdminGrid.Grid.GetSelectedRecordsAsync();
+                                 if (_selectedList.Any() && _selectedList.First().ID != id)
+                                 {
+                                     int _index = await AdminGrid.Grid.GetRowIndexByPrimaryKeyAsync(id);
+                                     await AdminGrid.Grid.SelectRowAsync(_index);
+                                 }
 
-                                await AdminGrid.DialogConfirm.ShowDialog();
-                            });
+                                 await AdminGrid.DialogConfirm.ShowDialog();
+                             });
     }
 
     /// <summary>
@@ -437,9 +432,9 @@ public partial class LeadStatus
     ///     The status toggle operation is not performed if it is already in progress.
     ///     After the status is toggled, the method refreshes the grid and selects the row with the toggled lead status.
     /// </remarks>
-    private async Task ToggleStatusAsync(int leadStatusID)
+    private Task ToggleStatusAsync(int leadStatusID)
     {
-        await ExecuteMethod(async () => { await General.PostToggleAsync("Admin_ToggleLeadStatusStatus", leadStatusID, "ADMIN", false, AdminGrid.Grid, runtime: JsRuntime); });
+        return ExecuteMethod(() => General.PostToggleAsync("Admin_ToggleLeadStatusStatus", leadStatusID, "ADMIN", false, AdminGrid.Grid, runtime: JsRuntime));
     }
 
     /// <summary>

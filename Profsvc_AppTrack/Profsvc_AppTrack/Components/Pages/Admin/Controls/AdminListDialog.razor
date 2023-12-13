@@ -9,8 +9,8 @@
 			<FluentValidationValidator />
 			<div class="divContainerTable">
 				<TextBoxControl @bind-Value="@(Model.Text)" @bind-Value:event="ValueChanged" ID="textText" MaxLength="100" MinLength="1" Multiline="false" Placeholder="@Placeholder"
-                                ValidationMessage="@(() => Model.Text)" />@*Readonly="@(!HeaderString.Contains("Add"))"*@
-                <SwitchControl @bind-BindValue="@(Model.IsEnabled)" ID="checkedEnabled" OffLabel="INACTIVE" OnLabel="ACTIVE" Placeholder="Status?" />
+								ValidationMessage="@(() => Model.Text)" />@*Readonly="@(!HeaderString.Contains("Add"))"*@
+				<SwitchControl @bind-BindValue="@(Model.IsEnabled)" ID="checkedEnabled" OffLabel="INACTIVE" OnLabel="ACTIVE" Placeholder="Status?" />
 			</div>
 			<DialogFooter Cancel="Cancel" CancelMethod="CancelAdminList" @ref="FooterDialog" Save="Save" />
 		</EditForm>

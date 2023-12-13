@@ -53,12 +53,16 @@
 
     <ItemGroup>
         <Compile Remove="Data\**" />
+        <Compile Remove="log\**" />
         <Compile Remove="Upload\**" />
         <Content Remove="Data\**" />
+        <Content Remove="log\**" />
         <Content Remove="Upload\**" />
         <EmbeddedResource Remove="Data\**" />
+        <EmbeddedResource Remove="log\**" />
         <EmbeddedResource Remove="Upload\**" />
         <None Remove="Data\**" />
+        <None Remove="log\**" />
         <None Remove="Upload\**" />
     </ItemGroup>
 

@@ -2,7 +2,7 @@
 @layout ProfSvcLayout
 
 <AdminGrid AdaptorInstance="@typeof(AdminRoleAdaptor)" AddMethod="() => EditRole()" AutocompleteMethod="Admin_SearchRole" AutocompleteParameter="@("@Role")" Count="@Count" DataHandler="DataHandler" Entity="Role"
-		   FilterGrid="FilterGrid" HeaderContentPlural="Roles" HeaderContentSingular="Role" Key="ID" Page="Roles" @ref="AdminGrid" RefreshGrid="RefreshGrid" RoleID="@RoleID" RowSelected="RowSelected" ShowConfirm="false" 
+		   FilterGrid="FilterGrid" HeaderContentPlural="Roles" HeaderContentSingular="Role" Key="ID" Page="Roles" @ref="AdminGrid" RefreshGrid="RefreshGrid" RoleID="@RoleID" RowSelected="RowSelected" ShowConfirm="false"
 		   TValue="Role">
 	<GridColumn Field="@nameof(Role.ID)" HeaderText="Code" IsPrimaryKey="true" Visible="false" Width="10%"></GridColumn>
 	<GridColumn Field="ID" HeaderText="Role" Width="40%">

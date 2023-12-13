@@ -183,14 +183,14 @@ public partial class DocumentTypeDialog
 		//await Dialog.HideAsync();
 	}
 
-	/// <summary>
-	///     Hides the dialog of the DocumentTypeDialog component.
-	///     This method is used to close the dialog when an operation is completed or cancelled.
-	/// </summary>
-	public void HideDialog()
-	{
-		Dialog.HideAsync();
-	}
+	///// <summary>
+	/////     Hides the dialog of the DocumentTypeDialog component.
+	/////     This method is used to close the dialog when an operation is completed or cancelled.
+	///// </summary>
+	//public void HideDialog()
+	//{
+	//	Dialog.HideAsync();
+	//}
 
 	/// <summary>
 	///     Prevents the entry of special characters in the TextBoxControl of the DocumentTypeDialog component.
@@ -205,7 +205,7 @@ public partial class DocumentTypeDialog
 
 	/// <summary>
 	///     Asynchronously opens the dialog of the DocumentTypeDialog component.
-	///     This method is invoked before the dialog is opened and it validates the EditForm's EditContext.
+	///     This method is invoked before the dialog is opened, and it validates the EditForm's EditContext.
 	/// </summary>
 	/// <param name="arg">The arguments associated with the BeforeOpen event.</param>
 	/// <returns>A task that represents the asynchronous operation.</returns>
@@ -216,7 +216,7 @@ public partial class DocumentTypeDialog
 	}
 
 	/// <summary>
-	///     Asynchronously saves the document type information entered in the dialog.
+	///     Asynchronously saves the document type information entered the dialog.
 	/// </summary>
 	/// <param name="editContext">
 	///     The edit context associated with the save action. This context provides a mechanism for
@@ -238,21 +238,21 @@ public partial class DocumentTypeDialog
 	///     Shows the dialog of the DocumentTypeDialog component.
 	///     This method is used to show the dialog when an add or edit operation in initiated.
 	/// </summary>
-	internal async Task ShowDialog()
+	internal Task ShowDialog()
 	{
-		await Dialog.ShowAsync();
+		return Dialog.ShowAsync();
 	}
 
-	/// <summary>
-	///     Handles the opening event of the tooltip.
-	/// </summary>
-	/// <param name="args">The arguments for the tooltip event.</param>
-	/// <remarks>
-	///     This method is triggered when the tooltip is about to open. If the tooltip does not contain any text,
-	///     the opening of the tooltip is cancelled.
-	/// </remarks>
-	public void ToolTipOpen(TooltipEventArgs args)
-	{
-		args.Cancel = !args.HasText;
-	}
+	///// <summary>
+	/////     Handles the opening event of the tooltip.
+	///// </summary>
+	///// <param name="args">The arguments for the tooltip event.</param>
+	///// <remarks>
+	/////     This method is triggered when the tooltip is about to open. If the tooltip does not contain any text,
+	/////     the opening of the tooltip is cancelled.
+	///// </remarks>
+	//public void ToolTipOpen(TooltipEventArgs args)
+	//{
+	//	args.Cancel = !args.HasText;
+	//}
 }

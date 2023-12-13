@@ -22,6 +22,7 @@ using Profsvc_AppTrack.Components.Pages;
 using Profsvc_AppTrack.Components.Pages.Admin;
 
 using ILogger = Microsoft.Extensions.Logging.ILogger;
+// ReSharper disable UnusedMember.Global
 
 #endregion
 
@@ -110,9 +111,9 @@ internal class General
             {
                 await task();
             }
-            catch (Exception ex)
+            catch (Exception _ex)
             {
-                logger.LogError(ex, $"Exception occurred at: [{DateTime.Today.ToString(CultureInfo.InvariantCulture)}]{Environment.NewLine}{new('-', 40)}{Environment.NewLine}");
+                logger.LogError(_ex, $"Exception occurred at: [{DateTime.Today.ToString(CultureInfo.InvariantCulture)}]{Environment.NewLine}{new('-', 40)}{Environment.NewLine}");
             }
             finally
             {
@@ -198,7 +199,7 @@ internal class General
     /// </remarks>
     internal static async Task<object> GetAutocompleteAsync(string methodName, string parameterName, DataManagerRequest dm)
     {
-        List<KeyValues> _dataSource = new();
+        List<KeyValues> _dataSource = [];
 
         if (dm.Where is not {Count: > 0} || dm.Where[0].value.NullOrWhiteSpace())
         {
@@ -264,7 +265,7 @@ internal class General
     internal static async Task<object> GetAutocompleteZipAsync(DataManagerRequest dm)
     {
         await Task.Yield();
-        List<KeyValues> _dataSource = new();
+        List<KeyValues> _dataSource = [];
 
         if (dm.Where is not {Count: > 0} || dm.Where[0].value.NullOrWhiteSpace())
         {
@@ -340,7 +341,7 @@ internal class General
     /// </remarks>
     internal static async Task<object> GetCandidateReadAdaptor(CandidateSearch searchModel, DataManagerRequest dm, int optionalCandidateID = 0, bool thenProceed = false)
     {
-        List<Candidates> _dataSource = new();
+        List<Candidates> _dataSource = [];
 
         int _itemCount = searchModel.ItemCount;
         int _page = searchModel.Page;
@@ -426,9 +427,10 @@ internal class General
     ///     with a single
     ///     empty company in the Result property and a Count of 1, or a single empty company if dm.RequiresCounts is false.
     /// </returns>
+    // ReSharper disable once UnusedParameter.Global
     internal static async Task<object> GetCompanyReadAdaptor(CompanySearch searchModel, string user, DataManagerRequest dm, bool getCompanyInformation = false)
     {
-        List<Company> _dataSource = new();
+        List<Company> _dataSource = [];
 
         int _itemCount = searchModel.ItemCount;
         int _page = searchModel.Page;
@@ -516,7 +518,7 @@ internal class General
     /// </remarks>
     internal static async Task<object> GetDocTypesAsync(string filter, DataManagerRequest dm)
     {
-        List<DocumentType> _dataSource = new();
+        List<DocumentType> _dataSource = [];
 
         try
         {
@@ -592,7 +594,7 @@ internal class General
     /// </remarks>
     internal static async Task<object> GetLeadReadAdaptor(LeadSearch searchModel, DataManagerRequest dm)
     {
-        List<LeadClass> _dataSource = new();
+        List<LeadClass> _dataSource = [];
 
         int _itemCount = searchModel.ItemCount;
         int _page = searchModel.Page;
@@ -673,7 +675,7 @@ internal class General
     /// </remarks>
     internal static async Task<object> GetReadAsync(string methodName, string filter, DataManagerRequest dm, bool isString = true, bool enableVirtualization = false)
     {
-        List<AdminList> _dataSource = new();
+        List<AdminList> _dataSource = [];
 
         try
         {
@@ -696,7 +698,7 @@ internal class General
             }
 
             _dataSource = DeserializeObject<List<AdminList>>(_response["GeneralItems"]);
-            int _count = _response["Count"] as int? ?? 0;
+            int _count = _response["Count"].ToInt32();
             if (enableVirtualization && dm.Skip != 0)
             {
                 _dataSource = DataOperations.PerformSkip(_dataSource, dm.Skip).ToList();
@@ -763,7 +765,7 @@ internal class General
     internal static async Task<object> GetRequisitionReadAdaptor(RequisitionSearch searchModel, DataManagerRequest dm, bool getInformation = false, int optionalRequisitionID = 0,
                                                                  bool thenProceed = false, string user = "")
     {
-        List<Requisitions> _dataSource = new();
+        List<Requisitions> _dataSource = [];
 
         int _itemCount = searchModel.ItemCount;
         int _page = searchModel.Page;
@@ -867,7 +869,7 @@ internal class General
     ///     If a dictionary of parameters is provided, they are added as query parameters to the request.
     ///     The method then sends the request and awaits the response. The response is returned as an object of type T.
     /// </remarks>
-    internal static async Task<T> GetRest<T>(string endpoint, Dictionary<string, string> parameters, object jsonBody = null)
+    private static async Task<T> GetRest<T>(string endpoint, Dictionary<string, string> parameters, object jsonBody = null)
     {
         using RestClient _client = new(Start.ApiHost);
         RestRequest _request = new(endpoint)
@@ -914,7 +916,7 @@ internal class General
     /// </remarks>
     internal static async Task<object> GetRoleDataAdaptorAsync(string filter, DataManagerRequest dm)
     {
-        List<Role> _dataSource = new();
+        List<Role> _dataSource = [];
 
         try
         {
@@ -997,7 +999,7 @@ internal class General
     /// </remarks>
     internal static async Task<object> GetStateDataAdaptorAsync(string filter, DataManagerRequest dm)
     {
-        List<State> _dataSource = new();
+        List<State> _dataSource = [];
 
         try
         {
@@ -1060,7 +1062,7 @@ internal class General
     /// </returns>
     internal static async Task<object> GetStatusCodeReadAdaptorAsync(string filter, DataManagerRequest dm)
     {
-        List<StatusCode> _dataSource = new();
+        List<StatusCode> _dataSource = [];
 
         try
         {
@@ -1123,7 +1125,7 @@ internal class General
     /// </returns>
     internal static async Task<object> GetTemplateReadAdaptor(DataManagerRequest dm, string filter = "") //string name, int page, int count)
     {
-        List<Template> _dataSource = new();
+        List<Template> _dataSource = [];
 
         try
         {
@@ -1208,7 +1210,7 @@ internal class General
     /// </remarks>
     internal static async Task<object> GetUserReadAsync(string filter, DataManagerRequest dm)
     {
-        List<User> _dataSource = new();
+        List<User> _dataSource = [];
 
         try
         {
@@ -1305,7 +1307,7 @@ internal class General
     /// </returns>
     internal static async Task<object> GetWorkflowAsync(string filter, DataManagerRequest dm)
     {
-        List<AppWorkflow> _dataSource = new();
+        List<AppWorkflow> _dataSource = [];
 
         try
         {
@@ -1383,8 +1385,8 @@ internal class General
     ///     If a JSON body is provided, it is added to the request.
     ///     All key-value pairs in the parameters dictionary are added as query parameters to the request.
     /// </remarks>
-    internal static async Task<Dictionary<string, object>> PostRest(string endpoint, Dictionary<string, string> parameters, object jsonBody = null) =>
-        await PostRest<Dictionary<string, object>>(endpoint, parameters, jsonBody);
+    internal static Task<Dictionary<string, object>> PostRest(string endpoint, Dictionary<string, string> parameters, object jsonBody = null) =>
+        PostRest<Dictionary<string, object>>(endpoint, parameters, jsonBody);
 
     /// <summary>
     ///     Sends a POST request to the specified endpoint with the provided parameters and JSON body.

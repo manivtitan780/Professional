@@ -3,17 +3,15 @@
 // /*****************************************
 // Copyright:           Titan-Techs.
 // Location:            Newtown, PA, USA
-// Solution:            ProfSvc_AppTrack
-// Project:             ProfSvc_AppTrack
+// Solution:            Profsvc_AppTrack
+// Project:             Profsvc_AppTrack
 // File Name:           AdminGridHeader.razor.cs
 // Created By:          Narendra Kumaran Kadhirvelu, Jolly Joseph Paily, DonBosco Paily, Mariappan Raja
-// Created On:          01-06-2023 15:29
-// Last Updated On:     09-01-2023 16:12
+// Created On:          11-23-2023 19:53
+// Last Updated On:     12-13-2023 20:18
 // *****************************************/
 
 #endregion
-
-using Profsvc_AppTrack.Components.Code;
 
 namespace Profsvc_AppTrack.Components.Pages.Admin.Controls;
 
@@ -45,6 +43,13 @@ public partial class AdminGridHeader
     ///     interacting with the grid.
     /// </summary>
     private AutoCompleteButton AutoCompleteControl
+    {
+        get;
+        set;
+    }
+
+    [Parameter]
+    public string AutocompleteID
     {
         get;
         set;
@@ -143,55 +148,48 @@ public partial class AdminGridHeader
         set;
     }
 
-    [Parameter]
-    public string AutocompleteID
+    /// <summary>
+    ///     Asynchronously handles the post-rendering logic of the component.
+    /// </summary>
+    /// <param name="firstRender">
+    ///     A boolean value that indicates whether this is the first time the component is being rendered.
+    ///     If true, this is the first rendering of the component; if false, the component has been rendered before.
+    /// </param>
+    /// <returns>
+    ///     A <see cref="Task" /> that represents the asynchronous operation.
+    /// </returns>
+    /// <remarks>
+    ///     This method is invoked after the component has been rendered. It sets the `_method` and `_parameterName` fields
+    ///     with the values of `AutocompleteMethod` and `AutocompleteParameterName` properties respectively.
+    /// </remarks>
+    protected override Task OnAfterRenderAsync(bool firstRender)
     {
-        get;
-        set;
+        _method = AutocompleteMethod;
+        _parameterName = AutocompleteParameterName;
+        return base.OnAfterRenderAsync(firstRender);
     }
 
     /// <summary>
-	///     Asynchronously handles the post-rendering logic of the component.
-	/// </summary>
-	/// <param name="firstRender">
-	///     A boolean value that indicates whether this is the first time the component is being rendered.
-	///     If true, this is the first rendering of the component; if false, the component has been rendered before.
-	/// </param>
-	/// <returns>
-	///     A <see cref="Task" /> that represents the asynchronous operation.
-	/// </returns>
-	/// <remarks>
-	///     This method is invoked after the component has been rendered. It sets the `_method` and `_parameterName` fields
-	///     with the values of `AutocompleteMethod` and `AutocompleteParameterName` properties respectively.
-	/// </remarks>
-	protected override Task OnAfterRenderAsync(bool firstRender)
-	{
-		_method = AutocompleteMethod;
-		_parameterName = AutocompleteParameterName;
-		return base.OnAfterRenderAsync(firstRender);
-	}
-
-	/// <summary>
-	///     The DropDownAdaptor class is a specialized DataAdaptor used for handling data operations for a dropdown control.
-	///     It overrides the ReadAsync method to provide custom data retrieval logic, specifically for autocomplete
-	///     functionality.
-	/// </summary>
-	public class DropDownAdaptor : DataAdaptor
-	{
-		/// <summary>
-		///     Asynchronously retrieves data for a dropdown control using autocomplete functionality.
-		/// </summary>
-		/// <param name="dm">The DataManagerRequest object containing additional request parameters.</param>
-		/// <param name="key">An optional key to further specify the data retrieval.</param>
-		/// <returns>
-		///     A task that represents the asynchronous operation. The task result contains the data retrieved for the dropdown
-		///     control.
-		/// </returns>
-		/// <remarks>
-		///     This method uses the 'General.GetAutocompleteAsync' method to retrieve the data, passing in the method name and
-		///     parameter name stored in the '_method' and '_parameterName' fields respectively, along with the DataManagerRequest
-		///     object.
-		/// </remarks>
-		public override Task<object> ReadAsync(DataManagerRequest dm, string key = null) => General.GetAutocompleteAsync(_method, _parameterName, dm);
-	}
+    ///     The DropDownAdaptor class is a specialized DataAdaptor used for handling data operations for a dropdown control.
+    ///     It overrides the ReadAsync method to provide custom data retrieval logic, specifically for autocomplete
+    ///     functionality.
+    /// </summary>
+    public class DropDownAdaptor : DataAdaptor
+    {
+        /// <summary>
+        ///     Asynchronously retrieves data for a dropdown control using autocomplete functionality.
+        /// </summary>
+        /// <param name="dm">The DataManagerRequest object containing additional request parameters.</param>
+        /// <param name="key">An optional key to further specify the data retrieval.</param>
+        /// <returns>
+        ///     A task that represents the asynchronous operation. The task result contains the data retrieved for the dropdown
+        ///     control.
+        /// </returns>
+        /// <remarks>
+        ///     This method uses the 'General.GetAutocompleteAsync' method to retrieve the data, passing in the method name and
+        ///     parameter name stored in the '_method' and '_parameterName' fields respectively, along with the DataManagerRequest
+        ///     object.
+        /// </remarks>
+        public override Task<object> ReadAsync(DataManagerRequest dm, string key = null) => General.GetAutocompleteAsync(_method, _parameterName, dm);
+    }
 }

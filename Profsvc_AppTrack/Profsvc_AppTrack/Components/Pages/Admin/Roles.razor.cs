@@ -3,17 +3,21 @@
 // /*****************************************
 // Copyright:           Titan-Techs.
 // Location:            Newtown, PA, USA
-// Solution:            ProfSvc_AppTrack
-// Project:             ProfSvc_AppTrack
+// Solution:            Profsvc_AppTrack
+// Project:             Profsvc_AppTrack
 // File Name:           Roles.razor.cs
 // Created By:          Narendra Kumaran Kadhirvelu, Jolly Joseph Paily, DonBosco Paily, Mariappan Raja
-// Created On:          09-17-2022 20:01
-// Last Updated On:     11-04-2023 21:11
+// Created On:          11-23-2023 19:53
+// Last Updated On:     12-13-2023 19:58
 // *****************************************/
 
 #endregion
 
+#region Using
+
 using RoleDialog = Profsvc_AppTrack.Components.Pages.Admin.Controls.RoleDialog;
+
+#endregion
 
 namespace Profsvc_AppTrack.Components.Pages.Admin;
 
@@ -242,16 +246,13 @@ public partial class Roles
     /// <returns>
     ///     A <see cref="Task" /> representing the asynchronous operation.
     /// </returns>
-    private async Task DataHandler()
+    private Task DataHandler()
     {
-        await ExecuteMethod(async () =>
-                            {
-                                Count = AdminGrid.Grid.CurrentViewData.Count();
-                                if (Count > 0)
-                                {
-                                    await AdminGrid.Grid.SelectRowAsync(0);
-                                }
-                            });
+        return ExecuteMethod(() =>
+                             {
+                                 Count = AdminGrid.Grid.CurrentViewData.Count();
+                                 return Count > 0 ? AdminGrid.Grid.SelectRowAsync(0) : Task.CompletedTask;
+                             });
     }
 
     /// <summary>
@@ -270,41 +271,41 @@ public partial class Roles
     ///     If the code is not provided or is whitespace, a new role record is created and the title is set to "Add".
     ///     If the code is provided, the role record is copied from the existing role and the title is set to "Edit".
     /// </remarks>
-    private async Task EditRole(string code = "")
+    private Task EditRole(string code = "")
     {
-        await ExecuteMethod(async () =>
-                            {
-                                List<Role> _selectedList = await AdminGrid.Grid.GetSelectedRecordsAsync();
-                                if (_selectedList.Any() && _selectedList.First().ID != code)
-                                {
-                                    int _index = await AdminGrid.Grid.GetRowIndexByPrimaryKeyAsync(code);
-                                    await AdminGrid.Grid.SelectRowAsync(_index);
-                                }
+        return ExecuteMethod(async () =>
+                             {
+                                 List<Role> _selectedList = await AdminGrid.Grid.GetSelectedRecordsAsync();
+                                 if (_selectedList.Any() && _selectedList.First().ID != code)
+                                 {
+                                     int _index = await AdminGrid.Grid.GetRowIndexByPrimaryKeyAsync(code);
+                                     await AdminGrid.Grid.SelectRowAsync(_index);
+                                 }
 
-                                if (code.NullOrWhiteSpace())
-                                {
-                                    Title = "Add";
-                                    if (RoleRecordClone == null)
-                                    {
-                                        RoleRecordClone = new();
-                                    }
-                                    else
-                                    {
-                                        RoleRecordClone.Clear();
-                                    }
+                                 if (code.NullOrWhiteSpace())
+                                 {
+                                     Title = "Add";
+                                     if (RoleRecordClone == null)
+                                     {
+                                         RoleRecordClone = new();
+                                     }
+                                     else
+                                     {
+                                         RoleRecordClone.Clear();
+                                     }
 
-                                    RoleRecordClone.IsAdd = true;
-                                }
-                                else
-                                {
-                                    Title = "Edit";
-                                    RoleRecordClone = RoleRecord.Copy();
-                                    RoleRecordClone.IsAdd = false;
-                                }
+                                     RoleRecordClone.IsAdd = true;
+                                 }
+                                 else
+                                 {
+                                     Title = "Edit";
+                                     RoleRecordClone = RoleRecord.Copy();
+                                     RoleRecordClone.IsAdd = false;
+                                 }
 
-                                StateHasChanged();
-                                await DialogRole.Dialog.ShowAsync();
-                            });
+                                 StateHasChanged();
+                                 await DialogRole.Dialog.ShowAsync();
+                             });
     }
 
     /// <summary>
@@ -316,10 +317,7 @@ public partial class Roles
     /// <returns>
     ///     A task that represents the asynchronous operation.
     /// </returns>
-    private async Task ExecuteMethod(Func<Task> task)
-    {
-        await General.ExecuteMethod(_semaphore, task, Logger);
-    }
+    private Task ExecuteMethod(Func<Task> task) => General.ExecuteMethod(_semaphore, task, Logger);
 
     /// <summary>
     ///     Asynchronously filters the grid of roles based on the provided role.
@@ -333,13 +331,13 @@ public partial class Roles
     ///     and prevents multiple simultaneous filter operations using a toggling mechanism.
     /// </remarks>
     /// <returns>A <see cref="Task" /> representing the asynchronous operation.</returns>
-    private async Task FilterGrid(ChangeEventArgs<string, KeyValues> role)
+    private Task FilterGrid(ChangeEventArgs<string, KeyValues> role)
     {
-        await ExecuteMethod(async () =>
-                            {
-                                FilterSet(role.Value);
-                                await AdminGrid.Grid.Refresh();
-                            });
+        return ExecuteMethod(() =>
+                             {
+                                 FilterSet(role.Value);
+                                 return AdminGrid.Grid.Refresh();
+                             });
     }
 
     /// <summary>
@@ -388,10 +386,10 @@ public partial class Roles
     ///     A Task that represents the asynchronous operation.
     /// </returns>
     /// <remarks>
-    ///     This method is used to update the grid control with the latest roles data. It is typically called after any
+    ///     This method is used to update the grid control with the latest roles' data. It is typically called after any
     ///     operation that could modify the roles data, such as adding, editing, or deleting a role.
     /// </remarks>
-    private async Task RefreshGrid() => await AdminGrid.Grid.Refresh();
+    private Task RefreshGrid() => AdminGrid.Grid.Refresh();
 
     /// <summary>
     ///     Handles the event when a row is selected in the roles table on the administration roles page.
@@ -415,23 +413,23 @@ public partial class Roles
     /// <returns>
     ///     A task that represents the asynchronous operation.
     /// </returns>
-    private async Task SaveRole()
+    private Task SaveRole()
     {
-        await ExecuteMethod(async () =>
-                            {
-                                string _response = await General.PostRest<string>("Admin/SaveRole", null, RoleRecordClone);
+        return ExecuteMethod(async () =>
+                             {
+                                 string _response = await General.PostRest<string>("Admin/SaveRole", null, RoleRecordClone);
 
-                                if (_response.NullOrWhiteSpace())
-                                {
-                                    _response = RoleRecordClone.ID;
-                                }
+                                 if (_response.NullOrWhiteSpace())
+                                 {
+                                     _response = RoleRecordClone.ID;
+                                 }
 
-                                RoleRecord = RoleRecordClone.Copy();
-                                await AdminGrid.Grid.Refresh();
-                                int _index = await AdminGrid.Grid.GetRowIndexByPrimaryKeyAsync(_response);
-                                await AdminGrid.Grid.SelectRowAsync(_index);
-                                await JsRuntime.InvokeVoidAsync("scroll", _index);
-                            });
+                                 RoleRecord = RoleRecordClone.Copy();
+                                 await AdminGrid.Grid.Refresh();
+                                 int _index = await AdminGrid.Grid.GetRowIndexByPrimaryKeyAsync(_response);
+                                 await AdminGrid.Grid.SelectRowAsync(_index);
+                                 await JsRuntime.InvokeVoidAsync("scroll", _index);
+                             });
     }
 
     /// <summary>

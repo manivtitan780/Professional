@@ -8,7 +8,7 @@
 // File Name:           Workflow.razor.cs
 // Created By:          Narendra Kumaran Kadhirvelu, Jolly Joseph Paily, DonBosco Paily, Mariappan Raja
 // Created On:          11-23-2023 19:53
-// Last Updated On:     11-23-2023 20:26
+// Last Updated On:     12-13-2023 20:16
 // *****************************************/
 
 #endregion
@@ -214,16 +214,18 @@ public partial class Workflow
     ///     the count is greater than zero.
     ///     It is invoked when the data in the grid is bound.
     /// </summary>
-    private async Task DataHandler()
+    private Task DataHandler()
     {
-        await ExecuteMethod(async () =>
-                            {
-                                Count = AdminGrid.Grid.CurrentViewData.Count();
-                                if (Count > 0)
-                                {
-                                    await AdminGrid.Grid.SelectRowAsync(0);
-                                }
-                            });
+        return ExecuteMethod(() =>
+                             {
+                                 Count = AdminGrid.Grid.CurrentViewData.Count();
+                                 if (Count > 0)
+                                 {
+                                     return AdminGrid.Grid.SelectRowAsync(0);
+                                 }
+
+                                 return Task.CompletedTask;
+                             });
     }
 
     /// <summary>
@@ -273,10 +275,7 @@ public partial class Workflow
     /// <returns>
     ///     A task that represents the asynchronous operation.
     /// </returns>
-    private async Task ExecuteMethod(Func<Task> task)
-    {
-        await General.ExecuteMethod(_semaphore, task, Logger);
-    }
+    private Task ExecuteMethod(Func<Task> task) => General.ExecuteMethod(_semaphore, task, Logger);
 
     /// <summary>
     ///     Asynchronously filters the grid of workflows based on the provided workflow change event arguments.
@@ -348,7 +347,7 @@ public partial class Workflow
     ///     management page.
     ///     This method is asynchronous and returns a Task.
     /// </summary>
-    private async Task RefreshGrid() => await AdminGrid.Grid.Refresh();
+    private Task RefreshGrid() => AdminGrid.Grid.Refresh();
 
     /// <summary>
     ///     Handles the row selection event in the workflow management grid.
@@ -369,24 +368,24 @@ public partial class Workflow
     ///     It also passes the 'Grid', 'WorkflowRecord', and 'JsRuntime' to the 'SaveWorkflowAsync' method for further
     ///     processing.
     /// </remarks>
-    private async Task SaveWorkflow(EditContext context)
+    private Task SaveWorkflow(EditContext context)
     {
-        await ExecuteMethod(async () =>
-                            {
-                                int _response = await General.PostRest<int>("Admin/SaveWorkflow", null, WorkflowRecordClone);
-                                if (WorkflowRecord != null)
-                                {
-                                    WorkflowRecord = WorkflowRecordClone.Copy();
-                                }
+        return ExecuteMethod(async () =>
+                             {
+                                 int _response = await General.PostRest<int>("Admin/SaveWorkflow", null, WorkflowRecordClone);
+                                 if (WorkflowRecord != null)
+                                 {
+                                     WorkflowRecord = WorkflowRecordClone.Copy();
+                                 }
 
-                                await AdminGrid.Grid.Refresh();
-                                int _index = await AdminGrid.Grid.GetRowIndexByPrimaryKeyAsync(_response);
-                                await AdminGrid.Grid.SelectRowAsync(_index);
-                                if (JsRuntime != null)
-                                {
-                                    await JsRuntime.InvokeVoidAsync("scroll", _index);
-                                }
-                            });
+                                 await AdminGrid.Grid.Refresh();
+                                 int _index = await AdminGrid.Grid.GetRowIndexByPrimaryKeyAsync(_response);
+                                 await AdminGrid.Grid.SelectRowAsync(_index);
+                                 if (JsRuntime != null)
+                                 {
+                                     await JsRuntime.InvokeVoidAsync("scroll", _index);
+                                 }
+                             });
     }
 
     /// <summary>

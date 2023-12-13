@@ -182,7 +182,7 @@ public partial class StatusCodes
     }
 
     /// <summary>
-    ///     Gets or sets the RoleID of the currently logged in user.
+    ///     Gets or sets the RoleID of the currently logged-in user.
     /// </summary>
     /// <value>
     ///     The RoleID is a string value that represents the role identifier of the user. It is used to determine the user's
@@ -248,16 +248,13 @@ public partial class StatusCodes
     ///     This method is triggered when the data in the grid control is bound. It updates the count of status codes currently
     ///     displayed in the grid and selects the first row if the count is greater than zero.
     /// </remarks>
-    private async Task DataHandler(object obj)
+    private Task DataHandler(object obj)
     {
-        await ExecuteMethod(async () =>
-                            {
-                                Count = AdminGrid.Grid.CurrentViewData.Count();
-                                if (Count > 0)
-                                {
-                                    await AdminGrid.Grid.SelectRowAsync(0);
-                                }
-                            });
+        return ExecuteMethod(() =>
+                             {
+                                 Count = AdminGrid.Grid.CurrentViewData.Count();
+                                 return Count > 0 ? AdminGrid.Grid.SelectRowAsync(0) : Task.CompletedTask;
+                             });
     }
 
     /// <summary>
@@ -271,41 +268,41 @@ public partial class StatusCodes
     ///     existing status code with the provided ID. After setting up the interface, it opens a dialog for the user to
     ///     perform the add or edit operation.
     /// </remarks>
-    private async Task EditStatusCode(int id = 0)
+    private Task EditStatusCode(int id = 0)
     {
-        await ExecuteMethod(async () =>
-                            {
-                                List<StatusCode> _selectedList = await AdminGrid.Grid.GetSelectedRecordsAsync();
-                                if (_selectedList.Any() && _selectedList.First().ID != id)
-                                {
-                                    int _index = await AdminGrid.Grid.GetRowIndexByPrimaryKeyAsync(id);
-                                    await AdminGrid.Grid.SelectRowAsync(_index);
-                                }
+        return ExecuteMethod(async () =>
+                             {
+                                 List<StatusCode> _selectedList = await AdminGrid.Grid.GetSelectedRecordsAsync();
+                                 if (_selectedList.Any() && _selectedList.First().ID != id)
+                                 {
+                                     int _index = await AdminGrid.Grid.GetRowIndexByPrimaryKeyAsync(id);
+                                     await AdminGrid.Grid.SelectRowAsync(_index);
+                                 }
 
-                                if (id == 0)
-                                {
-                                    Title = "Add";
-                                    if (StatusCodeRecordClone == null)
-                                    {
-                                        StatusCodeRecordClone = new();
-                                    }
-                                    else
-                                    {
-                                        StatusCodeRecordClone.Clear();
-                                    }
+                                 if (id == 0)
+                                 {
+                                     Title = "Add";
+                                     if (StatusCodeRecordClone == null)
+                                     {
+                                         StatusCodeRecordClone = new();
+                                     }
+                                     else
+                                     {
+                                         StatusCodeRecordClone.Clear();
+                                     }
 
-                                    StatusCodeRecordClone.IsAdd = true;
-                                }
-                                else
-                                {
-                                    Title = "Edit";
-                                    StatusCodeRecordClone = StatusCodeRecord.Copy();
-                                    StatusCodeRecordClone.IsAdd = false;
-                                }
+                                     StatusCodeRecordClone.IsAdd = true;
+                                 }
+                                 else
+                                 {
+                                     Title = "Edit";
+                                     StatusCodeRecordClone = StatusCodeRecord.Copy();
+                                     StatusCodeRecordClone.IsAdd = false;
+                                 }
 
-                                StateHasChanged();
-                                await DialogStatusCode.ShowDialog();
-                            });
+                                 StateHasChanged();
+                                 await DialogStatusCode.ShowDialog();
+                             });
     }
 
     /// <summary>
@@ -317,9 +314,9 @@ public partial class StatusCodes
     /// <returns>
     ///     A task that represents the asynchronous operation.
     /// </returns>
-    private async Task ExecuteMethod(Func<Task> task)
+    private Task ExecuteMethod(Func<Task> task)
     {
-        await General.ExecuteMethod(_semaphore, task, Logger);
+        return General.ExecuteMethod(_semaphore, task, Logger);
     }
 
     /// <summary>
@@ -334,13 +331,13 @@ public partial class StatusCodes
     ///     It sets a filter based on the provided tax term, refreshes the grid to apply the filter,
     ///     and then resets the toggle state. The method is asynchronous and returns a Task.
     /// </remarks>
-    private async Task FilterGrid(ChangeEventArgs<string, KeyValues> taxTerm)
+    private Task FilterGrid(ChangeEventArgs<string, KeyValues> taxTerm)
     {
-        await ExecuteMethod(async () =>
-                            {
-                                FilterSet(taxTerm.Value);
-                                await AdminGrid.Grid.Refresh();
-                            });
+        return ExecuteMethod(() =>
+                             {
+                                 FilterSet(taxTerm.Value);
+                                 return AdminGrid.Grid.Refresh();
+                             });
     }
 
     /// <summary>
@@ -387,7 +384,7 @@ public partial class StatusCodes
     ///     It is typically called after operations that modify the status codes, such as adding a new status code or editing
     ///     an existing one.
     /// </remarks>
-    private async Task RefreshGrid() => await AdminGrid.Grid.Refresh();
+    private Task RefreshGrid() => AdminGrid.Grid.Refresh();
 
     /// <summary>
     ///     Handles the event when a row is selected in the status codes grid.
@@ -414,25 +411,25 @@ public partial class StatusCodes
     ///     If the returned ID does not match the ID of the first selected status code, it scrolls to the row with the returned
     ///     ID.
     /// </remarks>
-    private async Task SaveStatusCode()
+    private Task SaveStatusCode()
     {
-        await ExecuteMethod(async () =>
-                            {
-                                int _response = await General.PostRest<int>("Admin/SaveStatusCode", null, StatusCodeRecordClone);
+        return ExecuteMethod(async () =>
+                             {
+                                 int _response = await General.PostRest<int>("Admin/SaveStatusCode", null, StatusCodeRecordClone);
 
-                                if (_response.NullOrWhiteSpace())
-                                {
-                                    _response = StatusCodeRecordClone.ID;
-                                }
+                                 if (_response.NullOrWhiteSpace())
+                                 {
+                                     _response = StatusCodeRecordClone.ID;
+                                 }
 
-                                StatusCodeRecord = StatusCodeRecordClone.Copy();
+                                 StatusCodeRecord = StatusCodeRecordClone.Copy();
 
-                                await AdminGrid.Grid.Refresh();
-                                int _index = await AdminGrid.Grid.GetRowIndexByPrimaryKeyAsync(_response);
-                                await AdminGrid.Grid.SelectRowAsync(_index);
+                                 await AdminGrid.Grid.Refresh();
+                                 int _index = await AdminGrid.Grid.GetRowIndexByPrimaryKeyAsync(_response);
+                                 await AdminGrid.Grid.SelectRowAsync(_index);
 
-                                await JsRuntime.InvokeVoidAsync("scroll", _index);
-                            });
+                                 await JsRuntime.InvokeVoidAsync("scroll", _index);
+                             });
     }
 
     /// <summary>

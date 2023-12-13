@@ -3,17 +3,21 @@
 // /*****************************************
 // Copyright:           Titan-Techs.
 // Location:            Newtown, PA, USA
-// Solution:            ProfSvc_AppTrack
-// Project:             ProfSvc_AppTrack
+// Solution:            Profsvc_AppTrack
+// Project:             Profsvc_AppTrack
 // File Name:           Templates.razor.cs
 // Created By:          Narendra Kumaran Kadhirvelu, Jolly Joseph Paily, DonBosco Paily, Mariappan Raja
-// Created On:          10-03-2022 16:08
-// Last Updated On:     11-06-2023 15:05
+// Created On:          11-23-2023 19:53
+// Last Updated On:     12-13-2023 20:15
 // *****************************************/
 
 #endregion
 
+#region Using
+
 using TemplateDialog = Profsvc_AppTrack.Components.Pages.Admin.Controls.TemplateDialog;
+
+#endregion
 
 namespace Profsvc_AppTrack.Components.Pages.Admin;
 
@@ -250,16 +254,13 @@ public partial class Templates
     ///     grid
     ///     and selects the first row if the count is greater than zero.
     /// </remarks>
-    private async Task DataHandler()
+    private Task DataHandler()
     {
-        await ExecuteMethod(async () =>
-                            {
-                                Count = AdminGrid.Grid.CurrentViewData.Count();
-                                if (Count > 0)
-                                {
-                                    await AdminGrid.Grid.SelectRowAsync(0);
-                                }
-                            });
+        return ExecuteMethod(() =>
+                             {
+                                 Count = AdminGrid.Grid.CurrentViewData.Count();
+                                 return Count > 0 ? AdminGrid.Grid.SelectRowAsync(0) : Task.CompletedTask;
+                             });
     }
 
     /// <summary>
@@ -271,38 +272,38 @@ public partial class Templates
     ///     Otherwise, it finds the template with the given ID and prepares it for editing.
     ///     After the template is prepared, it triggers the UI to open the template dialog for user interaction.
     /// </remarks>
-    private async Task EditTemplateAsync(int id = 0)
+    private Task EditTemplateAsync(int id = 0)
     {
-        await ExecuteMethod(async () =>
-                            {
-                                List<Template> _selectedList = await AdminGrid.Grid.GetSelectedRecordsAsync();
-                                if (_selectedList.Any() && _selectedList.First().ID != id)
-                                {
-                                    int _index = await AdminGrid.Grid.GetRowIndexByPrimaryKeyAsync(id);
-                                    await AdminGrid.Grid.SelectRowAsync(_index);
-                                }
+        return ExecuteMethod(async () =>
+                             {
+                                 List<Template> _selectedList = await AdminGrid.Grid.GetSelectedRecordsAsync();
+                                 if (_selectedList.Any() && _selectedList.First().ID != id)
+                                 {
+                                     int _index = await AdminGrid.Grid.GetRowIndexByPrimaryKeyAsync(id);
+                                     await AdminGrid.Grid.SelectRowAsync(_index);
+                                 }
 
-                                if (id == 0)
-                                {
-                                    Title = "Add";
-                                    if (TemplateRecordClone == null)
-                                    {
-                                        TemplateRecordClone = new();
-                                    }
-                                    else
-                                    {
-                                        TemplateRecordClone.Clear();
-                                    }
-                                }
-                                else
-                                {
-                                    Title = "Edit";
-                                    TemplateRecordClone = TemplateRecord.Copy();
-                                }
+                                 if (id == 0)
+                                 {
+                                     Title = "Add";
+                                     if (TemplateRecordClone == null)
+                                     {
+                                         TemplateRecordClone = new();
+                                     }
+                                     else
+                                     {
+                                         TemplateRecordClone.Clear();
+                                     }
+                                 }
+                                 else
+                                 {
+                                     Title = "Edit";
+                                     TemplateRecordClone = TemplateRecord.Copy();
+                                 }
 
-                                StateHasChanged();
-                                await TemplateDialog.ShowDialog();
-                            });
+                                 StateHasChanged();
+                                 await TemplateDialog.ShowDialog();
+                             });
     }
 
     /// <summary>
@@ -314,10 +315,7 @@ public partial class Templates
     /// <returns>
     ///     A task that represents the asynchronous operation.
     /// </returns>
-    private async Task ExecuteMethod(Func<Task> task)
-    {
-        await General.ExecuteMethod(_semaphore, task, Logger);
-    }
+    private Task ExecuteMethod(Func<Task> task) => General.ExecuteMethod(_semaphore, task, Logger);
 
     /// <summary>
     ///     Asynchronously filters the grid based on the provided template.
@@ -329,13 +327,13 @@ public partial class Templates
     ///     This method sets the filter based on the value of the provided template, refreshes the grid to apply the filter,
     ///     and prevents multiple simultaneous filter operations using a toggling mechanism.
     /// </remarks>
-    private async Task FilterGrid(ChangeEventArgs<string, KeyValues> template)
+    private Task FilterGrid(ChangeEventArgs<string, KeyValues> template)
     {
-        await ExecuteMethod(async () =>
-                            {
-                                FilterSet(template.Value);
-                                await AdminGrid.Grid.Refresh();
-                            });
+        return ExecuteMethod(() =>
+                             {
+                                 FilterSet(template.Value);
+                                 return AdminGrid.Grid.Refresh();
+                             });
     }
 
     /// <summary>
@@ -388,7 +386,7 @@ public partial class Templates
     /// <returns>
     ///     A Task representing the asynchronous operation.
     /// </returns>
-    private async Task RefreshGrid() => await AdminGrid.Grid.Refresh();
+    private Task RefreshGrid() => AdminGrid.Grid.Refresh();
 
     /// <summary>
     ///     Handles the row selection event in the Templates page grid.
@@ -412,25 +410,25 @@ public partial class Templates
     ///     After the request is completed, it refreshes the grid and selects the row of the saved template. If the saved
     ///     template is not the first one in the selected list, it scrolls to the saved template's row.
     /// </remarks>
-    private async Task SaveTemplate(EditContext arg)
+    private Task SaveTemplate(EditContext arg)
     {
-        await ExecuteMethod(async () =>
-                            {
-                                int _response = await General.PostRest<int>("Admin/SaveTemplate", null, TemplateRecordClone);
+        return ExecuteMethod(async () =>
+                             {
+                                 int _response = await General.PostRest<int>("Admin/SaveTemplate", null, TemplateRecordClone);
 
-                                if (_response.NullOrWhiteSpace())
-                                {
-                                    _response = TemplateRecordClone.ID;
-                                }
+                                 if (_response.NullOrWhiteSpace())
+                                 {
+                                     _response = TemplateRecordClone.ID;
+                                 }
 
-                                TemplateRecord = TemplateRecordClone.Copy();
+                                 TemplateRecord = TemplateRecordClone.Copy();
 
-                                await AdminGrid.Grid.Refresh();
-                                int _index = await AdminGrid.Grid.GetRowIndexByPrimaryKeyAsync(_response);
-                                await AdminGrid.Grid.SelectRowAsync(_index);
+                                 await AdminGrid.Grid.Refresh();
+                                 int _index = await AdminGrid.Grid.GetRowIndexByPrimaryKeyAsync(_response);
+                                 await AdminGrid.Grid.SelectRowAsync(_index);
 
-                                await JsRuntime.InvokeVoidAsync("scroll", _index);
-                            });
+                                 await JsRuntime.InvokeVoidAsync("scroll", _index);
+                             });
     }
 
     /// <summary>
@@ -453,21 +451,21 @@ public partial class Templates
     ///     the grid.
     ///     Finally, it shows a confirmation dialog to the user.
     /// </remarks>
-    private async Task ToggleMethod(int id, bool enabled)
+    private Task ToggleMethod(int id, bool enabled)
     {
-        await ExecuteMethod(async () =>
-                            {
-                                _selectedID = id;
-                                _toggleValue = enabled ? (byte)2 : (byte)1;
-                                List<Template> _selectedList = await AdminGrid.Grid.GetSelectedRecordsAsync();
-                                if (_selectedList.Any() && _selectedList.First().ID != id)
-                                {
-                                    int _index = await AdminGrid.Grid.GetRowIndexByPrimaryKeyAsync(id);
-                                    await AdminGrid.Grid.SelectRowAsync(_index);
-                                }
+        return ExecuteMethod(async () =>
+                             {
+                                 _selectedID = id;
+                                 _toggleValue = enabled ? (byte)2 : (byte)1;
+                                 List<Template> _selectedList = await AdminGrid.Grid.GetSelectedRecordsAsync();
+                                 if (_selectedList.Any() && _selectedList.First().ID != id)
+                                 {
+                                     int _index = await AdminGrid.Grid.GetRowIndexByPrimaryKeyAsync(id);
+                                     await AdminGrid.Grid.SelectRowAsync(_index);
+                                 }
 
-                                await AdminGrid.DialogConfirm.ShowDialog();
-                            });
+                                 await AdminGrid.DialogConfirm.ShowDialog();
+                             });
     }
 
     /// <summary>
@@ -486,9 +484,9 @@ public partial class Templates
     ///     parameters.
     ///     After the status has been toggled, the flag (_toggling) is reset to false.
     /// </remarks>
-    private async Task ToggleStatusAsync(int designationID)
+    private Task ToggleStatusAsync(int designationID)
     {
-        await ExecuteMethod(async () => { await General.PostToggleAsync("Admin_ToggleTemplateStatus", designationID, "ADMIN", false, AdminGrid.Grid, runtime: JsRuntime); });
+        return ExecuteMethod(() => General.PostToggleAsync("Admin_ToggleTemplateStatus", designationID, "ADMIN", false, AdminGrid.Grid, runtime: JsRuntime));
     }
 
     /// <summary>

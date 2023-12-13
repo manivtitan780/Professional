@@ -3,17 +3,21 @@
 // /*****************************************
 // Copyright:           Titan-Techs.
 // Location:            Newtown, PA, USA
-// Solution:            ProfSvc_AppTrack
-// Project:             ProfSvc_AppTrack
+// Solution:            Profsvc_AppTrack
+// Project:             Profsvc_AppTrack
 // File Name:           States.razor.cs
 // Created By:          Narendra Kumaran Kadhirvelu, Jolly Joseph Paily, DonBosco Paily, Mariappan Raja
-// Created On:          12-06-2022 18:52
-// Last Updated On:     11-04-2023 21:19
+// Created On:          11-23-2023 19:53
+// Last Updated On:     12-13-2023 20:12
 // *****************************************/
 
 #endregion
 
+#region Using
+
 using StateDialog = Profsvc_AppTrack.Components.Pages.Admin.Controls.StateDialog;
+
+#endregion
 
 namespace Profsvc_AppTrack.Components.Pages.Admin;
 
@@ -238,16 +242,13 @@ public partial class States
     ///     This method is invoked when the Grid component has finished binding data.
     ///     It updates the count of states currently displayed in the grid and selects the first row if any states are present.
     /// </remarks>
-    private async Task DataHandler()
+    private Task DataHandler()
     {
-        await ExecuteMethod(async () =>
-                            {
-                                Count = AdminGrid.Grid.CurrentViewData.Count();
-                                if (Count > 0)
-                                {
-                                    await AdminGrid.Grid.SelectRowAsync(0);
-                                }
-                            });
+        return ExecuteMethod(() =>
+                             {
+                                 Count = AdminGrid.Grid.CurrentViewData.Count();
+                                 return Count > 0 ? AdminGrid.Grid.SelectRowAsync(0) : Task.CompletedTask;
+                             });
     }
 
     /// <summary>
@@ -262,41 +263,41 @@ public partial class States
     ///     and prepares the state record clone for the operation. After the preparation, it triggers the state dialog for the
     ///     user interaction.
     /// </remarks>
-    private async Task EditState(int code = 0)
+    private Task EditState(int code = 0)
     {
-        await ExecuteMethod(async () =>
-                            {
-                                List<State> _selectedList = await AdminGrid.Grid.GetSelectedRecordsAsync();
-                                if (_selectedList.Any() && _selectedList.First().ID != code)
-                                {
-                                    int _index = await AdminGrid.Grid.GetRowIndexByPrimaryKeyAsync(code);
-                                    await AdminGrid.Grid.SelectRowAsync(_index);
-                                }
+        return ExecuteMethod(async () =>
+                             {
+                                 List<State> _selectedList = await AdminGrid.Grid.GetSelectedRecordsAsync();
+                                 if (_selectedList.Any() && _selectedList.First().ID != code)
+                                 {
+                                     int _index = await AdminGrid.Grid.GetRowIndexByPrimaryKeyAsync(code);
+                                     await AdminGrid.Grid.SelectRowAsync(_index);
+                                 }
 
-                                if (code == 0)
-                                {
-                                    Title = "Add";
-                                    if (StateRecordClone == null)
-                                    {
-                                        StateRecordClone = new();
-                                    }
-                                    else
-                                    {
-                                        StateRecordClone.Clear();
-                                    }
+                                 if (code == 0)
+                                 {
+                                     Title = "Add";
+                                     if (StateRecordClone == null)
+                                     {
+                                         StateRecordClone = new();
+                                     }
+                                     else
+                                     {
+                                         StateRecordClone.Clear();
+                                     }
 
-                                    StateRecordClone.IsAdd = true;
-                                }
-                                else
-                                {
-                                    Title = "Edit";
-                                    StateRecordClone = StateRecord.Copy();
-                                    StateRecordClone.IsAdd = false;
-                                }
+                                     StateRecordClone.IsAdd = true;
+                                 }
+                                 else
+                                 {
+                                     Title = "Edit";
+                                     StateRecordClone = StateRecord.Copy();
+                                     StateRecordClone.IsAdd = false;
+                                 }
 
-                                StateHasChanged();
-                                await DialogState.ShowDialog();
-                            });
+                                 StateHasChanged();
+                                 await DialogState.ShowDialog();
+                             });
     }
 
     /// <summary>
@@ -308,10 +309,7 @@ public partial class States
     /// <returns>
     ///     A task that represents the asynchronous operation.
     /// </returns>
-    private async Task ExecuteMethod(Func<Task> task)
-    {
-        await General.ExecuteMethod(_semaphore, task, Logger);
-    }
+    private Task ExecuteMethod(Func<Task> task) => General.ExecuteMethod(_semaphore, task, Logger);
 
     /// <summary>
     ///     Filters the grid based on the provided tax term.
@@ -328,13 +326,13 @@ public partial class States
     /// <returns>
     ///     A <see cref="Task" /> representing the asynchronous operation.
     /// </returns>
-    private async Task FilterGrid(ChangeEventArgs<string, KeyValues> taxTerm)
+    private Task FilterGrid(ChangeEventArgs<string, KeyValues> taxTerm)
     {
-        await ExecuteMethod(async () =>
-                            {
-                                FilterSet(taxTerm.Value);
-                                await AdminGrid.Grid.Refresh();
-                            });
+        return ExecuteMethod(() =>
+                             {
+                                 FilterSet(taxTerm.Value);
+                                 return AdminGrid.Grid.Refresh();
+                             });
     }
 
     /// <summary>
@@ -386,7 +384,7 @@ public partial class States
     /// <remarks>
     ///     This method is used to update the grid component with the latest state data.
     /// </remarks>
-    private async Task RefreshGrid() => await AdminGrid.Grid.Refresh();
+    private Task RefreshGrid() => AdminGrid.Grid.Refresh();
 
     /// <summary>
     ///     Handles the event when a row is selected in the Grid component.
@@ -411,25 +409,25 @@ public partial class States
     ///     If the saved state record is not in the selected records of the Grid, it scrolls the Grid to the saved state
     ///     record.
     /// </remarks>
-    private async Task SaveState(EditContext context)
+    private Task SaveState(EditContext context)
     {
-        await ExecuteMethod(async () =>
-                            {
-                                int _response = await General.PostRest<int>("Admin/SaveState", null, StateRecordClone);
+        return ExecuteMethod(async () =>
+                             {
+                                 int _response = await General.PostRest<int>("Admin/SaveState", null, StateRecordClone);
 
-                                if (_response.NullOrWhiteSpace())
-                                {
-                                    _response = StateRecordClone.ID;
-                                }
+                                 if (_response.NullOrWhiteSpace())
+                                 {
+                                     _response = StateRecordClone.ID;
+                                 }
 
-                                StateRecord = StateRecordClone.Copy();
+                                 StateRecord = StateRecordClone.Copy();
 
-                                await AdminGrid.Grid.Refresh();
-                                int _index = await AdminGrid.Grid.GetRowIndexByPrimaryKeyAsync(_response);
-                                await AdminGrid.Grid.SelectRowAsync(_index);
+                                 await AdminGrid.Grid.Refresh();
+                                 int _index = await AdminGrid.Grid.GetRowIndexByPrimaryKeyAsync(_response);
+                                 await AdminGrid.Grid.SelectRowAsync(_index);
 
-                                await JsRuntime.InvokeVoidAsync("scroll", _index);
-                            });
+                                 await JsRuntime.InvokeVoidAsync("scroll", _index);
+                             });
     }
 
     /// <summary>

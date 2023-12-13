@@ -3,17 +3,21 @@
 // /*****************************************
 // Copyright:           Titan-Techs.
 // Location:            Newtown, PA, USA
-// Solution:            ProfSvc_AppTrack
-// Project:             ProfSvc_AppTrack
+// Solution:            Profsvc_AppTrack
+// Project:             Profsvc_AppTrack
 // File Name:           TaxTerm.razor.cs
 // Created By:          Narendra Kumaran Kadhirvelu, Jolly Joseph Paily, DonBosco Paily, Mariappan Raja
-// Created On:          09-17-2022 20:01
-// Last Updated On:     11-04-2023 21:28
+// Created On:          11-23-2023 19:53
+// Last Updated On:     12-13-2023 20:14
 // *****************************************/
 
 #endregion
 
+#region Using
+
 using TaxTermDialog = Profsvc_AppTrack.Components.Pages.Admin.Controls.TaxTermDialog;
+
+#endregion
 
 namespace Profsvc_AppTrack.Components.Pages.Admin;
 
@@ -251,16 +255,13 @@ public partial class TaxTerm
     /// <returns>
     ///     A <see cref="Task" /> representing the asynchronous operation.
     /// </returns>
-    private async Task DataHandler(object obj)
+    private Task DataHandler(object obj)
     {
-        await ExecuteMethod(async () =>
-                            {
-                                Count = AdminGrid.Grid.CurrentViewData.Count();
-                                if (Count > 0)
-                                {
-                                    await AdminGrid.Grid.SelectRowAsync(0);
-                                }
-                            });
+        return ExecuteMethod(() =>
+                             {
+                                 Count = AdminGrid.Grid.CurrentViewData.Count();
+                                 return Count > 0 ? AdminGrid.Grid.SelectRowAsync(0) : Task.CompletedTask;
+                             });
     }
 
     /// <summary>
@@ -329,10 +330,7 @@ public partial class TaxTerm
     /// <returns>
     ///     A task that represents the asynchronous operation.
     /// </returns>
-    private async Task ExecuteMethod(Func<Task> task)
-    {
-        await General.ExecuteMethod(_semaphore, task, Logger);
-    }
+    private Task ExecuteMethod(Func<Task> task) => General.ExecuteMethod(_semaphore, task, Logger);
 
     /// <summary>
     ///     Filters the grid of tax terms based on the provided tax term.
@@ -347,13 +345,13 @@ public partial class TaxTerm
     /// <returns>
     ///     A <see cref="System.Threading.Tasks.Task" /> that represents the asynchronous operation.
     /// </returns>
-    private async Task FilterGrid(ChangeEventArgs<string, KeyValues> taxTerm)
+    private Task FilterGrid(ChangeEventArgs<string, KeyValues> taxTerm)
     {
-        await ExecuteMethod(async () =>
-                            {
-                                FilterSet(taxTerm.Value);
-                                await AdminGrid.Grid.Refresh();
-                            });
+        return ExecuteMethod(() =>
+                             {
+                                 FilterSet(taxTerm.Value);
+                                 return AdminGrid.Grid.Refresh();
+                             });
     }
 
     /// <summary>
@@ -409,7 +407,7 @@ public partial class TaxTerm
     ///     deleted.
     ///     It uses the Syncfusion grid control's Refresh method to update the grid's content.
     /// </remarks>
-    private async Task RefreshGrid() => await AdminGrid.Grid.Refresh();
+    private Task RefreshGrid() => AdminGrid.Grid.Refresh();
 
     /// <summary>
     ///     Handles the event that occurs when a row is selected in the AdminList grid.
@@ -432,11 +430,8 @@ public partial class TaxTerm
     /// </remarks>
     private async void SaveTaxTerm()
     {
-        await ExecuteMethod(async () =>
-                            {
-                                await General.SaveAdminListAsync("Admin_SaveTaxTerm", "TaxTerm", true, true, TaxTermRecordClone,
-                                                                 AdminGrid.Grid, TaxTermRecord, JsRuntime);
-                            });
+        await ExecuteMethod(() => General.SaveAdminListAsync("Admin_SaveTaxTerm", "TaxTerm", true, true, TaxTermRecordClone,
+                                                             AdminGrid.Grid, TaxTermRecord, JsRuntime));
     }
 
     /// <summary>
@@ -455,21 +450,21 @@ public partial class TaxTerm
     ///     currently selected in the grid,
     ///     the method selects the correct row in the grid. After these operations, the method triggers a confirmation dialog.
     /// </remarks>
-    private async Task ToggleMethod(string code, bool enabled)
+    private Task ToggleMethod(string code, bool enabled)
     {
-        await ExecuteMethod(async () =>
-                            {
-                                _selectedID = code;
-                                _toggleValue = enabled ? (byte)2 : (byte)1;
-                                List<AdminList> _selectedList = await AdminGrid.Grid.GetSelectedRecordsAsync();
-                                if (_selectedList.Any() && _selectedList.First().Code != code)
-                                {
-                                    int _index = await AdminGrid.Grid.GetRowIndexByPrimaryKeyAsync(code);
-                                    await AdminGrid.Grid.SelectRowAsync(_index);
-                                }
+        return ExecuteMethod(async () =>
+                             {
+                                 _selectedID = code;
+                                 _toggleValue = enabled ? (byte)2 : (byte)1;
+                                 List<AdminList> _selectedList = await AdminGrid.Grid.GetSelectedRecordsAsync();
+                                 if (_selectedList.Any() && _selectedList.First().Code != code)
+                                 {
+                                     int _index = await AdminGrid.Grid.GetRowIndexByPrimaryKeyAsync(code);
+                                     await AdminGrid.Grid.SelectRowAsync(_index);
+                                 }
 
-                                await AdminGrid.DialogConfirm.ShowDialog();
-                            });
+                                 await AdminGrid.DialogConfirm.ShowDialog();
+                             });
     }
 
     /// <summary>
@@ -483,9 +478,9 @@ public partial class TaxTerm
     ///     This method posts a toggle request to the 'Admin_ToggleTaxTermStatus' endpoint with the provided tax term code.
     ///     The method ensures that only one toggle operation can be in progress at a time by using the '_toggling' flag.
     /// </remarks>
-    private async Task ToggleStatusTaxTerm(string taxTermCode)
+    private Task ToggleStatusTaxTerm(string taxTermCode)
     {
-        await ExecuteMethod(async () => { await General.PostToggleAsync("Admin_ToggleTaxTermStatus", taxTermCode, "ADMIN", true, AdminGrid.Grid); });
+        return ExecuteMethod(() => General.PostToggleAsync("Admin_ToggleTaxTermStatus", taxTermCode, "ADMIN", true, AdminGrid.Grid));
     }
 
     /// <summary>

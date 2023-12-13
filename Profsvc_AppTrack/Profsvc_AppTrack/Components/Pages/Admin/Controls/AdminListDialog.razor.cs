@@ -160,7 +160,7 @@ public partial class AdminListDialog
 	///     process.
 	///     The value of this property is bound to the SfSpinner component in the Razor markup.
 	/// </remarks>
-	public SfSpinner Spinner
+	private SfSpinner Spinner
 	{
 		get;
 		set;
@@ -176,7 +176,7 @@ public partial class AdminListDialog
 	///     operations to cancel the current action and close the dialog.
 	/// </remarks>
 	/// <returns>A task that represents the asynchronous operation.</returns>
-	private async Task CancelAdminList(MouseEventArgs args) => await General.CallCancelMethod(args, Spinner, FooterDialog, Dialog, Cancel);
+	private Task CancelAdminList(MouseEventArgs args) => General.CallCancelMethod(args, Spinner, FooterDialog, Dialog, Cancel);
 
 	/// <summary>
 	///     Asynchronously opens the dialog before it is displayed.
@@ -202,7 +202,7 @@ public partial class AdminListDialog
 	///     It also controls the spinner animation and the dialog buttons during the save operation.
 	/// </remarks>
 	/// <returns>A task that represents the asynchronous operation.</returns>
-	private async Task SaveAdminList(EditContext editContext) => await General.CallSaveMethod(editContext, Spinner, FooterDialog, Dialog, Save);
+	private Task SaveAdminList(EditContext editContext) => General.CallSaveMethod(editContext, Spinner, FooterDialog, Dialog, Save);
 
 	/// <summary>
 	///     Asynchronously displays the AdminListDialog.
@@ -213,15 +213,15 @@ public partial class AdminListDialog
 	///     control to display the dialog.
 	/// </remarks>
 	/// <returns>A Task representing the asynchronous operation of showing the dialog.</returns>
-	public async Task ShowDialog() => await Dialog.ShowAsync();
+	public Task ShowDialog() => Dialog.ShowAsync();
 
-	/// <summary>
-	///     Handles the opening of the tooltip in the AdminListDialog.
-	/// </summary>
-	/// <param name="args">The arguments associated with the tooltip event.</param>
-	/// <remarks>
-	///     This method is invoked when the tooltip is about to be opened. If the tooltip does not contain any text, the
-	///     opening of the tooltip is cancelled.
-	/// </remarks>
-	private void ToolTipOpen(TooltipEventArgs args) => args.Cancel = !args.HasText;
+	///// <summary>
+	/////     Handles the opening of the tooltip in the AdminListDialog.
+	///// </summary>
+	///// <param name="args">The arguments associated with the tooltip event.</param>
+	///// <remarks>
+	/////     This method is invoked when the tooltip is about to be opened. If the tooltip does not contain any text, the
+	/////     opening of the tooltip is cancelled.
+	///// </remarks>
+	//private void ToolTipOpen(TooltipEventArgs args) => args.Cancel = !args.HasText;
 }
