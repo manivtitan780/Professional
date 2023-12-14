@@ -9,16 +9,16 @@
 			<div class="divContainerTable">
 				<NumericControl @bind-Value="@(Model.NoOfHours)" @bind-Value:event="ValueChanged" CreateDivTag="true" Decimals="0" Format="####" ID="numericNoofHours"
 								Max="4000" Placeholder="No. of working hours in a year." TValue="short" ValidationMessage="@(() => Model.NoOfHours)" />
-                <NumericControl @bind-Value="@(Model.OverheadCost)" @bind-Value:event="ValueChanged" CreateDivTag="true" Decimals="0" Format="###'%'" ID="numericOverhead"
-                                Max="100" Placeholder="Ocerhead cost in percentage." TValue="byte" ValidationMessage="@(() => Model.OverheadCost)" />
-                <NumericControl @bind-Value="@(Model.W2TaxLoadingRate)" @bind-Value:event="ValueChanged" CreateDivTag="true" Decimals="0" Format="###'%'" ID="numericWTaxloading"
-                                Max="100" Placeholder="W2 Tax loading rate." TValue="byte" ValidationMessage="@(() => Model.W2TaxLoadingRate)" />
-                <NumericControl @bind-Value="@(Model.CostRate1099)" @bind-Value:event="ValueChanged" CreateDivTag="true" Decimals="0" Format="###'%'" ID="numeric1099"
-                                Max="100" Placeholder="1099 cost rate." TValue="byte" ValidationMessage="@(() => Model.CostRate1099)" />
-                <NumericControl @bind-Value="@(Model.FTERateOffered)" @bind-Value:event="ValueChanged" CreateDivTag="true" Decimals="0" Format="###'%'" ID="numericFTE"
-                                Max="100" Placeholder="FTE rate offered." TValue="byte" ValidationMessage="@(() => Model.FTERateOffered)" />
-            </div>
-			<DialogFooter Cancel="Cancel" Save="Save" CancelMethod="CancelVariableCommission" @ref="DialogFooter" />
+				<NumericControl @bind-Value="@(Model.OverheadCost)" @bind-Value:event="ValueChanged" CreateDivTag="true" Decimals="0" Format="###'%'" ID="numericOverhead"
+								Max="100" Placeholder="Ocerhead cost in percentage." TValue="byte" ValidationMessage="@(() => Model.OverheadCost)" />
+				<NumericControl @bind-Value="@(Model.W2TaxLoadingRate)" @bind-Value:event="ValueChanged" CreateDivTag="true" Decimals="0" Format="###'%'" ID="numericWTaxloading"
+								Max="100" Placeholder="W2 Tax loading rate." TValue="byte" ValidationMessage="@(() => Model.W2TaxLoadingRate)" />
+				<NumericControl @bind-Value="@(Model.CostRate1099)" @bind-Value:event="ValueChanged" CreateDivTag="true" Decimals="0" Format="###'%'" ID="numeric1099"
+								Max="100" Placeholder="1099 cost rate." TValue="byte" ValidationMessage="@(() => Model.CostRate1099)" />
+				<NumericControl @bind-Value="@(Model.FTERateOffered)" @bind-Value:event="ValueChanged" CreateDivTag="true" Decimals="0" Format="###'%'" ID="numericFTE"
+								Max="100" Placeholder="FTE rate offered." TValue="byte" ValidationMessage="@(() => Model.FTERateOffered)" />
+			</div>
+			<DialogFooter Cancel="Cancel" CancelMethod="CancelVariableCommission" @ref="DialogFooter" Save="Save" />
 		</EditForm>
 	</ChildContent>
 </SfDialog>

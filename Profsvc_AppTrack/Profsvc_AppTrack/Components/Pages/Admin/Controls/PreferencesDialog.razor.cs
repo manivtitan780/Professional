@@ -3,17 +3,15 @@
 // /*****************************************
 // Copyright:           Titan-Techs.
 // Location:            Newtown, PA, USA
-// Solution:            ProfSvc_AppTrack
-// Project:             ProfSvc_AppTrack
+// Solution:            Profsvc_AppTrack
+// Project:             Profsvc_AppTrack
 // File Name:           PreferencesDialog.razor.cs
 // Created By:          Narendra Kumaran Kadhirvelu, Jolly Joseph Paily, DonBosco Paily, Mariappan Raja
-// Created On:          09-03-2023 15:57
-// Last Updated On:     09-05-2023 20:01
+// Created On:          11-23-2023 19:53
+// Last Updated On:     12-14-2023 16:3
 // *****************************************/
 
 #endregion
-
-using Profsvc_AppTrack.Components.Code;
 
 namespace Profsvc_AppTrack.Components.Pages.Admin.Controls;
 
@@ -41,10 +39,7 @@ public partial class PreferencesDialog
     ///     displayed on a page,
     ///     and the corresponding string provides a user-friendly description of the option.
     /// </summary>
-    private readonly List<ByteValues> _pageSizeDropItems = new()
-                                                           {
-                                                               new(10, "10 rows"), new(25, "25 rows"), new(50, "50 rows"), new(75, "75 rows"), new(100, "100 rows")
-                                                           };
+    private readonly List<ByteValues> _pageSizeDropItems = [new(10, "10 rows"), new(25, "25 rows"), new(50, "50 rows"), new(75, "75 rows"), new(100, "100 rows")];
 
     /// <summary>
     ///     Gets or sets the SfDialog component used in the PreferencesDialog.
@@ -137,13 +132,13 @@ public partial class PreferencesDialog
     ///     This method is triggered when the cancel button in the dialog is clicked. It restores the original model from the
     ///     cloned model and hides the dialog.
     /// </remarks>
-    private async Task CancelPreferences(MouseEventArgs args)
+    private Task CancelPreferences(MouseEventArgs args)
     {
         Model = ModelClone.Copy();
-        await Dialog.HideAsync();
+        return Dialog.HideAsync();
     }
 
-    protected override async Task OnInitializedAsync()
+    protected override Task OnInitializedAsync()
     {
         IMemoryCache _memoryCache = Start.MemCache;
         _memoryCache.TryGetValue("Preferences", out Preferences _preferences);
@@ -152,7 +147,7 @@ public partial class PreferencesDialog
             Model = _preferences;
         }
 
-        await base.OnInitializedAsync();
+        return base.OnInitializedAsync();
     }
 
     /// <summary>
@@ -209,10 +204,7 @@ public partial class PreferencesDialog
     ///     It is typically called when the user interacts with the associated UI element in the Header component.
     /// </remarks>
     /// <returns>A Task that represents the asynchronous operation.</returns>
-    public async Task ShowDialog()
-    {
-        await Dialog.ShowAsync();
-    }
+    public Task ShowDialog() => Dialog.ShowAsync();
 
     /// <summary>
     ///     Handles the opening of a tooltip.

@@ -10,7 +10,7 @@
 				<TextBoxControl @bind-Value="@(Model.Code)" @bind-Value:event="ValueChanged" CreateDivTag="true" CreateTooltip="true" ID="textTermCode" MaxLength="1" MinLength="1"
 								Multiline="false" Placeholder="Tax Term Code" Readonly="@(HeaderString.StartsWith("Edit"))" ValidationMessage="@(() => Model.Code)" />
 				<TextBoxControl @bind-Value="@(Model.Text)" @bind-Value:event="ValueChanged" CreateDivTag="true" CreateTooltip="true" ID="textTermText" MaxLength="50" MinLength="1"
-                Multiline="false" Placeholder="Tax Term Code" ValidationMessage="@(() => Model.Text)" /> 
+								Multiline="false" Placeholder="Tax Term Code" ValidationMessage="@(() => Model.Text)" />
 				<SwitchControl @bind-BindValue="@(Model.IsEnabled)" ID="checkedEnabled" OffLabel="INACTIVE" OnLabel="ACTIVE" Placeholder="Tax Term Status?" />
 			</div>
 			<DialogFooter Cancel="Cancel" CancelMethod="CancelTaxTerm" @ref="DialogFooter" Save="Save" />

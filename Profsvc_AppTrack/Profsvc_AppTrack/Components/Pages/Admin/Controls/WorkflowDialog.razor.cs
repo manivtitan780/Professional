@@ -212,7 +212,7 @@ public partial class WorkflowDialog
 	///     This control is used to display a loading indicator while the dialog is performing operations such as saving or
 	///     canceling.
 	/// </remarks>
-	public SfSpinner Spinner
+	private SfSpinner Spinner
 	{
 		get;
 		set;
@@ -302,20 +302,20 @@ public partial class WorkflowDialog
 	///     This method is used to programmatically display the dialog for editing a workflow.
 	///     It invokes the ShowAsync method of the SfDialog instance associated with the dialog.
 	/// </remarks>
-	public async Task ShowDialog()
+	public Task ShowDialog()
 	{
-		await Dialog.ShowAsync();
+		return Dialog.ShowAsync();
 	}
 
-	/// <summary>
-	///     Handles the opening of a tooltip.
-	/// </summary>
-	/// <param name="args">The arguments associated with the tooltip event.</param>
-	/// <remarks>
-	///     This method cancels the opening of the tooltip if it does not contain any text.
-	/// </remarks>
-	public void ToolTipOpen(TooltipEventArgs args)
-	{
-		args.Cancel = !args.HasText;
-	}
+	///// <summary>
+	/////     Handles the opening of a tooltip.
+	///// </summary>
+	///// <param name="args">The arguments associated with the tooltip event.</param>
+	///// <remarks>
+	/////     This method cancels the opening of the tooltip if it does not contain any text.
+	///// </remarks>
+	//public void ToolTipOpen(TooltipEventArgs args)
+	//{
+	//	args.Cancel = !args.HasText;
+	//}
 }

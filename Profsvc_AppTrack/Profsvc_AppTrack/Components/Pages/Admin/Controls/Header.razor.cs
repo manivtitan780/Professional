@@ -3,19 +3,17 @@
 // /*****************************************
 // Copyright:           Titan-Techs.
 // Location:            Newtown, PA, USA
-// Solution:            ProfSvc_AppTrack
-// Project:             ProfSvc_AppTrack
+// Solution:            Profsvc_AppTrack
+// Project:             Profsvc_AppTrack
 // File Name:           Header.razor.cs
 // Created By:          Narendra Kumaran Kadhirvelu, Jolly Joseph Paily, DonBosco Paily, Mariappan Raja
-// Created On:          09-17-2022 20:01
-// Last Updated On:     09-04-2023 20:42
+// Created On:          11-23-2023 19:53
+// Last Updated On:     12-14-2023 15:59
 // *****************************************/
 
 #endregion
 
 #region Using
-
-using Syncfusion.Blazor.Navigations;
 
 #endregion
 
@@ -51,7 +49,7 @@ public partial class Header
     ///     Gets or sets the instance of the NavigationManager service used in the Companies page.
     ///     This service provides methods and properties to manage and interact with the URI of the application.
     ///     It is used for tasks such as navigating to different pages and constructing URIs for use within the application.
-    ///     For example, it is used in the navigate to home page after logout of the user.
+    ///     For example, it is used to navigate to home page after logout of the user.
     /// </summary>
     [Inject]
     private NavigationManager NavManager

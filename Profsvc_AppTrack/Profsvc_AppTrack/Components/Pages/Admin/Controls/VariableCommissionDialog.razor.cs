@@ -3,17 +3,15 @@
 // /*****************************************
 // Copyright:           Titan-Techs.
 // Location:            Newtown, PA, USA
-// Solution:            ProfSvc_AppTrack
-// Project:             ProfSvc_AppTrack
+// Solution:            Profsvc_AppTrack
+// Project:             Profsvc_AppTrack
 // File Name:           VariableCommissionDialog.razor.cs
 // Created By:          Narendra Kumaran Kadhirvelu, Jolly Joseph Paily, DonBosco Paily, Mariappan Raja
-// Created On:          12-09-2022 15:57
-// Last Updated On:     11-13-2023 15:51
+// Created On:          11-23-2023 19:53
+// Last Updated On:     12-14-2023 16:21
 // *****************************************/
 
 #endregion
-
-using Profsvc_AppTrack.Components.Code;
 
 namespace Profsvc_AppTrack.Components.Pages.Admin.Controls;
 
@@ -29,7 +27,7 @@ namespace Profsvc_AppTrack.Components.Pages.Admin.Controls;
 public partial class VariableCommissionDialog
 {
     /// <summary>
-    ///     Gets or sets the SfDialog instance used in the variable commissions dialog.
+    ///     Gets or sets the SfDialog instance used in the variable commissions' dialog.
     /// </summary>
     /// <value>
     ///     The SfDialog instance.
@@ -106,7 +104,7 @@ public partial class VariableCommissionDialog
     }
 
     /// <summary>
-    ///     Gets or sets the spinner control used in the variable commissions dialog.
+    ///     Gets or sets the spinner control used in the variable commissions' dialog.
     /// </summary>
     /// <value>
     ///     The spinner control.
@@ -130,10 +128,10 @@ public partial class VariableCommissionDialog
     ///     This method is triggered when the cancel button in the dialog is clicked. It restores the original model from the
     ///     cloned model and hides the dialog.
     /// </remarks>
-    private async Task CancelVariableCommission(MouseEventArgs arg)
+    private Task CancelVariableCommission(MouseEventArgs arg)
     {
         Model = ModelClone.Copy();
-        await Dialog.HideAsync();
+        return Dialog.HideAsync();
     }
 
     /// <summary>
@@ -196,8 +194,5 @@ public partial class VariableCommissionDialog
         }
     }
 
-    public async Task ShowDialog()
-    {
-        await Dialog.ShowAsync();
-    }
+    public Task ShowDialog() => Dialog.ShowAsync();
 }

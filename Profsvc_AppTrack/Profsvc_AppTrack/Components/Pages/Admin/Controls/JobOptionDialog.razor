@@ -12,7 +12,7 @@
 				<TextBoxControl @bind-Value="@(Model.Option)" @bind-Value:event="ValueChanged" CreateDivTag="true" CreateTooltip="true" ID="textOption" MaxLength="50" MinLength="1"
 								Multiline="false" Placeholder="Job Option" ValidationMessage="@(() => Model.Option)" />
 				<TextBoxControl @bind-Value="@(Model.Description)" @bind-Value:event="ValueChanged" CreateDivTag="true" CreateTooltip="true" ID="textDescription" MaxLength="500" MinLength="1"
-								Multiline="true" Rows="3" Placeholder="Description" ValidationMessage="@(() => Model.Description)" />
+								Multiline="true" Placeholder="Description" Rows="3" ValidationMessage="@(() => Model.Description)" />
 				<TextBoxControl @bind-Value="@(Model.RateText)" @bind-Value:event="ValueChanged" CreateDivTag="true" CreateTooltip="true" ID="textRateText" MaxLength="255" MinLength="1"
 								Multiline="false" Placeholder="Rate Text" ValidationMessage="@(() => Model.RateText)" />
 				<TextBoxControl @bind-Value="@(Model.PercentText)" @bind-Value:event="ValueChanged" CreateDivTag="true" CreateTooltip="true" ID="textPercentText" MaxLength="255" MinLength="1"

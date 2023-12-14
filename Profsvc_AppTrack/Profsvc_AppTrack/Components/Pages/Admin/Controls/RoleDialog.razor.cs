@@ -14,6 +14,7 @@
 #endregion
 
 using Profsvc_AppTrack.Components.Code;
+// ReSharper disable MemberCanBePrivate.Global
 
 namespace Profsvc_AppTrack.Components.Pages.Admin.Controls;
 
@@ -137,7 +138,7 @@ public partial class RoleDialog
 	///     This method calls the General.CallCancelMethod, passing in the necessary components and the Cancel event callback.
 	///     The cancellation routine hides the spinner and dialog, and enables the dialog buttons.
 	/// </remarks>
-	private async Task CancelRole(MouseEventArgs args) => await General.CallCancelMethod(args, Spinner, DialogFooter, Dialog, Cancel);
+	private Task CancelRole(MouseEventArgs args) => General.CallCancelMethod(args, Spinner, DialogFooter, Dialog, Cancel);
 
 	/// <summary>
 	///     Opens the dialog for editing a role.
@@ -159,14 +160,14 @@ public partial class RoleDialog
 	/// </summary>
 	/// <param name="editContext">The edit context associated with the save action.</param>
 	/// <returns>A task that represents the asynchronous operation.</returns>
-	private async Task SaveRole(EditContext editContext) => await General.CallSaveMethod(editContext, Spinner, DialogFooter, Dialog, Save);
+	private Task SaveRole(EditContext editContext) => General.CallSaveMethod(editContext, Spinner, DialogFooter, Dialog, Save);
 
-	/// <summary>
-	///     Handles the opening of a tooltip in the RoleDialog.
-	/// </summary>
-	/// <param name="args">The arguments associated with the tooltip event.</param>
-	/// <remarks>
-	///     This method cancels the opening of the tooltip if it does not contain any text.
-	/// </remarks>
-	private static void ToolTipOpen(TooltipEventArgs args) => args.Cancel = !args.HasText;
+	///// <summary>
+	/////     Handles the opening of a tooltip in the RoleDialog.
+	///// </summary>
+	///// <param name="args">The arguments associated with the tooltip event.</param>
+	///// <remarks>
+	/////     This method cancels the opening of the tooltip if it does not contain any text.
+	///// </remarks>
+	//private static void ToolTipOpen(TooltipEventArgs args) => args.Cancel = !args.HasText;
 }
