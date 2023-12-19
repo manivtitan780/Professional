@@ -31,21 +31,21 @@ public partial class Candidate
 
 	private static int _currentPage = 1;
 
-	private List<CandidateActivity> _candidateActivityObject = new();
+	private List<CandidateActivity> _candidateActivityObject = [];
 
 	private CandidateDetails _candidateDetailsObject = new(), _candidateDetailsObjectClone = new();
-	private List<CandidateDocument> _candidateDocumentsObject = new();
-	private List<CandidateEducation> _candidateEducationObject = new();
-	private List<CandidateExperience> _candidateExperienceObject = new();
-	private List<CandidateMPC> _candidateMPCObject = new();
-	private List<CandidateNotes> _candidateNotesObject = new();
-	private List<CandidateRating> _candidateRatingObject = new();
-	private List<CandidateSkills> _candidateSkillsObject = new();
+	private List<CandidateDocument> _candidateDocumentsObject = [];
+	private List<CandidateEducation> _candidateEducationObject = [];
+	private List<CandidateExperience> _candidateExperienceObject = [];
+	private List<CandidateMPC> _candidateMPCObject = [];
+	private List<CandidateNotes> _candidateNotesObject = [];
+	private List<CandidateRating> _candidateRatingObject = [];
+	private List<CandidateSkills> _candidateSkillsObject = [];
 	private List<KeyValues> _communication, _jobOptions, _taxTerms;
-	private List<IntValues> _documentTypes = new(), _eligibility, _experience, _states;
-	private readonly List<IntValues> _eligibilityCopy = new();
+	private List<IntValues> _documentTypes = [], _eligibility, _experience, _states;
+	private readonly List<IntValues> _eligibilityCopy = [];
 
-	private readonly List<KeyValues> _jobOptionsCopy = new();
+	private readonly List<KeyValues> _jobOptionsCopy = [];
 
 	private string _jsonPath;
 	private string _lastValue = "";
@@ -54,23 +54,24 @@ public partial class Candidate
 
 	private int _selectedTab;
 	private readonly SemaphoreSlim _semaphoreMainPage = new(1, 1);
-	private readonly List<IntValues> _statesCopy = new();
+	private readonly List<IntValues> _statesCopy = [];
 
 	private List<StatusCode> _statusCodes;
 
 	private Candidates _target, _targetSelected;
 
-	private readonly List<ToolbarItemModel> _tools1 = new()
-													  {
-														  new()
-														  {
-															  Name = "Original", TooltipText = "Show Original Resume"
-														  },
-														  new()
-														  {
-															  Name = "Formatted", TooltipText = "Show Formatted Resume"
-														  }
-													  };
+	private readonly List<ToolbarItemModel> _tools1 =
+	[
+		new()
+		{
+			Name = "Original", TooltipText = "Show Original Resume"
+		},
+
+		new()
+		{
+			Name = "Formatted", TooltipText = "Show Formatted Resume"
+		}
+	];
 
 	private List<AppWorkflow> _workflows;
 
@@ -486,7 +487,7 @@ public partial class Candidate
 	{
 		get;
 		set;
-	} = new();
+	} = [];
 
 	/// <summary>
 	///     Gets or sets the ExperiencePanel instance associated with the Candidate.
@@ -687,7 +688,7 @@ public partial class Candidate
 	private List<KeyValues> NextSteps
 	{
 		get;
-	} = new();
+	} = [];
 
 	/// <summary>
 	///     Gets or sets a value indicating whether the original resume of the candidate exists.
@@ -706,7 +707,7 @@ public partial class Candidate
 	}
 
 	/// <summary>
-	///     Gets or sets the total number of pages that can be formed from the candidates data.
+	///     Gets or sets the total number of pages that can be formed from the candidates' data.
 	///     This is calculated by dividing the total count of candidates by the number of items per page, and rounding up to
 	///     the
 	///     next integer.
@@ -939,7 +940,7 @@ public partial class Candidate
 	}
 
 	/// <summary>
-	///     Gets or sets the sort direction for the candidates data.
+	///     Gets or sets the sort direction for the candidates' data.
 	/// </summary>
 	/// <remarks>
 	///     This property is used to determine the order in which the candidates are displayed.
@@ -1002,10 +1003,10 @@ public partial class Candidate
 	} = new();
 
 	/// <summary>
-	///     Gets or sets the username of the currently logged in user.
+	///     Gets or sets the username of the currently logged-in user.
 	/// </summary>
 	/// <remarks>
-	///     This property is used to store the username of the currently logged in user.
+	///     This property is used to store the username of the currently logged-in user.
 	///     It is used in various methods and components for user-specific operations and data handling.
 	/// </remarks>
 	public string User
@@ -1038,13 +1039,13 @@ public partial class Candidate
 	///     After preparing the new document instance, it opens the document dialog for the user to add the document details.
 	/// </summary>
 	/// <returns>A Task that represents the asynchronous operation.</returns>
-	private async Task AddDocument()
+	private Task AddDocument()
 	{
-		await ExecuteMethod(async () =>
-							{
-								NewDocument.Clear();
-								await DialogDocument.ShowDialog();
-							});
+		return ExecuteMethod(() =>
+							 {
+								 NewDocument.Clear();
+								 return DialogDocument.ShowDialog();
+							 });
 	}
 
 	/// <summary>
@@ -1053,9 +1054,9 @@ public partial class Candidate
 	///     opens the AddChoice dialog which provides options to add a candidate manually or parse from a resume.
 	/// </summary>
 	/// <returns>A Task representing the asynchronous operation.</returns>
-	private async Task AddNewCandidate()
+	private Task AddNewCandidate()
 	{
-		await ExecuteMethod(async () => { await AddChoice.ShowDialog(); });
+		return ExecuteMethod(AddChoice.ShowDialog);
 	}
 
 	/// <summary>
@@ -1066,16 +1067,16 @@ public partial class Candidate
 	///     other value represents a formatted resume.
 	/// </param>
 	/// <returns>A Task representing the asynchronous operation.</returns>
-	private async Task AddResume(byte typeResume)
+	private Task AddResume(byte typeResume)
 	{
-		await ExecuteMethod(async () =>
-							{
-								ResumeType = typeResume == 0 ? "Original" : "Formatted";
-								ResumeObject.Clear();
+		return ExecuteMethod(() =>
+							 {
+								 ResumeType = typeResume == 0 ? "Original" : "Formatted";
+								 ResumeObject.Clear();
 
-								ResumeObject.ID = _target.ID;
-								await ResumeAdd.ShowDialog();
-							});
+								 ResumeObject.ID = _target.ID;
+								 return ResumeAdd.ShowDialog();
+							 });
 	}
 
 	/// <summary>
@@ -1084,13 +1085,13 @@ public partial class Candidate
 	///     The search model copy is used to restore the original search parameters if the user cancels the advanced search.
 	/// </summary>
 	/// <returns>A Task that represents the asynchronous operation.</returns>
-	private async Task AdvancedSearch()
+	private Task AdvancedSearch()
 	{
-		await ExecuteMethod(async () =>
-							{
-								SearchModelClone = SearchModel.Copy();
-								await DialogSearch.ShowDialog();
-							});
+		return ExecuteMethod(() =>
+							 {
+								 SearchModelClone = SearchModel.Copy();
+								 return DialogSearch.ShowDialog();
+							 });
 	}
 
 	/// <summary>
@@ -1110,17 +1111,17 @@ public partial class Candidate
 	///     The action is only performed if no other action is in progress.
 	/// </summary>
 	/// <returns>A Task representing the asynchronous operation.</returns>
-	private async Task AllAlphabet()
+	private Task AllAlphabet()
 	{
-		await ExecuteMethod(async () =>
-							{
-								SearchModel.Name = "";
-								_currentPage = 1;
-								SearchModel.Page = 1;
-								await SessionStorage.SetItemAsync(StorageName, SearchModel);
-								AutocompleteValue = "";
-								await Grid.Refresh();
-							});
+		return ExecuteMethod(async () =>
+							 {
+								 SearchModel.Name = "";
+								 _currentPage = 1;
+								 SearchModel.Page = 1;
+								 await SessionStorage.SetItemAsync(StorageName, SearchModel);
+								 AutocompleteValue = "";
+								 await Grid.Refresh();
+							 });
 	}
 
 	/// <summary>
@@ -1141,18 +1142,18 @@ public partial class Candidate
 	///     This method updates the item count in the SearchModel and refreshes the grid.
 	///     If an action is already in progress, this method will return immediately to prevent concurrent updates.
 	/// </remarks>
-	private async Task ChangeItemCount(ChangeEventArgs<int, IntValues> item)
+	private Task ChangeItemCount(ChangeEventArgs<int, IntValues> item)
 	{
-		await ExecuteMethod(async () =>
-							{
-								_currentPage = 1;
-								SearchModel.Page = 1;
-								SearchModel.ItemCount = item.Value;
+		return ExecuteMethod(async () =>
+							 {
+								 _currentPage = 1;
+								 SearchModel.Page = 1;
+								 SearchModel.ItemCount = item.Value;
 
-								await SessionStorage.SetItemAsync(StorageName, SearchModel);
-								await Grid.Refresh();
-								StateHasChanged();
-							});
+								 await SessionStorage.SetItemAsync(StorageName, SearchModel);
+								 await Grid.Refresh();
+								 StateHasChanged();
+							 });
 	}
 
 	/// <summary>
@@ -1163,26 +1164,26 @@ public partial class Candidate
 	///     If not, it sets the action in progress flag to true and stores the current page item count.
 	///     It then calls the ClearData method of the SearchModel to reset its properties to their default values.
 	///     The current page is set to 1, and the page and item count of the SearchModel are updated with the current values.
-	///     The User property of the SearchModel is set to the UserID of the logged in user, or to "JOLLY" if no user is logged
+	///     The User property of the SearchModel is set to the UserID of the logged-in user, or to "JOLLY" if no user is logged
 	///     in.
 	///     The updated SearchModel is then stored in the session storage.
 	///     The AutocompleteValue is cleared and the Grid is refreshed.
 	///     Finally, the action in progress flag is set to false.
 	/// </remarks>
-	private async Task ClearFilter()
+	private Task ClearFilter()
 	{
-		await ExecuteMethod(async () =>
-							{
-								int _currentPageItemCount = SearchModel.ItemCount;
-								SearchModel.Clear();
-								_currentPage = 1;
-								SearchModel.Page = 1;
-								SearchModel.ItemCount = _currentPageItemCount;
-								SearchModel.User = LoginCookyUser == null || LoginCookyUser.UserID.NullOrWhiteSpace() ? "JOLLY" : LoginCookyUser.UserID.ToUpperInvariant();
-								await SessionStorage.SetItemAsync(StorageName, SearchModel);
-								AutocompleteValue = "";
-								await Grid.Refresh();
-							});
+		return ExecuteMethod(async () =>
+							 {
+								 int _currentPageItemCount = SearchModel.ItemCount;
+								 SearchModel.Clear();
+								 _currentPage = 1;
+								 SearchModel.Page = 1;
+								 SearchModel.ItemCount = _currentPageItemCount;
+								 SearchModel.User = LoginCookyUser == null || LoginCookyUser.UserID.NullOrWhiteSpace() ? "JOLLY" : LoginCookyUser.UserID.ToUpperInvariant();
+								 await SessionStorage.SetItemAsync(StorageName, SearchModel);
+								 AutocompleteValue = "";
+								 await Grid.Refresh();
+							 });
 	}
 
 	/// <summary>
@@ -1193,45 +1194,45 @@ public partial class Candidate
 	/// <returns>
 	///     A Task representing the asynchronous operation.
 	/// </returns>
-	private async Task ContinueParsing()
+	private Task ContinueParsing()
 	{
-		await ExecuteMethod(async () =>
-							{
-								int _itemCount = SearchModel.ItemCount;
-								RestClient _client = new(Start.ApiHost);
-								RestRequest _request = new("Candidates/SaveParsedData", Method.Post)
-													   {
-														   RequestFormat = DataFormat.Json
-													   };
-								_request.AddQueryParameter("jsonFileName", _jsonPath);
-								_request.AddQueryParameter("fileName", FileName);
-								_request.AddQueryParameter("user", LoginCookyUser == null || LoginCookyUser.UserID.NullOrWhiteSpace() ? "JOLLY" : LoginCookyUser.UserID.ToUpperInvariant());
-								_request.AddQueryParameter("candidateID", ExistingCandidateDetailsDialog.Value);
-								_request.AddQueryParameter("path", Start.UploadsPath);
-								_request.AddQueryParameter("pageCount", _itemCount);
-								Dictionary<string, object> _response = await _client.PostAsync<Dictionary<string, object>>(_request);
-								int _candidateID = 0;
-								if (_response != null)
-								{
-									SearchModel.Clear();
-									SearchModel.AllCandidates = true;
-									SearchModel.MyCandidates = false;
-									SearchModel.ActiveRequisitionsOnly = false;
-									SearchModel.ItemCount = _itemCount;
-									SearchModel.Page = _response["Page"].ToInt32();
-									_candidateID = _response["CandidateID"].ToInt32();
-									await SessionStorage.SetItemAsync(StorageName, SearchModel);
-								}
+		return ExecuteMethod(async () =>
+							 {
+								 int _itemCount = SearchModel.ItemCount;
+								 RestClient _client = new(Start.ApiHost);
+								 RestRequest _request = new("Candidates/SaveParsedData", Method.Post)
+														{
+															RequestFormat = DataFormat.Json
+														};
+								 _request.AddQueryParameter("jsonFileName", _jsonPath);
+								 _request.AddQueryParameter("fileName", FileName);
+								 _request.AddQueryParameter("user", LoginCookyUser == null || LoginCookyUser.UserID.NullOrWhiteSpace() ? "JOLLY" : LoginCookyUser.UserID.ToUpperInvariant());
+								 _request.AddQueryParameter("candidateID", ExistingCandidateDetailsDialog.Value);
+								 _request.AddQueryParameter("path", Start.UploadsPath);
+								 _request.AddQueryParameter("pageCount", _itemCount);
+								 Dictionary<string, object> _response = await _client.PostAsync<Dictionary<string, object>>(_request);
+								 int _candidateID = 0;
+								 if (_response != null)
+								 {
+									 SearchModel.Clear();
+									 SearchModel.AllCandidates = true;
+									 SearchModel.MyCandidates = false;
+									 SearchModel.ActiveRequisitionsOnly = false;
+									 SearchModel.ItemCount = _itemCount;
+									 SearchModel.Page = _response["Page"].ToInt32();
+									 _candidateID = _response["CandidateID"].ToInt32();
+									 await SessionStorage.SetItemAsync(StorageName, SearchModel);
+								 }
 
-								await Grid.Refresh();
-								int _index = await Grid.GetRowIndexByPrimaryKeyAsync(_candidateID);
-								if (_index != Grid.SelectedRowIndex)
-								{
-									await Grid.SelectRowAsync(_index);
-								}
+								 await Grid.Refresh();
+								 int _index = await Grid.GetRowIndexByPrimaryKeyAsync(_candidateID);
+								 if (_index != Grid.SelectedRowIndex)
+								 {
+									 await Grid.SelectRowAsync(_index);
+								 }
 
-								StateHasChanged();
-							});
+								 StateHasChanged();
+							 });
 	}
 
 	/// <summary>
@@ -1246,39 +1247,39 @@ public partial class Candidate
 	/// </summary>
 	/// <param name="obj">The object that triggers the data handling.</param>
 	/// <returns>A Task that represents the asynchronous operation.</returns>
-	private async Task DataHandler(object obj)
+	private Task DataHandler(object obj)
 	{
-		await ExecuteMethod(async () =>
-							{
-								using DotNetObjectReference<Candidate> _dotNetReference = DotNetObjectReference.Create(this); // create dotnet ref
-								await Runtime.InvokeAsync<string>("detail", _dotNetReference);
-								//  send the dotnet ref to JS side
-								if (Grid.TotalItemCount > 0)
-								{
-									if (CandidateID > 0)
-									{
-										int _index = await Grid.GetRowIndexByPrimaryKeyAsync(CandidateID);
-										if (_index != Grid.SelectedRowIndex)
-										{
-											await Grid.SelectRowAsync(_index);
-											foreach (Candidates _candid in Grid.CurrentViewData.OfType<Candidates>().Where(candid => candid.ID == CandidateID))
-											{
-												await Grid.ExpandCollapseDetailRowAsync(_candid);
-												break;
-											}
-										}
+		return ExecuteMethod(async () =>
+							 {
+								 using DotNetObjectReference<Candidate> _dotNetReference = DotNetObjectReference.Create(this); // create dotnet ref
+								 await Runtime.InvokeAsync<string>("detail", _dotNetReference);
+								 //  send the dotnet ref to JS side
+								 if (Grid.TotalItemCount > 0)
+								 {
+									 if (CandidateID > 0)
+									 {
+										 int _index = await Grid.GetRowIndexByPrimaryKeyAsync(CandidateID);
+										 if (_index != Grid.SelectedRowIndex)
+										 {
+											 await Grid.SelectRowAsync(_index);
+											 foreach (Candidates _candid in Grid.CurrentViewData.OfType<Candidates>().Where(candid => candid.ID == CandidateID))
+											 {
+												 await Grid.ExpandCollapseDetailRowAsync(_candid);
+												 break;
+											 }
+										 }
 
-										await SessionStorage.SetItemAsync(StorageName, SearchModel);
-										await SessionStorage.RemoveItemAsync("CandidateIDFromDashboard");
-									}
-									else
-									{
-										await Grid.SelectRowAsync(0);
-									}
-								}
+										 await SessionStorage.SetItemAsync(StorageName, SearchModel);
+										 await SessionStorage.RemoveItemAsync("CandidateIDFromDashboard");
+									 }
+									 else
+									 {
+										 await Grid.SelectRowAsync(0);
+									 }
+								 }
 
-								CandidateID = 0;
-							});
+								 CandidateID = 0;
+							 });
 	}
 
 	/// <summary>
@@ -1291,26 +1292,26 @@ public partial class Candidate
 	///     ID as parameters.
 	///     If the action is successful, the candidate's documents are updated.
 	/// </remarks>
-	private async Task DeleteDocument(int arg)
+	private Task DeleteDocument(int arg)
 	{
-		await ExecuteMethod(async () =>
-							{
-								RestClient _client = new(Start.ApiHost);
-								RestRequest _request = new("Candidates/DeleteCandidateDocument", Method.Post)
-													   {
-														   RequestFormat = DataFormat.Json
-													   };
-								_request.AddQueryParameter("documentID", arg.ToString());
-								_request.AddQueryParameter("user", LoginCookyUser == null || LoginCookyUser.UserID.NullOrWhiteSpace() ? "JOLLY" : LoginCookyUser.UserID.ToUpperInvariant());
+		return ExecuteMethod(async () =>
+							 {
+								 RestClient _client = new(Start.ApiHost);
+								 RestRequest _request = new("Candidates/DeleteCandidateDocument", Method.Post)
+														{
+															RequestFormat = DataFormat.Json
+														};
+								 _request.AddQueryParameter("documentID", arg.ToString());
+								 _request.AddQueryParameter("user", LoginCookyUser == null || LoginCookyUser.UserID.NullOrWhiteSpace() ? "JOLLY" : LoginCookyUser.UserID.ToUpperInvariant());
 
-								Dictionary<string, object> _response = await _client.PostAsync<Dictionary<string, object>>(_request);
-								if (_response == null)
-								{
-									return;
-								}
+								 Dictionary<string, object> _response = await _client.PostAsync<Dictionary<string, object>>(_request);
+								 if (_response == null)
+								 {
+									 return;
+								 }
 
-								_candidateDocumentsObject = General.DeserializeObject<List<CandidateDocument>>(_response["Document"]);
-							});
+								 _candidateDocumentsObject = General.DeserializeObject<List<CandidateDocument>>(_response["Document"]);
+							 });
 	}
 
 	/// <summary>
@@ -1327,27 +1328,27 @@ public partial class Candidate
 	///     and ignored.
 	///     After the request is completed, the action progress is set to false.
 	/// </remarks>
-	private async Task DeleteEducation(int id)
+	private Task DeleteEducation(int id)
 	{
-		await ExecuteMethod(async () =>
-							{
-								RestClient _client = new(Start.ApiHost);
-								RestRequest _request = new("Candidates/DeleteEducation", Method.Post)
-													   {
-														   RequestFormat = DataFormat.Json
-													   };
-								_request.AddQueryParameter("id", id.ToString());
-								_request.AddQueryParameter("candidateID", _target.ID.ToString());
-								_request.AddQueryParameter("user", LoginCookyUser == null || LoginCookyUser.UserID.NullOrWhiteSpace() ? "JOLLY" : LoginCookyUser.UserID.ToUpperInvariant());
+		return ExecuteMethod(async () =>
+							 {
+								 RestClient _client = new(Start.ApiHost);
+								 RestRequest _request = new("Candidates/DeleteEducation", Method.Post)
+														{
+															RequestFormat = DataFormat.Json
+														};
+								 _request.AddQueryParameter("id", id.ToString());
+								 _request.AddQueryParameter("candidateID", _target.ID.ToString());
+								 _request.AddQueryParameter("user", LoginCookyUser == null || LoginCookyUser.UserID.NullOrWhiteSpace() ? "JOLLY" : LoginCookyUser.UserID.ToUpperInvariant());
 
-								Dictionary<string, object> _response = await _client.PostAsync<Dictionary<string, object>>(_request);
-								if (_response == null)
-								{
-									return;
-								}
+								 Dictionary<string, object> _response = await _client.PostAsync<Dictionary<string, object>>(_request);
+								 if (_response == null)
+								 {
+									 return;
+								 }
 
-								_candidateEducationObject = General.DeserializeObject<List<CandidateEducation>>(_response["Education"]);
-							});
+								 _candidateEducationObject = General.DeserializeObject<List<CandidateEducation>>(_response["Education"]);
+							 });
 	}
 
 	/// <summary>
@@ -1360,27 +1361,27 @@ public partial class Candidate
 	///     the candidate's ID, and the user's ID as query parameters. If the response is not null,
 	///     it deserializes the "Experience" field of the response into a list of CandidateExperience objects.
 	/// </remarks>
-	private async Task DeleteExperience(int id)
+	private Task DeleteExperience(int id)
 	{
-		await ExecuteMethod(async () =>
-							{
-								using RestClient _client = new(Start.ApiHost);
-								RestRequest _request = new("Candidates/DeleteExperience", Method.Post)
-													   {
-														   RequestFormat = DataFormat.Json
-													   };
-								_request.AddQueryParameter("id", id.ToString());
-								_request.AddQueryParameter("candidateID", _target.ID.ToString());
-								_request.AddQueryParameter("user", LoginCookyUser == null || LoginCookyUser.UserID.NullOrWhiteSpace() ? "JOLLY" : LoginCookyUser.UserID.ToUpperInvariant());
+		return ExecuteMethod(async () =>
+							 {
+								 using RestClient _client = new(Start.ApiHost);
+								 RestRequest _request = new("Candidates/DeleteExperience", Method.Post)
+														{
+															RequestFormat = DataFormat.Json
+														};
+								 _request.AddQueryParameter("id", id.ToString());
+								 _request.AddQueryParameter("candidateID", _target.ID.ToString());
+								 _request.AddQueryParameter("user", LoginCookyUser == null || LoginCookyUser.UserID.NullOrWhiteSpace() ? "JOLLY" : LoginCookyUser.UserID.ToUpperInvariant());
 
-								Dictionary<string, object> _response = await _client.PostAsync<Dictionary<string, object>>(_request);
-								if (_response == null)
-								{
-									return;
-								}
+								 Dictionary<string, object> _response = await _client.PostAsync<Dictionary<string, object>>(_request);
+								 if (_response == null)
+								 {
+									 return;
+								 }
 
-								_candidateExperienceObject = General.DeserializeObject<List<CandidateExperience>>(_response["Experience"]);
-							});
+								 _candidateExperienceObject = General.DeserializeObject<List<CandidateExperience>>(_response["Experience"]);
+							 });
 	}
 
 	/// <summary>
@@ -1391,32 +1392,32 @@ public partial class Candidate
 	/// <remarks>
 	///     This method first checks if there is an action in progress. If not, it sends a POST request to the
 	///     "Candidates/DeleteNotes" endpoint with the id, candidateID, and user as query parameters.
-	///     The user is either the UserID of the logged in user or "JOLLY" if no user is logged in.
+	///     The user is either the UserID of the logged-in user or "JOLLY" if no user is logged in.
 	///     The response is expected to be a dictionary containing the notes of the candidate.
 	///     If the response is null, the method returns immediately. Otherwise, it deserializes the "Notes" from the response
 	///     into a list of CandidateNotes objects.
 	/// </remarks>
-	private async Task DeleteNotes(int id)
+	private Task DeleteNotes(int id)
 	{
-		await ExecuteMethod(async () =>
-							{
-								using RestClient _client = new(Start.ApiHost);
-								RestRequest _request = new("Candidates/DeleteNotes", Method.Post)
-													   {
-														   RequestFormat = DataFormat.Json
-													   };
-								_request.AddQueryParameter("id", id.ToString());
-								_request.AddQueryParameter("candidateID", _target.ID.ToString());
-								_request.AddQueryParameter("user", LoginCookyUser == null || LoginCookyUser.UserID.NullOrWhiteSpace() ? "JOLLY" : LoginCookyUser.UserID.ToUpperInvariant());
+		return ExecuteMethod(async () =>
+							 {
+								 using RestClient _client = new(Start.ApiHost);
+								 RestRequest _request = new("Candidates/DeleteNotes", Method.Post)
+														{
+															RequestFormat = DataFormat.Json
+														};
+								 _request.AddQueryParameter("id", id.ToString());
+								 _request.AddQueryParameter("candidateID", _target.ID.ToString());
+								 _request.AddQueryParameter("user", LoginCookyUser == null || LoginCookyUser.UserID.NullOrWhiteSpace() ? "JOLLY" : LoginCookyUser.UserID.ToUpperInvariant());
 
-								Dictionary<string, object> _response = await _client.PostAsync<Dictionary<string, object>>(_request);
-								if (_response == null)
-								{
-									return;
-								}
+								 Dictionary<string, object> _response = await _client.PostAsync<Dictionary<string, object>>(_request);
+								 if (_response == null)
+								 {
+									 return;
+								 }
 
-								_candidateNotesObject = General.DeserializeObject<List<CandidateNotes>>(_response["Notes"]);
-							});
+								 _candidateNotesObject = General.DeserializeObject<List<CandidateNotes>>(_response["Notes"]);
+							 });
 	}
 
 	/// <summary>
@@ -1430,27 +1431,27 @@ public partial class Candidate
 	///     the user ID is set to "JOLLY". The method also sets a flag to prevent multiple simultaneous requests.
 	///     If the request is successful, the method updates the candidate's skills list with the response from the server.
 	/// </remarks>
-	private async Task DeleteSkill(int id)
+	private Task DeleteSkill(int id)
 	{
-		await ExecuteMethod(async () =>
-							{
-								using RestClient _client = new(Start.ApiHost);
-								RestRequest _request = new("Candidates/DeleteSkill", Method.Post)
-													   {
-														   RequestFormat = DataFormat.Json
-													   };
-								_request.AddQueryParameter("id", id.ToString());
-								_request.AddQueryParameter("candidateID", _target.ID);
-								_request.AddQueryParameter("user", LoginCookyUser == null || LoginCookyUser.UserID.NullOrWhiteSpace() ? "JOLLY" : LoginCookyUser.UserID.ToUpperInvariant());
+		return ExecuteMethod(async () =>
+							 {
+								 using RestClient _client = new(Start.ApiHost);
+								 RestRequest _request = new("Candidates/DeleteSkill", Method.Post)
+														{
+															RequestFormat = DataFormat.Json
+														};
+								 _request.AddQueryParameter("id", id.ToString());
+								 _request.AddQueryParameter("candidateID", _target.ID);
+								 _request.AddQueryParameter("user", LoginCookyUser == null || LoginCookyUser.UserID.NullOrWhiteSpace() ? "JOLLY" : LoginCookyUser.UserID.ToUpperInvariant());
 
-								Dictionary<string, object> _response = await _client.PostAsync<Dictionary<string, object>>(_request);
-								if (_response == null)
-								{
-									return;
-								}
+								 Dictionary<string, object> _response = await _client.PostAsync<Dictionary<string, object>>(_request);
+								 if (_response == null)
+								 {
+									 return;
+								 }
 
-								_candidateSkillsObject = General.DeserializeObject<List<CandidateSkills>>(_response["Skills"]);
-							});
+								 _candidateSkillsObject = General.DeserializeObject<List<CandidateSkills>>(_response["Skills"]);
+							 });
 	}
 
 	/// <summary>
@@ -1462,76 +1463,76 @@ public partial class Candidate
 	/// </summary>
 	/// <param name="candidate">The event arguments containing the candidate data to be bound.</param>
 	/// <returns>A Task representing the asynchronous operation.</returns>
-	private async Task DetailDataBind(DetailDataBoundEventArgs<Candidates> candidate)
+	private Task DetailDataBind(DetailDataBoundEventArgs<Candidates> candidate)
 	{
-		await ExecuteMethod(async () =>
-							{
-								if (_target != null && _target != candidate.Data)
-								{
-									// return when target is equal to args.data
-									await Grid.ExpandCollapseDetailRowAsync(_target);
-								}
+		return ExecuteMethod(async () =>
+							 {
+								 if (_target != null && _target != candidate.Data)
+								 {
+									 // return when target is equal to args.data
+									 await Grid.ExpandCollapseDetailRowAsync(_target);
+								 }
 
-								int _index = await Grid.GetRowIndexByPrimaryKeyAsync(candidate.Data.ID);
-								if (_index != Grid.SelectedRowIndex)
-								{
-									await Grid.SelectRowAsync(_index);
-								}
+								 int _index = await Grid.GetRowIndexByPrimaryKeyAsync(candidate.Data.ID);
+								 if (_index != Grid.SelectedRowIndex)
+								 {
+									 await Grid.SelectRowAsync(_index);
+								 }
 
-								_target = candidate.Data;
-								try
-								{
-									await Spinner.ShowAsync();
-								}
-								catch
-								{
-									//Ignore the error.
-								}
+								 _target = candidate.Data;
+								 try
+								 {
+									 await Spinner.ShowAsync();
+								 }
+								 catch
+								 {
+									 //Ignore the error.
+								 }
 
-								RestClient _restClient = new(Start.ApiHost);
-								RestRequest _request = new("Candidates/GetCandidateDetails");
-								_request.AddQueryParameter("candidateID", _target.ID);
-								_request.AddQueryParameter("roleID", General.GetRoleID(LoginCookyUser));
+								 RestClient _restClient = new(Start.ApiHost);
+								 RestRequest _request = new("Candidates/GetCandidateDetails");
+								 _request.AddQueryParameter("candidateID", _target.ID);
+								 _request.AddQueryParameter("roleID", General.GetRoleID(LoginCookyUser));
 
-								Dictionary<string, object> _restResponse = await _restClient.GetAsync<Dictionary<string, object>>(_request);
+								 Dictionary<string, object> _restResponse = await _restClient.GetAsync<Dictionary<string, object>>(_request);
 
-								if (_restResponse != null)
-								{
-									_candidateDetailsObject = JsonConvert.DeserializeObject<CandidateDetails>(_restResponse["Candidate"]?.ToString() ?? string.Empty);
-									_candidateSkillsObject = General.DeserializeObject<List<CandidateSkills>>(_restResponse["Skills"]);
-									_candidateEducationObject = General.DeserializeObject<List<CandidateEducation>>(_restResponse["Education"]);
-									_candidateExperienceObject = General.DeserializeObject<List<CandidateExperience>>(_restResponse["Experience"]);
-									_candidateActivityObject = General.DeserializeObject<List<CandidateActivity>>(_restResponse["Activity"]);
-									_candidateNotesObject = General.DeserializeObject<List<CandidateNotes>>(_restResponse["Notes"]);
-									_candidateRatingObject = General.DeserializeObject<List<CandidateRating>>(_restResponse["Rating"]);
-									_candidateMPCObject = General.DeserializeObject<List<CandidateMPC>>(_restResponse["MPC"]);
-									_candidateDocumentsObject = General.DeserializeObject<List<CandidateDocument>>(_restResponse["Document"]);
-									RatingMPC = JsonConvert.DeserializeObject<CandidateRatingMPC>(_restResponse["RatingMPC"]?.ToString() ?? string.Empty) ?? new();
-									GetMPCDate();
-									GetMPCNote();
-									GetRatingDate();
-									GetRatingNote();
-									SetupAddress();
-									SetCommunication();
-									SetEligibility();
-									SetJobOption();
-									SetTaxTerm();
-									SetExperience();
-								}
+								 if (_restResponse != null)
+								 {
+									 _candidateDetailsObject = JsonConvert.DeserializeObject<CandidateDetails>(_restResponse["Candidate"]?.ToString() ?? string.Empty);
+									 _candidateSkillsObject = General.DeserializeObject<List<CandidateSkills>>(_restResponse["Skills"]);
+									 _candidateEducationObject = General.DeserializeObject<List<CandidateEducation>>(_restResponse["Education"]);
+									 _candidateExperienceObject = General.DeserializeObject<List<CandidateExperience>>(_restResponse["Experience"]);
+									 _candidateActivityObject = General.DeserializeObject<List<CandidateActivity>>(_restResponse["Activity"]);
+									 _candidateNotesObject = General.DeserializeObject<List<CandidateNotes>>(_restResponse["Notes"]);
+									 _candidateRatingObject = General.DeserializeObject<List<CandidateRating>>(_restResponse["Rating"]);
+									 _candidateMPCObject = General.DeserializeObject<List<CandidateMPC>>(_restResponse["MPC"]);
+									 _candidateDocumentsObject = General.DeserializeObject<List<CandidateDocument>>(_restResponse["Document"]);
+									 RatingMPC = JsonConvert.DeserializeObject<CandidateRatingMPC>(_restResponse["RatingMPC"]?.ToString() ?? string.Empty) ?? new();
+									 GetMPCDate();
+									 GetMPCNote();
+									 GetRatingDate();
+									 GetRatingNote();
+									 SetupAddress();
+									 SetCommunication();
+									 SetEligibility();
+									 SetJobOption();
+									 SetTaxTerm();
+									 SetExperience();
+								 }
 
-								_selectedTab = _candidateActivityObject.Count > 0 ? 7 : 0;
-								FormattedExists = _target.FormattedResume;
-								OriginalExists = _target.OriginalResume;
+								 _selectedTab = _candidateActivityObject.Count > 0 ? 7 : 0;
+								 FormattedExists = _target.FormattedResume;
+								 OriginalExists = _target.OriginalResume;
 
-								try
-								{
-									await Spinner.HideAsync();
-								}
-								catch
-								{
-									//Ignore the error.
-								}
-							});
+								 try
+								 {
+									 await Spinner.HideAsync();
+								 }
+								 catch
+								 {
+									 //Ignore the error.
+								 }
+							 });
 	}
 
 	/// <summary>
@@ -1556,14 +1557,14 @@ public partial class Candidate
 	///     with a URL constructed from the BaseUri of the NavigationManager, the string "Download/", and the encoded query
 	///     string.
 	/// </remarks>
-	private async Task DownloadDocument(int arg)
+	private Task DownloadDocument(int arg)
 	{
-		await ExecuteMethod(async () =>
-							{
-								SelectedDownload = DownloadsPanel.SelectedRow;
-								string _queryString = $"{SelectedDownload.InternalFileName}^{_target.ID}^{SelectedDownload.Location}^0".ToBase64String();
-								await JsRuntime.InvokeVoidAsync("open", $"{NavManager.BaseUri}Download/{_queryString}", "_blank");
-							});
+		return ExecuteMethod(async () =>
+							 {
+								 SelectedDownload = DownloadsPanel.SelectedRow;
+								 string _queryString = $"{SelectedDownload.InternalFileName}^{_target.ID}^{SelectedDownload.Location}^0".ToBase64String();
+								 await JsRuntime.InvokeVoidAsync("open", $"{NavManager.BaseUri}Download/{_queryString}", "_blank");
+							 });
 	}
 
 	/// <summary>
@@ -1577,36 +1578,36 @@ public partial class Candidate
 	/// </summary>
 	/// <param name="id">The ID of the activity to be edited.</param>
 	/// <returns>A Task representing the asynchronous operation.</returns>
-	private async Task EditActivity(int id)
+	private Task EditActivity(int id)
 	{
-		await ExecuteMethod(async () =>
-							{
-								SelectedActivity = ActivityPanel.SelectedRow;
-								NextSteps.Clear();
-								NextSteps.Add(new("No Change", ""));
-								try
-								{
-									foreach (string[] _next in _workflows.Where(flow => flow.Step == SelectedActivity.StatusCode).Select(flow => flow.Next.Split(',')))
-									{
-										foreach (string _nextString in _next)
-										{
-											foreach (StatusCode _status in _statusCodes.Where(status => status.Code == _nextString && status.AppliesToCode == "SCN"))
-											{
-												NextSteps.Add(new(_status.Status, _nextString));
-												break;
-											}
-										}
+		return ExecuteMethod(() =>
+							 {
+								 SelectedActivity = ActivityPanel.SelectedRow;
+								 NextSteps.Clear();
+								 NextSteps.Add(new("No Change", ""));
+								 try
+								 {
+									 foreach (string[] _next in _workflows.Where(flow => flow.Step == SelectedActivity.StatusCode).Select(flow => flow.Next.Split(',')))
+									 {
+										 foreach (string _nextString in _next)
+										 {
+											 foreach (StatusCode _status in _statusCodes.Where(status => status.Code == _nextString && status.AppliesToCode == "SCN"))
+											 {
+												 NextSteps.Add(new(_status.Status, _nextString));
+												 break;
+											 }
+										 }
 
-										break;
-									}
-								}
-								catch
-								{
-									//Ignore this error. No need to log this error.
-								}
+										 break;
+									 }
+								 }
+								 catch
+								 {
+									 //Ignore this error. No need to log this error.
+								 }
 
-								await DialogActivity.ShowDialog();
-							});
+								 return DialogActivity.ShowDialog();
+							 });
 	}
 
 	/// <summary>
@@ -1623,57 +1624,57 @@ public partial class Candidate
 	///     Otherwise, it prepares the system to edit the existing candidate's details.
 	///     Finally, it hides the spinner and shows the dialog to edit the candidate.
 	/// </remarks>
-	private async Task EditCandidate()
+	private Task EditCandidate()
 	{
-		await ExecuteMethod(async () =>
-							{
-								if (Spinner != null)
-								{
-									try
-									{
-										await Spinner.ShowAsync();
-									}
-									catch
-									{
-										//Ignore the exception.
-									}
-								}
+		return ExecuteMethod(async () =>
+							 {
+								 if (Spinner != null)
+								 {
+									 try
+									 {
+										 await Spinner.ShowAsync();
+									 }
+									 catch
+									 {
+										 //Ignore the exception.
+									 }
+								 }
 
-								if (_target == null || _target.ID == 0)
-								{
-									if (_candidateDetailsObjectClone == null)
-									{
-										_candidateDetailsObjectClone = new();
-									}
-									else
-									{
-										_candidateDetailsObjectClone.Clear();
-									}
+								 if (_target == null || _target.ID == 0)
+								 {
+									 if (_candidateDetailsObjectClone == null)
+									 {
+										 _candidateDetailsObjectClone = new();
+									 }
+									 else
+									 {
+										 _candidateDetailsObjectClone.Clear();
+									 }
 
-									_candidateDetailsObjectClone.IsAdd = true;
-								}
-								else
-								{
-									_candidateDetailsObjectClone = _candidateDetailsObject.Copy();
+									 _candidateDetailsObjectClone.IsAdd = true;
+								 }
+								 else
+								 {
+									 _candidateDetailsObjectClone = _candidateDetailsObject.Copy();
 
-									_candidateDetailsObjectClone.IsAdd = false;
-								}
+									 _candidateDetailsObjectClone.IsAdd = false;
+								 }
 
-								if (Spinner != null)
-								{
-									try
-									{
-										await Spinner.HideAsync();
-									}
-									catch
-									{
-										//Ignore the exception.
-									}
-								}
+								 if (Spinner != null)
+								 {
+									 try
+									 {
+										 await Spinner.HideAsync();
+									 }
+									 catch
+									 {
+										 //Ignore the exception.
+									 }
+								 }
 
-								await DialogEditCandidate.ShowDialog();
-								StateHasChanged();
-							});
+								 await DialogEditCandidate.ShowDialog();
+								 StateHasChanged();
+							 });
 	}
 
 	/// <summary>
@@ -1691,28 +1692,28 @@ public partial class Candidate
 	///     Otherwise, it prepares the system to edit the existing education record.
 	///     Finally, it resets the action progress and shows the dialog to edit the education record.
 	/// </remarks>
-	private async Task EditEducation(int id)
+	private Task EditEducation(int id)
 	{
-		await ExecuteMethod(async () =>
-							{
-								if (id == 0)
-								{
-									if (SelectedEducation == null)
-									{
-										SelectedEducation = new();
-									}
-									else
-									{
-										SelectedEducation.Clear();
-									}
-								}
-								else
-								{
-									SelectedEducation = EducationPanel.SelectedRow?.Copy();
-								}
+		return ExecuteMethod(() =>
+							 {
+								 if (id == 0)
+								 {
+									 if (SelectedEducation == null)
+									 {
+										 SelectedEducation = new();
+									 }
+									 else
+									 {
+										 SelectedEducation.Clear();
+									 }
+								 }
+								 else
+								 {
+									 SelectedEducation = EducationPanel.SelectedRow?.Copy();
+								 }
 
-								await DialogEducation.ShowDialog();
-							});
+								 return DialogEducation.ShowDialog();
+							 });
 	}
 
 	/// <summary>
@@ -1730,28 +1731,28 @@ public partial class Candidate
 	///     Otherwise, it prepares the system to edit the existing experience details.
 	///     Finally, it sets the action in progress to false and shows the dialog to edit the experience.
 	/// </remarks>
-	private async Task EditExperience(int id)
+	private Task EditExperience(int id)
 	{
-		await ExecuteMethod(async () =>
-							{
-								if (id == 0)
-								{
-									if (SelectedExperience == null)
-									{
-										SelectedExperience = new();
-									}
-									else
-									{
-										SelectedExperience.Clear();
-									}
-								}
-								else
-								{
-									SelectedExperience = ExperiencePanel.SelectedRow.Copy();
-								}
+		return ExecuteMethod(() =>
+							 {
+								 if (id == 0)
+								 {
+									 if (SelectedExperience == null)
+									 {
+										 SelectedExperience = new();
+									 }
+									 else
+									 {
+										 SelectedExperience.Clear();
+									 }
+								 }
+								 else
+								 {
+									 SelectedExperience = ExperiencePanel.SelectedRow.Copy();
+								 }
 
-								await DialogExperience.ShowDialog();
-							});
+								 return DialogExperience.ShowDialog();
+							 });
 	}
 
 	/// <summary>
@@ -1768,28 +1769,28 @@ public partial class Candidate
 	///     Otherwise, it prepares the system to edit the existing note.
 	///     Finally, it sets the action progress to false and shows the dialog to edit the note.
 	/// </remarks>
-	private async Task EditNotes(int id)
+	private Task EditNotes(int id)
 	{
-		await ExecuteMethod(async () =>
-							{
-								if (id == 0)
-								{
-									if (SelectedNotes == null)
-									{
-										SelectedNotes = new();
-									}
-									else
-									{
-										SelectedNotes.Clear();
-									}
-								}
-								else
-								{
-									SelectedNotes = PanelNotes.SelectedRow.Copy();
-								}
+		return ExecuteMethod(() =>
+							 {
+								 if (id == 0)
+								 {
+									 if (SelectedNotes == null)
+									 {
+										 SelectedNotes = new();
+									 }
+									 else
+									 {
+										 SelectedNotes.Clear();
+									 }
+								 }
+								 else
+								 {
+									 SelectedNotes = PanelNotes.SelectedRow.Copy();
+								 }
 
-								await DialogNotes.ShowDialog();
-							});
+								 return DialogNotes.ShowDialog();
+							 });
 	}
 
 	/// <summary>
@@ -1806,28 +1807,28 @@ public partial class Candidate
 	///     Otherwise, it prepares the system to edit the existing skill.
 	///     Finally, it ends the action in progress and shows the dialog to edit the skill.
 	/// </remarks>
-	private async Task EditSkill(int id)
+	private Task EditSkill(int id)
 	{
-		await ExecuteMethod(async () =>
-							{
-								if (id == 0)
-								{
-									if (SelectedSkill == null)
-									{
-										SelectedSkill = new();
-									}
-									else
-									{
-										SelectedSkill.Clear();
-									}
-								}
-								else
-								{
-									SelectedSkill = SkillPanel.SelectedRow.Copy();
-								}
+		return ExecuteMethod(() =>
+							 {
+								 if (id == 0)
+								 {
+									 if (SelectedSkill == null)
+									 {
+										 SelectedSkill = new();
+									 }
+									 else
+									 {
+										 SelectedSkill.Clear();
+									 }
+								 }
+								 else
+								 {
+									 SelectedSkill = SkillPanel.SelectedRow.Copy();
+								 }
 
-								await DialogSkill.ShowDialog();
-							});
+								 return DialogSkill.ShowDialog();
+							 });
 	}
 
 	/// <summary>
@@ -1839,9 +1840,9 @@ public partial class Candidate
 	/// <returns>
 	///     A task that represents the asynchronous operation.
 	/// </returns>
-	private async Task ExecuteMethod(Func<Task> task)
+	private Task ExecuteMethod(Func<Task> task)
 	{
-		await General.ExecuteMethod(_semaphoreMainPage, task, Logger);
+		return General.ExecuteMethod(_semaphoreMainPage, task, Logger);
 	}
 
 	/// <summary>
@@ -1857,24 +1858,24 @@ public partial class Candidate
 	///     SearchModel's Name.
 	///     Finally, it refreshes the grid to reflect the changes.
 	/// </remarks>
-	private async Task FilterGrid(ChangeEventArgs<string, KeyValues> candidate)
+	private Task FilterGrid(ChangeEventArgs<string, KeyValues> candidate)
 	{
-		await ExecuteMethod(async () =>
-							{
-								string _currentValue = candidate.Value ?? "";
-								if (_currentValue.Equals(_lastValue))
-								{
-									return;
-								}
+		return ExecuteMethod(async () =>
+							 {
+								 string _currentValue = candidate.Value ?? "";
+								 if (_currentValue.Equals(_lastValue))
+								 {
+									 return;
+								 }
 
-								_lastValue = _currentValue;
-								SearchModel.Name = candidate.Value ?? "";
-								_currentPage = 1;
-								SearchModel.Page = 1;
-								await SessionStorage.SetItemAsync(StorageName, SearchModel);
-								AutocompleteValue = SearchModel.Name;
-								await Grid.Refresh();
-							});
+								 _lastValue = _currentValue;
+								 SearchModel.Name = candidate.Value ?? "";
+								 _currentPage = 1;
+								 SearchModel.Page = 1;
+								 await SessionStorage.SetItemAsync(StorageName, SearchModel);
+								 AutocompleteValue = SearchModel.Name;
+								 await Grid.Refresh();
+							 });
 	}
 
 	/// <summary>
@@ -1887,20 +1888,20 @@ public partial class Candidate
 	///     After the grid is refreshed, it sets the _actionProgress flag back to false, indicating that the action has
 	///     completed.
 	/// </summary>
-	private async Task FirstClick()
+	private Task FirstClick()
 	{
-		await ExecuteMethod(async () =>
-							{
-								if (_currentPage < 1)
-								{
-									_currentPage = 1;
-								}
+		return ExecuteMethod(async () =>
+							 {
+								 if (_currentPage < 1)
+								 {
+									 _currentPage = 1;
+								 }
 
-								_currentPage = 1;
-								SearchModel.Page = 1;
-								await SessionStorage.SetItemAsync(StorageName, SearchModel);
-								await Grid.Refresh();
-							});
+								 _currentPage = 1;
+								 SearchModel.Page = 1;
+								 await SessionStorage.SetItemAsync(StorageName, SearchModel);
+								 await Grid.Refresh();
+							 });
 	}
 
 	/// <summary>
@@ -1909,9 +1910,9 @@ public partial class Candidate
 	/// </summary>
 	/// <param name="arg">The mouse event arguments.</param>
 	/// <returns>A Task representing the asynchronous operation.</returns>
-	private async Task FormattedClick(MouseEventArgs arg)
+	private Task FormattedClick(MouseEventArgs arg)
 	{
-		await GetResumeOnClick("Formatted");
+		return GetResumeOnClick("Formatted");
 	}
 
 	/// <summary>
@@ -2026,25 +2027,25 @@ public partial class Candidate
 	///     type as query parameters.
 	///     If the request is successful, it shows the retrieved resume in the DownloadsPanel.
 	/// </remarks>
-	private async Task GetResumeOnClick(string resumeType)
+	private Task GetResumeOnClick(string resumeType)
 	{
-		await ExecuteMethod(async () =>
-							{
-								RestClient _restClient = new(Start.ApiHost);
-								RestRequest _request = new("Candidates/DownloadResume")
-													   {
-														   RequestFormat = DataFormat.Json
-													   };
-								_request.AddQueryParameter("candidateID", _target.ID);
-								_request.AddQueryParameter("resumeType", resumeType);
+		return ExecuteMethod(async () =>
+							 {
+								 RestClient _restClient = new(Start.ApiHost);
+								 RestRequest _request = new("Candidates/DownloadResume")
+														{
+															RequestFormat = DataFormat.Json
+														};
+								 _request.AddQueryParameter("candidateID", _target.ID);
+								 _request.AddQueryParameter("resumeType", resumeType);
 
-								DocumentDetails _restResponse = await _restClient.GetAsync<DocumentDetails>(_request);
+								 DocumentDetails _restResponse = await _restClient.GetAsync<DocumentDetails>(_request);
 
-								if (_restResponse != null)
-								{
-									await DownloadsPanel.ShowResume(_restResponse.DocumentLocation, _target.ID, "Original Resume", _restResponse.InternalFileName);
-								}
-							});
+								 if (_restResponse != null)
+								 {
+									 await DownloadsPanel.ShowResume(_restResponse.DocumentLocation, _target.ID, "Original Resume", _restResponse.InternalFileName);
+								 }
+							 });
 	}
 
 	/// <summary>
@@ -2060,20 +2061,20 @@ public partial class Candidate
 	///     stores the updated search model in the session storage, and refreshes the grid.
 	///     This method also prevents multiple simultaneous actions by using the _actionProgress flag.
 	/// </summary>
-	private async Task LastClick()
+	private Task LastClick()
 	{
-		await ExecuteMethod(async () =>
-							{
-								if (_currentPage < 1)
-								{
-									_currentPage = 1;
-								}
+		return ExecuteMethod(async () =>
+							 {
+								 if (_currentPage < 1)
+								 {
+									 _currentPage = 1;
+								 }
 
-								_currentPage = PageCount.ToInt32();
-								SearchModel.Page = _currentPage;
-								await SessionStorage.SetItemAsync(StorageName, SearchModel);
-								await Grid.Refresh();
-							});
+								 _currentPage = PageCount.ToInt32();
+								 SearchModel.Page = _currentPage;
+								 await SessionStorage.SetItemAsync(StorageName, SearchModel);
+								 await Grid.Refresh();
+							 });
 	}
 
 	/// <summary>
@@ -2087,7 +2088,7 @@ public partial class Candidate
 	///     Otherwise, it clears the existing candidate's data.
 	///     Finally, it calls the EditCandidate method to initiate the editing process.
 	/// </remarks>
-	private async Task ManualCandidate(MouseEventArgs arg)
+	private Task ManualCandidate(MouseEventArgs arg)
 	{
 		if (_target == null)
 		{
@@ -2098,7 +2099,7 @@ public partial class Candidate
 			_target.Clear();
 		}
 
-		await EditCandidate();
+		return EditCandidate();
 	}
 
 	/// <summary>
@@ -2106,20 +2107,20 @@ public partial class Candidate
 	///     This method increments the current page number and refreshes the grid to display the next set of candidates.
 	///     If the action is already in progress, the method will return immediately to prevent multiple simultaneous requests.
 	/// </summary>
-	private async Task NextClick()
+	private Task NextClick()
 	{
-		await ExecuteMethod(async () =>
-							{
-								if (_currentPage < 1)
-								{
-									_currentPage = 1;
-								}
+		return ExecuteMethod(async () =>
+							 {
+								 if (_currentPage < 1)
+								 {
+									 _currentPage = 1;
+								 }
 
-								_currentPage = SearchModel.Page >= PageCount.ToInt32() ? PageCount.ToInt32() : SearchModel.Page + 1;
-								SearchModel.Page = _currentPage;
-								await SessionStorage.SetItemAsync(StorageName, SearchModel);
-								await Grid.Refresh();
-							});
+								 _currentPage = SearchModel.Page >= PageCount.ToInt32() ? PageCount.ToInt32() : SearchModel.Page + 1;
+								 SearchModel.Page = _currentPage;
+								 await SessionStorage.SetItemAsync(StorageName, SearchModel);
+								 await Grid.Refresh();
+							 });
 	}
 
 	/// <summary>
@@ -2133,32 +2134,32 @@ public partial class Candidate
 	///     on the column name and sort direction in the event arguments.
 	///     The updated SearchModel is then stored in the session storage and the grid is refreshed.
 	/// </remarks>
-	private async Task OnActionBegin(ActionEventArgs<Candidates> args)
+	private Task OnActionBegin(ActionEventArgs<Candidates> args)
 	{
-		await ExecuteMethod(async () =>
-							{
-								if (args.RequestType == Action.Sorting)
-								{
-									SearchModel.SortField = args.ColumnName switch
-															{
-																"Name" => 2,
-																"Phone" => 3,
-																"Email" => 4,
-																"Location" => 5,
-																"Status" => 8,
-																_ => 1
-															};
-									SearchModel.SortDirection = args.Direction == SortDirection.Ascending ? (byte)1 : (byte)0;
-									await SessionStorage.SetItemAsync(StorageName, SearchModel);
-									await Grid.Refresh();
-								}
-							});
+		return ExecuteMethod(async () =>
+							 {
+								 if (args.RequestType == Action.Sorting)
+								 {
+									 SearchModel.SortField = args.ColumnName switch
+															 {
+																 "Name" => 2,
+																 "Phone" => 3,
+																 "Email" => 4,
+																 "Location" => 5,
+																 "Status" => 8,
+																 _ => 1
+															 };
+									 SearchModel.SortDirection = args.Direction == SortDirection.Ascending ? (byte)1 : (byte)0;
+									 await SessionStorage.SetItemAsync(StorageName, SearchModel);
+									 await Grid.Refresh();
+								 }
+							 });
 	}
 	/*
 	/// <summary>
 	///     This method is invoked after the component has finished rendering.
 	///     It checks if it's the first render, if not, it returns immediately.
-	///     If it is the first render, it sets the User property of the SearchModel to the UserID of the logged in user,
+	///     If it is the first render, it sets the User property of the SearchModel to the UserID of the logged-in user,
 	///     or to "JOLLY" if no user is logged in.
 	/// </summary>
 	/// <param name="firstRender">A boolean indicating whether this is the first time the component is being rendered.</param>
@@ -2190,48 +2191,55 @@ public partial class Candidate
 	///     The method is designed to handle multiple file uploads but will stop processing further files if an action is
 	///     already in progress.
 	/// </remarks>
-	private async Task OnFileUpload(UploadChangeEventArgs file)
+	private Task OnFileUpload(UploadChangeEventArgs file)
 	{
-		await ExecuteMethod(async () =>
-							{
-								foreach (UploadFiles _file in file.Files)
-								{
-									Stream _str = _file.File.OpenReadStream(60 * 1024 * 1024);
-									await _str.CopyToAsync(AddedDocument);
-									FileName = _file.FileInfo.Name;
-									//FileSize = _file.FileInfo.Size;
-									//Mime = _file.FileInfo.MimeContentType;
-									AddedDocument.Position = 0;
-									_str.Close();
-									RestClient _client = new(Start.ApiHost);
-									RestRequest _request = new("Candidates/ParseResume", Method.Post)
-														   {
-															   AlwaysMultipartFormData = true
-														   };
-									_request.AddFile("file", AddedDocument.ToArray(), FileName);
-									_request.AddQueryParameter("fileName", FileName);
-									_request.AddQueryParameter("user", LoginCookyUser == null || LoginCookyUser.UserID.NullOrWhiteSpace() ? "JOLLY" : LoginCookyUser.UserID.ToUpperInvariant());
-									_request.AddQueryParameter("path", Start.UploadsPath);
-									_request.AddQueryParameter("pageCount", SearchModel.ItemCount);
-									Dictionary<string, object> _parsingObjects = await _client.PostAsync<Dictionary<string, object>>(_request);
-									if (_parsingObjects != null)
-									{
-										_jsonPath = _parsingObjects["Json"].ToString();
-										string _emailAddress = _parsingObjects["Email"].ToString();
-										string _phone = _parsingObjects["Phone"].ToString();
-										ExistingCandidateList = General.DeserializeObject<List<ExistingCandidate>>(_parsingObjects["Candidates"]?.ToString());
-										ExistingCandidateList.Insert(0, new(0, "New Candidate", _emailAddress, _phone));
+		return ExecuteMethod(async () =>
+							 {
+								 foreach (UploadFiles _file in file.Files)
+								 {
+									 Stream _str = _file.File.OpenReadStream(60 * 1024 * 1024);
+									 await _str.CopyToAsync(AddedDocument);
+									 FileName = _file.FileInfo.Name;
+									 //FileSize = _file.FileInfo.Size;
+									 //Mime = _file.FileInfo.MimeContentType;
+									 AddedDocument.Position = 0;
+									 _str.Close();
+									 RestClient _client = new(Start.ApiHost);
+									 RestRequest _request = new("Candidates/ParseResume", Method.Post)
+															{
+																AlwaysMultipartFormData = true
+															};
+									 _request.AddFile("file", AddedDocument.ToArray(), FileName);
+									 _request.AddQueryParameter("fileName", FileName);
+									 _request.AddQueryParameter("user", LoginCookyUser == null || LoginCookyUser.UserID.NullOrWhiteSpace() ? "JOLLY" : LoginCookyUser.UserID.ToUpperInvariant());
+									 _request.AddQueryParameter("path", Start.UploadsPath);
+									 _request.AddQueryParameter("pageCount", SearchModel.ItemCount);
+									 Dictionary<string, object> _parsingObjects = await _client.PostAsync<Dictionary<string, object>>(_request);
+									 if (_parsingObjects != null)
+									 {
+										 _jsonPath = _parsingObjects["Json"].ToString();
+										 string _emailAddress = _parsingObjects["Email"].ToString();
+										 string _phone = _parsingObjects["Phone"].ToString();
+										 ExistingCandidateList = General.DeserializeObject<List<ExistingCandidate>>(_parsingObjects["Candidates"]?.ToString());
+										 ExistingCandidateList.Insert(0, new(0, "New Candidate", _emailAddress, _phone));
 
-										ExistingCandidateDetailsDialog.ShowDialog();
-									}
-									else
-									{
-										await Grid.Refresh();
-									}
-								}
-							});
+										 ExistingCandidateDetailsDialog.ShowDialog();
+									 }
+									 else
+									 {
+										 await Grid.Refresh();
+									 }
+								 }
+							 });
 	}
 
+	[Inject]
+	private RedisService Redis
+	{
+		get;
+		set;
+	}
+	
 	/// <summary>
 	///     This method is called when the component is first initialized.
 	///     It sets up the initial state of the component, including parsing query parameters from the URL,
@@ -2256,10 +2264,10 @@ public partial class Candidate
 								}
 
 								LoginCookyUser = await NavManager.RedirectInner(LocalStorage);
-								IMemoryCache _memoryCache = Start.MemCache;
+								
 								while (_roles == null)
 								{
-									_memoryCache.TryGetValue("Roles", out _roles);
+									_roles = await Redis.GetOrCreateAsync<List<Role>>("Roles");
 								}
 
 								RoleID = LoginCookyUser.RoleID;
@@ -2301,7 +2309,7 @@ public partial class Candidate
 
 								while (_states == null)
 								{
-									_memoryCache.TryGetValue("States", out _states);
+									_states = await Redis.GetOrCreateAsync<List<IntValues>>("States");
 								}
 
 								_statesCopy.Clear();
@@ -2310,28 +2318,28 @@ public partial class Candidate
 
 								while (_eligibility == null)
 								{
-									_memoryCache.TryGetValue("Eligibility", out _eligibility);
+									_eligibility = await Redis.GetOrCreateAsync<List<IntValues>>("Eligibility");
 								}
 
 								_eligibilityCopy.Clear();
 								_eligibilityCopy.Add(new(0, "All"));
 								_eligibilityCopy.AddRange(_eligibility);
 
-								_memoryCache.TryGetValue("Experience", out _experience);
-								_memoryCache.TryGetValue("TaxTerms", out _taxTerms);
+								_experience = await Redis.GetOrCreateAsync<List<IntValues>>("Experience");
+								_taxTerms = await Redis.GetOrCreateAsync<List<KeyValues>>("TaxTerms");
 								while (_jobOptions == null)
 								{
-									_memoryCache.TryGetValue("JobOptions", out _jobOptions);
+									_jobOptions = await Redis.GetOrCreateAsync<List<KeyValues>>("JobOptions");
 								}
 
 								_jobOptionsCopy.Clear();
 								_jobOptionsCopy.Add(new("%", "All"));
 								_jobOptionsCopy.AddRange(_jobOptions);
 
-								_memoryCache.TryGetValue("StatusCodes", out _statusCodes);
-								_memoryCache.TryGetValue("Workflow", out _workflows);
-								_memoryCache.TryGetValue("Communication", out _communication);
-								_memoryCache.TryGetValue("DocumentTypes", out _documentTypes);
+									_statusCodes = await Redis.GetOrCreateAsync<List<StatusCode>>("StatusCodes");
+									_workflows = await Redis.GetOrCreateAsync<List<AppWorkflow>>("Workflow");
+								_communication = await Redis.GetOrCreateAsync<List<KeyValues>>("Communication");
+									_documentTypes = await Redis.GetOrCreateAsync<List<IntValues>>("DocumentTypes");
 
 								SortDirectionProperty = SearchModel.SortDirection == 1 ? SortDirection.Ascending : SortDirection.Descending;
 								SortField = SearchModel.SortField switch
@@ -2361,9 +2369,9 @@ public partial class Candidate
 	///     This method calls the GetResumeOnClick method with "Original" as the argument, which sends a GET request to the
 	///     "Candidates/DownloadResume" endpoint to retrieve the original resume.
 	/// </remarks>
-	private async Task OriginalClick(MouseEventArgs arg)
+	private Task OriginalClick(MouseEventArgs arg)
 	{
-		await GetResumeOnClick("Original");
+		return GetResumeOnClick("Original");
 	}
 
 	/// <summary>
@@ -2375,25 +2383,25 @@ public partial class Candidate
 	///     the grid.
 	///     If an action is already in progress, this method will return immediately to prevent concurrent operations.
 	/// </remarks>
-	private async Task PageNumberChanged(ChangeEventArgs obj)
+	private Task PageNumberChanged(ChangeEventArgs obj)
 	{
-		await ExecuteMethod(async () =>
-							{
-								int _currentValue = obj.Value.ToInt32();
-								if (_currentValue < 1)
-								{
-									_currentValue = 1;
-								}
-								else if (_currentValue > PageCount)
-								{
-									_currentValue = PageCount;
-								}
+		return ExecuteMethod(async () =>
+							 {
+								 int _currentValue = obj.Value.ToInt32();
+								 if (_currentValue < 1)
+								 {
+									 _currentValue = 1;
+								 }
+								 else if (_currentValue > PageCount)
+								 {
+									 _currentValue = PageCount;
+								 }
 
-								_currentPage = _currentValue;
-								SearchModel.Page = _currentPage;
-								await SessionStorage.SetItemAsync(StorageName, SearchModel);
-								await Grid.Refresh();
-							});
+								 _currentPage = _currentValue;
+								 SearchModel.Page = _currentPage;
+								 await SessionStorage.SetItemAsync(StorageName, SearchModel);
+								 await Grid.Refresh();
+							 });
 	}
 
 	/// <summary>
@@ -2402,9 +2410,9 @@ public partial class Candidate
 	/// </summary>
 	/// <param name="arg">The MouseEventArgs associated with the mouse click event.</param>
 	/// <returns>A Task that represents the asynchronous operation.</returns>
-	private async Task ParseCandidate(MouseEventArgs arg)
+	private Task ParseCandidate(MouseEventArgs arg)
 	{
-		await DialogParseCandidate.ShowDialog();
+		return DialogParseCandidate.ShowDialog();
 	}
 
 	/// <summary>
@@ -2412,26 +2420,26 @@ public partial class Candidate
 	///     This method decreases the current page number by one, if it's greater than 1.
 	///     It also refreshes the grid to display the data for the new page.
 	/// </summary>
-	private async Task PreviousClick()
+	private Task PreviousClick()
 	{
-		await ExecuteMethod(async () =>
-							{
-								if (_currentPage < 1)
-								{
-									_currentPage = 1;
-								}
+		return ExecuteMethod(async () =>
+							 {
+								 if (_currentPage < 1)
+								 {
+									 _currentPage = 1;
+								 }
 
-								_currentPage = SearchModel.Page <= 1 ? 1 : SearchModel.Page - 1;
-								SearchModel.Page = _currentPage;
-								await SessionStorage.SetItemAsync(StorageName, SearchModel);
-								await Grid.Refresh();
-							});
+								 _currentPage = SearchModel.Page <= 1 ? 1 : SearchModel.Page - 1;
+								 SearchModel.Page = _currentPage;
+								 await SessionStorage.SetItemAsync(StorageName, SearchModel);
+								 await Grid.Refresh();
+							 });
 	}
 
 	/// <summary>
 	///     Refreshes the grid view of the Candidate page.
 	/// </summary>
-	private static async Task RefreshGrid() => await Grid.Refresh();
+	private static Task RefreshGrid() => Grid.Refresh();
 
 	/// <summary>
 	///     Handles the event when a row is selected in the candidate list.
@@ -2456,29 +2464,29 @@ public partial class Candidate
 	///     If the response is not null, it deserializes the "Activity" from the response into a List of CandidateActivity
 	///     objects.
 	/// </remarks>
-	private async Task SaveActivity(EditContext activity)
+	private Task SaveActivity(EditContext activity)
 	{
-		await ExecuteMethod(async () =>
-							{
-								Dictionary<string, string> _parameters = new()
-																		 {
-																			 {"candidateID", _target.ID.ToString()},
-																			 {"user", General.GetUserName(LoginCookyUser)},
-																			 {"roleID", General.GetRoleID(LoginCookyUser)},
-																			 {"isCandidateScreen", true.ToString()},
-																			 {"jsonPath", Start.JsonFilePath},
-																			 {"emailAddress", General.GetEmail(LoginCookyUser)},
-																			 {"uploadPath", Start.UploadsPath}
-																		 };
+		return ExecuteMethod(async () =>
+							 {
+								 Dictionary<string, string> _parameters = new()
+																		  {
+																			  {"candidateID", _target.ID.ToString()},
+																			  {"user", General.GetUserName(LoginCookyUser)},
+																			  {"roleID", General.GetRoleID(LoginCookyUser)},
+																			  {"isCandidateScreen", true.ToString()},
+																			  {"jsonPath", Start.JsonFilePath},
+																			  {"emailAddress", General.GetEmail(LoginCookyUser)},
+																			  {"uploadPath", Start.UploadsPath}
+																		  };
 
-								Dictionary<string, object> _response = await General.PostRest("Candidates/SaveCandidateActivity", _parameters, activity.Model);
-								if (_response == null)
-								{
-									return;
-								}
+								 Dictionary<string, object> _response = await General.PostRest("Candidates/SaveCandidateActivity", _parameters, activity.Model);
+								 if (_response == null)
+								 {
+									 return;
+								 }
 
-								_candidateActivityObject = General.DeserializeObject<List<CandidateActivity>>(_response["Activity"]);
-							});
+								 _candidateActivityObject = General.DeserializeObject<List<CandidateActivity>>(_response["Activity"]);
+							 });
 	}
 
 	/// <summary>
@@ -2491,7 +2499,7 @@ public partial class Candidate
 	///     - Creates a new RestRequest instance for the "Candidates/SaveCandidate" endpoint, using the POST method and JSON
 	///     request format.
 	///     - Adds the cloned candidate details object to the request body as JSON.
-	///     - Adds the JSON file path, user name, and email address as query parameters to the request. If the user name or
+	///     - Adds the JSON file path, username, and email address as query parameters to the request. If the username or
 	///     email address is null or whitespace, default values are used.
 	///     - Sends the request asynchronously and awaits the response.
 	///     - Updates the candidate details object with the cloned object.
@@ -2501,34 +2509,34 @@ public partial class Candidate
 	///     - Yields the current thread of execution again.
 	///     - Triggers a UI refresh by calling StateHasChanged.
 	/// </remarks>
-	private async Task SaveCandidate()
+	private Task SaveCandidate()
 	{
-		await ExecuteMethod(async () =>
-							{
-								Dictionary<string, string> _parameters = new()
-																		 {
-																			 {"jsonPath", Start.JsonFilePath},
-																			 {"userName", General.GetUserName(LoginCookyUser)},
-																			 {"emailAddress", General.GetEmail(LoginCookyUser)}
-																		 };
+		return ExecuteMethod(async () =>
+							 {
+								 Dictionary<string, string> _parameters = new()
+																		  {
+																			  {"jsonPath", Start.JsonFilePath},
+																			  {"userName", General.GetUserName(LoginCookyUser)},
+																			  {"emailAddress", General.GetEmail(LoginCookyUser)}
+																		  };
 
-								await General.PostRest("Candidates/SaveCandidate", _parameters, _candidateDetailsObjectClone);
+								 await General.PostRest("Candidates/SaveCandidate", _parameters, _candidateDetailsObjectClone);
 
-								_candidateDetailsObject = _candidateDetailsObjectClone.Copy();
-								_target.Name = $"{_candidateDetailsObject.FirstName} {_candidateDetailsObject.LastName}";
-								_target.Phone = _candidateDetailsObject.Phone1.FormatPhoneNumber();
-								_target.Email = _candidateDetailsObject.Email;
-								_target.Location = $"{_candidateDetailsObject.City}, {GetState(_candidateDetailsObject.StateID)}, {_candidateDetailsObject.ZipCode}";
-								_target.Updated = DateTime.Today.CultureDate() + "[ADMIN]";
-								_target.Status = "Available";
-								SetupAddress();
-								SetCommunication();
-								SetEligibility();
-								SetJobOption();
-								SetTaxTerm();
-								SetExperience();
-								StateHasChanged();
-							});
+								 _candidateDetailsObject = _candidateDetailsObjectClone.Copy();
+								 _target.Name = $"{_candidateDetailsObject.FirstName} {_candidateDetailsObject.LastName}";
+								 _target.Phone = _candidateDetailsObject.Phone1.FormatPhoneNumber();
+								 _target.Email = _candidateDetailsObject.Email;
+								 _target.Location = $"{_candidateDetailsObject.City}, {GetState(_candidateDetailsObject.StateID)}, {_candidateDetailsObject.ZipCode}";
+								 _target.Updated = DateTime.Today.CultureDate() + "[ADMIN]";
+								 _target.Status = "Available";
+								 SetupAddress();
+								 SetCommunication();
+								 SetEligibility();
+								 SetJobOption();
+								 SetTaxTerm();
+								 SetExperience();
+								 StateHasChanged();
+							 });
 	}
 
 	/// <summary>
@@ -2542,36 +2550,36 @@ public partial class Candidate
 	///     The method uses RestSharp to send a POST request to the API, including the document and additional parameters.
 	///     If the upload is successful, the response is deserialized into a list of CandidateDocument objects.
 	/// </remarks>
-	private async Task SaveDocument(EditContext document)
+	private Task SaveDocument(EditContext document)
 	{
-		await ExecuteMethod(async () =>
-							{
-								if (document.Model is CandidateDocument _document)
-								{
-									RestClient _client = new(Start.ApiHost);
-									RestRequest _request = new("Candidates/UploadDocument", Method.Post)
-														   {
-															   AlwaysMultipartFormData = true
-														   };
-									_request.AddFile("file", AddedDocument.ToStreamByteArray(), FileName);
-									_request.AddParameter("filename", FileName, ParameterType.GetOrPost);
-									_request.AddParameter("mime", Mime, ParameterType.GetOrPost);
-									_request.AddParameter("name", _document.Name, ParameterType.GetOrPost);
-									_request.AddParameter("notes", _document.Notes, ParameterType.GetOrPost);
-									_request.AddParameter("candidateID", _target.ID.ToString(), ParameterType.GetOrPost);
-									_request.AddParameter("user", LoginCookyUser == null || LoginCookyUser.UserID.NullOrWhiteSpace() ? "JOLLY" : LoginCookyUser.UserID.ToUpperInvariant(),
-														  ParameterType.GetOrPost);
-									_request.AddParameter("path", Start.UploadsPath, ParameterType.GetOrPost);
-									_request.AddParameter("type", _document.DocumentTypeID.ToString(), ParameterType.GetOrPost);
-									Dictionary<string, object> _response = await _client.PostAsync<Dictionary<string, object>>(_request);
-									if (_response == null)
-									{
-										return;
-									}
+		return ExecuteMethod(async () =>
+							 {
+								 if (document.Model is CandidateDocument _document)
+								 {
+									 RestClient _client = new(Start.ApiHost);
+									 RestRequest _request = new("Candidates/UploadDocument", Method.Post)
+															{
+																AlwaysMultipartFormData = true
+															};
+									 _request.AddFile("file", AddedDocument.ToStreamByteArray(), FileName);
+									 _request.AddParameter("filename", FileName, ParameterType.GetOrPost);
+									 _request.AddParameter("mime", Mime, ParameterType.GetOrPost);
+									 _request.AddParameter("name", _document.Name, ParameterType.GetOrPost);
+									 _request.AddParameter("notes", _document.Notes, ParameterType.GetOrPost);
+									 _request.AddParameter("candidateID", _target.ID.ToString(), ParameterType.GetOrPost);
+									 _request.AddParameter("user", LoginCookyUser == null || LoginCookyUser.UserID.NullOrWhiteSpace() ? "JOLLY" : LoginCookyUser.UserID.ToUpperInvariant(),
+														   ParameterType.GetOrPost);
+									 _request.AddParameter("path", Start.UploadsPath, ParameterType.GetOrPost);
+									 _request.AddParameter("type", _document.DocumentTypeID.ToString(), ParameterType.GetOrPost);
+									 Dictionary<string, object> _response = await _client.PostAsync<Dictionary<string, object>>(_request);
+									 if (_response == null)
+									 {
+										 return;
+									 }
 
-									_candidateDocumentsObject = General.DeserializeObject<List<CandidateDocument>>(_response["Document"]);
-								}
-							});
+									 _candidateDocumentsObject = General.DeserializeObject<List<CandidateDocument>>(_response["Document"]);
+								 }
+							 });
 	}
 
 	/// <summary>
@@ -2581,31 +2589,31 @@ public partial class Candidate
 	/// <returns>A task that represents the asynchronous operation.</returns>
 	/// <remarks>
 	///     This method sends a POST request to the "Candidates/SaveEducation" endpoint with the candidate's education details.
-	///     The user ID of the logged in user or "JOLLY" (if no user is logged in) and the candidate's ID are added as query
+	///     The user ID of the logged-in user or "JOLLY" (if no user is logged in) and the candidate's ID are added as query
 	///     parameters to the request.
 	///     If the response is not null, the education details from the response are deserialized and stored in the
 	///     _candidateEducationObject.
 	/// </remarks>
-	private async Task SaveEducation(EditContext education)
+	private Task SaveEducation(EditContext education)
 	{
-		await ExecuteMethod(async () =>
-							{
-								if (education.Model is CandidateEducation _candidateEducation)
-								{
-									Dictionary<string, string> _parameters = new()
-																			 {
-																				 {"candidateID", _target.ID.ToString()},
-																				 {"user", General.GetUserName(LoginCookyUser)}
-																			 };
-									Dictionary<string, object> _response = await General.PostRest("Candidates/SaveEducation", _parameters, _candidateEducation);
-									if (_response == null)
-									{
-										return;
-									}
+		return ExecuteMethod(async () =>
+							 {
+								 if (education.Model is CandidateEducation _candidateEducation)
+								 {
+									 Dictionary<string, string> _parameters = new()
+																			  {
+																				  {"candidateID", _target.ID.ToString()},
+																				  {"user", General.GetUserName(LoginCookyUser)}
+																			  };
+									 Dictionary<string, object> _response = await General.PostRest("Candidates/SaveEducation", _parameters, _candidateEducation);
+									 if (_response == null)
+									 {
+										 return;
+									 }
 
-									_candidateEducationObject = General.DeserializeObject<List<CandidateEducation>>(_response["Education"]);
-								}
-							});
+									 _candidateEducationObject = General.DeserializeObject<List<CandidateEducation>>(_response["Education"]);
+								 }
+							 });
 	}
 
 	/// <summary>
@@ -2619,26 +2627,26 @@ public partial class Candidate
 	///     If the response is not null, it deserializes the "Experience" field of the response into a List of
 	///     CandidateExperience objects.
 	/// </remarks>
-	private async Task SaveExperience(EditContext experience)
+	private Task SaveExperience(EditContext experience)
 	{
-		await ExecuteMethod(async () =>
-							{
-								if (experience.Model is CandidateExperience _candidateExperience)
-								{
-									Dictionary<string, string> _parameters = new()
-																			 {
-																				 {"candidateID", _target.ID.ToString()},
-																				 {"user", General.GetUserName(LoginCookyUser)}
-																			 };
-									Dictionary<string, object> _response = await General.PostRest("Candidates/SaveExperience", _parameters, _candidateExperience);
-									if (_response == null)
-									{
-										return;
-									}
+		return ExecuteMethod(async () =>
+							 {
+								 if (experience.Model is CandidateExperience _candidateExperience)
+								 {
+									 Dictionary<string, string> _parameters = new()
+																			  {
+																				  {"candidateID", _target.ID.ToString()},
+																				  {"user", General.GetUserName(LoginCookyUser)}
+																			  };
+									 Dictionary<string, object> _response = await General.PostRest("Candidates/SaveExperience", _parameters, _candidateExperience);
+									 if (_response == null)
+									 {
+										 return;
+									 }
 
-									_candidateExperienceObject = General.DeserializeObject<List<CandidateExperience>>(_response["Experience"]);
-								}
-							});
+									 _candidateExperienceObject = General.DeserializeObject<List<CandidateExperience>>(_response["Experience"]);
+								 }
+							 });
 	}
 
 	/// <summary>
@@ -2651,26 +2659,26 @@ public partial class Candidate
 	/// </summary>
 	/// <param name="editContext">The EditContext object that contains the data to be saved.</param>
 	/// <returns>A Task representing the asynchronous operation.</returns>
-	private async Task SaveMPC(EditContext editContext)
+	private Task SaveMPC(EditContext editContext)
 	{
-		await ExecuteMethod(async () =>
-							{
-								if (editContext.Model is CandidateRatingMPC _mpc)
-								{
-									Dictionary<string, string> _parameters = new()
-																			 {
-																				 {"user", General.GetUserName(LoginCookyUser)}
-																			 };
-									Dictionary<string, object> _response = await General.PostRest("Candidates/SaveMPC", _parameters, _mpc);
-									if (_response != null)
-									{
-										_candidateMPCObject = General.DeserializeObject<List<CandidateMPC>>(_response["MPCList"]);
-										RatingMPC = JsonConvert.DeserializeObject<CandidateRatingMPC>(_response["FirstMPC"]?.ToString() ?? string.Empty);
-										GetMPCDate();
-										GetMPCNote();
-									}
-								}
-							});
+		return ExecuteMethod(async () =>
+							 {
+								 if (editContext.Model is CandidateRatingMPC _mpc)
+								 {
+									 Dictionary<string, string> _parameters = new()
+																			  {
+																				  {"user", General.GetUserName(LoginCookyUser)}
+																			  };
+									 Dictionary<string, object> _response = await General.PostRest("Candidates/SaveMPC", _parameters, _mpc);
+									 if (_response != null)
+									 {
+										 _candidateMPCObject = General.DeserializeObject<List<CandidateMPC>>(_response["MPCList"]);
+										 RatingMPC = JsonConvert.DeserializeObject<CandidateRatingMPC>(_response["FirstMPC"]?.ToString() ?? string.Empty);
+										 GetMPCDate();
+										 GetMPCNote();
+									 }
+								 }
+							 });
 	}
 
 	/// <summary>
@@ -2687,26 +2695,26 @@ public partial class Candidate
 	///     into a list of CandidateNotes objects.
 	///     If any exceptions occur during this process, they are caught and the method returns without doing anything.
 	/// </remarks>
-	private async Task SaveNotes(EditContext notes)
+	private Task SaveNotes(EditContext notes)
 	{
-		await ExecuteMethod(async () =>
-							{
-								if (notes.Model is CandidateNotes _notes)
-								{
-									Dictionary<string, string> _parameters = new()
-																			 {
-																				 {"candidateID", _target.ID.ToString()},
-																				 {"user", General.GetUserName(LoginCookyUser)}
-																			 };
-									Dictionary<string, object> _response = await General.PostRest("Candidates/SaveNotes", _parameters, _notes);
-									if (_response == null)
-									{
-										return;
-									}
+		return ExecuteMethod(async () =>
+							 {
+								 if (notes.Model is CandidateNotes _notes)
+								 {
+									 Dictionary<string, string> _parameters = new()
+																			  {
+																				  {"candidateID", _target.ID.ToString()},
+																				  {"user", General.GetUserName(LoginCookyUser)}
+																			  };
+									 Dictionary<string, object> _response = await General.PostRest("Candidates/SaveNotes", _parameters, _notes);
+									 if (_response == null)
+									 {
+										 return;
+									 }
 
-									_candidateNotesObject = General.DeserializeObject<List<CandidateNotes>>(_response["Notes"]);
-								}
-							});
+									 _candidateNotesObject = General.DeserializeObject<List<CandidateNotes>>(_response["Notes"]);
+								 }
+							 });
 	}
 
 	/// <summary>
@@ -2716,27 +2724,27 @@ public partial class Candidate
 	/// </summary>
 	/// <param name="editContext">The context for the form that contains the rating information to be saved.</param>
 	/// <returns>A Task representing the asynchronous operation.</returns>
-	private async Task SaveRating(EditContext editContext)
+	private Task SaveRating(EditContext editContext)
 	{
-		await ExecuteMethod(async () =>
-							{
-								if (editContext.Model is CandidateRatingMPC _rating)
-								{
-									Dictionary<string, string> _parameters = new()
-																			 {
-																				 {"user", General.GetUserName(LoginCookyUser)}
-																			 };
-									Dictionary<string, object> _response = await General.PostRest("Candidates/SaveRating", _parameters, _rating);
-									if (_response != null)
-									{
-										_candidateRatingObject = General.DeserializeObject<List<CandidateRating>>(_response["RatingList"]);
-										RatingMPC = JsonConvert.DeserializeObject<CandidateRatingMPC>(_response["FirstRating"]?.ToString() ?? string.Empty);
-										_candidateDetailsObject.RateCandidate = RatingMPC.Rating.ToInt32();
-										GetRatingDate();
-										GetRatingNote();
-									}
-								}
-							});
+		return ExecuteMethod(async () =>
+							 {
+								 if (editContext.Model is CandidateRatingMPC _rating)
+								 {
+									 Dictionary<string, string> _parameters = new()
+																			  {
+																				  {"user", General.GetUserName(LoginCookyUser)}
+																			  };
+									 Dictionary<string, object> _response = await General.PostRest("Candidates/SaveRating", _parameters, _rating);
+									 if (_response != null)
+									 {
+										 _candidateRatingObject = General.DeserializeObject<List<CandidateRating>>(_response["RatingList"]);
+										 RatingMPC = JsonConvert.DeserializeObject<CandidateRatingMPC>(_response["FirstRating"]?.ToString() ?? string.Empty);
+										 _candidateDetailsObject.RateCandidate = RatingMPC.Rating.ToInt32();
+										 GetRatingDate();
+										 GetRatingNote();
+									 }
+								 }
+							 });
 	}
 
 	/// <summary>
@@ -2752,28 +2760,28 @@ public partial class Candidate
 	///     The request is then sent asynchronously.
 	///     If any exceptions occur during this process, they are caught and handled silently.
 	/// </remarks>
-	private async Task SaveResume(EditContext resume)
+	private Task SaveResume(EditContext resume)
 	{
-		await ExecuteMethod(async () =>
-							{
-								if (resume.Model is UploadResume)
-								{
-									RestClient _client = new(Start.ApiHost);
-									RestRequest _request = new("Candidates/UploadResume", Method.Post)
-														   {
-															   AlwaysMultipartFormData = true
-														   };
-									_request.AddFile("file", AddedDocument.ToStreamByteArray(), FileName);
-									_request.AddParameter("filename", FileName, ParameterType.GetOrPost);
-									_request.AddParameter("mime", Mime, ParameterType.GetOrPost);
-									_request.AddParameter("type", ResumeType, ParameterType.GetOrPost);
-									_request.AddParameter("candidateID", _target.ID.ToString(), ParameterType.GetOrPost);
-									_request.AddParameter("user", LoginCookyUser == null || LoginCookyUser.UserID.NullOrWhiteSpace() ? "JOLLY" : LoginCookyUser.UserID.ToUpperInvariant(),
-														  ParameterType.GetOrPost);
-									_request.AddParameter("path", Start.UploadsPath, ParameterType.GetOrPost);
-									await _client.PostAsync(_request);
-								}
-							});
+		return ExecuteMethod(async () =>
+							 {
+								 if (resume.Model is UploadResume)
+								 {
+									 RestClient _client = new(Start.ApiHost);
+									 RestRequest _request = new("Candidates/UploadResume", Method.Post)
+															{
+																AlwaysMultipartFormData = true
+															};
+									 _request.AddFile("file", AddedDocument.ToStreamByteArray(), FileName);
+									 _request.AddParameter("filename", FileName, ParameterType.GetOrPost);
+									 _request.AddParameter("mime", Mime, ParameterType.GetOrPost);
+									 _request.AddParameter("type", ResumeType, ParameterType.GetOrPost);
+									 _request.AddParameter("candidateID", _target.ID.ToString(), ParameterType.GetOrPost);
+									 _request.AddParameter("user", LoginCookyUser == null || LoginCookyUser.UserID.NullOrWhiteSpace() ? "JOLLY" : LoginCookyUser.UserID.ToUpperInvariant(),
+														   ParameterType.GetOrPost);
+									 _request.AddParameter("path", Start.UploadsPath, ParameterType.GetOrPost);
+									 await _client.PostAsync(_request);
+								 }
+							 });
 	}
 
 	/// <summary>
@@ -2789,27 +2797,27 @@ public partial class Candidate
 	///     If the response is not null, it deserializes the "Skills" value from the response into a list of CandidateSkills
 	///     and assigns it to the _candidateSkillsObject.
 	/// </remarks>
-	private async Task SaveSkill(EditContext skill)
+	private Task SaveSkill(EditContext skill)
 	{
-		await ExecuteMethod(async () =>
-							{
-								if (skill.Model is CandidateSkills _skill)
-								{
-									Dictionary<string, string> _parameters = new()
-																			 {
-																				 {"candidateID", _target.ID.ToString()},
-																				 {"user", General.GetUserName(LoginCookyUser)}
-																			 };
+		return ExecuteMethod(async () =>
+							 {
+								 if (skill.Model is CandidateSkills _skill)
+								 {
+									 Dictionary<string, string> _parameters = new()
+																			  {
+																				  {"candidateID", _target.ID.ToString()},
+																				  {"user", General.GetUserName(LoginCookyUser)}
+																			  };
 
-									Dictionary<string, object> _response = await General.PostRest("Candidates/SaveSkill", _parameters, _skill);
-									if (_response == null)
-									{
-										return;
-									}
+									 Dictionary<string, object> _response = await General.PostRest("Candidates/SaveSkill", _parameters, _skill);
+									 if (_response == null)
+									 {
+										 return;
+									 }
 
-									_candidateSkillsObject = General.DeserializeObject<List<CandidateSkills>>(_response["Skills"]);
-								}
-							});
+									 _candidateSkillsObject = General.DeserializeObject<List<CandidateSkills>>(_response["Skills"]);
+								 }
+							 });
 	}
 
 	/// <summary>
@@ -2826,14 +2834,14 @@ public partial class Candidate
 	///     The method then triggers a refresh of the Grid to reflect the new search results.
 	///     Finally, it sets the _actionProgress flag back to false, indicating that the search operation has completed.
 	/// </remarks>
-	private async Task SearchCandidate(EditContext arg)
+	private Task SearchCandidate(EditContext arg)
 	{
-		await ExecuteMethod(async () =>
-							{
-								SearchModel = SearchModelClone.Copy();
-								await SessionStorage.SetItemAsync(StorageName, SearchModel);
-								await Grid.Refresh();
-							});
+		return ExecuteMethod(async () =>
+							 {
+								 SearchModel = SearchModelClone.Copy();
+								 await SessionStorage.SetItemAsync(StorageName, SearchModel);
+								 await Grid.Refresh();
+							 });
 	}
 
 	/// <summary>
@@ -2849,17 +2857,17 @@ public partial class Candidate
 	///     It also sets the AutocompleteValue to the provided alphabet character, refreshes the grid, and sets the action
 	///     progress to false.
 	/// </remarks>
-	private async Task SetAlphabet(char alphabet)
+	private Task SetAlphabet(char alphabet)
 	{
-		await ExecuteMethod(async () =>
-							{
-								SearchModel.Name = alphabet.ToString();
-								_currentPage = 1;
-								SearchModel.Page = 1;
-								await SessionStorage.SetItemAsync(StorageName, SearchModel);
-								AutocompleteValue = alphabet.ToString();
-								await Grid.Refresh();
-							});
+		return ExecuteMethod(async () =>
+							 {
+								 SearchModel.Name = alphabet.ToString();
+								 _currentPage = 1;
+								 SearchModel.Page = 1;
+								 await SessionStorage.SetItemAsync(StorageName, SearchModel);
+								 AutocompleteValue = alphabet.ToString();
+								 await Grid.Refresh();
+							 });
 	}
 
 	/// <summary>
@@ -3087,53 +3095,45 @@ public partial class Candidate
 	///     rating, adding a skill, education, experience, notes, attachment, or resume.
 	///     After the action is performed, it sets the speed dial to inactive and ends the action in progress.
 	/// </remarks>
-	private async Task SpeedDialItemClicked(SpeedDialItemEventArgs args)
+	private Task SpeedDialItemClicked(SpeedDialItemEventArgs args)
 	{
 		switch (args.Item.ID)
 		{
 			case "itemEditCandidate":
 				_selectedTab = 0;
-				await EditCandidate();
-				break;
+				return EditCandidate();
 			case "itemEditRating":
 				_selectedTab = 0;
 				StateHasChanged();
-				await DialogRating.ShowDialog();
-				break;
+				return DialogRating.ShowDialog();
 			case "itemEditMPC":
 				_selectedTab = 0;
 				StateHasChanged();
-				await DialogMPC.ShowDialog();
-				break;
+				return DialogMPC.ShowDialog();
 			case "itemAddSkill":
 				_selectedTab = 1;
-				await EditSkill(0);
-				break;
+				return EditSkill(0);
 			case "itemAddEducation":
 				_selectedTab = 2;
-				await EditEducation(0);
-				break;
+				return EditEducation(0);
 			case "itemAddExperience":
 				_selectedTab = 3;
-				await EditExperience(0);
-				break;
+				return EditExperience(0);
 			case "itemAddNotes":
 				_selectedTab = 4;
-				await EditNotes(0);
-				break;
+				return EditNotes(0);
 			case "itemAddAttachment":
 				_selectedTab = 6;
-				await AddDocument();
-				break;
+				return AddDocument();
 			case "itemOriginalResume":
 				_selectedTab = 5;
-				await AddResume(0);
-				break;
+				return AddResume(0);
 			case "itemFormattedResume":
 				_selectedTab = 5;
-				await AddResume(1);
-				break;
+				return AddResume(1);
 		}
+
+		return Task.CompletedTask;
 	}
 
 	/// <summary>
@@ -3148,48 +3148,48 @@ public partial class Candidate
 	///     the value of IsFromCompany.
 	/// </remarks>
 	/// <returns>A Task representing the asynchronous operation.</returns>
-	private async Task SubmitCandidateToRequisition(EditContext arg)
+	private Task SubmitCandidateToRequisition(EditContext arg)
 	{
-		await ExecuteMethod(async () =>
-							{
-								//RestClient _client = new(Start.ApiHost);
-								//RestRequest _request = new("Candidates/SubmitCandidateRequisition", Method.Post)
-								//					   {
-								//						   RequestFormat = DataFormat.Json
-								//					   };
-								//_request.AddQueryParameter("requisitionID", RequisitionID);
-								//_request.AddQueryParameter("candidateID", _targetSelected.ID);
-								//_request.AddQueryParameter("notes", SubmitCandidateModel.Text);
-								//_request.AddQueryParameter("user", LoginCookyUser == null || LoginCookyUser.UserID.NullOrWhiteSpace() ? "JOLLY" : LoginCookyUser.UserID.ToUpperInvariant());
-								//_request.AddQueryParameter("jsonPath", Start.JsonFilePath);
-								//_request.AddQueryParameter("emailAddress",
-								//						   LoginCookyUser == null || LoginCookyUser.Email.NullOrWhiteSpace() ? "info@titan-techs.com" : LoginCookyUser.Email.ToUpperInvariant());
-								//_request.AddQueryParameter("uploadPath", Start.UploadsPath);
-								//Dictionary<string, object> _response = await _client.PostAsync<Dictionary<string, object>>(_request);
-								Dictionary<string, string> _parameters = new()
-																		 {
-																			 {"requisitionID", RequisitionID.ToString()},
-																			 {"candidateID", _targetSelected.ID.ToString()},
-																			 {"notes", SubmitCandidateModel.Text},
-																			 {"user", General.GetUserName(LoginCookyUser)},
-																			 {"jsonPath", Start.JsonFilePath},
-																			 {"emailAddress", General.GetEmail(LoginCookyUser)},
-																			 {"uploadPath", Start.UploadsPath}
-																		 };
+		return ExecuteMethod(async () =>
+							 {
+								 //RestClient _client = new(Start.ApiHost);
+								 //RestRequest _request = new("Candidates/SubmitCandidateRequisition", Method.Post)
+								 //					   {
+								 //						   RequestFormat = DataFormat.Json
+								 //					   };
+								 //_request.AddQueryParameter("requisitionID", RequisitionID);
+								 //_request.AddQueryParameter("candidateID", _targetSelected.ID);
+								 //_request.AddQueryParameter("notes", SubmitCandidateModel.Text);
+								 //_request.AddQueryParameter("user", LoginCookyUser == null || LoginCookyUser.UserID.NullOrWhiteSpace() ? "JOLLY" : LoginCookyUser.UserID.ToUpperInvariant());
+								 //_request.AddQueryParameter("jsonPath", Start.JsonFilePath);
+								 //_request.AddQueryParameter("emailAddress",
+								 //						   LoginCookyUser == null || LoginCookyUser.Email.NullOrWhiteSpace() ? "info@titan-techs.com" : LoginCookyUser.Email.ToUpperInvariant());
+								 //_request.AddQueryParameter("uploadPath", Start.UploadsPath);
+								 //Dictionary<string, object> _response = await _client.PostAsync<Dictionary<string, object>>(_request);
+								 Dictionary<string, string> _parameters = new()
+																		  {
+																			  {"requisitionID", RequisitionID.ToString()},
+																			  {"candidateID", _targetSelected.ID.ToString()},
+																			  {"notes", SubmitCandidateModel.Text},
+																			  {"user", General.GetUserName(LoginCookyUser)},
+																			  {"jsonPath", Start.JsonFilePath},
+																			  {"emailAddress", General.GetEmail(LoginCookyUser)},
+																			  {"uploadPath", Start.UploadsPath}
+																		  };
 
-								Dictionary<string, object> _response = await General.PostRest("Candidates/SubmitCandidateRequisition", _parameters);
-								if (_response == null)
-								{
-									return;
-								}
+								 Dictionary<string, object> _response = await General.PostRest("Candidates/SubmitCandidateRequisition", _parameters);
+								 if (_response == null)
+								 {
+									 return;
+								 }
 
-								_candidateActivityObject = General.DeserializeObject<List<CandidateActivity>>(_response["Activity"]);
+								 _candidateActivityObject = General.DeserializeObject<List<CandidateActivity>>(_response["Activity"]);
 
-								if (RequisitionID > 0)
-								{
-									NavManager.NavigateTo(NavManager.BaseUri + (IsFromCompany ? "company" : "requisition"));
-								}
-							});
+								 if (RequisitionID > 0)
+								 {
+									 NavManager.NavigateTo(NavManager.BaseUri + (IsFromCompany ? "company" : "requisition"));
+								 }
+							 });
 	}
 
 	/// <summary>
@@ -3199,10 +3199,10 @@ public partial class Candidate
 	/// </summary>
 	/// <param name="arg">Mouse event arguments, not used in this method.</param>
 	/// <returns>A Task that represents the asynchronous operation.</returns>
-	private async Task SubmitSelectedCandidate(MouseEventArgs arg)
+	private Task SubmitSelectedCandidate(MouseEventArgs arg)
 	{
 		SubmitCandidateModel.Clear();
-		await DialogSubmitCandidate.ShowDialog();
+		return DialogSubmitCandidate.ShowDialog();
 	}
 
 	/// <summary>
@@ -3227,27 +3227,27 @@ public partial class Candidate
 	///     If the response is null or an exception occurs during the process, the method will return immediately.
 	/// </remarks>
 	/// <returns>A Task representing the asynchronous operation.</returns>
-	private async Task UndoActivity(int activityID)
+	private Task UndoActivity(int activityID)
 	{
-		await ExecuteMethod(async () =>
-							{
-								RestClient _client = new(Start.ApiHost);
-								RestRequest _request = new("Candidates/UndoCandidateActivity", Method.Post)
-													   {
-														   RequestFormat = DataFormat.Json
-													   };
-								_request.AddQueryParameter("submissionID", activityID);
-								_request.AddQueryParameter("user", LoginCookyUser == null || LoginCookyUser.UserID.NullOrWhiteSpace() ? "JOLLY" : LoginCookyUser.UserID.ToUpperInvariant());
-								_request.AddQueryParameter("isCandidateScreen", true);
+		return ExecuteMethod(async () =>
+							 {
+								 RestClient _client = new(Start.ApiHost);
+								 RestRequest _request = new("Candidates/UndoCandidateActivity", Method.Post)
+														{
+															RequestFormat = DataFormat.Json
+														};
+								 _request.AddQueryParameter("submissionID", activityID);
+								 _request.AddQueryParameter("user", LoginCookyUser == null || LoginCookyUser.UserID.NullOrWhiteSpace() ? "JOLLY" : LoginCookyUser.UserID.ToUpperInvariant());
+								 _request.AddQueryParameter("isCandidateScreen", true);
 
-								Dictionary<string, object> _response = await _client.PostAsync<Dictionary<string, object>>(_request);
-								if (_response == null)
-								{
-									return;
-								}
+								 Dictionary<string, object> _response = await _client.PostAsync<Dictionary<string, object>>(_request);
+								 if (_response == null)
+								 {
+									 return;
+								 }
 
-								_candidateActivityObject = General.DeserializeObject<List<CandidateActivity>>(_response["Activity"]);
-							});
+								 _candidateActivityObject = General.DeserializeObject<List<CandidateActivity>>(_response["Activity"]);
+							 });
 	}
 
 	/// <summary>
