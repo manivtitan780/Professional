@@ -1148,11 +1148,9 @@ public partial class Companies
     protected override async Task OnInitializedAsync()
     {
         LoginCookyUser = await NavManager.RedirectInner(LocalStorage);
-        //IMemoryCache _memoryCache = Start.MemCache;
         while (_roles == null)
         {
             _roles = await Redis.GetOrCreateAsync<List<Role>>("Roles");
-            //_memoryCache.TryGetValue("Roles", out _roles);
         }
 
         RoleID = LoginCookyUser.RoleID;
@@ -1167,7 +1165,6 @@ public partial class Companies
         while (_states == null)
         {
             _states = await Redis.GetOrCreateAsync<List<IntValues>>("States");
-            //_memoryCache.TryGetValue("States", out _states);
         }
 
         _statesCopy.Clear();
@@ -1187,7 +1184,6 @@ public partial class Companies
         while (_recruiters == null)
         {
             List<User> _users = await Redis.GetOrCreateAsync<List<User>>("Users");
-            //_memoryCache.TryGetValue("Users", out List<User> _users);
             if (_users == null)
             {
                 continue;
@@ -1207,13 +1203,10 @@ public partial class Companies
         while (_jobOptions == null || _jobOptions.Count == 0)
         {
             _jobOptions = await Redis.GetOrCreateAsync<List<KeyValues>>("JobOptions");
-            //_memoryCache.TryGetValue("JobOptions", out _jobOptions);
         }
 
         _statusCodes = await Redis.GetOrCreateAsync<List<StatusCode>>("StatusCodes");
-        //_memoryCache.TryGetValue("StatusCodes", out _statusCodes);
         _workflows = await Redis.GetOrCreateAsync<List<AppWorkflow>>("Workflow");
-        //_memoryCache.TryGetValue("Workflow", out _workflows);
 
         string _cookyString = await SessionStorage.GetItemAsStringAsync("CompaniesGrid");
 

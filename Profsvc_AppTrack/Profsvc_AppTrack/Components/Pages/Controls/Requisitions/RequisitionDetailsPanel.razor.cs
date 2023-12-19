@@ -481,9 +481,25 @@ public partial class RequisitionDetailsPanel
     /// </summary>
     /// <param name="args">The mouse event arguments associated with the cancellation event.</param>
     /// <returns>A Task representing the asynchronous operation.</returns>
-    private async Task CancelDialog(MouseEventArgs args)
+    private Task CancelDialog(MouseEventArgs args)
     {
-        await General.CallCancelMethod(args, Spinner, FooterDialog, Dialog, Cancel);
+        return General.CallCancelMethod(args, Spinner, FooterDialog, Dialog, Cancel);
+    }
+
+    /// <summary>
+    ///     Gets or sets the Redis service used for caching data.
+    /// </summary>
+    /// <value>
+    ///     The Redis service.
+    /// </value>
+    /// <remarks>
+    ///     This property is injected and used for operations like retrieving or storing data in Redis cache.
+    /// </remarks>
+    [Inject]
+    private RedisService Redis
+    {
+        get;
+        set;
     }
 
     /// <summary>
@@ -510,8 +526,9 @@ public partial class RequisitionDetailsPanel
             if (company.ItemData != null)
             {
                 Model.CompanyName = company.ItemData.CompanyName;
-                IMemoryCache _memoryCache = Start.MemCache;
-                _memoryCache.TryGetValue("Companies", out List<Company> _companyList);
+                //IMemoryCache _memoryCache = Start.MemCache;
+                List<Company> _companyList = await Redis.GetOrCreateAsync<List<Company>>("Companies");
+                //_memoryCache.TryGetValue("Companies", out List<Company> _companyList);
                 Company _company = _companyList.First(x => x.ID == company.ItemData.ID);
                 Model.CompanyCity = _company.City;
                 Model.CompanyState = _company.State;
@@ -649,9 +666,9 @@ public partial class RequisitionDetailsPanel
     /// <returns>
     ///     A Task representing the asynchronous operation.
     /// </returns>
-    public async Task HideDialog()
+    public Task HideDialog()
     {
-        await Dialog.HideAsync();
+        return Dialog.HideAsync();
     }
 
     /// <summary>
@@ -758,9 +775,9 @@ public partial class RequisitionDetailsPanel
     /// <returns>
     ///     A task that represents the asynchronous operation.
     /// </returns>
-    private async Task SaveDialog(EditContext editContext)
+    private Task SaveDialog(EditContext editContext)
     {
-        await General.CallSaveMethod(editContext, Spinner, FooterDialog, Dialog, Save);
+        return General.CallSaveMethod(editContext, Spinner, FooterDialog, Dialog, Save);
     }
 
     /// <summary>
@@ -769,9 +786,9 @@ public partial class RequisitionDetailsPanel
     /// <returns>
     ///     A task that represents the asynchronous operation.
     /// </returns>
-    public async Task ShowDialog()
+    public Task ShowDialog()
     {
-        await Dialog.ShowAsync();
+        return Dialog.ShowAsync();
     }
 
     /// <summary>

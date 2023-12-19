@@ -8,7 +8,7 @@
 // File Name:           AdminController.cs
 // Created By:          Narendra Kumaran Kadhirvelu, Jolly Joseph Paily, DonBosco Paily, Mariappan Raja
 // Created On:          11-22-2023 18:50
-// Last Updated On:     12-16-2023 15:58
+// Last Updated On:     12-19-2023 20:59
 // *****************************************/
 
 #endregion
@@ -30,9 +30,6 @@ namespace ProfSvc_WebAPI.Controllers;
 [ApiController, Route("api/[controller]/[action]")]
 public class AdminController : ControllerBase
 {
-    private readonly RedisService _redisService;
-    private readonly IConfiguration _configuration;
-
     /// <summary>
     ///     The AdminController is a controller class in the ProfSvc_WebAPI project. It provides endpoints for administrative
     ///     tasks.
@@ -48,6 +45,9 @@ public class AdminController : ControllerBase
         _redisService = redisService;
         _configuration = configuration;
     }
+
+    private readonly IConfiguration _configuration;
+    private readonly RedisService _redisService;
 
     /// <summary>
     ///     Checks the validity of a given code using a specified method.
@@ -577,7 +577,6 @@ public class AdminController : ControllerBase
         bool _keyExists = await _redisService.CheckKeyExists("States");
         if (!_keyExists)
         {
-            await using SqlConnection _connection = new(_configuration.GetConnectionString("DBConnect"));
             List<IntValues> _states = [];
             List<IntValues> _eligibility = [];
             List<KeyValues> _jobOptions = [];
@@ -602,6 +601,7 @@ public class AdminController : ControllerBase
             List<IntValues> _documentTypes = [];
             Preferences _preferences = null;
 
+            await using SqlConnection _connection = new(_configuration.GetConnectionString("DBConnect"));
             await using SqlCommand _command = new("SetCacheTables", _connection);
             _command.CommandType = CommandType.StoredProcedure;
 
@@ -755,29 +755,17 @@ public class AdminController : ControllerBase
 
             await _connection.CloseAsync();
 
-            await _redisService.GetOrCreateAsync("States", _states);
-            await _redisService.GetOrCreateAsync("Eligibility", _eligibility);
-            await _redisService.GetOrCreateAsync("JobOptions", _jobOptions);
-            await _redisService.GetOrCreateAsync("TaxTerms", _taxTerms);
-            await _redisService.GetOrCreateAsync("Skills", _skills);
-            await _redisService.GetOrCreateAsync("Experience", _experience);
-            await _redisService.GetOrCreateAsync("Templates", _templates);
-            await _redisService.GetOrCreateAsync("Users", _users);
-            await _redisService.GetOrCreateAsync("StatusCodes", _statusCodes);
-            await _redisService.GetOrCreateAsync("Zips", _zips);
-            await _redisService.GetOrCreateAsync("Education", _education);
-            await _redisService.GetOrCreateAsync("Companies", _companies);
-            await _redisService.GetOrCreateAsync("CompanyContacts", _companyContacts);
-            await _redisService.GetOrCreateAsync("Roles", _roles);
-            await _redisService.GetOrCreateAsync("Titles", _titles);
-            await _redisService.GetOrCreateAsync("LeadSources", _leadSources);
-            await _redisService.GetOrCreateAsync("LeadIndustries", _leadIndustries);
-            await _redisService.GetOrCreateAsync("LeadStatus", _leadStatus);
-            await _redisService.GetOrCreateAsync("CommissionConfigurators", _commissionConfigurators);
-            await _redisService.GetOrCreateAsync("VariableCommissions", _variableCommissions);
-            await _redisService.GetOrCreateAsync("Workflow", _workflows);
-            await _redisService.GetOrCreateAsync("DocumentTypes", _documentTypes);
-            await _redisService.GetOrCreateAsync("Preferences", _preferences);
+            List<string> _keys =
+            [
+                "States", "Eligibility", "JobOptions", "TaxTerms", "Skills", "Experience", "Templates", "Users", "StatusCodes", "Zips", "Education", "Companies", "CompanyContacts", "Roles", "Titles",
+                "LeadSources", "LeadIndustries", "LeadStatus", "CommissionConfigurators", "VariableCommissions", "Workflow", "DocumentTypes", "Preferences"
+            ];
+            List<object> _values =
+            [
+                _states, _eligibility, _jobOptions, _taxTerms, _skills, _experience, _templates, _users, _statusCodes, _zips, _education, _companies, _companyContacts, _roles, _titles, _leadSources,
+                _leadIndustries, _leadStatus, _commissionConfigurators, _variableCommissions, _workflows, _documentTypes, _preferences
+            ];
+            await _redisService.CreateBatchSet(_keys, _values);
         }
     }
 

@@ -145,22 +145,6 @@ public partial class PreferencesDialog
         set;
     }
 
-    //protected override async Task<Task> OnInitializedAsync()
-    //{
-    //    /*IMemoryCache _memoryCache = Start.MemCache;
-    //    _memoryCache.TryGetValue("Preferences", out Preferences _preferences);
-    //    if (_preferences != null)
-    //    {
-    //        Model = _preferences;
-    //    }*/
-    //    //Preferences _preferences = await Redis.GetOrCreateAsync("Preferences", (Preferences)null);
-    //    //if (_preferences != null)
-    //    //{
-    //    //    Model = _preferences;
-    //    //}
-    //    return base.OnInitializedAsync();
-    //}
-
     /// <summary>
     ///     Opens the dialog for editing preferences.
     /// </summary>
@@ -203,8 +187,7 @@ public partial class PreferencesDialog
             await Spinner.ShowAsync();
             DialogFooter.DisableButtons();
             await General.PostRest<int>("Admin/SavePreferences", null, Model);
-            IMemoryCache _memoryCache = Start.MemCache;
-            _memoryCache.Set("Preferences", Model);
+            await Redis.RefreshAsync("Preferences", Model);
             await Task.Yield();
             DialogFooter.EnableButtons();
             await Spinner.HideAsync();

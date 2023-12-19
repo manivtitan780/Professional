@@ -224,9 +224,9 @@ public partial class EditCompanyDialog
     ///     the spinner, footer dialog, dialog, and cancel objects. It is used to handle the
     ///     cancellation of the editing process.
     /// </remarks>
-    private async Task CancelDialog(MouseEventArgs args)
+    private Task CancelDialog(MouseEventArgs args)
     {
-        await General.CallCancelMethod(args, Spinner, FooterDialog, Dialog, Cancel);
+        return General.CallCancelMethod(args, Spinner, FooterDialog, Dialog, Cancel);
     }
 
     /// <summary>
@@ -266,9 +266,9 @@ public partial class EditCompanyDialog
     ///     It passes the edit context, spinner, footer dialog, main dialog, and save event callback to the CallSaveMethod.
     /// </remarks>
     /// <returns>A task that represents the asynchronous operation.</returns>
-    private async Task SaveCompanyDialog(EditContext editContext)
+    private Task SaveCompanyDialog(EditContext editContext)
     {
-        await General.CallSaveMethod(editContext, Spinner, FooterDialog, Dialog, Save);
+        return General.CallSaveMethod(editContext, Spinner, FooterDialog, Dialog, Save);
     }
 
     /// <summary>
@@ -281,11 +281,17 @@ public partial class EditCompanyDialog
     ///     This method is used to display the dialog for editing company details.
     ///     It is typically invoked when the user chooses to edit a company's details from the Companies page.
     /// </remarks>
-    public async Task ShowDialog()
+    public Task ShowDialog()
     {
-        await Dialog.ShowAsync();
+        return Dialog.ShowAsync();
     }
 
+    [Inject]
+    private RedisService Redis
+    {
+        get; 
+        set;
+    }
     /// <summary>
     ///     Handles the change of the Zip code in the EditCompanyDialog.
     /// </summary>
@@ -301,11 +307,11 @@ public partial class EditCompanyDialog
     private async Task ZipChange(ChangeEventArgs<string, KeyValues> arg)
     {
         await Task.Yield();
-        IMemoryCache _memoryCache = Start.MemCache;
+        //IMemoryCache _memoryCache = Start.MemCache;
         List<Zip> _zips = null;
         while (_zips == null)
         {
-            _memoryCache.TryGetValue("Zips", out _zips);
+            _zips = await Redis.GetOrCreateAsync<List<Zip>>("Zips");
         }
 
         if (_zips.Count > 0)

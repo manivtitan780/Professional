@@ -3,12 +3,12 @@
 // /*****************************************
 // Copyright:           Titan-Techs.
 // Location:            Newtown, PA, USA
-// Solution:            ProfSvc_AppTrack
-// Project:             ProfSvc_AppTrack
+// Solution:            Profsvc_AppTrack
+// Project:             Profsvc_AppTrack
 // File Name:           EditContactDialog.razor.cs
 // Created By:          Narendra Kumaran Kadhirvelu, Jolly Joseph Paily, DonBosco Paily, Mariappan Raja
-// Created On:          12-09-2022 15:57
-// Last Updated On:     09-30-2023 14:55
+// Created On:          11-23-2023 19:53
+// Last Updated On:     12-19-2023 21:11
 // *****************************************/
 
 #endregion
@@ -115,6 +115,22 @@ public partial class EditContactDialog
     }
 
     /// <summary>
+    ///     Gets or sets the Redis service used for caching data.
+    /// </summary>
+    /// <value>
+    ///     The Redis service.
+    /// </value>
+    /// <remarks>
+    ///     This property is injected and used for operations like retrieving or storing data in Redis cache.
+    /// </remarks>
+    [Inject]
+    private RedisService Redis
+    {
+        get;
+        set;
+    }
+
+    /// <summary>
     ///     Gets or sets the event callback that is triggered when the save operation is performed.
     /// </summary>
     /// <value>
@@ -189,10 +205,7 @@ public partial class EditContactDialog
     /// </summary>
     /// <param name="args">The mouse event arguments associated with the cancel action.</param>
     /// <returns>A Task representing the asynchronous operation.</returns>
-    private async Task CancelDialog(MouseEventArgs args)
-    {
-        await General.CallCancelMethod(args, Spinner, FooterDialog, Dialog, Cancel);
-    }
+    private Task CancelDialog(MouseEventArgs args) => General.CallCancelMethod(args, Spinner, FooterDialog, Dialog, Cancel);
 
     /// <summary>
     ///     Initializes the dialog for editing a company contact.
@@ -236,19 +249,13 @@ public partial class EditContactDialog
     ///     about the form and its fields, including their current values and validation state.
     /// </param>
     /// <returns>A Task representing the asynchronous operation.</returns>
-    private async Task SaveDialog(EditContext editContext)
-    {
-        await General.CallSaveMethod(editContext, Spinner, FooterDialog, Dialog, Save);
-    }
+    private Task SaveDialog(EditContext editContext) => General.CallSaveMethod(editContext, Spinner, FooterDialog, Dialog, Save);
 
     /// <summary>
     ///     Asynchronously displays the dialog for editing a company contact.
     /// </summary>
     /// <returns>A Task representing the asynchronous operation of showing the dialog.</returns>
-    public async Task ShowDialog()
-    {
-        await Dialog.ShowAsync();
-    }
+    public Task ShowDialog() => Dialog.ShowAsync();
 
     /// <summary>
     ///     Handles the event when the title value changes in the EditContactDialog.
@@ -273,11 +280,10 @@ public partial class EditContactDialog
     private async Task ZipChange(ChangeEventArgs<string, KeyValues> arg)
     {
         await Task.Yield();
-        IMemoryCache _memoryCache = Start.MemCache;
         List<Zip> _zips = null;
         while (_zips == null)
         {
-            _memoryCache.TryGetValue("Zips", out _zips);
+            _zips = await Redis.GetOrCreateAsync<List<Zip>>("Zips");
         }
 
         if (_zips.Count > 0)
