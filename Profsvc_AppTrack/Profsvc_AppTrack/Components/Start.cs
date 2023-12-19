@@ -3,19 +3,15 @@
 // /*****************************************
 // Copyright:           Titan-Techs.
 // Location:            Newtown, PA, USA
-// Solution:            ProfSvc_AppTrack
-// Project:             ProfSvc_AppTrack
+// Solution:            Profsvc_AppTrack
+// Project:             Profsvc_AppTrack
 // File Name:           Start.cs
 // Created By:          Narendra Kumaran Kadhirvelu, Jolly Joseph Paily, DonBosco Paily, Mariappan Raja
-// Created On:          12-09-2022 15:57
-// Last Updated On:     10-04-2023 19:59
+// Created On:          11-23-2023 20:1
+// Last Updated On:     12-19-2023 15:56
 // *****************************************/
 
 #endregion
-
-using Profsvc_AppTrack.Components.Code;
-
-using Exception = System.Exception;
 
 namespace Profsvc_AppTrack.Components;
 
@@ -112,7 +108,7 @@ public class Start
         get;
         set;
     }
-    
+
     /// <summary>
     ///     Asynchronously sets the cache with various application data.
     /// </summary>
@@ -129,17 +125,8 @@ public class Start
 
         RestClient _restClient = new($"{ApiHost}");
         RestRequest _request = new("Admin/GetCache");
-        try
-        {
-            await _restClient.GetAsync<Dictionary<string, object>>(_request);
-        }
-        catch (Exception ex)
-        {
-            throw ex;
-        }
+        await _restClient.GetAsync<Dictionary<string, object>>(_request);
 
-        return;
-        
         //MemoryCacheEntryOptions _cacheOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromMinutes(1440));
 
         //if (_restResponse == null)

@@ -19,6 +19,13 @@ public class RedisService
     {
         return _db.KeyExistsAsync(key);
     }
+
+    public async Task<T> GetOrCreateAsync<T>(string key)
+    {
+        RedisValue _value = await _db.StringGetAsync(key);
+
+        return _value.HasValue ? JsonConvert.DeserializeObject<T>(_value.ToString()) : default;
+    }
     
     public async Task<T> GetOrCreateAsync<T>(string key, T createItems)
     {
@@ -29,13 +36,13 @@ public class RedisService
             return JsonConvert.DeserializeObject<T>(_value.ToString());
         }
 
-        await _db.StringSetAsync(key, JsonConvert.SerializeObject(createItems), TimeSpan.FromHours(24), When.Always);
+        await _db.StringSetAsync(key, JsonConvert.SerializeObject(createItems), TimeSpan.FromDays(3650), When.Always);
         return createItems;
 
     }
 
     public async Task RefreshAsync<T>(string key, List<T> createItems)
     {
-        await _db.StringSetAsync(key, JsonConvert.SerializeObject(createItems), TimeSpan.FromHours(24));
+        await _db.StringSetAsync(key, JsonConvert.SerializeObject(createItems), TimeSpan.FromDays(3650), When.Always);
     }
 }

@@ -145,21 +145,21 @@ public partial class PreferencesDialog
         set;
     }
 
-    protected override async Task<Task> OnInitializedAsync()
-    {
-        /*IMemoryCache _memoryCache = Start.MemCache;
-        _memoryCache.TryGetValue("Preferences", out Preferences _preferences);
-        if (_preferences != null)
-        {
-            Model = _preferences;
-        }*/
-        //Preferences _preferences = await Redis.GetOrCreateAsync("Preferences", (Preferences)null);
-        //if (_preferences != null)
-        //{
-        //    Model = _preferences;
-        //}
-        return base.OnInitializedAsync();
-    }
+    //protected override async Task<Task> OnInitializedAsync()
+    //{
+    //    /*IMemoryCache _memoryCache = Start.MemCache;
+    //    _memoryCache.TryGetValue("Preferences", out Preferences _preferences);
+    //    if (_preferences != null)
+    //    {
+    //        Model = _preferences;
+    //    }*/
+    //    //Preferences _preferences = await Redis.GetOrCreateAsync("Preferences", (Preferences)null);
+    //    //if (_preferences != null)
+    //    //{
+    //    //    Model = _preferences;
+    //    //}
+    //    return base.OnInitializedAsync();
+    //}
 
     /// <summary>
     ///     Opens the dialog for editing preferences.
@@ -173,7 +173,7 @@ public partial class PreferencesDialog
     private async Task OpenDialog(BeforeOpenEventArgs args)
     {
         await Task.Yield();
-        Preferences _preferences = await Redis.GetOrCreateAsync("Preferences", (Preferences)null);
+        Preferences _preferences = await Redis.GetOrCreateAsync<Preferences>("Preferences");
         if (_preferences != null)
         {
             Model = _preferences;
