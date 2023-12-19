@@ -138,15 +138,26 @@ public partial class PreferencesDialog
         return Dialog.HideAsync();
     }
 
-    protected override Task OnInitializedAsync()
+    [Inject]
+    private RedisService Redis
     {
-        IMemoryCache _memoryCache = Start.MemCache;
+        get;
+        set;
+    }
+
+    protected override async Task<Task> OnInitializedAsync()
+    {
+        /*IMemoryCache _memoryCache = Start.MemCache;
         _memoryCache.TryGetValue("Preferences", out Preferences _preferences);
         if (_preferences != null)
         {
             Model = _preferences;
-        }
-
+        }*/
+        //Preferences _preferences = await Redis.GetOrCreateAsync("Preferences", (Preferences)null);
+        //if (_preferences != null)
+        //{
+        //    Model = _preferences;
+        //}
         return base.OnInitializedAsync();
     }
 
@@ -162,6 +173,11 @@ public partial class PreferencesDialog
     private async Task OpenDialog(BeforeOpenEventArgs args)
     {
         await Task.Yield();
+        Preferences _preferences = await Redis.GetOrCreateAsync("Preferences", (Preferences)null);
+        if (_preferences != null)
+        {
+            Model = _preferences;
+        }
         _ = EditPreferenceForm.EditContext?.Validate();
         ModelClone = Model.Copy();
     }

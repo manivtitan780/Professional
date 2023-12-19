@@ -27,6 +27,12 @@ WebApplicationBuilder _builder = WebApplication.CreateBuilder(args);
 //_builder.Services.AddMvc(option => option.EnableEndpointRouting = false).SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
 _builder.Services.AddControllers();
+IConfigurationSection _redisConfig = _builder.Configuration.GetSection("Redis");
+string _hostName = _redisConfig["HostName"];
+int _sslPort = _redisConfig["SslPort"].ToInt32();
+string _access = _redisConfig["Access"];
+
+_builder.Services.AddSingleton(new RedisService(_hostName, _sslPort, _access));
 
 WebApplication _app = _builder.Build();
 //SyncfusionLicenseProvider.RegisterLicense("NjY5MjIyQDMyMzAyZTMyMmUzMGQwUmxjaWZkYmlZS05HL2QreE9ub1pGU1VJYjN6a0ZRekt4WUdEMkFFcFU9");

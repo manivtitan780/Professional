@@ -38,6 +38,17 @@ internal class General
 {
     private static Dictionary<string, object> _restResponse;
 
+    private static RedisService Redis
+    {
+        get;
+        set;
+    }
+    
+    internal General(RedisService redisService)
+    {
+        Redis = redisService;
+    }
+    
     /// <summary>
     ///     Asynchronously executes the provided cancel method, hides the spinner and dialog, and enables the dialog buttons.
     ///     This method is designed to be used as a common cancellation routine for various dialogs in the application.
@@ -248,7 +259,7 @@ internal class General
                                        } : _dataSource;
         }
     }
-
+    
     /// <summary>
     ///     Asynchronously retrieves autocomplete data for zip codes based on the provided DataManagerRequest.
     ///     The method checks the DataManagerRequest for any filtering conditions and returns a list of zip codes that match
@@ -278,11 +289,12 @@ internal class General
 
         try
         {
-            IMemoryCache _memoryCache = Start.MemCache;
+            //IMemoryCache _memoryCache = Start.MemCache;
             List<Zip> _zips = null;
             while (_zips == null)
             {
-                _memoryCache.TryGetValue("Zips", out _zips);
+                _zips = await Redis.GetOrCreateAsync("Zips", (List<Zip>)null);
+                //_memoryCache.TryGetValue("Zips", out _zips);
             }
 
             if (_zips.Count == 0)

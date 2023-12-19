@@ -3,12 +3,12 @@
 // /*****************************************
 // Copyright:           Titan-Techs.
 // Location:            Newtown, PA, USA
-// Solution:            ProfSvc_AppTrack
+// Solution:            Profsvc_AppTrack
 // Project:             ProfSvc_WebAPI
 // File Name:           AdminController.cs
 // Created By:          Narendra Kumaran Kadhirvelu, Jolly Joseph Paily, DonBosco Paily, Mariappan Raja
-// Created On:          12-06-2022 18:52
-// Last Updated On:     08-21-2023 16:04
+// Created On:          11-22-2023 18:50
+// Last Updated On:     12-16-2023 15:58
 // *****************************************/
 
 #endregion
@@ -30,9 +30,24 @@ namespace ProfSvc_WebAPI.Controllers;
 [ApiController, Route("api/[controller]/[action]")]
 public class AdminController : ControllerBase
 {
-    public AdminController(IConfiguration configuration) => _config = configuration;
+    private readonly RedisService _redisService;
+    private readonly IConfiguration _configuration;
 
-    private readonly IConfiguration _config;
+    /// <summary>
+    ///     The AdminController is a controller class in the ProfSvc_WebAPI project. It provides endpoints for administrative
+    ///     tasks.
+    /// </summary>
+    /// <remarks>
+    ///     This controller includes methods for checking various codes and states, retrieving administrative lists, and saving
+    ///     data.
+    ///     It interacts with the database using stored procedures and returns data in various formats such as boolean,
+    ///     Dictionary, and List.
+    /// </remarks>
+    public AdminController(IConfiguration configuration, RedisService redisService)
+    {
+        _redisService = redisService;
+        _configuration = configuration;
+    }
 
     /// <summary>
     ///     Checks the validity of a given code using a specified method.
@@ -55,7 +70,7 @@ public class AdminController : ControllerBase
     [HttpGet]
     public async Task<bool> CheckCode(string methodName = "", string code = "", bool isString = false)
     {
-        await using SqlConnection _connection = new(_config.GetConnectionString("DBConnect"));
+        await using SqlConnection _connection = new(_configuration.GetConnectionString("DBConnect"));
         await using SqlCommand _command = new(methodName, _connection);
         _command.CommandType = CommandType.StoredProcedure;
         if (!isString)
@@ -93,7 +108,7 @@ public class AdminController : ControllerBase
     {
         await Task.Yield();
 
-        await using SqlConnection _connection = new(_config.GetConnectionString("DBConnect"));
+        await using SqlConnection _connection = new(_configuration.GetConnectionString("DBConnect"));
         await using SqlCommand _command = new("Admin_CheckJobCode", _connection);
         _command.CommandType = CommandType.StoredProcedure;
         _command.Char("Code", 1, id);
@@ -125,7 +140,7 @@ public class AdminController : ControllerBase
     {
         await Task.Yield();
 
-        await using SqlConnection _connection = new(_config.GetConnectionString("DBConnect"));
+        await using SqlConnection _connection = new(_configuration.GetConnectionString("DBConnect"));
         await using SqlCommand _command = new("Admin_CheckJobOption", _connection);
         _command.CommandType = CommandType.StoredProcedure;
         _command.Char("Code", 1, code);
@@ -158,7 +173,7 @@ public class AdminController : ControllerBase
     {
         await Task.Yield();
 
-        await using SqlConnection _connection = new(_config.GetConnectionString("DBConnect"));
+        await using SqlConnection _connection = new(_configuration.GetConnectionString("DBConnect"));
         await using SqlCommand _command = new("Admin_CheckRole", _connection);
         _command.CommandType = CommandType.StoredProcedure;
         _command.Char("ID", 2, id);
@@ -191,7 +206,7 @@ public class AdminController : ControllerBase
     {
         await Task.Yield();
 
-        await using SqlConnection _connection = new(_config.GetConnectionString("DBConnect"));
+        await using SqlConnection _connection = new(_configuration.GetConnectionString("DBConnect"));
         await using SqlCommand _command = new("Admin_CheckRoleID", _connection);
         _command.CommandType = CommandType.StoredProcedure;
         _command.Char("ID", 2, id);
@@ -226,7 +241,7 @@ public class AdminController : ControllerBase
     {
         await Task.Yield();
 
-        await using SqlConnection _connection = new(_config.GetConnectionString("DBConnect"));
+        await using SqlConnection _connection = new(_configuration.GetConnectionString("DBConnect"));
         await using SqlCommand _command = new("Admin_CheckState", _connection);
         _command.CommandType = CommandType.StoredProcedure;
         _command.Char("Code", 2, code);
@@ -259,7 +274,7 @@ public class AdminController : ControllerBase
     {
         await Task.Yield();
 
-        await using SqlConnection _connection = new(_config.GetConnectionString("DBConnect"));
+        await using SqlConnection _connection = new(_configuration.GetConnectionString("DBConnect"));
         await using SqlCommand _command = new("Admin_CheckStateCode", _connection);
         _command.CommandType = CommandType.StoredProcedure;
         _command.Char("Code", 2, code);
@@ -292,7 +307,7 @@ public class AdminController : ControllerBase
     {
         await Task.Yield();
 
-        await using SqlConnection _connection = new(_config.GetConnectionString("DBConnect"));
+        await using SqlConnection _connection = new(_configuration.GetConnectionString("DBConnect"));
         await using SqlCommand _command = new("Admin_CheckStatus", _connection);
         _command.CommandType = CommandType.StoredProcedure;
         _command.Char("Code", 3, code);
@@ -328,7 +343,7 @@ public class AdminController : ControllerBase
     {
         await Task.Yield();
 
-        await using SqlConnection _connection = new(_config.GetConnectionString("DBConnect"));
+        await using SqlConnection _connection = new(_configuration.GetConnectionString("DBConnect"));
         await using SqlCommand _command = new("Admin_CheckStatusCode", _connection);
         _command.CommandType = CommandType.StoredProcedure;
         _command.Char("Code", 3, code);
@@ -361,7 +376,7 @@ public class AdminController : ControllerBase
     {
         await Task.Yield();
 
-        await using SqlConnection _connection = new(_config.GetConnectionString("DBConnect"));
+        await using SqlConnection _connection = new(_configuration.GetConnectionString("DBConnect"));
         await using SqlCommand _command = new("Admin_CheckTaxTermCode", _connection);
         _command.CommandType = CommandType.StoredProcedure;
         _command.Char("Code", 1, code);
@@ -396,7 +411,7 @@ public class AdminController : ControllerBase
     {
         await Task.Yield();
 
-        await using SqlConnection _connection = new(_config.GetConnectionString("DBConnect"));
+        await using SqlConnection _connection = new(_configuration.GetConnectionString("DBConnect"));
         await using SqlCommand _command = new("Admin_CheckTemplateName", _connection);
         _command.CommandType = CommandType.StoredProcedure;
         _command.Int("ID", id);
@@ -458,7 +473,7 @@ public class AdminController : ControllerBase
             return false;
         }
 
-        await using SqlConnection _connection = new(_config.GetConnectionString("DBConnect"));
+        await using SqlConnection _connection = new(_configuration.GetConnectionString("DBConnect"));
         await using SqlCommand _command = new(_methodName, _connection);
         _command.CommandType = CommandType.StoredProcedure;
         if (code.NullOrWhiteSpace())
@@ -503,8 +518,8 @@ public class AdminController : ControllerBase
     [HttpGet]
     public async Task<Dictionary<string, object>> GetAdminList(string methodName, string filter = "", bool isString = true)
     {
-        await using SqlConnection _connection = new(_config.GetConnectionString("DBConnect"));
-        List<AdminList> _generalItems = new();
+        await using SqlConnection _connection = new(_configuration.GetConnectionString("DBConnect"));
+        List<AdminList> _generalItems = [];
         await using SqlCommand _command = new(methodName, _connection);
         _command.CommandType = CommandType.StoredProcedure;
 
@@ -557,258 +572,213 @@ public class AdminController : ControllerBase
     ///     name and the value is the cache data.
     /// </returns>
     [HttpGet]
-    public async Task<Dictionary<string, object>> GetCache()
+    public async Task GetCache() //Task<Dictionary<string, object>>
     {
-        await using SqlConnection _connection = new(_config.GetConnectionString("DBConnect"));
-        List<IntValues> _states = new();
-        List<IntValues> _eligibility = new();
-        List<KeyValues> _jobOptions = new();
-        List<KeyValues> _taxTerms = new();
-        List<IntValues> _skills = new();
-        List<IntValues> _experience = new();
-        List<Template> _templates = new();
-        List<User> _users = new();
-        List<StatusCode> _statusCodes = new();
-        List<Zip> _zips = new();
-        List<IntValues> _education = new();
-        List<Company> _companies = new();
-        List<CompanyContact> _companyContacts = new();
-        List<Role> _roles = new();
-        List<IntValues> _titles = new();
-        List<ByteValues> _leadSources = new();
-        List<ByteValues> _leadIndustries = new();
-        List<ByteValues> _leadStatus = new();
-        List<CommissionConfigurator> _commissionConfigurators = new();
-        List<VariableCommission> _variableCommissions = new();
-        List<AppWorkflow> _workflows = new();
-        List<IntValues> _documentTypes = new();
-        Preferences _preferences = null;
-
-        await using SqlCommand _command = new("SetCacheTables", _connection);
-        _command.CommandType = CommandType.StoredProcedure;
-
-        await _connection.OpenAsync();
-        await using SqlDataReader _reader = await _command.ExecuteReaderAsync();
-        while (await _reader.ReadAsync()) //States
+        bool _keyExists = await _redisService.CheckKeyExists("States");
+        if (!_keyExists)
         {
-            _states.Add(new(_reader.GetInt32(0), _reader.GetString(1)));
+            await using SqlConnection _connection = new(_configuration.GetConnectionString("DBConnect"));
+            List<IntValues> _states = [];
+            List<IntValues> _eligibility = [];
+            List<KeyValues> _jobOptions = [];
+            List<KeyValues> _taxTerms = [];
+            List<IntValues> _skills = [];
+            List<IntValues> _experience = [];
+            List<Template> _templates = [];
+            List<User> _users = [];
+            List<StatusCode> _statusCodes = [];
+            List<Zip> _zips = [];
+            List<IntValues> _education = [];
+            List<Company> _companies = [];
+            List<CompanyContact> _companyContacts = [];
+            List<Role> _roles = [];
+            List<IntValues> _titles = [];
+            List<ByteValues> _leadSources = [];
+            List<ByteValues> _leadIndustries = [];
+            List<ByteValues> _leadStatus = [];
+            List<CommissionConfigurator> _commissionConfigurators = [];
+            List<VariableCommission> _variableCommissions = [];
+            List<AppWorkflow> _workflows = [];
+            List<IntValues> _documentTypes = [];
+            Preferences _preferences = null;
+
+            await using SqlCommand _command = new("SetCacheTables", _connection);
+            _command.CommandType = CommandType.StoredProcedure;
+
+            await _connection.OpenAsync();
+            await using SqlDataReader _reader = await _command.ExecuteReaderAsync();
+            while (await _reader.ReadAsync()) //States
+            {
+                _states.Add(new(_reader.GetInt32(0), _reader.GetString(1)));
+            }
+
+            await _reader.NextResultAsync();
+            while (await _reader.ReadAsync()) //Eligibility
+            {
+                _eligibility.Add(new(_reader.GetInt32(0), _reader.GetString(1)));
+            }
+
+            await _reader.NextResultAsync();
+            while (await _reader.ReadAsync()) //Job Options
+            {
+                _jobOptions.Add(new(_reader.GetString(0), _reader.GetString(1)));
+            }
+
+            await _reader.NextResultAsync();
+            while (await _reader.ReadAsync()) //Tax Terms
+            {
+                _taxTerms.Add(new(_reader.GetString(0), _reader.GetString(1)));
+            }
+
+            await _reader.NextResultAsync();
+            while (await _reader.ReadAsync()) //Skills
+            {
+                _skills.Add(new(_reader.GetInt32(1), _reader.GetString(0)));
+            }
+
+            await _reader.NextResultAsync();
+            while (await _reader.ReadAsync()) //Experience
+            {
+                _experience.Add(new(_reader.GetInt32(0), _reader.GetString(1)));
+            }
+
+            await _reader.NextResultAsync();
+            while (await _reader.ReadAsync()) //Templates
+            {
+                _templates.Add(new(_reader.GetInt32(0), _reader.GetString(1), _reader.GetString(2), _reader.GetString(3), _reader.GetString(4)));
+            }
+
+            await _reader.NextResultAsync();
+            while (await _reader.ReadAsync()) //Users
+            {
+                _users.Add(new(_reader.GetString(0), _reader.GetString(1), _reader.GetString(2), _reader.GetString(3)));
+            }
+
+            await _reader.NextResultAsync();
+            while (await _reader.ReadAsync()) //Status Codes
+            {
+                _statusCodes.Add(new(_reader.GetInt32(6), _reader.GetString(0), _reader.GetString(1), _reader.NString(2), _reader.GetString(3),
+                                     _reader.GetBoolean(4), _reader.GetBoolean(5)));
+            }
+
+            await _reader.NextResultAsync();
+            while (await _reader.ReadAsync()) //Zips
+            {
+                _zips.Add(new(_reader.GetString(0), _reader.GetString(1), _reader.GetString(2), _reader.GetInt32(3)));
+            }
+
+            await _reader.NextResultAsync();
+            while (await _reader.ReadAsync()) //Education
+            {
+                _education.Add(new(_reader.GetInt32(0), _reader.GetString(1)));
+            }
+
+            await _reader.NextResultAsync();
+            while (await _reader.ReadAsync()) //Companies
+            {
+                _companies.Add(new(_reader.GetInt32(0), _reader.GetString(1), _reader.GetString(2), _reader.GetString(3), _reader.GetInt32(4), _reader.GetString(5),
+                                   "", _reader.NString(6), "", _reader.GetString(7)));
+            }
+
+            await _reader.NextResultAsync();
+            while (await _reader.ReadAsync()) //Company Contacts
+            {
+                _companyContacts.Add(new(_reader.GetInt32(0), _reader.GetInt32(1), _reader.GetString(2), _reader.GetString(3), _reader.GetInt32(4),
+                                         _reader.GetString(5), _reader.GetString(6)));
+            }
+
+            await _reader.NextResultAsync();
+            while (await _reader.ReadAsync()) //Roles
+            {
+                _roles.Add(new(_reader.GetString(0), _reader.GetString(1), _reader.GetBoolean(2), _reader.GetBoolean(3), _reader.GetBoolean(4),
+                               _reader.GetBoolean(5), _reader.GetBoolean(6), _reader.GetBoolean(7), _reader.GetBoolean(8), _reader.GetBoolean(9),
+                               _reader.GetBoolean(10), _reader.GetBoolean(11), _reader.GetBoolean(12), _reader.GetBoolean(13), _reader.GetString(14)));
+            }
+
+            await _reader.NextResultAsync();
+            while (await _reader.ReadAsync()) //Titles
+            {
+                _titles.Add(new(_reader.GetInt32(0), _reader.GetString(1)));
+            }
+
+            await _reader.NextResultAsync();
+            while (await _reader.ReadAsync()) //Lead Sources
+            {
+                _leadSources.Add(new(_reader.GetByte(0), _reader.GetString(1)));
+            }
+
+            await _reader.NextResultAsync();
+            while (await _reader.ReadAsync()) //Lead Industries
+            {
+                _leadIndustries.Add(new(_reader.GetByte(0), _reader.GetString(1)));
+            }
+
+            await _reader.NextResultAsync();
+            while (await _reader.ReadAsync()) //Lead Status
+            {
+                _leadStatus.Add(new(_reader.GetByte(0), _reader.GetString(1)));
+            }
+
+            await _reader.NextResultAsync();
+            while (await _reader.ReadAsync()) //Commission Configurators
+            {
+                _commissionConfigurators.Add(new(_reader.GetInt32(0), _reader.GetInt16(1), _reader.GetInt16(2), _reader.GetByte(3), _reader.GetByte(4)));
+            }
+
+            await _reader.NextResultAsync();
+            while (await _reader.ReadAsync()) //Variable Commission
+            {
+                _variableCommissions.Add(new(_reader.GetInt32(0), _reader.GetInt16(1), _reader.GetByte(2), _reader.GetByte(3), _reader.GetByte(4),
+                                             _reader.GetByte(5)));
+            }
+
+            await _reader.NextResultAsync();
+            while (await _reader.ReadAsync()) //Workflow
+            {
+                _workflows.Add(new(_reader.GetInt32(0), _reader.GetString(1), _reader.NString(2), _reader.GetBoolean(3), _reader.GetString(4),
+                                   _reader.GetBoolean(5), _reader.GetBoolean(6), "", ""));
+            }
+
+            await _reader.NextResultAsync();
+            while (await _reader.ReadAsync()) //Document Types
+            {
+                _documentTypes.Add(new(_reader.GetInt32(0), _reader.GetString(1)));
+            }
+
+            await _reader.NextResultAsync();
+            await _reader.ReadAsync();
+            _preferences = new(_reader.GetInt32(0), _reader.GetString(1), _reader.GetString(2), _reader.GetString(3),
+                               _reader.GetBoolean(4), _reader.GetBoolean(5), _reader.GetBoolean(6), _reader.GetByte(7),
+                               _reader.GetByte(8), _reader.GetByte(9), _reader.GetByte(10), _reader.GetBoolean(11));
+
+            await _reader.CloseAsync();
+
+            await _connection.CloseAsync();
+
+            await _redisService.GetOrCreateAsync("States", _states);
+            await _redisService.GetOrCreateAsync("Eligibility", _eligibility);
+            await _redisService.GetOrCreateAsync("JobOptions", _jobOptions);
+            await _redisService.GetOrCreateAsync("TaxTerms", _taxTerms);
+            await _redisService.GetOrCreateAsync("Skills", _skills);
+            await _redisService.GetOrCreateAsync("Experience", _experience);
+            await _redisService.GetOrCreateAsync("Templates", _templates);
+            await _redisService.GetOrCreateAsync("Users", _users);
+            await _redisService.GetOrCreateAsync("StatusCodes", _statusCodes);
+            await _redisService.GetOrCreateAsync("Zips", _zips);
+            await _redisService.GetOrCreateAsync("Education", _education);
+            await _redisService.GetOrCreateAsync("Companies", _companies);
+            await _redisService.GetOrCreateAsync("CompanyContacts", _companyContacts);
+            await _redisService.GetOrCreateAsync("Roles", _roles);
+            await _redisService.GetOrCreateAsync("Titles", _titles);
+            await _redisService.GetOrCreateAsync("LeadSources", _leadSources);
+            await _redisService.GetOrCreateAsync("LeadIndustries", _leadIndustries);
+            await _redisService.GetOrCreateAsync("LeadStatus", _leadStatus);
+            await _redisService.GetOrCreateAsync("CommissionConfigurators", _commissionConfigurators);
+            await _redisService.GetOrCreateAsync("VariableCommissions", _variableCommissions);
+            await _redisService.GetOrCreateAsync("Workflow", _workflows);
+            await _redisService.GetOrCreateAsync("DocumentTypes", _documentTypes);
+            await _redisService.GetOrCreateAsync("Preferences", _preferences);
         }
-
-        await _reader.NextResultAsync();
-        while (await _reader.ReadAsync()) //Eligibility
-        {
-            _eligibility.Add(new(_reader.GetInt32(0), _reader.GetString(1)));
-        }
-
-        await _reader.NextResultAsync();
-        while (await _reader.ReadAsync()) //Job Options
-        {
-            _jobOptions.Add(new(_reader.GetString(0), _reader.GetString(1)));
-        }
-
-        await _reader.NextResultAsync();
-        while (await _reader.ReadAsync()) //Tax Terms
-        {
-            _taxTerms.Add(new(_reader.GetString(0), _reader.GetString(1)));
-        }
-
-        await _reader.NextResultAsync();
-        while (await _reader.ReadAsync()) //Skills
-        {
-            _skills.Add(new(_reader.GetInt32(1), _reader.GetString(0)));
-        }
-
-        await _reader.NextResultAsync();
-        while (await _reader.ReadAsync()) //Experience
-        {
-            _experience.Add(new(_reader.GetInt32(0), _reader.GetString(1)));
-        }
-
-        await _reader.NextResultAsync();
-        while (await _reader.ReadAsync()) //Templates
-        {
-            _templates.Add(new(_reader.GetInt32(0), _reader.GetString(1), _reader.GetString(2), _reader.GetString(3), _reader.GetString(4)));
-        }
-
-        await _reader.NextResultAsync();
-        while (await _reader.ReadAsync()) //Users
-        {
-            _users.Add(new(_reader.GetString(0), _reader.GetString(1), _reader.GetString(2), _reader.GetString(3)));
-        }
-
-        await _reader.NextResultAsync();
-        while (await _reader.ReadAsync()) //Status Codes
-        {
-            _statusCodes.Add(new(_reader.GetInt32(6), _reader.GetString(0), _reader.GetString(1), _reader.NString(2), _reader.GetString(3),
-                                 _reader.GetBoolean(4), _reader.GetBoolean(5)));
-        }
-
-        await _reader.NextResultAsync();
-        while (await _reader.ReadAsync()) //Zips
-        {
-            _zips.Add(new(_reader.GetString(0), _reader.GetString(1), _reader.GetString(2), _reader.GetInt32(3)));
-        }
-
-        await _reader.NextResultAsync();
-        while (await _reader.ReadAsync()) //Education
-        {
-            _education.Add(new(_reader.GetInt32(0), _reader.GetString(1)));
-        }
-
-        await _reader.NextResultAsync();
-        while (await _reader.ReadAsync()) //Companies
-        {
-            _companies.Add(new(_reader.GetInt32(0), _reader.GetString(1), _reader.GetString(2), _reader.GetString(3), _reader.GetInt32(4), _reader.GetString(5),
-                               "", _reader.NString(6), "", _reader.GetString(7)));
-        }
-
-        await _reader.NextResultAsync();
-        while (await _reader.ReadAsync()) //Company Contacts
-        {
-            _companyContacts.Add(new(_reader.GetInt32(0), _reader.GetInt32(1), _reader.GetString(2), _reader.GetString(3), _reader.GetInt32(4),
-                                     _reader.GetString(5), _reader.GetString(6)));
-        }
-
-        await _reader.NextResultAsync();
-        while (await _reader.ReadAsync()) //Roles
-        {
-            _roles.Add(new(_reader.GetString(0), _reader.GetString(1), _reader.GetBoolean(2), _reader.GetBoolean(3), _reader.GetBoolean(4),
-                           _reader.GetBoolean(5), _reader.GetBoolean(6), _reader.GetBoolean(7), _reader.GetBoolean(8), _reader.GetBoolean(9),
-                           _reader.GetBoolean(10), _reader.GetBoolean(11), _reader.GetBoolean(12), _reader.GetBoolean(13), _reader.GetString(14)));
-        }
-
-        await _reader.NextResultAsync();
-        while (await _reader.ReadAsync()) //Titles
-        {
-            _titles.Add(new(_reader.GetInt32(0), _reader.GetString(1)));
-        }
-
-        await _reader.NextResultAsync();
-        while (await _reader.ReadAsync()) //Lead Sources
-        {
-            _leadSources.Add(new(_reader.GetByte(0), _reader.GetString(1)));
-        }
-
-        await _reader.NextResultAsync();
-        while (await _reader.ReadAsync()) //Lead Industries
-        {
-            _leadIndustries.Add(new(_reader.GetByte(0), _reader.GetString(1)));
-        }
-
-        await _reader.NextResultAsync();
-        while (await _reader.ReadAsync()) //Lead Status
-        {
-            _leadStatus.Add(new(_reader.GetByte(0), _reader.GetString(1)));
-        }
-
-        await _reader.NextResultAsync();
-        while (await _reader.ReadAsync()) //Commission Configurators
-        {
-            _commissionConfigurators.Add(new(_reader.GetInt32(0), _reader.GetInt16(1), _reader.GetInt16(2), _reader.GetByte(3), _reader.GetByte(4)));
-        }
-
-        await _reader.NextResultAsync();
-        while (await _reader.ReadAsync()) //Variable Commission
-        {
-            _variableCommissions.Add(new(_reader.GetInt32(0), _reader.GetInt16(1), _reader.GetByte(2), _reader.GetByte(3), _reader.GetByte(4),
-                                         _reader.GetByte(5)));
-        }
-
-        await _reader.NextResultAsync();
-        while (await _reader.ReadAsync()) //Workflow
-        {
-            _workflows.Add(new(_reader.GetInt32(0), _reader.GetString(1), _reader.NString(2), _reader.GetBoolean(3), _reader.GetString(4),
-                               _reader.GetBoolean(5), _reader.GetBoolean(6), "", ""));
-        }
-
-        await _reader.NextResultAsync();
-        while (await _reader.ReadAsync()) //Document Types
-        {
-            _documentTypes.Add(new(_reader.GetInt32(0), _reader.GetString(1)));
-        }
-
-        await _reader.NextResultAsync();
-        await _reader.ReadAsync();
-        _preferences = new(_reader.GetInt32(0), _reader.GetString(1), _reader.GetString(2), _reader.GetString(3),
-                           _reader.GetBoolean(4), _reader.GetBoolean(5), _reader.GetBoolean(6), _reader.GetByte(7),
-                           _reader.GetByte(8), _reader.GetByte(9), _reader.GetByte(10), _reader.GetBoolean(11));
-
-        await _reader.CloseAsync();
-
-        await _connection.CloseAsync();
-
-        return new()
-               {
-                   {
-                       "States", _states
-                   },
-                   {
-                       "Eligibility", _eligibility
-                   },
-                   {
-                       "JobOptions", _jobOptions
-                   },
-                   {
-                       "TaxTerms", _taxTerms
-                   },
-                   {
-                       "Skills", _skills
-                   },
-                   {
-                       "Experience", _experience
-                   },
-                   {
-                       "Templates", _templates
-                   },
-                   {
-                       "Users", _users
-                   },
-                   {
-                       "StatusCodes", _statusCodes
-                   },
-                   {
-                       "Zips", _zips
-                   },
-                   {
-                       "Education", _education
-                   },
-                   {
-                       "Companies", _companies
-                   },
-                   {
-                       "CompanyContacts", _companyContacts
-                   },
-                   {
-                       "Roles", _roles
-                   },
-                   {
-                       "Titles", _titles
-                   },
-                   {
-                       "LeadSources", _leadSources
-                   },
-                   {
-                       "LeadIndustries", _leadIndustries
-                   },
-                   {
-                       "LeadStatus", _leadStatus
-                   },
-                   {
-                       "CommissionConfigurators", _commissionConfigurators
-                   },
-                   {
-                       "VariableCommissions", _variableCommissions
-                   },
-                   {
-                       "Workflow", _workflows
-                   },
-                   {
-                       "DocumentTypes", _documentTypes
-                   },
-                   {
-                       "Preferences", _preferences
-                   }
-               };
     }
 
     /// <summary>
@@ -835,8 +805,8 @@ public class AdminController : ControllerBase
     [HttpGet]
     public async Task<Dictionary<string, object>> GetDocTypes(string filter = "")
     {
-        await using SqlConnection _connection = new(_config.GetConnectionString("DBConnect"));
-        List<DocumentType> _generalItems = new();
+        await using SqlConnection _connection = new(_configuration.GetConnectionString("DBConnect"));
+        List<DocumentType> _generalItems = [];
         await using SqlCommand _command = new("Admin_GetDocumentTypes", _connection);
         _command.CommandType = CommandType.StoredProcedure;
 
@@ -893,8 +863,8 @@ public class AdminController : ControllerBase
     [HttpGet]
     public async Task<Dictionary<string, object>> GetJobOptions(string filter = "", bool setTaxTerm = true)
     {
-        await using SqlConnection _connection = new(_config.GetConnectionString("DBConnect"));
-        List<JobOption> _jobOptions = new();
+        await using SqlConnection _connection = new(_configuration.GetConnectionString("DBConnect"));
+        List<JobOption> _jobOptions = [];
         await using SqlCommand _command = new("Admin_GetJobOptions", _connection);
         _command.CommandType = CommandType.StoredProcedure;
         if (!filter.NullOrWhiteSpace())
@@ -933,7 +903,7 @@ public class AdminController : ControllerBase
                    };
         }
 
-        List<KeyValues> _taxTermKeyValues = new();
+        List<KeyValues> _taxTermKeyValues = [];
         while (await _reader.ReadAsync())
         {
             _taxTermKeyValues.Add(new(_reader.GetString(0), _reader.GetString(1)));
@@ -975,12 +945,12 @@ public class AdminController : ControllerBase
     [HttpGet]
     public async Task<Dictionary<string, object>> GetRoles(string filter = "")
     {
-        await using SqlConnection _connection = new(_config.GetConnectionString("DBConnect"));
+        await using SqlConnection _connection = new(_configuration.GetConnectionString("DBConnect"));
         _connection.Open();
         await using SqlCommand _command = new("Admin_GetRoles", _connection);
         _command.CommandType = CommandType.StoredProcedure;
         _command.Varchar("Filter", 100, filter);
-        List<Role> _roles = new();
+        List<Role> _roles = [];
         await using SqlDataReader _reader = await _command.ExecuteReaderAsync();
         while (await _reader.ReadAsync())
         {
@@ -1020,14 +990,14 @@ public class AdminController : ControllerBase
     [HttpGet]
     public async Task<List<string>> GetSearchDropDown(string methodName = "", string paramName = "", string filter = "")
     {
-        SqlConnection _connection = new(_config.GetConnectionString("DBConnect"));
+        SqlConnection _connection = new(_configuration.GetConnectionString("DBConnect"));
         await using SqlCommand _command = new(methodName, _connection);
         _command.CommandType = CommandType.StoredProcedure;
         _command.Varchar(paramName, 100, filter);
 
         _connection.Open();
         await using SqlDataReader _reader = await _command.ExecuteReaderAsync();
-        List<string> _listOptions = new();
+        List<string> _listOptions = [];
         while (await _reader.ReadAsync())
         {
             _listOptions.Add(_reader.GetString(0));
@@ -1051,14 +1021,14 @@ public class AdminController : ControllerBase
     [HttpGet]
     public async Task<List<string>> GetSearchJobOptions(string filter = "")
     {
-        SqlConnection _connection = new(_config.GetConnectionString("DBConnect"));
+        SqlConnection _connection = new(_configuration.GetConnectionString("DBConnect"));
         await using SqlCommand _command = new("[Admin_SearchJobOption]", _connection);
         _command.CommandType = CommandType.StoredProcedure;
         _command.Varchar("JobOption", 100, filter);
 
         _connection.Open();
         await using SqlDataReader _reader = await _command.ExecuteReaderAsync();
-        List<string> _listOptions = new();
+        List<string> _listOptions = [];
         while (await _reader.ReadAsync())
         {
             _listOptions.Add(_reader.GetString(0));
@@ -1087,12 +1057,12 @@ public class AdminController : ControllerBase
     [HttpGet]
     public async Task<Dictionary<string, object>> GetStates(string filter = "")
     {
-        await using SqlConnection _connection = new(_config.GetConnectionString("DBConnect"));
+        await using SqlConnection _connection = new(_configuration.GetConnectionString("DBConnect"));
         _connection.Open();
         await using SqlCommand _command = new("Admin_GetStates", _connection);
         _command.CommandType = CommandType.StoredProcedure;
         _command.Varchar("Filter", 100, filter);
-        List<State> _state = new();
+        List<State> _state = [];
         await using SqlDataReader _reader = await _command.ExecuteReaderAsync();
         while (await _reader.ReadAsync())
         {
@@ -1138,12 +1108,12 @@ public class AdminController : ControllerBase
     [HttpGet]
     public async Task<Dictionary<string, object>> GetStatusCodes(string filter = "")
     {
-        await using SqlConnection _connection = new(_config.GetConnectionString("DBConnect"));
+        await using SqlConnection _connection = new(_configuration.GetConnectionString("DBConnect"));
         _connection.Open();
         await using SqlCommand _command = new("Admin_GetStatusCodes", _connection);
         _command.CommandType = CommandType.StoredProcedure;
         _command.Varchar("Filter", 100, filter);
-        List<StatusCode> _statusCodes = new();
+        List<StatusCode> _statusCodes = [];
         await using SqlDataReader _reader = await _command.ExecuteReaderAsync();
         while (await _reader.ReadAsync())
         {
@@ -1193,8 +1163,8 @@ public class AdminController : ControllerBase
     [HttpGet]
     public async Task<Dictionary<string, object>> GetTemplateList(string filter = "")
     {
-        await using SqlConnection _connection = new(_config.GetConnectionString("DBConnect"));
-        List<Template> _templates = new();
+        await using SqlConnection _connection = new(_configuration.GetConnectionString("DBConnect"));
+        List<Template> _templates = [];
         await using SqlCommand _command = new("Admin_GetTemplate", _connection);
         _command.CommandType = CommandType.StoredProcedure;
         if (!filter.NullOrWhiteSpace())
@@ -1250,12 +1220,12 @@ public class AdminController : ControllerBase
     [HttpGet]
     public async Task<Dictionary<string, object>> GetUserList(string filter = "")
     {
-        await using SqlConnection _connection = new(_config.GetConnectionString("DBConnect"));
+        await using SqlConnection _connection = new(_configuration.GetConnectionString("DBConnect"));
         _connection.Open();
         await using SqlCommand _command = new("Admin_GetUsers", _connection);
         _command.CommandType = CommandType.StoredProcedure;
         _command.Varchar("Filter", 100, filter);
-        List<User> _users = new();
+        List<User> _users = [];
         await using SqlDataReader _reader = await _command.ExecuteReaderAsync();
         while (await _reader.ReadAsync()) // Get Users
         {
@@ -1268,7 +1238,7 @@ public class AdminController : ControllerBase
         int _count = _reader.GetInt32(0);
 
         await _reader.NextResultAsync();
-        List<KeyValues> _roles = new();
+        List<KeyValues> _roles = [];
         while (await _reader.ReadAsync()) // Get Roles
         {
             _roles.Add(new(_reader.GetString(0), _reader.GetString(1)));
@@ -1309,7 +1279,7 @@ public class AdminController : ControllerBase
     [HttpGet]
     public async Task<VariableCommission> GetVariableCommission()
     {
-        await using SqlConnection _connection = new(_config.GetConnectionString("DBConnect"));
+        await using SqlConnection _connection = new(_configuration.GetConnectionString("DBConnect"));
         _connection.Open();
         await using SqlCommand _command = new("Admin_GetVariableCommission", _connection);
         _command.CommandType = CommandType.StoredProcedure;
@@ -1358,15 +1328,15 @@ public class AdminController : ControllerBase
     [HttpGet]
     public async Task<Dictionary<string, object>> GetWorkflows(string filter = "")
     {
-        await using SqlConnection _connection = new(_config.GetConnectionString("DBConnect"));
+        await using SqlConnection _connection = new(_configuration.GetConnectionString("DBConnect"));
         _connection.Open();
         await using SqlCommand _command = new("Admin_GetWorkflow", _connection);
         _command.CommandType = CommandType.StoredProcedure;
         _command.Varchar("Filter", 100, filter);
 
-        List<AppWorkflow> _workflows = new();
-        List<KeyValues> _roles = new();
-        List<KeyValues> _status = new();
+        List<AppWorkflow> _workflows = [];
+        List<KeyValues> _roles = [];
+        List<KeyValues> _status = [];
 
         await using SqlDataReader _reader = await _command.ExecuteReaderAsync();
 
@@ -1493,7 +1463,7 @@ public class AdminController : ControllerBase
     [HttpPost]
     public async Task<string> SaveAdminList(string methodName, string parameterName, bool containDescription, bool isString, [FromBody] AdminList adminList)
     {
-        await using SqlConnection _con = new(_config.GetConnectionString("DBConnect"));
+        await using SqlConnection _con = new(_configuration.GetConnectionString("DBConnect"));
         _con.Open();
         string _returnCode = "";
         try
@@ -1558,7 +1528,7 @@ public class AdminController : ControllerBase
     [HttpPost]
     public async Task<int> SaveDocType(DocumentType docType)
     {
-        await using SqlConnection _con = new(_config.GetConnectionString("DBConnect"));
+        await using SqlConnection _con = new(_configuration.GetConnectionString("DBConnect"));
         _con.Open();
         int _returnValue = 0;
 
@@ -1595,7 +1565,7 @@ public class AdminController : ControllerBase
     [HttpPost]
     public async Task<string> SaveJobOptions(JobOption jobOption)
     {
-        await using SqlConnection _con = new(_config.GetConnectionString("DBConnect"));
+        await using SqlConnection _con = new(_configuration.GetConnectionString("DBConnect"));
         _con.Open();
 
         try
@@ -1630,6 +1600,49 @@ public class AdminController : ControllerBase
     }
 
     /// <summary>
+    ///     Saves the preferences data to the database.
+    /// </summary>
+    /// <param name="preferences">
+    ///     The preferences data to be saved. It is an instance of the Preferences class.
+    /// </param>
+    /// <returns>
+    ///     An integer value indicating the result of the save operation. A return value of 1 means the operation was
+    ///     successful.
+    /// </returns>
+    /// <remarks>
+    ///     This method establishes a connection to the database using a connection string from the configuration.
+    ///     It then creates a SQL command with the "Admin_SavePreferences" stored procedure and sets the command type to
+    ///     stored procedure.
+    ///     It adds parameters to the command with the properties of the provided Preferences instance.
+    ///     After executing the command, it returns 1 to indicate the operation was successful.
+    ///     If an exception occurs during the operation, it is caught and ignored, and the method returns 1.
+    /// </remarks>
+    [HttpPost]
+    public async Task<int> SavePreferences(Preferences preferences)
+    {
+        await using SqlConnection _con = new(_configuration.GetConnectionString("DBConnect"));
+        _con.Open();
+
+        try
+        {
+            await using SqlCommand _command = new("Admin_SavePreferences", _con);
+            _command.CommandType = CommandType.StoredProcedure;
+            _command.Varchar("ReqPriorityHigh", 7, preferences.HighPriorityColor);
+            _command.Varchar("ReqPriorityNormal", 7, preferences.NormalPriorityColor);
+            _command.Varchar("ReqPriorityLow", 7, preferences.LowPriorityColor);
+            _command.TinyInt("PageSize", preferences.PageSize);
+
+            await _command.ExecuteNonQueryAsync();
+        }
+        catch
+        {
+            // ignored
+        }
+
+        return 1;
+    }
+
+    /// <summary>
     ///     Saves a role to the database.
     /// </summary>
     /// <param name="role">The role to be saved. It is an instance of the Role class.</param>
@@ -1646,7 +1659,7 @@ public class AdminController : ControllerBase
     [HttpPost]
     public async Task<string> SaveRole(Role role)
     {
-        await using SqlConnection _con = new(_config.GetConnectionString("DBConnect"));
+        await using SqlConnection _con = new(_configuration.GetConnectionString("DBConnect"));
         _con.Open();
 
         try
@@ -1697,7 +1710,7 @@ public class AdminController : ControllerBase
     [HttpPost]
     public async Task<int> SaveState(State state)
     {
-        await using SqlConnection _con = new(_config.GetConnectionString("DBConnect"));
+        await using SqlConnection _con = new(_configuration.GetConnectionString("DBConnect"));
         _con.Open();
         int _id = 0;
         try
@@ -1738,7 +1751,7 @@ public class AdminController : ControllerBase
     [HttpPost]
     public async Task<int> SaveStatusCode(StatusCode statusCode)
     {
-        await using SqlConnection _con = new(_config.GetConnectionString("DBConnect"));
+        await using SqlConnection _con = new(_configuration.GetConnectionString("DBConnect"));
         _con.Open();
         int _id = 0;
 
@@ -1788,7 +1801,7 @@ public class AdminController : ControllerBase
     [HttpPost]
     public async Task<int> SaveTemplate(Template template)
     {
-        await using SqlConnection _con = new(_config.GetConnectionString("DBConnect"));
+        await using SqlConnection _con = new(_configuration.GetConnectionString("DBConnect"));
         _con.Open();
         int _returnValue = 0;
 
@@ -1834,7 +1847,7 @@ public class AdminController : ControllerBase
     [HttpPost]
     public async Task<string> SaveUser(User user)
     {
-        await using SqlConnection _con = new(_config.GetConnectionString("DBConnect"));
+        await using SqlConnection _con = new(_configuration.GetConnectionString("DBConnect"));
         _con.Open();
 
         try
@@ -1883,7 +1896,7 @@ public class AdminController : ControllerBase
     [HttpPost]
     public async Task<int> SaveVariableCommission(VariableCommission variableCommission)
     {
-        await using SqlConnection _con = new(_config.GetConnectionString("DBConnect"));
+        await using SqlConnection _con = new(_configuration.GetConnectionString("DBConnect"));
         _con.Open();
 
         try
@@ -1895,49 +1908,6 @@ public class AdminController : ControllerBase
             _command.TinyInt("@W2TaxLoadingRate", variableCommission.W2TaxLoadingRate);
             _command.TinyInt("@1099CostRate", variableCommission.CostRate1099);
             _command.TinyInt("@FTERateOffered", variableCommission.FTERateOffered);
-
-            await _command.ExecuteNonQueryAsync();
-        }
-        catch
-        {
-            // ignored
-        }
-
-        return 1;
-    }
-
-    /// <summary>
-    ///     Saves the preferences data to the database.
-    /// </summary>
-    /// <param name="preferences">
-    ///     The preferences data to be saved. It is an instance of the Preferences class.
-    /// </param>
-    /// <returns>
-    ///     An integer value indicating the result of the save operation. A return value of 1 means the operation was
-    ///     successful.
-    /// </returns>
-    /// <remarks>
-    ///     This method establishes a connection to the database using a connection string from the configuration.
-    ///     It then creates a SQL command with the "Admin_SavePreferences" stored procedure and sets the command type to
-    ///     stored procedure.
-    ///     It adds parameters to the command with the properties of the provided Preferences instance.
-    ///     After executing the command, it returns 1 to indicate the operation was successful.
-    ///     If an exception occurs during the operation, it is caught and ignored, and the method returns 1.
-    /// </remarks>
-    [HttpPost]
-    public async Task<int> SavePreferences(Preferences preferences)
-    {
-        await using SqlConnection _con = new(_config.GetConnectionString("DBConnect"));
-        _con.Open();
-
-        try
-        {
-            await using SqlCommand _command = new("Admin_SavePreferences", _con);
-            _command.CommandType = CommandType.StoredProcedure;
-            _command.Varchar("ReqPriorityHigh",7, preferences.HighPriorityColor);
-            _command.Varchar("ReqPriorityNormal",7, preferences.NormalPriorityColor);
-            _command.Varchar("ReqPriorityLow", 7, preferences.LowPriorityColor);
-            _command.TinyInt("PageSize", preferences.PageSize);
 
             await _command.ExecuteNonQueryAsync();
         }
@@ -1965,7 +1935,7 @@ public class AdminController : ControllerBase
     [HttpPost]
     public async Task<int> SaveWorkflow(AppWorkflow workflow)
     {
-        await using SqlConnection _con = new(_config.GetConnectionString("DBConnect"));
+        await using SqlConnection _con = new(_configuration.GetConnectionString("DBConnect"));
         await _con.OpenAsync();
 
         try
@@ -2018,7 +1988,7 @@ public class AdminController : ControllerBase
     [HttpPost]
     public async Task<string> ToggleAdminList(string methodName, string id, string userName, bool idIsString, bool isUser = false)
     {
-        await using SqlConnection _con = new(_config.GetConnectionString("DBConnect"));
+        await using SqlConnection _con = new(_configuration.GetConnectionString("DBConnect"));
         _con.Open();
         try
         {
