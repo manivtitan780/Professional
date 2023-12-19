@@ -2267,7 +2267,7 @@ public partial class Candidate
 								
 								while (_roles == null)
 								{
-									_roles = await Redis.GetOrCreateAsync<List<Role>>("Roles");
+									_roles = await Redis.GetAsync<List<Role>>("Roles");
 								}
 
 								RoleID = LoginCookyUser.RoleID;
@@ -2309,7 +2309,7 @@ public partial class Candidate
 
 								while (_states == null)
 								{
-									_states = await Redis.GetOrCreateAsync<List<IntValues>>("States");
+									_states = await Redis.GetAsync<List<IntValues>>("States");
 								}
 
 								_statesCopy.Clear();
@@ -2318,28 +2318,28 @@ public partial class Candidate
 
 								while (_eligibility == null)
 								{
-									_eligibility = await Redis.GetOrCreateAsync<List<IntValues>>("Eligibility");
+									_eligibility = await Redis.GetAsync<List<IntValues>>("Eligibility");
 								}
 
 								_eligibilityCopy.Clear();
 								_eligibilityCopy.Add(new(0, "All"));
 								_eligibilityCopy.AddRange(_eligibility);
 
-								_experience = await Redis.GetOrCreateAsync<List<IntValues>>("Experience");
-								_taxTerms = await Redis.GetOrCreateAsync<List<KeyValues>>("TaxTerms");
+								_experience = await Redis.GetAsync<List<IntValues>>("Experience");
+								_taxTerms = await Redis.GetAsync<List<KeyValues>>("TaxTerms");
 								while (_jobOptions == null)
 								{
-									_jobOptions = await Redis.GetOrCreateAsync<List<KeyValues>>("JobOptions");
+									_jobOptions = await Redis.GetAsync<List<KeyValues>>("JobOptions");
 								}
 
 								_jobOptionsCopy.Clear();
 								_jobOptionsCopy.Add(new("%", "All"));
 								_jobOptionsCopy.AddRange(_jobOptions);
 
-									_statusCodes = await Redis.GetOrCreateAsync<List<StatusCode>>("StatusCodes");
-									_workflows = await Redis.GetOrCreateAsync<List<AppWorkflow>>("Workflow");
-								_communication = await Redis.GetOrCreateAsync<List<KeyValues>>("Communication");
-									_documentTypes = await Redis.GetOrCreateAsync<List<IntValues>>("DocumentTypes");
+									_statusCodes = await Redis.GetAsync<List<StatusCode>>("StatusCodes");
+									_workflows = await Redis.GetAsync<List<AppWorkflow>>("Workflow");
+								_communication = await Redis.GetAsync<List<KeyValues>>("Communication");
+									_documentTypes = await Redis.GetAsync<List<IntValues>>("DocumentTypes");
 
 								SortDirectionProperty = SearchModel.SortDirection == 1 ? SortDirection.Ascending : SortDirection.Descending;
 								SortField = SearchModel.SortField switch

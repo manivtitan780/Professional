@@ -1150,7 +1150,7 @@ public partial class Companies
         LoginCookyUser = await NavManager.RedirectInner(LocalStorage);
         while (_roles == null)
         {
-            _roles = await Redis.GetOrCreateAsync<List<Role>>("Roles");
+            _roles = await Redis.GetAsync<List<Role>>("Roles");
         }
 
         RoleID = LoginCookyUser.RoleID;
@@ -1164,7 +1164,7 @@ public partial class Companies
 
         while (_states == null)
         {
-            _states = await Redis.GetOrCreateAsync<List<IntValues>>("States");
+            _states = await Redis.GetAsync<List<IntValues>>("States");
         }
 
         _statesCopy.Clear();
@@ -1173,17 +1173,17 @@ public partial class Companies
 
         while (_skills == null)
         {
-            _skills = await Redis.GetOrCreateAsync<List<IntValues>>("Skills");
+            _skills = await Redis.GetAsync<List<IntValues>>("Skills");
         }
 
         while (_titles == null)
         {
-            _titles = await Redis.GetOrCreateAsync<List<IntValues>>("Titles");
+            _titles = await Redis.GetAsync<List<IntValues>>("Titles");
         }
 
         while (_recruiters == null)
         {
-            List<User> _users = await Redis.GetOrCreateAsync<List<User>>("Users");
+            List<User> _users = await Redis.GetAsync<List<User>>("Users");
             if (_users == null)
             {
                 continue;
@@ -1196,17 +1196,17 @@ public partial class Companies
             }
         }
 
-        _eligibility = await Redis.GetOrCreateAsync<List<IntValues>>("Eligibility");
-        _experience = await Redis.GetOrCreateAsync<List<IntValues>>("Experience");
-        _education = await Redis.GetOrCreateAsync<List<IntValues>>("Education");
+        _eligibility = await Redis.GetAsync<List<IntValues>>("Eligibility");
+        _experience = await Redis.GetAsync<List<IntValues>>("Experience");
+        _education = await Redis.GetAsync<List<IntValues>>("Education");
 
         while (_jobOptions == null || _jobOptions.Count == 0)
         {
-            _jobOptions = await Redis.GetOrCreateAsync<List<KeyValues>>("JobOptions");
+            _jobOptions = await Redis.GetAsync<List<KeyValues>>("JobOptions");
         }
 
-        _statusCodes = await Redis.GetOrCreateAsync<List<StatusCode>>("StatusCodes");
-        _workflows = await Redis.GetOrCreateAsync<List<AppWorkflow>>("Workflow");
+        _statusCodes = await Redis.GetAsync<List<StatusCode>>("StatusCodes");
+        _workflows = await Redis.GetAsync<List<AppWorkflow>>("Workflow");
 
         string _cookyString = await SessionStorage.GetItemAsStringAsync("CompaniesGrid");
 

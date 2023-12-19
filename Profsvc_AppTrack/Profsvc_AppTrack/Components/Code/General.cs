@@ -293,7 +293,7 @@ internal class General
             List<Zip> _zips = null;
             while (_zips == null)
             {
-                _zips = await Redis.GetOrCreateAsync<List<Zip>>("Zips");
+                _zips = await Redis.GetAsync<List<Zip>>("Zips");
                 //_memoryCache.TryGetValue("Zips", out _zips);
             }
 

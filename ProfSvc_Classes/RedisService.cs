@@ -93,7 +93,7 @@ public class RedisService
     /// <param name="key">The key of the value to retrieve.</param>
     /// <typeparam name="T">The type of the value to retrieve.</typeparam>
     /// <returns>The value associated with the specified key, if it exists; otherwise, the default value of the type parameter.</returns>
-    public async Task<T> GetOrCreateAsync<T>(string key)
+    public async Task<T> GetAsync<T>(string key)
     {
         RedisValue _value = await _db.StringGetAsync(key);
 

@@ -3,21 +3,23 @@
 // /*****************************************
 // Copyright:           Titan-Techs.
 // Location:            Newtown, PA, USA
-// Solution:            ProfSvc_AppTrack
-// Project:             ProfSvc_AppTrack
+// Solution:            Profsvc_AppTrack
+// Project:             Profsvc_AppTrack
 // File Name:           Leads.razor.cs
 // Created By:          Narendra Kumaran Kadhirvelu, Jolly Joseph Paily, DonBosco Paily, Mariappan Raja
-// Created On:          01-20-2023 22:16
-// Last Updated On:     10-03-2023 21:04
+// Created On:          11-23-2023 19:53
+// Last Updated On:     12-19-2023 21:20
 // *****************************************/
 
 #endregion
 
-using Profsvc_AppTrack.Components.Code;
+#region Using
+
 using Profsvc_AppTrack.Components.Pages.Controls.Leads;
-using Profsvc_AppTrack.Components.Pages.Controls.Requisitions;
 
 using DocumentsPanel = Profsvc_AppTrack.Components.Pages.Controls.Requisitions.DocumentsPanel;
+
+#endregion
 
 namespace Profsvc_AppTrack.Components.Pages;
 
@@ -263,14 +265,14 @@ public partial class Leads
     ///     This property is used to manage the dialog for editing notes in the Leads page.
     ///     The dialog is shown by calling the `ShowDialog` method of this property, as seen in the `Leads.EditNotes()` method.
     /// </remarks>
-    public EditNotesDialog NotesDialog
+    private EditNotesDialog NotesDialog
     {
         get;
         set;
     }
 
     /// <summary>
-    ///     Gets or sets the total number of pages that can be formed from the leads data.
+    ///     Gets or sets the total number of pages that can be formed from the lead's data.
     ///     This is calculated by dividing the total count of leads by the number of items per page, and rounding up to the
     ///     next integer.
     /// </summary>
@@ -306,6 +308,22 @@ public partial class Leads
     ///     the `Leads.EditNotes()` method.
     /// </remarks>
     private LeadNotesPanel PanelNotes
+    {
+        get;
+        set;
+    }
+
+    /// <summary>
+    ///     Gets or sets the Redis service used for caching data.
+    /// </summary>
+    /// <value>
+    ///     The Redis service.
+    /// </value>
+    /// <remarks>
+    ///     This property is injected and used for operations like retrieving or storing data in Redis cache.
+    /// </remarks>
+    [Inject]
+    private RedisService Redis
     {
         get;
         set;
@@ -355,7 +373,7 @@ public partial class Leads
     } = new();
 
     /// <summary>
-    ///     Gets or sets the sort direction for the leads data.
+    ///     Gets or sets the sort direction for the lead's data.
     /// </summary>
     /// <remarks>
     ///     This property is used to determine the order in which the leads are displayed.
@@ -418,14 +436,14 @@ public partial class Leads
     }
 
     /// <summary>
-    ///     Gets or sets the User of the Lead. This property is used to store the UserID of the currently logged in
+    ///     Gets or sets the User of the Lead. This property is used to store the UserID of the currently logged-in
     ///     user.
     ///     It is used in the Lead page to control the display of certain elements based on the user's rights and
     ///     whether they are the updater of the record.
     /// </summary>
     /// <remarks>
-    ///     This property is a string that holds the UserID of the currently logged in user. It is used in the Lead page
-    ///     to control the display of certain elements. If the logged in user has the right to edit a candidate and they are
+    ///     This property is a string that holds the UserID of the currently logged-in user. It is used in the Lead page
+    ///     to control the display of certain elements. If the logged-in user has the right to edit a candidate, and they are
     ///     the updater of the record, certain elements on the page will be displayed. Otherwise, those elements will be
     ///     hidden.
     /// </remarks>
@@ -520,10 +538,7 @@ public partial class Leads
     ///     This method creates a copy of the current search model and opens the advanced search dialog.
     /// </summary>
     /// <returns>A task that represents the asynchronous operation.</returns>
-    private async Task AdvancedSearch(MouseEventArgs arg)
-    {
-        await Task.Delay(1);
-    }
+    private Task AdvancedSearch(MouseEventArgs arg) => Task.Delay(1);
 
     /// <summary>
     ///     Handles the completion of an action by enabling the buttons in the DialogDocument.
@@ -795,10 +810,10 @@ public partial class Leads
             }
 
             RestClient _restClient = new($"{Start.ApiHost}");
-            RestRequest request = new("Lead/GetLeadDetails");
-            request.AddQueryParameter("leadID", _target.ID);
+            RestRequest _request = new("Lead/GetLeadDetails");
+            _request.AddQueryParameter("leadID", _target.ID);
 
-            Dictionary<string, object> _restResponse = await _restClient.GetAsync<Dictionary<string, object>>(request);
+            Dictionary<string, object> _restResponse = await _restClient.GetAsync<Dictionary<string, object>>(_request);
 
             if (_restResponse != null)
             {
@@ -1119,10 +1134,11 @@ public partial class Leads
         await Task.Yield();
 
         LoginCookyUser = await NavManager.RedirectInner(LocalStorageBlazored);
-        IMemoryCache _memoryCache = Start.MemCache;
+        //IMemoryCache _memoryCache = Start.MemCache;
         while (_roles == null)
         {
-            _memoryCache.TryGetValue("Roles", out _roles);
+            _roles = await Redis.GetAsync<List<Role>>("Roles");
+            //_memoryCache.TryGetValue("Roles", out _roles);
         }
 
         RoleID = LoginCookyUser.RoleID;
@@ -1136,12 +1152,15 @@ public partial class Leads
 
         while (_states == null)
         {
-            _memoryCache.TryGetValue("States", out _states);
+            _states = await Redis.GetAsync<List<IntValues>>("States");
+            //_memoryCache.TryGetValue("States", out _states);
         }
 
-        _memoryCache.TryGetValue("LeadStatus", out _status);
-        _memoryCache.TryGetValue("LeadSources", out _sources);
-        _memoryCache.TryGetValue("LeadIndustries", out _industries);
+        _status = await Redis.GetAsync<List<ByteValues>>("LeadStatus");
+        //_memoryCache.TryGetValue("LeadStatus", out _status);
+        _sources = await Redis.GetAsync<List<ByteValues>>("LeadSources");
+        //_memoryCache.TryGetValue("LeadSources", out _sources);
+        _industries = await Redis.GetAsync<List<ByteValues>>("LeadIndustries");
 
         string _cookyString = await LocalStorageBlazored.GetItemAsync<string>("LeadGrid");
         if (!_cookyString.NullOrWhiteSpace())
@@ -1229,7 +1248,7 @@ public partial class Leads
     ///     Refreshes the grid of leads. This method is used to update the grid display whenever there are changes to
     ///     the leads data.
     /// </summary>
-    private static async Task RefreshGrid() => await Grid.Refresh();
+    private static Task RefreshGrid() => Grid.Refresh();
 
     /// <summary>
     ///     Asynchronously saves a document related to a lead.

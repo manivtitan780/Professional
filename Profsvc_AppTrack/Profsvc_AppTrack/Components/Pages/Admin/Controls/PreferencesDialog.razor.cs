@@ -157,7 +157,7 @@ public partial class PreferencesDialog
     private async Task OpenDialog(BeforeOpenEventArgs args)
     {
         await Task.Yield();
-        Preferences _preferences = await Redis.GetOrCreateAsync<Preferences>("Preferences");
+        Preferences _preferences = await Redis.GetAsync<Preferences>("Preferences");
         if (_preferences != null)
         {
             Model = _preferences;

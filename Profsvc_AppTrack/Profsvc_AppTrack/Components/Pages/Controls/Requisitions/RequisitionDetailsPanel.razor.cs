@@ -527,7 +527,7 @@ public partial class RequisitionDetailsPanel
             {
                 Model.CompanyName = company.ItemData.CompanyName;
                 //IMemoryCache _memoryCache = Start.MemCache;
-                List<Company> _companyList = await Redis.GetOrCreateAsync<List<Company>>("Companies");
+                List<Company> _companyList = await Redis.GetAsync<List<Company>>("Companies");
                 //_memoryCache.TryGetValue("Companies", out List<Company> _companyList);
                 Company _company = _companyList.First(x => x.ID == company.ItemData.ID);
                 Model.CompanyCity = _company.City;
@@ -820,11 +820,12 @@ public partial class RequisitionDetailsPanel
         {
             await Task.Yield();
             _zipChanging = true;
-            IMemoryCache _memoryCache = Start.MemCache;
+            //IMemoryCache _memoryCache = Start.MemCache;
             List<Zip> _zips = null;
             while (_zips == null)
             {
-                _memoryCache.TryGetValue("Zips", out _zips);
+                _zips = await Redis.GetAsync<List<Zip>>("Zips");
+                //_memoryCache.TryGetValue("Zips", out _zips);
             }
 
             if (_zips.Count > 0)

@@ -311,7 +311,7 @@ public partial class EditCompanyDialog
         List<Zip> _zips = null;
         while (_zips == null)
         {
-            _zips = await Redis.GetOrCreateAsync<List<Zip>>("Zips");
+            _zips = await Redis.GetAsync<List<Zip>>("Zips");
         }
 
         if (_zips.Count > 0)
