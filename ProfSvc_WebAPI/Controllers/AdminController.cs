@@ -599,6 +599,7 @@ public class AdminController : ControllerBase
             List<VariableCommission> _variableCommissions = [];
             List<AppWorkflow> _workflows = [];
             List<IntValues> _documentTypes = [];
+            List<KeyValues> _communications = [];
             Preferences _preferences = null;
 
             await using SqlConnection _connection = new(_configuration.GetConnectionString("DBConnect"));
@@ -751,6 +752,12 @@ public class AdminController : ControllerBase
                                _reader.GetBoolean(4), _reader.GetBoolean(5), _reader.GetBoolean(6), _reader.GetByte(7),
                                _reader.GetByte(8), _reader.GetByte(9), _reader.GetByte(10), _reader.GetBoolean(11));
 
+            _communications.AddRange(new[]
+                                     {
+                                         new KeyValues("A", "Average"), new KeyValues("X", "Excellent"), new KeyValues("F", "Fair"),
+                                         new KeyValues("G", "Good")
+                                     });
+
             await _reader.CloseAsync();
 
             await _connection.CloseAsync();
@@ -758,14 +765,21 @@ public class AdminController : ControllerBase
             List<string> _keys =
             [
                 "States", "Eligibility", "JobOptions", "TaxTerms", "Skills", "Experience", "Templates", "Users", "StatusCodes", "Zips", "Education", "Companies", "CompanyContacts", "Roles", "Titles",
-                "LeadSources", "LeadIndustries", "LeadStatus", "CommissionConfigurators", "VariableCommissions", "Workflow", "DocumentTypes", "Preferences"
+                "LeadSources", "LeadIndustries", "LeadStatus", "CommissionConfigurators", "VariableCommissions", "Workflow", "DocumentTypes", "Preferences", "Communication"
             ];
             List<object> _values =
             [
                 _states, _eligibility, _jobOptions, _taxTerms, _skills, _experience, _templates, _users, _statusCodes, _zips, _education, _companies, _companyContacts, _roles, _titles, _leadSources,
-                _leadIndustries, _leadStatus, _commissionConfigurators, _variableCommissions, _workflows, _documentTypes, _preferences
+                _leadIndustries, _leadStatus, _commissionConfigurators, _variableCommissions, _workflows, _documentTypes, _preferences, _communications
             ];
-            await _redisService.CreateBatchSet(_keys, _values);
+            try
+            {
+                await _redisService.CreateBatchSet(_keys, _values);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 

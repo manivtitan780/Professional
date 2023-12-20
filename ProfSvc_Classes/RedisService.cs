@@ -8,7 +8,7 @@
 // File Name:           RedisService.cs
 // Created By:          Narendra Kumaran Kadhirvelu, Jolly Joseph Paily, DonBosco Paily, Mariappan Raja
 // Created On:          12-15-2023 19:38
-// Last Updated On:     12-19-2023 19:53
+// Last Updated On:     12-20-2023 19:48
 // *****************************************/
 
 #endregion
@@ -54,6 +54,32 @@ public class RedisService
     private readonly IDatabase _db;
 
     /// <summary>
+    ///     Asynchronously retrieves a batch of values from the Redis database.
+    /// </summary>
+    /// <param name="keyArray">A list of keys for the items to be retrieved.</param>
+    /// <returns>
+    ///     A task that represents the asynchronous operation. The task result contains a dictionary where each key-value pair
+    ///     corresponds to a key and its associated value in the Redis database.
+    /// </returns>
+    /// <remarks>
+    ///     This method retrieves the values associated with the keys provided in the keyArray from the Redis database. If a
+    ///     key does not exist in the database, its associated value in the returned dictionary will be null.
+    /// </remarks>
+    public async Task<Dictionary<string, string>> BatchGet(IEnumerable<string> keyArray)
+    {
+        RedisKey[] _keys = keyArray.Select(k => (RedisKey)k).ToArray();
+        RedisValue[] _values = await _db.StringGetAsync(_keys);
+        Dictionary<string, string> _result = new();
+        // ReSharper disable once InconsistentNaming
+        for (int i = 0; i < _keys.Length; i++)
+        {
+            _result.Add(_keys[i], _values[i].ToString());
+        }
+
+        return _result;
+    }
+
+    /// <summary>
     ///     Checks if a key exists in the Redis database.
     /// </summary>
     /// <param name="key">The key to check in the Redis database.</param>
@@ -73,17 +99,17 @@ public class RedisService
     ///     This method will serialize each item in the items list and set it in Redis with the corresponding key from the
     ///     keyArray list.
     ///     The items will be set only if the key does not already exist in Redis.
-    ///     Each item will have an expiration time of 3650 days.
+    ///     Each item will have an expiration time of 365 days.
     /// </remarks>
     public async Task CreateBatchSet(List<string> keyArray, List<object> items)
     {
-        ITransaction _transaction = _db.CreateTransaction();
-        for (int _i = 0; _i < items.Count; _i++)
+        List<KeyValuePair<RedisKey, RedisValue>> _values = [];
+        for (int i = 0; i < items.Count; i++)
         {
-            await _transaction.StringSetAsync(keyArray[_i], JsonConvert.SerializeObject(items[_i]), TimeSpan.FromDays(3650), When.NotExists);
+            _values.Add(new(keyArray[i], JsonConvert.SerializeObject(items[i])));
         }
 
-        await _transaction.ExecuteAsync();
+        await _db.StringSetAsync(_values.ToArray());
     }
 
     /// <summary>
@@ -113,7 +139,7 @@ public class RedisService
     ///     it.
     ///     If the key does not exist, this method will serialize the createItems parameter, set it in the Redis database with
     ///     the specified key, and return createItems.
-    ///     The newly created item will have an expiration time of 3650 days.
+    ///     The newly created item will have an expiration time of 365 days.
     /// </remarks>
     public async Task<T> GetOrCreateAsync<T>(string key, T createItems)
     {
@@ -124,7 +150,7 @@ public class RedisService
             return JsonConvert.DeserializeObject<T>(_value.ToString());
         }
 
-        await _db.StringSetAsync(key, JsonConvert.SerializeObject(createItems), TimeSpan.FromDays(3650), When.Always);
+        await _db.StringSetAsync(key, JsonConvert.SerializeObject(createItems), when: When.Always);
         return createItems;
     }
 
@@ -138,8 +164,7 @@ public class RedisService
     /// <remarks>
     ///     This method will serialize the provided list of items and set it in Redis with the specified key.
     ///     The new value will replace the existing value associated with the key.
-    ///     The value will have an expiration time of 3650 days.
+    ///     The value will have an expiration time of 365 days.
     /// </remarks>
-    public async Task RefreshAsync<T>(string key, T createItems) => 
-        await _db.StringSetAsync(key, JsonConvert.SerializeObject(createItems), TimeSpan.FromDays(3650), When.Always);
+    public async Task RefreshAsync<T>(string key, T createItems) => await _db.StringSetAsync(key, JsonConvert.SerializeObject(createItems), when: When.Always);
 }
