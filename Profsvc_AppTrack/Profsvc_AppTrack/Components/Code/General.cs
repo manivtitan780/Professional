@@ -21,6 +21,8 @@ using System.Runtime.CompilerServices;
 using Profsvc_AppTrack.Components.Pages;
 using Profsvc_AppTrack.Components.Pages.Admin;
 
+using Syncfusion.Blazor.DocumentEditor;
+
 using ILogger = Microsoft.Extensions.Logging.ILogger;
 // ReSharper disable UnusedMember.Global
 
@@ -365,16 +367,7 @@ internal class General
                                                          {"thenProceed", thenProceed.ToString()}
                                                      };
             _restResponse = await GetRest<Dictionary<string, object>>("Candidates/GetGridCandidates", _parameters, searchModel);
-            //RestClient _restClient = new($"{Start.ApiHost}");
-            //RestRequest _request = new("Candidates/GetGridCandidates")
-            //                       {
-            //                           RequestFormat = DataFormat.Json
-            //                       };
-            //_request.AddJsonBody(searchModel);
-            //_request.AddQueryParameter("candidateID", optionalCandidateID);
-            //_request.AddQueryParameter("thenProceed", thenProceed);
 
-            //_restResponse = await _restClient.GetAsync<Dictionary<string, object>>(_request);
             if (_restResponse == null)
             {
                 return dm.RequiresCounts ? new DataResult
@@ -448,15 +441,12 @@ internal class General
         int _page = searchModel.Page;
         try
         {
-            RestClient _restClient = new($"{Start.ApiHost}");
-            RestRequest _request = new("Company/GetGridCompanies")
-                                   {
-                                       RequestFormat = DataFormat.Json
-                                   };
-            _request.AddJsonBody(searchModel);
-            _request.AddQueryParameter("getCompanyInformation", getCompanyInformation);
+            Dictionary<string, string> _parameters = new()
+                                                     {
+                                                         {"getCompanyInformation", getCompanyInformation.ToString()}
+                                                     };
+            _restResponse = await GetRest<Dictionary<string, object>>("Company/GetGridCompanies", _parameters, searchModel);
 
-            _restResponse = await _restClient.GetAsync<Dictionary<string, object>>(_request);
             if (_restResponse == null)
             {
                 return dm.RequiresCounts ? new DataResult
@@ -612,14 +602,8 @@ internal class General
         int _page = searchModel.Page;
         try
         {
-            RestClient _restClient = new($"{Start.ApiHost}");
-            RestRequest _request = new("Lead/GetGridLeads")
-                                   {
-                                       RequestFormat = DataFormat.Json
-                                   };
-            _request.AddJsonBody(searchModel);
+            _restResponse = await GetRest<Dictionary<string, object>>("Lead/GetGridLeads", null, searchModel);
 
-            _restResponse = await _restClient.GetAsync<Dictionary<string, object>>(_request);
             if (_restResponse == null)
             {
                 return dm.RequiresCounts ? new DataResult
@@ -691,16 +675,14 @@ internal class General
 
         try
         {
-            RestClient _restClient = new($"{Start.ApiHost}");
-            RestRequest _request = new("Admin/GetAdminList")
-                                   {
-                                       RequestFormat = DataFormat.Json
-                                   };
-            _request.AddQueryParameter("methodName", methodName);
-            _request.AddQueryParameter("filter", HttpUtility.UrlEncode(filter));
-            _request.AddQueryParameter("isString", isString.ToString());
-            Dictionary<string, object> _response = await _restClient.GetAsync<Dictionary<string, object>>(_request);
-            if (_response == null)
+            Dictionary<string, string> _parameters = new()
+                                                     {
+                                                         {"methodName", methodName},
+                                                         {"filter", HttpUtility.UrlEncode(filter)},
+                                                         {"isString", isString.ToString()}
+                                                     };
+            _restResponse = await GetRest<Dictionary<string, object>>("Admin/GetAdminList", _parameters);//, searchModel);
+            if (_restResponse == null)
             {
                 return await Task.FromResult<object>(dm.RequiresCounts ? new DataResult
                                                                          {
@@ -709,8 +691,8 @@ internal class General
                                                                          } : _dataSource);
             }
 
-            _dataSource = DeserializeObject<List<AdminList>>(_response["GeneralItems"]);
-            int _count = _response["Count"].ToInt32();
+            _dataSource = DeserializeObject<List<AdminList>>(_restResponse["GeneralItems"]);
+            int _count = _restResponse["Count"].ToInt32();
             if (enableVirtualization && dm.Skip != 0)
             {
                 _dataSource = DataOperations.PerformSkip(_dataSource, dm.Skip).ToList();
@@ -896,7 +878,7 @@ internal class General
 
         if (parameters == null)
         {
-            return await _client.PostAsync<T>(_request);
+            return await _client.GetAsync<T>(_request);
         }
 
         foreach (KeyValuePair<string, string> _parameter in parameters)
@@ -1460,14 +1442,16 @@ internal class General
     /// </remarks>
     internal static async Task PostToggleAsync<T>(string methodName, object id, string userName, bool isString, SfGrid<T> grid, bool isUser = false, IJSRuntime runtime = null)
     {
-        RestClient _restClient = new($"{Start.ApiHost}");
-        RestRequest _request = new("Admin/ToggleAdminList", Method.Post);
-        _request.AddQueryParameter("methodName", methodName);
-        _request.AddQueryParameter("id", id.ToString());
-        _request.AddQueryParameter("username", userName);
-        _request.AddQueryParameter("idIsString", isString.ToString());
-        _request.AddQueryParameter("isUser", isUser.ToString());
-        string _response = await _restClient.PostAsync<string>(_request);
+        Dictionary<string, string> _parameters = new()
+                                                 {
+                                                     {"methodName", methodName},
+                                                     {"id", id.ToString()},
+                                                     {"username", userName},
+                                                     {"idIsString", isString.ToString()},
+                                                     {"isUser", isUser.ToString()},
+                                                 };
+        
+        string _response = await PostRest<string>("Admin/ToggleAdminList",_parameters);
 
         await grid.Refresh();
 
@@ -1477,8 +1461,6 @@ internal class General
         {
             await runtime.InvokeVoidAsync("scroll", _index);
         }
-
-        //return await Task.FromResult(_response);
     }
 
     /// <summary>
