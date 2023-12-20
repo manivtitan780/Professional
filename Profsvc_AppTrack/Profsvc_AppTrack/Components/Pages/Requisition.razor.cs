@@ -3,19 +3,17 @@
 // /*****************************************
 // Copyright:           Titan-Techs.
 // Location:            Newtown, PA, USA
-// Solution:            ProfSvc_AppTrack
-// Project:             ProfSvc_AppTrack
+// Solution:            Profsvc_AppTrack
+// Project:             Profsvc_AppTrack
 // File Name:           Requisition.razor.cs
 // Created By:          Narendra Kumaran Kadhirvelu, Jolly Joseph Paily, DonBosco Paily, Mariappan Raja
-// Created On:          12-09-2022 15:57
-// Last Updated On:     10-04-2023 19:52
+// Created On:          11-23-2023 19:53
+// Last Updated On:     12-19-2023 21:29
 // *****************************************/
 
 #endregion
 
 #region Using
-
-using Profsvc_AppTrack.Components.Code;
 
 using ActivityPanelRequisition = Profsvc_AppTrack.Components.Pages.Controls.Requisitions.ActivityPanelRequisition;
 using AddRequisitionDocument = Profsvc_AppTrack.Components.Pages.Controls.Requisitions.AddRequisitionDocument;
@@ -49,8 +47,8 @@ public partial class Requisition
 
     private bool _actionProgress;
 
-    private List<CandidateActivity> _candidateActivityObject = new();
-    private readonly List<KeyValues> _companies = new();
+    private List<CandidateActivity> _candidateActivityObject = [];
+    private readonly List<KeyValues> _companies = [];
 
     private bool _editInProgress;
 
@@ -64,14 +62,14 @@ public partial class Requisition
     private MarkupString _requisitionDetailSkills = "".ToMarkupString();
 
     private RequisitionDetails _requisitionDetailsObject = new(), _requisitionDetailsObjectClone = new();
-    private List<RequisitionDocuments> _requisitionDocumentsObject = new();
+    private List<RequisitionDocuments> _requisitionDocumentsObject = [];
 
     private List<Role> _roles;
     private int _selectedTab;
 
     private List<StatusCode> _statusCodes;
 
-    private readonly List<KeyValues> _statusSearch = new();
+    private readonly List<KeyValues> _statusSearch = [];
 
     private Requisitions _target;
 
@@ -80,61 +78,73 @@ public partial class Requisition
     ///     These items include commands for text formatting such as bold, italic, underline, strikethrough,
     ///     lowercase, uppercase, superscript, subscript, clear format, undo, and redo.
     /// </summary>
-    private readonly List<ToolbarItemModel> _tools1 = new()
-                                                      {
-                                                          new()
-                                                          {
-                                                              Command = ToolbarCommand.Bold
-                                                          },
-                                                          new()
-                                                          {
-                                                              Command = ToolbarCommand.Italic
-                                                          },
-                                                          new()
-                                                          {
-                                                              Command = ToolbarCommand.Underline
-                                                          },
-                                                          new()
-                                                          {
-                                                              Command = ToolbarCommand.StrikeThrough
-                                                          },
-                                                          new()
-                                                          {
-                                                              Command = ToolbarCommand.LowerCase
-                                                          },
-                                                          new()
-                                                          {
-                                                              Command = ToolbarCommand.UpperCase
-                                                          },
-                                                          new()
-                                                          {
-                                                              Command = ToolbarCommand.SuperScript
-                                                          },
-                                                          new()
-                                                          {
-                                                              Command = ToolbarCommand.SubScript
-                                                          },
-                                                          new()
-                                                          {
-                                                              Command = ToolbarCommand.Separator
-                                                          },
-                                                          new()
-                                                          {
-                                                              Command = ToolbarCommand.ClearFormat
-                                                          },
-                                                          new()
-                                                          {
-                                                              Command = ToolbarCommand.Separator
-                                                          },
-                                                          new()
-                                                          {
-                                                              Command = ToolbarCommand.Undo
-                                                          },
-                                                          new()
-                                                          {
-                                                              Command = ToolbarCommand.Redo
-                                                          }
-                                                      };
+    private readonly List<ToolbarItemModel> _tools1 =
+    [
+        new()
+        {
+            Command = ToolbarCommand.Bold
+        },
+
+        new()
+        {
+            Command = ToolbarCommand.Italic
+        },
+
+        new()
+        {
+            Command = ToolbarCommand.Underline
+        },
+
+        new()
+        {
+            Command = ToolbarCommand.StrikeThrough
+        },
+
+        new()
+        {
+            Command = ToolbarCommand.LowerCase
+        },
+
+        new()
+        {
+            Command = ToolbarCommand.UpperCase
+        },
+
+        new()
+        {
+            Command = ToolbarCommand.SuperScript
+        },
+
+        new()
+        {
+            Command = ToolbarCommand.SubScript
+        },
+
+        new()
+        {
+            Command = ToolbarCommand.Separator
+        },
+
+        new()
+        {
+            Command = ToolbarCommand.ClearFormat
+        },
+
+        new()
+        {
+            Command = ToolbarCommand.Separator
+        },
+
+        new()
+        {
+            Command = ToolbarCommand.Undo
+        },
+
+        new()
+        {
+            Command = ToolbarCommand.Redo
+        }
+    ];
 
     private List<AppWorkflow> _workflows;
 
@@ -382,13 +392,29 @@ public partial class Requisition
     internal List<KeyValues> NextSteps
     {
         get;
-    } = new();
+    } = [];
 
     /// <summary>
     ///     Gets or sets the total number of pages in the requisition.
     ///     This property is calculated by dividing the total count of requisitions by the number of items per page.
     /// </summary>
     internal static int PageCount
+    {
+        get;
+        set;
+    }
+
+    /// <summary>
+    ///     Gets or sets the Redis service used for caching data.
+    /// </summary>
+    /// <value>
+    ///     The Redis service.
+    /// </value>
+    /// <remarks>
+    ///     This property is injected and used for operations like retrieving or storing data in Redis cache.
+    /// </remarks>
+    [Inject]
+    private RedisService Redis
     {
         get;
         set;
@@ -547,7 +573,7 @@ public partial class Requisition
     {
         get;
         set;
-    } = new();
+    } = [];
 
     /// <summary>
     ///     Gets or sets the title of the requisition. The title is used to distinguish between "Add" and "Edit" modes in the
@@ -1291,10 +1317,11 @@ public partial class Requisition
     {
         _loaded = false;
         LoginCookyUser = await NavManager.RedirectInner(LocalStorage);
-        IMemoryCache _memoryCache = Start.MemCache;
+        //IMemoryCache _memoryCache = Start.MemCache;
         while (_roles == null)
         {
-            _memoryCache.TryGetValue("Roles", out _roles);
+            _roles = await Redis.GetAsync<List<Role>>("Roles");
+            //_memoryCache.TryGetValue("Roles", out _roles);
         }
 
         RoleID = LoginCookyUser.RoleID;
@@ -1339,38 +1366,39 @@ public partial class Requisition
 
         while (_states == null)
         {
-            _memoryCache.TryGetValue("States", out _states);
+            _states = await Redis.GetAsync<List<IntValues>>("States");
         }
 
         while (_eligibility == null)
         {
-            _memoryCache.TryGetValue("Eligibility", out _eligibility);
+            _eligibility = await Redis.GetAsync<List<IntValues>>("Eligibility");
         }
 
         while (_education == null)
         {
-            _memoryCache.TryGetValue("Education", out _education);
+            _education = await Redis.GetAsync<List<IntValues>>("Education");
         }
 
         while (_experience == null)
         {
-            _memoryCache.TryGetValue("Experience", out _experience);
+            _experience = await Redis.GetAsync<List<IntValues>>("Experience");
         }
 
         while (_jobOptions == null)
         {
-            _memoryCache.TryGetValue("JobOptions", out _jobOptions);
+            _jobOptions = await Redis.GetAsync<List<KeyValues>>("JobOptions");
         }
 
         while (_recruiters == null)
         {
-            _memoryCache.TryGetValue("Users", out List<User> _users);
+            List<User> _users = await Redis.GetAsync<List<User>>("Users");
+            //_memoryCache.TryGetValue("Users", out List<User> _users);
             if (_users == null)
             {
                 continue;
             }
 
-            _recruiters = new();
+            _recruiters = [];
             foreach (User _user in _users.Where(user => user.Role is "Recruiter" or "Recruiter & Sales Manager"))
             {
                 _recruiters?.Add(new(_user.UserName, _user.UserName));
@@ -1379,11 +1407,12 @@ public partial class Requisition
 
         while (_skills == null)
         {
-            _memoryCache.TryGetValue("Skills", out _skills);
+            _skills = await Redis.GetAsync<List<IntValues>>("Skills");
         }
 
-        _memoryCache.TryGetValue("StatusCodes", out _statusCodes);
-        _memoryCache.TryGetValue("Preferences", out _preference);
+        _statusCodes = await Redis.GetAsync<List<StatusCode>>("StatusCodes");
+        _preference = await Redis.GetAsync<Preferences>("Preferences");
+
         if (_statusCodes is {Count: > 0})
         {
             foreach (StatusCode _statusCode in _statusCodes.Where(statusCode => statusCode.AppliesToCode == "REQ"))
@@ -1392,20 +1421,18 @@ public partial class Requisition
             }
         }
 
-        _memoryCache.TryGetValue("Companies", out List<Company> _companyList);
+        List<Company> _companyList = await Redis.GetAsync<List<Company>>("Companies");
         _companies.Add(new("All Companies", "%"));
         if (_companyList != null)
         {
-            foreach (Company _company in _companyList)
+            foreach (Company _company in _companyList.Where(company => company.Owner == User || company.Owner == "ADMIN"))
             {
-                if ((_company.Owner == User || _company.Owner == "ADMIN"))
-                {
-                    _companies.Add(new(_company.CompanyName, _company.CompanyName));
-                }
+                _companies.Add(new(_company.CompanyName, _company.CompanyName));
             }
         }
 
-        _memoryCache.TryGetValue("Workflow", out _workflows);
+        _workflows = await Redis.GetAsync<List<AppWorkflow>>("Workflow");
+
         SortDirectionProperty = SearchModel.SortDirection == 1 ? SortDirection.Ascending : SortDirection.Descending;
         SortField = SearchModel.SortField switch
                     {

@@ -76,22 +76,22 @@ public class Start
         set;
     }
 
-    /// <summary>
-    ///     Gets or sets the application's memory cache.
-    /// </summary>
-    /// <value>
-    ///     The memory cache instance used for caching data throughout the application.
-    /// </value>
-    /// <remarks>
-    ///     This property is used to store and retrieve data that is expensive to generate.
-    ///     Data stored in the memory cache can improve the performance of the application by reducing the need to regenerate
-    ///     complex data or perform costly database queries.
-    /// </remarks>
-    public static IMemoryCache MemCache
-    {
-        get;
-        set;
-    }
+    ///// <summary>
+    /////     Gets or sets the application's memory cache.
+    ///// </summary>
+    ///// <value>
+    /////     The memory cache instance used for caching data throughout the application.
+    ///// </value>
+    ///// <remarks>
+    /////     This property is used to store and retrieve data that is expensive to generate.
+    /////     Data stored in the memory cache can improve the performance of the application by reducing the need to regenerate
+    /////     complex data or perform costly database queries.
+    ///// </remarks>
+    //public static IMemoryCache MemCache
+    //{
+    //    get;
+    //    set;
+    //}
 
     /// <summary>
     ///     Gets or sets the path for uploading files in the application.

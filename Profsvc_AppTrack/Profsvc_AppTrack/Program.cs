@@ -31,7 +31,7 @@ _builder.Services.AddHttpContextAccessor();
 _builder.Services.AddHttpClient();
 _builder.Services.AddBlazoredLocalStorage();   // Local storage
 _builder.Services.AddBlazoredSessionStorage(); // Session storage
-_builder.Services.AddMemoryCache();
+//_builder.Services.AddMemoryCache();
 _builder.Services.AddSignalR(e =>
                              {
                                  e.MaximumReceiveMessageSize = 10485760;
@@ -81,8 +81,8 @@ _app.MapRazorComponents<App>()
 
 _app.UseResponseCompression();
 
-IMemoryCache _memoryCache = new MemoryCache(new MemoryCacheOptions());
-Start.MemCache = _memoryCache;
+//IMemoryCache _memoryCache = new MemoryCache(new MemoryCacheOptions());
+//Start.MemCache = _memoryCache;
 
 Start.ApiHost = _app.Configuration.GetValue(typeof(string), "APIHost")?.ToString();
 Start.ConnectionString = _app.Configuration.GetConnectionString("DBConnect");
