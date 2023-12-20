@@ -8,4 +8,4 @@ ShowMe.txt
 *.zip
 *.7z
 #!*.dll
-ProfSvc_AppTrack\log\errorLog*.txt
+ProfSvc_AppTrack\ProfSvc_AppTrack\log\errorLog*.txt
