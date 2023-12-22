@@ -1260,14 +1260,8 @@ internal class General
     {
         try
         {
-            //RestClient _restClient = new($"{Start.ApiHost}");
-            //RestRequest _request = new("Admin/GetVariableCommission")
-            //                       {
-            //                           RequestFormat = DataFormat.Json
-            //                       };
             VariableCommission _response = await GetRest<VariableCommission>("Admin/GetVariableCommission");
 
-            //VariableCommission _response = await _restClient.GetAsync<VariableCommission>(_request);
             return _response ?? new(1, 1920, 24, 12, 3, 15);
         }
         catch
@@ -1292,15 +1286,13 @@ internal class General
 
         try
         {
-            RestClient _restClient = new($"{Start.ApiHost}");
-            RestRequest _request = new("Admin/GetWorkflows")
-                                   {
-                                       RequestFormat = DataFormat.Json
-                                   };
+            Dictionary<string, string> _parameters = new()
+                                                     {
+                                                         {"filter", HttpUtility.UrlEncode(filter)}
+                                                     };
+            _restResponse = await GetRest<Dictionary<string, object>>("Admin/GetWorkflows", _parameters);
 
-            _request.AddQueryParameter("filter", HttpUtility.UrlEncode(filter));
-            Dictionary<string, object> _response = await _restClient.GetAsync<Dictionary<string, object>>(_request);
-            if (_response == null)
+            if (_restResponse == null)
             {
                 return await Task.FromResult<object>(dm.RequiresCounts ? new DataResult
                                                                          {
@@ -1309,10 +1301,10 @@ internal class General
                                                                          } : _dataSource);
             }
 
-            _dataSource = DeserializeObject<List<AppWorkflow>>(_response["Workflows"]);
-            Workflow.Roles = DeserializeObject<List<KeyValues>>(_response["Roles"]);
-            Workflow.Status = DeserializeObject<List<KeyValues>>(_response["Status"]);
-            int _count = _response["Count"].ToInt32();
+            _dataSource = DeserializeObject<List<AppWorkflow>>(_restResponse["Workflows"]);
+            Workflow.Roles = DeserializeObject<List<KeyValues>>(_restResponse["Roles"]);
+            Workflow.Status = DeserializeObject<List<KeyValues>>(_restResponse["Status"]);
+            int _count = _restResponse["Count"].ToInt32();
 
             return await Task.FromResult<object>(dm.RequiresCounts ? new DataResult
                                                                      {
@@ -1383,7 +1375,7 @@ internal class General
     ///     If a JSON body is provided, it is added to the request.
     ///     All key-value pairs in the parameters dictionary are added as query parameters to the request.
     /// </remarks>
-    internal static async Task<T> PostRest<T>(string endpoint, Dictionary<string, string> parameters, object jsonBody = null)
+    internal static async Task<T> PostRest<T>(string endpoint, Dictionary<string, string> parameters = null, object jsonBody = null)
     {
         using RestClient _client = new(Start.ApiHost);
         RestRequest _request = new(endpoint, Method.Post)
@@ -1475,17 +1467,15 @@ internal class General
     internal static async Task SaveAdminListAsync<T>(string methodName, string parameterName, bool containDescription, bool isString, AdminList adminList, SfGrid<T> grid,
                                                      AdminList mainAdminList = null, IJSRuntime runtime = null)
     {
-        using RestClient _restClient = new($"{Start.ApiHost}");
-        RestRequest _request = new("Admin/SaveAdminList", Method.Post)
-                               {
-                                   RequestFormat = DataFormat.Json
-                               };
-        _request.AddQueryParameter("methodName", methodName);
-        _request.AddQueryParameter("parameterName", parameterName);
-        _request.AddQueryParameter("containsDescription", containDescription);
-        _request.AddQueryParameter("isString", isString.ToString());
-        _request.AddJsonBody(adminList);
-        string _response = await _restClient.PostAsync<string>(_request);
+        Dictionary<string, string> _parameters = new()
+                                                 {
+                                                     {"methodName", methodName},
+                                                     {"parameterName", parameterName},
+                                                     {"containsDescription", containDescription.ToString()},
+                                                     {"isString", isString.ToString()}
+                                                 };
+
+        string _response = await PostRest<string>("Admin/SaveAdminList", _parameters, adminList);
 
         if (mainAdminList != null)
         {
