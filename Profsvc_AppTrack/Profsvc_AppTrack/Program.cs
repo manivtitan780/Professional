@@ -31,7 +31,7 @@ _builder.Services.AddHttpContextAccessor();
 _builder.Services.AddHttpClient();
 _builder.Services.AddBlazoredLocalStorage();   // Local storage
 _builder.Services.AddBlazoredSessionStorage(); // Session storage
-//_builder.Services.AddMemoryCache();
+_builder.Services.AddMemoryCache();
 _builder.Services.AddSignalR(e =>
                              {
                                  e.MaximumReceiveMessageSize = 10485760;

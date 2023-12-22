@@ -8,7 +8,7 @@
 // File Name:           General.cs
 // Created By:          Narendra Kumaran Kadhirvelu, Jolly Joseph Paily, DonBosco Paily, Mariappan Raja
 // Created On:          11-22-2023 16:27
-// Last Updated On:     12-05-2023 21:11
+// Last Updated On:     12-22-2023 19:44
 // *****************************************/
 
 #endregion
@@ -21,9 +21,8 @@ using System.Runtime.CompilerServices;
 using Profsvc_AppTrack.Components.Pages;
 using Profsvc_AppTrack.Components.Pages.Admin;
 
-using Syncfusion.Blazor.DocumentEditor;
-
 using ILogger = Microsoft.Extensions.Logging.ILogger;
+
 // ReSharper disable UnusedMember.Global
 
 #endregion
@@ -38,6 +37,8 @@ namespace Profsvc_AppTrack.Components.Code;
 /// </summary>
 internal class General
 {
+    internal General(RedisService redisService) => Redis = redisService;
+
     private static Dictionary<string, object> _restResponse;
 
     private static RedisService Redis
@@ -45,12 +46,7 @@ internal class General
         get;
         set;
     }
-    
-    internal General(RedisService redisService)
-    {
-        Redis = redisService;
-    }
-    
+
     /// <summary>
     ///     Asynchronously executes the provided cancel method, hides the spinner and dialog, and enables the dialog buttons.
     ///     This method is designed to be used as a common cancellation routine for various dialogs in the application.
@@ -261,7 +257,7 @@ internal class General
                                        } : _dataSource;
         }
     }
-    
+
     /// <summary>
     ///     Asynchronously retrieves autocomplete data for zip codes based on the provided DataManagerRequest.
     ///     The method checks the DataManagerRequest for any filtering conditions and returns a list of zip codes that match
@@ -539,7 +535,7 @@ internal class General
             }
 
             _dataSource = DeserializeObject<List<DocumentType>>(_response["DocTypes"]);
-            int _count = _response["Count"] as int? ?? 0;
+            int _count = _response["Count"].ToInt32();
 
             return await Task.FromResult<object>(dm.RequiresCounts ? new DataResult
                                                                      {
@@ -681,7 +677,7 @@ internal class General
                                                          {"filter", HttpUtility.UrlEncode(filter)},
                                                          {"isString", isString.ToString()}
                                                      };
-            _restResponse = await GetRest<Dictionary<string, object>>("Admin/GetAdminList", _parameters);//, searchModel);
+            _restResponse = await GetRest<Dictionary<string, object>>("Admin/GetAdminList", _parameters); //, searchModel);
             if (_restResponse == null)
             {
                 return await Task.FromResult<object>(dm.RequiresCounts ? new DataResult
@@ -765,18 +761,14 @@ internal class General
         int _page = searchModel.Page;
         try
         {
-            RestClient _restClient = new($"{Start.ApiHost}");
-            RestRequest _request = new("Requisition/GetGridRequisitions")
-                                   {
-                                       RequestFormat = DataFormat.Json
-                                   };
-            _request.AddJsonBody(searchModel);
-            _request.AddQueryParameter("getCompanyInformation", getInformation);
-            _request.AddQueryParameter("requisitionID", optionalRequisitionID);
-            _request.AddQueryParameter("thenProceed", thenProceed);
-            _request.AddQueryParameter("user", user);
-
-            _restResponse = await _restClient.GetAsync<Dictionary<string, object>>(_request);
+            Dictionary<string, string> _parameters = new()
+                                                     {
+                                                         {"getCompanyInformation", getInformation.ToString()},
+                                                         {"requisitionID", optionalRequisitionID.ToString()},
+                                                         {"thenProceed", thenProceed.ToString()},
+                                                         {"user", user}
+                                                     };
+            _restResponse = await GetRest<Dictionary<string, object>>("Requisition/GetGridRequisitions", _parameters, searchModel);
 
             if (_restResponse == null)
             {
@@ -863,7 +855,7 @@ internal class General
     ///     If a dictionary of parameters is provided, they are added as query parameters to the request.
     ///     The method then sends the request and awaits the response. The response is returned as an object of type T.
     /// </remarks>
-    private static async Task<T> GetRest<T>(string endpoint, Dictionary<string, string> parameters, object jsonBody = null)
+    private static async Task<T> GetRest<T>(string endpoint, Dictionary<string, string> parameters = null, object jsonBody = null)
     {
         using RestClient _client = new(Start.ApiHost);
         RestRequest _request = new(endpoint)
@@ -914,14 +906,11 @@ internal class General
 
         try
         {
-            RestClient _restClient = new($"{Start.ApiHost}");
-            RestRequest _request = new("Admin/GetRoles")
-                                   {
-                                       RequestFormat = DataFormat.Json
-                                   };
-            _request.AddQueryParameter("filter", HttpUtility.UrlEncode(filter));
-
-            _restResponse = await _restClient.GetAsync<Dictionary<string, object>>(_request);
+            Dictionary<string, string> _parameters = new()
+                                                     {
+                                                         {"filter", HttpUtility.UrlEncode(filter)}
+                                                     };
+            _restResponse = await GetRest<Dictionary<string, object>>("Admin/GetRoles", _parameters);
 
             if (_restResponse == null)
             {
@@ -997,14 +986,13 @@ internal class General
 
         try
         {
-            RestClient _restClient = new($"{Start.ApiHost}");
-            RestRequest _request = new("Admin/GetStates")
-                                   {
-                                       RequestFormat = DataFormat.Json
-                                   };
-            _request.AddQueryParameter("filter", HttpUtility.UrlEncode(filter));
-            Dictionary<string, object> _response = await _restClient.GetAsync<Dictionary<string, object>>(_request);
-            if (_response == null)
+            Dictionary<string, string> _parameters = new()
+                                                     {
+                                                         {"filter", HttpUtility.UrlEncode(filter)}
+                                                     };
+            _restResponse = await GetRest<Dictionary<string, object>>("Admin/GetStates", _parameters);
+
+            if (_restResponse == null)
             {
                 return await Task.FromResult<object>(dm.RequiresCounts ? new DataResult
                                                                          {
@@ -1013,8 +1001,8 @@ internal class General
                                                                          } : _dataSource);
             }
 
-            _dataSource = DeserializeObject<List<State>>(_response["States"]);
-            int _count = _response["Count"] as int? ?? 0;
+            _dataSource = DeserializeObject<List<State>>(_restResponse["States"]);
+            int _count = _restResponse["Count"].ToInt32();
 
             return await Task.FromResult<object>(dm.RequiresCounts ? new DataResult
                                                                      {
@@ -1060,14 +1048,13 @@ internal class General
 
         try
         {
-            RestClient _restClient = new($"{Start.ApiHost}");
-            RestRequest _request = new("Admin/GetStatusCodes")
-                                   {
-                                       RequestFormat = DataFormat.Json
-                                   };
-            _request.AddQueryParameter("filter", HttpUtility.UrlEncode(filter));
-            Dictionary<string, object> _response = await _restClient.GetAsync<Dictionary<string, object>>(_request);
-            if (_response == null)
+            Dictionary<string, string> _parameters = new()
+                                                     {
+                                                         {"filter", HttpUtility.UrlEncode(filter)}
+                                                     };
+            _restResponse = await GetRest<Dictionary<string, object>>("Admin/GetStatusCodes", _parameters);
+
+            if (_restResponse == null)
             {
                 return await Task.FromResult<object>(dm.RequiresCounts ? new DataResult
                                                                          {
@@ -1076,8 +1063,8 @@ internal class General
                                                                          } : _dataSource);
             }
 
-            _dataSource = DeserializeObject<List<StatusCode>>(_response["StatusCodes"]);
-            int _count = _response["Count"] as int? ?? 0;
+            _dataSource = DeserializeObject<List<StatusCode>>(_restResponse["StatusCodes"]);
+            int _count = _restResponse["Count"].ToInt32();
 
             return await Task.FromResult<object>(dm.RequiresCounts ? new DataResult
                                                                      {
@@ -1123,14 +1110,13 @@ internal class General
 
         try
         {
-            RestClient _restClient = new($"{Start.ApiHost}");
-            RestRequest _request = new("Admin/GetTemplateList")
-                                   {
-                                       RequestFormat = DataFormat.Json
-                                   };
-            _request.AddQueryParameter("filter", HttpUtility.UrlEncode(filter));
-            Dictionary<string, object> _response = await _restClient.GetAsync<Dictionary<string, object>>(_request);
-            if (_response == null)
+            Dictionary<string, string> _parameters = new()
+                                                     {
+                                                         {"filter", HttpUtility.UrlEncode(filter)}
+                                                     };
+            _restResponse = await GetRest<Dictionary<string, object>>("Admin/GetTemplateList", _parameters);
+
+            if (_restResponse == null)
             {
                 return await Task.FromResult<object>(dm.RequiresCounts ? new DataResult
                                                                          {
@@ -1139,9 +1125,9 @@ internal class General
                                                                          } : _dataSource);
             }
 
-            _dataSource = DeserializeObject<List<Template>>(_response["Templates"]);
+            _dataSource = DeserializeObject<List<Template>>(_restResponse["Templates"]);
 
-            int _count = _response["Count"] as int? ?? 0;
+            int _count = _restResponse["Count"].ToInt32();
 
             return await Task.FromResult<object>(dm.RequiresCounts ? new DataResult
                                                                      {
@@ -1208,14 +1194,13 @@ internal class General
 
         try
         {
-            RestClient _restClient = new($"{Start.ApiHost}");
-            RestRequest _request = new("Admin/GetUserList")
-                                   {
-                                       RequestFormat = DataFormat.Json
-                                   };
-            _request.AddQueryParameter("filter", HttpUtility.UrlEncode(filter));
-            Dictionary<string, object> _response = await _restClient.GetAsync<Dictionary<string, object>>(_request);
-            if (_response == null)
+            Dictionary<string, string> _parameters = new()
+                                                     {
+                                                         {"filter", HttpUtility.UrlEncode(filter)}
+                                                     };
+            _restResponse = await GetRest<Dictionary<string, object>>("Admin/GetUserList", _parameters);
+
+            if (_restResponse == null)
             {
                 return await Task.FromResult<object>(dm.RequiresCounts ? new DataResult
                                                                          {
@@ -1224,10 +1209,10 @@ internal class General
                                                                          } : _dataSource);
             }
 
-            _dataSource = DeserializeObject<List<User>>(_response["Users"]);
-            AppUsers.Roles = DeserializeObject<List<KeyValues>>(_response["Roles"]);
+            _dataSource = DeserializeObject<List<User>>(_restResponse["Users"]);
+            AppUsers.Roles = DeserializeObject<List<KeyValues>>(_restResponse["Roles"]);
 
-            int _count = _response["Count"] as int? ?? 0;
+            int _count = _restResponse["Count"].ToInt32();
 
             return await Task.FromResult<object>(dm.RequiresCounts ? new DataResult
                                                                      {
@@ -1275,12 +1260,14 @@ internal class General
     {
         try
         {
-            RestClient _restClient = new($"{Start.ApiHost}");
-            RestRequest _request = new("Admin/GetVariableCommission")
-                                   {
-                                       RequestFormat = DataFormat.Json
-                                   };
-            VariableCommission _response = await _restClient.GetAsync<VariableCommission>(_request);
+            //RestClient _restClient = new($"{Start.ApiHost}");
+            //RestRequest _request = new("Admin/GetVariableCommission")
+            //                       {
+            //                           RequestFormat = DataFormat.Json
+            //                       };
+            VariableCommission _response = await GetRest<VariableCommission>("Admin/GetVariableCommission");
+
+            //VariableCommission _response = await _restClient.GetAsync<VariableCommission>(_request);
             return _response ?? new(1, 1920, 24, 12, 3, 15);
         }
         catch
@@ -1325,7 +1312,7 @@ internal class General
             _dataSource = DeserializeObject<List<AppWorkflow>>(_response["Workflows"]);
             Workflow.Roles = DeserializeObject<List<KeyValues>>(_response["Roles"]);
             Workflow.Status = DeserializeObject<List<KeyValues>>(_response["Status"]);
-            int _count = _response["Count"] as int? ?? 0;
+            int _count = _response["Count"].ToInt32();
 
             return await Task.FromResult<object>(dm.RequiresCounts ? new DataResult
                                                                      {
@@ -1448,10 +1435,10 @@ internal class General
                                                      {"id", id.ToString()},
                                                      {"username", userName},
                                                      {"idIsString", isString.ToString()},
-                                                     {"isUser", isUser.ToString()},
+                                                     {"isUser", isUser.ToString()}
                                                  };
-        
-        string _response = await PostRest<string>("Admin/ToggleAdminList",_parameters);
+
+        string _response = await PostRest<string>("Admin/ToggleAdminList", _parameters);
 
         await grid.Refresh();
 
