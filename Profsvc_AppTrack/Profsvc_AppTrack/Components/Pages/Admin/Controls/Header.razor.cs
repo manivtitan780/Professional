@@ -8,12 +8,8 @@
 // File Name:           Header.razor.cs
 // Created By:          Narendra Kumaran Kadhirvelu, Jolly Joseph Paily, DonBosco Paily, Mariappan Raja
 // Created On:          11-23-2023 19:53
-// Last Updated On:     12-14-2023 15:59
+// Last Updated On:     12-23-2023 15:50
 // *****************************************/
-
-#endregion
-
-#region Using
 
 #endregion
 
@@ -227,9 +223,9 @@ public partial class Header
     ///     It's an override of the base method in the ComponentBase class, which is called when the component is initialized.
     /// </remarks>
     /// <returns>A Task that represents the asynchronous operation.</returns>
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
-        await Task.Delay(0);
         _baseURL = NavManager.BaseUri;
+        base.OnInitialized();
     }
 }

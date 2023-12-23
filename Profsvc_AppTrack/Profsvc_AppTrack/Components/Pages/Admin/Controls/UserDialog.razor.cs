@@ -8,7 +8,7 @@
 // File Name:           UserDialog.razor.cs
 // Created By:          Narendra Kumaran Kadhirvelu, Jolly Joseph Paily, DonBosco Paily, Mariappan Raja
 // Created On:          11-23-2023 19:53
-// Last Updated On:     12-14-2023 16:20
+// Last Updated On:     12-23-2023 16:5
 // *****************************************/
 
 #endregion
@@ -229,11 +229,7 @@ public partial class UserDialog
     ///     This method is invoked before the dialog is opened. It initializes the edit context for the user form and
     ///     validates it.
     /// </remarks>
-    private async Task OpenDialog(BeforeOpenEventArgs args)
-    {
-        await Task.Yield();
-        EditUserForm.EditContext?.Validate();
-    }
+    private void OpenDialog(BeforeOpenEventArgs args) => EditUserForm.EditContext?.Validate();
 
     /// <summary>
     ///     Asynchronously saves the list of users.
@@ -255,28 +251,15 @@ public partial class UserDialog
     /// <returns>A task that represents the asynchronous operation.</returns>
     private async Task SaveUserList(EditContext editContext)
     {
-        await Task.Yield();
         if (!DialogFooter.ButtonsDisabled())
         {
             await Spinner.ShowAsync();
             DialogFooter.DisableButtons();
             await Save.InvokeAsync(editContext);
-            await Task.Yield();
+
             DialogFooter.EnableButtons();
             await Spinner.HideAsync();
             await Dialog.HideAsync();
         }
     }
-
-    ///// <summary>
-    /////     Handles the opening of a tooltip.
-    ///// </summary>
-    ///// <param name="args">The arguments associated with the tooltip event.</param>
-    ///// <remarks>
-    /////     This method cancels the opening of the tooltip if it does not contain any text.
-    ///// </remarks>
-    //private void ToolTipOpen(TooltipEventArgs args)
-    //{
-    //	args.Cancel = !args.HasText;
-    //}
 }

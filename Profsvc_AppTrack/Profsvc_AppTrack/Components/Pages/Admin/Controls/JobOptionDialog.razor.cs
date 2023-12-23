@@ -8,11 +8,10 @@
 // File Name:           JobOptionDialog.razor.cs
 // Created By:          Narendra Kumaran Kadhirvelu, Jolly Joseph Paily, DonBosco Paily, Mariappan Raja
 // Created On:          11-23-2023 19:53
-// Last Updated On:     12-14-2023 16:0
+// Last Updated On:     12-23-2023 16:1
 // *****************************************/
 
 #endregion
-
 
 // ReSharper disable MemberCanBePrivate.Global
 
@@ -176,11 +175,7 @@ public partial class JobOptionDialog
     ///     This method is triggered before the dialog is opened. It yields control back to the caller before
     ///     validating the form context of the `EditJobOptionForm`.
     /// </remarks>
-    private async Task OpenDialog(BeforeOpenEventArgs arg)
-    {
-        await Task.Yield();
-        EditJobOptionForm.EditContext?.Validate();
-    }
+    private void OpenDialog(BeforeOpenEventArgs arg) => EditJobOptionForm.EditContext?.Validate();
 
     /// <summary>
     ///     Asynchronously saves the job option changes made in the dialog.

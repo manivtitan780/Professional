@@ -8,7 +8,7 @@
 // File Name:           TaxTermDialog.razor.cs
 // Created By:          Narendra Kumaran Kadhirvelu, Jolly Joseph Paily, DonBosco Paily, Mariappan Raja
 // Created On:          11-23-2023 19:53
-// Last Updated On:     12-14-2023 16:12
+// Last Updated On:     12-23-2023 15:57
 // *****************************************/
 
 #endregion
@@ -78,14 +78,14 @@ public partial class TaxTermDialog
         set;
     }
 
-	/// <summary>
-	///     Gets or sets the Model of the TaxTermDialog. The Model is of type AdminList, and it represents the data being
-	///     edited
-	///     in the dialog.
-	///     The Model includes properties such as Code, Text, and IsEnabled which correspond to the Tax Term Code, Tax Term
-	///     Text, and the status of the Tax Term respectively.
-	/// </summary>
-	[Parameter]
+    /// <summary>
+    ///     Gets or sets the Model of the TaxTermDialog. The Model is of type AdminList, and it represents the data being
+    ///     edited
+    ///     in the dialog.
+    ///     The Model includes properties such as Code, Text, and IsEnabled which correspond to the Tax Term Code, Tax Term
+    ///     Text, and the status of the Tax Term respectively.
+    /// </summary>
+    [Parameter]
     public AdminList Model
     {
         get;

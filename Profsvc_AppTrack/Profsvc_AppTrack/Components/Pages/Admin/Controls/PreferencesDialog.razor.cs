@@ -8,7 +8,7 @@
 // File Name:           PreferencesDialog.razor.cs
 // Created By:          Narendra Kumaran Kadhirvelu, Jolly Joseph Paily, DonBosco Paily, Mariappan Raja
 // Created On:          11-23-2023 19:53
-// Last Updated On:     12-14-2023 16:3
+// Last Updated On:     12-23-2023 15:52
 // *****************************************/
 
 #endregion
@@ -110,6 +110,13 @@ public partial class PreferencesDialog
         get;
     } = new();
 
+    [Inject]
+    private RedisService Redis
+    {
+        get;
+        set;
+    }
+
     /// <summary>
     ///     Gets or sets the SfSpinner component used in the PreferencesDialog.
     /// </summary>
@@ -138,13 +145,6 @@ public partial class PreferencesDialog
         return Dialog.HideAsync();
     }
 
-    [Inject]
-    private RedisService Redis
-    {
-        get;
-        set;
-    }
-
     /// <summary>
     ///     Opens the dialog for editing preferences.
     /// </summary>
@@ -156,12 +156,12 @@ public partial class PreferencesDialog
     /// <returns>A Task representing the asynchronous operation.</returns>
     private async Task OpenDialog(BeforeOpenEventArgs args)
     {
-        await Task.Yield();
         Preferences _preferences = await Redis.GetAsync<Preferences>("Preferences");
         if (_preferences != null)
         {
             Model = _preferences;
         }
+
         _ = EditPreferenceForm.EditContext?.Validate();
         ModelClone = Model.Copy();
     }
@@ -188,7 +188,7 @@ public partial class PreferencesDialog
             DialogFooter.DisableButtons();
             await General.PostRest<int>("Admin/SavePreferences", null, Model);
             await Redis.RefreshAsync("Preferences", Model);
-            await Task.Yield();
+
             DialogFooter.EnableButtons();
             await Spinner.HideAsync();
             await Dialog.HideAsync();

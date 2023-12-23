@@ -8,7 +8,7 @@
 // File Name:           TemplateDialog.razor.cs
 // Created By:          Narendra Kumaran Kadhirvelu, Jolly Joseph Paily, DonBosco Paily, Mariappan Raja
 // Created On:          11-23-2023 19:53
-// Last Updated On:     12-14-2023 16:19
+// Last Updated On:     12-23-2023 16:4
 // *****************************************/
 
 #endregion
@@ -66,23 +66,6 @@ public partial class TemplateDialog
         new(1, "Candidate Created"), new(2, "Candidate Updated"), new(3, "Candidate Submitted"), new(4, "Candidate Deleted"), new(5, "Candidate Status Changed"), new(6, "Requisition Created"),
         new(7, "Requisition Updated"), new(8, "Requisition Status Changed"), new(9, "Candidate Submission Updated"), new(10, "No Action")
     ];
-
-    ///// <summary>
-    /////     Gets or sets the event callback that is invoked when the focus is moved away from a subject in the dialog.
-    ///// </summary>
-    ///// <value>
-    /////     The event callback for the focus out action.
-    ///// </value>
-    ///// <remarks>
-    /////     This event callback is typically used to perform actions such as validation or state updates when the user moves
-    /////     the focus away from a subject in the dialog.
-    /////     The event handler receives the FocusOutEventArgs associated with the focus out action.
-    ///// </remarks>
-    //public EventCallback<FocusOutEventArgs> BlurSubject
-    //{
-    //    get;
-    //    set;
-    //}
 
     /// <summary>
     ///     Gets or sets the event callback that is invoked when the cancel action is triggered in the dialog.
@@ -387,11 +370,7 @@ public partial class TemplateDialog
     ///     This method is invoked before the dialog is opened. It initializes the edit context for the template form and
     ///     validates it.
     /// </remarks>
-    private async Task OpenDialog(BeforeOpenEventArgs args)
-    {
-        await Task.Yield();
-        EditTemplateForm.EditContext?.Validate();
-    }
+    private void OpenDialog(BeforeOpenEventArgs args) => EditTemplateForm.EditContext?.Validate();
 
     /// <summary>
     ///     Asynchronously saves the template changes made in the dialog.
@@ -423,8 +402,5 @@ public partial class TemplateDialog
     /// <remarks>
     ///     This method cancels the opening of the tooltip if it does not contain any text.
     /// </remarks>
-    private void ToolTipOpen(TooltipEventArgs args)
-    {
-        args.Cancel = !args.HasText;
-    }
+    private void ToolTipOpen(TooltipEventArgs args) => args.Cancel = !args.HasText;
 }

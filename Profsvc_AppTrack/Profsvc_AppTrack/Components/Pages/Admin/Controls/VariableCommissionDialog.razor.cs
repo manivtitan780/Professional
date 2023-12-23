@@ -8,7 +8,7 @@
 // File Name:           VariableCommissionDialog.razor.cs
 // Created By:          Narendra Kumaran Kadhirvelu, Jolly Joseph Paily, DonBosco Paily, Mariappan Raja
 // Created On:          11-23-2023 19:53
-// Last Updated On:     12-14-2023 16:21
+// Last Updated On:     12-23-2023 16:8
 // *****************************************/
 
 #endregion
@@ -144,11 +144,7 @@ public partial class VariableCommissionDialog
     /// <returns>
     ///     A task that represents the asynchronous operation.
     /// </returns>
-    protected override async Task OnInitializedAsync()
-    {
-        await Task.Yield();
-        Model = await General.GetVariableCommission();
-    }
+    protected override async Task OnInitializedAsync() => Model = await General.GetVariableCommission();
 
     /// <summary>
     ///     Asynchronously opens the dialog for editing variable commissions.
@@ -159,9 +155,8 @@ public partial class VariableCommissionDialog
     ///     creates a copy of the current model for editing.
     /// </remarks>
     /// <returns>A task that represents the asynchronous operation.</returns>
-    private async Task OpenDialog(BeforeOpenEventArgs arg)
+    private void OpenDialog(BeforeOpenEventArgs arg)
     {
-        await Task.Yield();
         _ = EditVariableCommission.EditContext?.Validate();
         ModelClone = Model.Copy();
     }
@@ -187,12 +182,21 @@ public partial class VariableCommissionDialog
             await Spinner.ShowAsync();
             DialogFooter.DisableButtons();
             await General.PostRest<int>("Admin/SaveVariableCommission", null, Model);
-            await Task.Yield();
+
             DialogFooter.EnableButtons();
             await Spinner.HideAsync();
             await Dialog.HideAsync();
         }
     }
 
+    /// <summary>
+    ///     Asynchronously displays the VariableCommissionDialog.
+    /// </summary>
+    /// <remarks>
+    ///     This method is used to display the VariableCommissionDialog by invoking the ShowAsync method of the SfDialog
+    ///     component.
+    ///     It is typically called when the user interacts with the associated UI element in the Header component.
+    /// </remarks>
+    /// <returns>A Task that represents the asynchronous operation.</returns>
     public Task ShowDialog() => Dialog.ShowAsync();
 }

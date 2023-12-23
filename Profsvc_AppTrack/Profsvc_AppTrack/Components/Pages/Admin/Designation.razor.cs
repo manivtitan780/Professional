@@ -193,12 +193,7 @@ public partial class Designation
         return ExecuteMethod(() =>
                              {
                                  Count = AdminGrid.Grid.CurrentViewData.Count();
-                                 if (Count > 0)
-                                 {
-                                     return AdminGrid.Grid.SelectRowAsync(0);
-                                 }
-
-                                 return Task.CompletedTask;
+                                 return Count > 0 ? AdminGrid.Grid.SelectRowAsync(0) : Task.CompletedTask;
                              });
     }
 

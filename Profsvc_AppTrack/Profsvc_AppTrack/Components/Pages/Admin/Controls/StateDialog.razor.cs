@@ -8,7 +8,7 @@
 // File Name:           StateDialog.razor.cs
 // Created By:          Narendra Kumaran Kadhirvelu, Jolly Joseph Paily, DonBosco Paily, Mariappan Raja
 // Created On:          11-23-2023 19:53
-// Last Updated On:     12-14-2023 16:5
+// Last Updated On:     12-23-2023 16:2
 // *****************************************/
 
 #endregion
@@ -176,11 +176,7 @@ public partial class StateDialog
     ///     This method is invoked when the dialog is about to open. It ensures that the form context is validated before the
     ///     dialog is displayed.
     /// </remarks>
-    private async Task OpenDialog(BeforeOpenEventArgs arg)
-    {
-        await Task.Yield();
-        EditStateForm.EditContext?.Validate();
-    }
+    private void OpenDialog(BeforeOpenEventArgs arg) => EditStateForm.EditContext?.Validate();
 
     /// <summary>
     ///     Asynchronously saves the state entity data from the dialog.

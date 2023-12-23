@@ -8,7 +8,7 @@
 // File Name:           StatusCodeDialog.razor.cs
 // Created By:          Narendra Kumaran Kadhirvelu, Jolly Joseph Paily, DonBosco Paily, Mariappan Raja
 // Created On:          11-23-2023 19:53
-// Last Updated On:     12-14-2023 16:6
+// Last Updated On:     12-23-2023 15:56
 // *****************************************/
 
 #endregion
@@ -35,12 +35,12 @@ public partial class StatusCodeDialog
     ///     The following status codes are included: "CLI" for Client, "CND" for Candidate, "REQ" for Requisition, "SCN" for
     ///     Candidate Submission, "SUB" for Submission, "USR" for User, and "VND" for Vendor.
     /// </remarks>
-    private readonly List<KeyValues> _statusDropItems = new()
-                                                        {
-                                                            new("CLI", "Client"), new("CND", "Candidate"), new("REQ", "Requisition"),
-                                                            new("SCN", "Candidate Submission"), new("SUB", "Submission"), new("USR", "User"),
-                                                            new("VND", "Vendor")
-                                                        };
+    private readonly List<KeyValues> _statusDropItems =
+    [
+        new("CLI", "Client"), new("CND", "Candidate"), new("REQ", "Requisition"),
+        new("SCN", "Candidate Submission"), new("SUB", "Submission"), new("USR", "User"),
+        new("VND", "Vendor")
+    ];
 
     /// <summary>
     ///     Gets or sets the event callback that is invoked when the cancel action is triggered in the dialog.
@@ -187,9 +187,8 @@ public partial class StatusCodeDialog
     ///     This method is invoked before the dialog is opened. It initializes the edit context for the status code form and
     ///     validates it.
     /// </remarks>
-    private async Task OpenDialog(BeforeOpenEventArgs args)
+    private void OpenDialog(BeforeOpenEventArgs args)
     {
-        await Task.Yield();
         _editContext = EditStatusCodeForm.EditContext;
         _editContext?.Validate();
     }
@@ -214,9 +213,8 @@ public partial class StatusCodeDialog
     ///     This method triggers a field change notification for the 'Code' and 'Status' fields of the model,
     ///     which in turn triggers the validation process for these fields.
     /// </remarks>
-    private async Task SetValidators(ChangeEventArgs<string, KeyValues> arg)
+    private void SetValidators(ChangeEventArgs<string, KeyValues> arg)
     {
-        await Task.Yield();
         _editContext?.NotifyFieldChanged(_editContext.Field(nameof(Model.Code)));
         _editContext?.NotifyFieldChanged(_editContext.Field(nameof(Model.Status)));
     }

@@ -35,9 +35,9 @@
 					<MenuItem Disabled="@(Page == "Leads")" IconCss="e-menu-icons e-menu-leads" Text="Leads" Url="@($"{_baseURL}lead")" />
 				</MenuItems>
 			</MenuItem>
-			<MenuItem Text="Preferences" Url="javascript:void()" Hidden="@(RoleID != "AD")"></MenuItem>
-            <MenuItem Text="Sign Out" Url="javascript:void()"></MenuItem>
-        </MenuItems>
+			<MenuItem Hidden="@(RoleID != "AD")" Text="Preferences" Url="javascript:void()"></MenuItem>
+			<MenuItem Text="Sign Out" Url="javascript:void()"></MenuItem>
+		</MenuItems>
 	</SfMenu>
 
 	<VariableCommissionDialog @ref="VariableDialog" />
