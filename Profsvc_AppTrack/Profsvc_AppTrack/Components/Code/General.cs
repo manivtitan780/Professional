@@ -855,7 +855,7 @@ internal class General
     ///     If a dictionary of parameters is provided, they are added as query parameters to the request.
     ///     The method then sends the request and awaits the response. The response is returned as an object of type T.
     /// </remarks>
-    private static async Task<T> GetRest<T>(string endpoint, Dictionary<string, string> parameters = null, object jsonBody = null)
+    internal static async Task<T> GetRest<T>(string endpoint, Dictionary<string, string> parameters = null, object jsonBody = null)
     {
         using RestClient _client = new(Start.ApiHost);
         RestRequest _request = new(endpoint)

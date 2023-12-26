@@ -8,7 +8,7 @@
 // File Name:           JobOptions.razor.cs
 // Created By:          Narendra Kumaran Kadhirvelu, Jolly Joseph Paily, DonBosco Paily, Mariappan Raja
 // Created On:          11-23-2023 19:53
-// Last Updated On:     12-13-2023 19:51
+// Last Updated On:     12-26-2023 16:0
 // *****************************************/
 
 #endregion
@@ -452,14 +452,6 @@ public partial class JobOptions
                              {
                                  string _response = await General.PostRest<string>("Admin/SaveJobOptions", null, JobOptionsRecordClone);
 
-                                 //RestClient _restClient = new($"{Start.ApiHost}");
-                                 //RestRequest _request = new("Admin/SaveJobOptions", Method.Post)
-                                 //                       {
-                                 //                           RequestFormat = DataFormat.Json
-                                 //                       };
-                                 //_request.AddJsonBody(JobOptionsRecordClone);
-                                 //string _response = await _restClient.PostAsync<string>(_request);
-
                                  JobOptionsRecord = JobOptionsRecordClone.Copy();
                                  await AdminGrid.Grid.Refresh();
 
@@ -506,18 +498,16 @@ public partial class JobOptions
             await _initializationTaskSource.Task;
             try
             {
-                List<JobOption> _dataSource = new();
+                List<JobOption> _dataSource = [];
                 object _returnValue = null;
                 try
                 {
-                    RestClient _restClient = new($"{Start.ApiHost}");
-                    RestRequest _request = new("Admin/GetJobOptions")
-                                           {
-                                               RequestFormat = DataFormat.Json
-                                           };
-                    _request.AddQueryParameter("filter", Filter);
-                    Dictionary<string, object> _jobOptionsItems = await _restClient.GetAsync<Dictionary<string, object>>(_request);
-                    TaxTermKeyValues = new();
+                    TaxTermKeyValues = [];
+                    Dictionary<string, string> _parameters = new()
+                                                             {
+                                                                 {"filter", Filter}
+                                                             };
+                    Dictionary<string, object> _jobOptionsItems = await General.GetRest<Dictionary<string, object>>("Admin/GetJobOptions", _parameters);
                     if (_jobOptionsItems == null)
                     {
                         _returnValue = dm.RequiresCounts ? new DataResult {Result = _dataSource, Count = 0} : _dataSource;
