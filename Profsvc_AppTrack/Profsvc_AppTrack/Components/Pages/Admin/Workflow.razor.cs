@@ -8,7 +8,7 @@
 // File Name:           Workflow.razor.cs
 // Created By:          Narendra Kumaran Kadhirvelu, Jolly Joseph Paily, DonBosco Paily, Mariappan Raja
 // Created On:          11-23-2023 19:53
-// Last Updated On:     12-13-2023 20:16
+// Last Updated On:     12-26-2023 16:23
 // *****************************************/
 
 #endregion
@@ -219,12 +219,7 @@ public partial class Workflow
         return ExecuteMethod(() =>
                              {
                                  Count = AdminGrid.Grid.CurrentViewData.Count();
-                                 if (Count > 0)
-                                 {
-                                     return AdminGrid.Grid.SelectRowAsync(0);
-                                 }
-
-                                 return Task.CompletedTask;
+                                 return Count > 0 ? AdminGrid.Grid.SelectRowAsync(0) : Task.CompletedTask;
                              });
     }
 

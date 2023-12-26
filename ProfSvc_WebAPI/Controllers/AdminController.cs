@@ -8,7 +8,7 @@
 // File Name:           AdminController.cs
 // Created By:          Narendra Kumaran Kadhirvelu, Jolly Joseph Paily, DonBosco Paily, Mariappan Raja
 // Created On:          11-22-2023 18:50
-// Last Updated On:     12-19-2023 20:59
+// Last Updated On:     12-26-2023 16:21
 // *****************************************/
 
 #endregion
@@ -772,14 +772,7 @@ public class AdminController : ControllerBase
                 _states, _eligibility, _jobOptions, _taxTerms, _skills, _experience, _templates, _users, _statusCodes, _zips, _education, _companies, _companyContacts, _roles, _titles, _leadSources,
                 _leadIndustries, _leadStatus, _commissionConfigurators, _variableCommissions, _workflows, _documentTypes, _preferences, _communications
             ];
-            try
-            {
-                await _redisService.CreateBatchSet(_keys, _values);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            await _redisService.CreateBatchSet(_keys, _values);
         }
     }
 

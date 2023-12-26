@@ -8,7 +8,7 @@
 // File Name:           Templates.razor.cs
 // Created By:          Narendra Kumaran Kadhirvelu, Jolly Joseph Paily, DonBosco Paily, Mariappan Raja
 // Created On:          11-23-2023 19:53
-// Last Updated On:     12-13-2023 20:15
+// Last Updated On:     12-26-2023 16:19
 // *****************************************/
 
 #endregion
