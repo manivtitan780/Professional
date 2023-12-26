@@ -3,17 +3,21 @@
 // /*****************************************
 // Copyright:           Titan-Techs.
 // Location:            Newtown, PA, USA
-// Solution:            ProfSvc_AppTrack
-// Project:             ProfSvc_AppTrack
+// Solution:            Profsvc_AppTrack
+// Project:             Profsvc_AppTrack
 // File Name:           StatusCodes.razor.cs
 // Created By:          Narendra Kumaran Kadhirvelu, Jolly Joseph Paily, DonBosco Paily, Mariappan Raja
-// Created On:          12-06-2022 18:52
-// Last Updated On:     11-04-2023 21:23
+// Created On:          11-23-2023 19:53
+// Last Updated On:     12-26-2023 16:17
 // *****************************************/
 
 #endregion
 
+#region Using
+
 using StatusCodeDialog = Profsvc_AppTrack.Components.Pages.Admin.Controls.StatusCodeDialog;
+
+#endregion
 
 namespace Profsvc_AppTrack.Components.Pages.Admin;
 
@@ -314,10 +318,7 @@ public partial class StatusCodes
     /// <returns>
     ///     A task that represents the asynchronous operation.
     /// </returns>
-    private Task ExecuteMethod(Func<Task> task)
-    {
-        return General.ExecuteMethod(_semaphore, task, Logger);
-    }
+    private Task ExecuteMethod(Func<Task> task) => General.ExecuteMethod(_semaphore, task, Logger);
 
     /// <summary>
     ///     Filters the grid based on the provided tax term.

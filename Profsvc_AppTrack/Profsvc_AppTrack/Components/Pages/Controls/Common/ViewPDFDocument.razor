@@ -4,7 +4,7 @@
         <Header>@($"Document: {DocumentName} ({DocumentLocation})")</Header>
         <Content>
             <SfSpinner CssClass="spinnerHeight" @ref="Spinner" Type="SpinnerType.Fabric" ZIndex="12000" />
-            <SfPdfViewer2 DownloadFileName="@DownloadFileName" EnableErrorDialog="false" @ref="PdfViewer" ToolbarSettings="_toolbarItems">
+            <SfPdfViewer2 DownloadFileName="@DownloadFileName" EnableErrorDialog="false" @ref="PdfViewer" ToolbarSettings="@_toolbarItems">
             </SfPdfViewer2>
         </Content>
     </DialogTemplates>

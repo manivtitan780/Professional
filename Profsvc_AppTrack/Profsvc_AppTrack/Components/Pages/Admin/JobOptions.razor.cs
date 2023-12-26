@@ -8,7 +8,7 @@
 // File Name:           JobOptions.razor.cs
 // Created By:          Narendra Kumaran Kadhirvelu, Jolly Joseph Paily, DonBosco Paily, Mariappan Raja
 // Created On:          11-23-2023 19:53
-// Last Updated On:     12-26-2023 16:0
+// Last Updated On:     12-26-2023 16:15
 // *****************************************/
 
 #endregion
@@ -505,7 +505,7 @@ public partial class JobOptions
                     TaxTermKeyValues = [];
                     Dictionary<string, string> _parameters = new()
                                                              {
-                                                                 {"filter", Filter}
+                                                                 {"filter", HttpUtility.UrlEncode(Filter)}
                                                              };
                     Dictionary<string, object> _jobOptionsItems = await General.GetRest<Dictionary<string, object>>("Admin/GetJobOptions", _parameters);
                     if (_jobOptionsItems == null)
