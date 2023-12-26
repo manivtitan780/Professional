@@ -8,7 +8,7 @@
 // File Name:           Candidate.razor.cs
 // Created By:          Narendra Kumaran Kadhirvelu, Jolly Joseph Paily, DonBosco Paily, Mariappan Raja
 // Created On:          11-23-2023 19:53
-// Last Updated On:     12-20-2023 15:44
+// Last Updated On:     12-26-2023 16:29
 // *****************************************/
 
 #endregion
@@ -136,19 +136,19 @@ public partial class Candidate
         set;
     }
 
-	/// <summary>
-	///     Gets or sets the communication rating of the candidate.
-	/// </summary>
-	/// <value>
-	///     The communication rating of the candidate, represented as a <see cref="MarkupString" />.
-	/// </value>
-	/// <remarks>
-	///     This property is used to store the communication rating of the candidate, which is set by the
-	///     <see cref="SetCommunication" /> method.
-	///     The communication rating is a string that describes the candidate's communication skills, and can be one of the
-	///     following values: "Good", "Average", "Excellent", or "Fair".
-	/// </remarks>
-	private MarkupString CandidateCommunication
+    /// <summary>
+    ///     Gets or sets the communication rating of the candidate.
+    /// </summary>
+    /// <value>
+    ///     The communication rating of the candidate, represented as a <see cref="MarkupString" />.
+    /// </value>
+    /// <remarks>
+    ///     This property is used to store the communication rating of the candidate, which is set by the
+    ///     <see cref="SetCommunication" /> method.
+    ///     The communication rating is a string that describes the candidate's communication skills, and can be one of the
+    ///     following values: "Good", "Average", "Excellent", or "Fair".
+    /// </remarks>
+    private MarkupString CandidateCommunication
     {
         get;
         set;
@@ -874,11 +874,11 @@ public partial class Candidate
         set;
     } = new();
 
-	/// <summary>
-	///     Gets or sets the selected education for the candidate. This property is of type
-	///     <see cref="ProfSvc_Classes.CandidateEducation" />.
-	/// </summary>
-	private CandidateEducation SelectedEducation
+    /// <summary>
+    ///     Gets or sets the selected education for the candidate. This property is of type
+    ///     <see cref="ProfSvc_Classes.CandidateEducation" />.
+    /// </summary>
+    private CandidateEducation SelectedEducation
     {
         get;
         set;
@@ -1203,18 +1203,28 @@ public partial class Candidate
         return ExecuteMethod(async () =>
                              {
                                  int _itemCount = SearchModel.ItemCount;
-                                 RestClient _client = new(Start.ApiHost);
-                                 RestRequest _request = new("Candidates/SaveParsedData", Method.Post)
-                                                        {
-                                                            RequestFormat = DataFormat.Json
-                                                        };
-                                 _request.AddQueryParameter("jsonFileName", _jsonPath);
-                                 _request.AddQueryParameter("fileName", FileName);
-                                 _request.AddQueryParameter("user", LoginCookyUser == null || LoginCookyUser.UserID.NullOrWhiteSpace() ? "JOLLY" : LoginCookyUser.UserID.ToUpperInvariant());
-                                 _request.AddQueryParameter("candidateID", ExistingCandidateDetailsDialog.Value);
-                                 _request.AddQueryParameter("path", Start.UploadsPath);
-                                 _request.AddQueryParameter("pageCount", _itemCount);
-                                 Dictionary<string, object> _response = await _client.PostAsync<Dictionary<string, object>>(_request);
+                                 //RestClient _client = new(Start.ApiHost);
+                                 //RestRequest _request = new("Candidates/SaveParsedData", Method.Post)
+                                 //                       {
+                                 //                           RequestFormat = DataFormat.Json
+                                 //                       };
+                                 //_request.AddQueryParameter("jsonFileName", _jsonPath);
+                                 //_request.AddQueryParameter("fileName", FileName);
+                                 //_request.AddQueryParameter("user", LoginCookyUser == null || LoginCookyUser.UserID.NullOrWhiteSpace() ? "JOLLY" : LoginCookyUser.UserID.ToUpperInvariant());
+                                 //_request.AddQueryParameter("candidateID", ExistingCandidateDetailsDialog.Value);
+                                 //_request.AddQueryParameter("path", Start.UploadsPath);
+                                 //_request.AddQueryParameter("pageCount", _itemCount);
+                                 //Dictionary<string, object> _response = await _client.PostAsync<Dictionary<string, object>>(_request);
+                                 Dictionary<string, string> _parameters = new()
+                                                                          {
+                                                                              {"jsonFileName", _jsonPath},
+                                                                              {"fileName", FileName},
+                                                                              {"user", General.GetUserName(LoginCookyUser)},
+                                                                              {"candidateID", ExistingCandidateDetailsDialog.Value.ToString()},
+                                                                              {"path", Start.UploadsPath},
+                                                                              {"pageCount", _itemCount.ToString()}
+                                                                          };
+                                 Dictionary<string, object> _response = await General.PostRest<Dictionary<string, object>>("Candidates/SaveParsedData", _parameters);
                                  int _candidateID = 0;
                                  if (_response != null)
                                  {
@@ -1300,15 +1310,21 @@ public partial class Candidate
     {
         return ExecuteMethod(async () =>
                              {
-                                 RestClient _client = new(Start.ApiHost);
-                                 RestRequest _request = new("Candidates/DeleteCandidateDocument", Method.Post)
-                                                        {
-                                                            RequestFormat = DataFormat.Json
-                                                        };
-                                 _request.AddQueryParameter("documentID", arg.ToString());
-                                 _request.AddQueryParameter("user", LoginCookyUser == null || LoginCookyUser.UserID.NullOrWhiteSpace() ? "JOLLY" : LoginCookyUser.UserID.ToUpperInvariant());
+                                 //RestClient _client = new(Start.ApiHost);
+                                 //RestRequest _request = new("Candidates/DeleteCandidateDocument", Method.Post)
+                                 //                       {
+                                 //                           RequestFormat = DataFormat.Json
+                                 //                       };
+                                 //_request.AddQueryParameter("documentID", arg.ToString());
+                                 //_request.AddQueryParameter("user", LoginCookyUser == null || LoginCookyUser.UserID.NullOrWhiteSpace() ? "JOLLY" : LoginCookyUser.UserID.ToUpperInvariant());
+                                 Dictionary<string, string> _parameters = new()
+                                                                          {
+                                                                              {"documentID", arg.ToString()}, 
+                                                                              {"user", General.GetUserName(LoginCookyUser)}
+                                                                          };
 
-                                 Dictionary<string, object> _response = await _client.PostAsync<Dictionary<string, object>>(_request);
+                                 //Dictionary<string, object> _response = await _client.PostAsync<Dictionary<string, object>>(_request);
+                                 Dictionary<string, object> _response = await General.PostRest<Dictionary<string, object>>("Candidates/DeleteCandidateDocument", _parameters);
                                  if (_response == null)
                                  {
                                      return;
@@ -1336,16 +1352,23 @@ public partial class Candidate
     {
         return ExecuteMethod(async () =>
                              {
-                                 RestClient _client = new(Start.ApiHost);
-                                 RestRequest _request = new("Candidates/DeleteEducation", Method.Post)
-                                                        {
-                                                            RequestFormat = DataFormat.Json
-                                                        };
-                                 _request.AddQueryParameter("id", id.ToString());
-                                 _request.AddQueryParameter("candidateID", _target.ID.ToString());
-                                 _request.AddQueryParameter("user", LoginCookyUser == null || LoginCookyUser.UserID.NullOrWhiteSpace() ? "JOLLY" : LoginCookyUser.UserID.ToUpperInvariant());
+                                 //RestClient _client = new(Start.ApiHost);
+                                 //RestRequest _request = new("Candidates/DeleteEducation", Method.Post)
+                                 //                       {
+                                 //                           RequestFormat = DataFormat.Json
+                                 //                       };
+                                 //_request.AddQueryParameter("id", id.ToString());
+                                 //_request.AddQueryParameter("candidateID", _target.ID.ToString());
+                                 //_request.AddQueryParameter("user", LoginCookyUser == null || LoginCookyUser.UserID.NullOrWhiteSpace() ? "JOLLY" : LoginCookyUser.UserID.ToUpperInvariant());
 
-                                 Dictionary<string, object> _response = await _client.PostAsync<Dictionary<string, object>>(_request);
+                                 Dictionary<string, string> _parameters = new()
+                                                                          {
+                                                                              {"id", id.ToString()}, 
+                                                                              {"candidateID", _target.ID.ToString()}, 
+                                                                              {"user", General.GetUserName(LoginCookyUser)}
+                                                                          };
+                                 Dictionary<string, object> _response = await General.PostRest<Dictionary<string, object>>("Candidates/DeleteEducation", _parameters);
+                                 //Dictionary<string, object> _response = await _client.PostAsync<Dictionary<string, object>>(_request);
                                  if (_response == null)
                                  {
                                      return;
@@ -1369,16 +1392,23 @@ public partial class Candidate
     {
         return ExecuteMethod(async () =>
                              {
-                                 using RestClient _client = new(Start.ApiHost);
-                                 RestRequest _request = new("Candidates/DeleteExperience", Method.Post)
-                                                        {
-                                                            RequestFormat = DataFormat.Json
-                                                        };
-                                 _request.AddQueryParameter("id", id.ToString());
-                                 _request.AddQueryParameter("candidateID", _target.ID.ToString());
-                                 _request.AddQueryParameter("user", LoginCookyUser == null || LoginCookyUser.UserID.NullOrWhiteSpace() ? "JOLLY" : LoginCookyUser.UserID.ToUpperInvariant());
+                                 //using RestClient _client = new(Start.ApiHost);
+                                 //RestRequest _request = new("Candidates/DeleteExperience", Method.Post)
+                                 //                       {
+                                 //                           RequestFormat = DataFormat.Json
+                                 //                       };
+                                 //_request.AddQueryParameter("id", id.ToString());
+                                 //_request.AddQueryParameter("candidateID", _target.ID.ToString());
+                                 //_request.AddQueryParameter("user", LoginCookyUser == null || LoginCookyUser.UserID.NullOrWhiteSpace() ? "JOLLY" : LoginCookyUser.UserID.ToUpperInvariant());
 
-                                 Dictionary<string, object> _response = await _client.PostAsync<Dictionary<string, object>>(_request);
+                                 //Dictionary<string, object> _response = await _client.PostAsync<Dictionary<string, object>>(_request);
+                                 Dictionary<string, string> _parameters = new()
+                                                                          {
+                                                                              {"id", id.ToString()}, 
+                                                                              {"candidateID", _target.ID.ToString()}, 
+                                                                              {"user", General.GetUserName(LoginCookyUser)}
+                                                                          };
+                                 Dictionary<string, object> _response = await General.PostRest<Dictionary<string, object>>("Candidates/DeleteExperience", _parameters);
                                  if (_response == null)
                                  {
                                      return;
@@ -2317,9 +2347,9 @@ public partial class Candidate
                                 _eligibilityCopy.AddRange(_eligibility);
 
                                 _experience = General.DeserializeObject<List<IntValues>>(_cacheValues["Experience"]);
-                                
+
                                 _taxTerms = General.DeserializeObject<List<KeyValues>>(_cacheValues["TaxTerms"]);
-                                
+
                                 _jobOptions = General.DeserializeObject<List<KeyValues>>(_cacheValues["JobOptions"]);
                                 _jobOptionsCopy.Clear();
                                 _jobOptionsCopy.Add(new("%", "All"));
