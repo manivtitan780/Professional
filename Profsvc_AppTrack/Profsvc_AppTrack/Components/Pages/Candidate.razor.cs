@@ -8,7 +8,7 @@
 // File Name:           Candidate.razor.cs
 // Created By:          Narendra Kumaran Kadhirvelu, Jolly Joseph Paily, DonBosco Paily, Mariappan Raja
 // Created On:          11-23-2023 19:53
-// Last Updated On:     12-26-2023 21:30
+// Last Updated On:     12-27-2023 15:42
 // *****************************************/
 
 #endregion
@@ -2222,21 +2222,29 @@ public partial class Candidate
                                      Stream _str = _file.File.OpenReadStream(60 * 1024 * 1024);
                                      await _str.CopyToAsync(AddedDocument);
                                      FileName = _file.FileInfo.Name;
-                                     //FileSize = _file.FileInfo.Size;
-                                     //Mime = _file.FileInfo.MimeContentType;
                                      AddedDocument.Position = 0;
                                      _str.Close();
-                                     RestClient _client = new(Start.ApiHost);
-                                     RestRequest _request = new("Candidates/ParseResume", Method.Post)
-                                                            {
-                                                                AlwaysMultipartFormData = true
-                                                            };
-                                     _request.AddFile("file", AddedDocument.ToArray(), FileName);
-                                     _request.AddQueryParameter("fileName", FileName);
-                                     _request.AddQueryParameter("user", LoginCookyUser == null || LoginCookyUser.UserID.NullOrWhiteSpace() ? "JOLLY" : LoginCookyUser.UserID.ToUpperInvariant());
-                                     _request.AddQueryParameter("path", Start.UploadsPath);
-                                     _request.AddQueryParameter("pageCount", SearchModel.ItemCount);
-                                     Dictionary<string, object> _parsingObjects = await _client.PostAsync<Dictionary<string, object>>(_request);
+
+                                     //RestClient _client = new(Start.ApiHost);
+                                     //RestRequest _request = new("Candidates/ParseResume", Method.Post)
+                                     //                       {
+                                     //                           AlwaysMultipartFormData = true
+                                     //                       };
+                                     //_request.AddFile("file", AddedDocument.ToArray(), FileName);
+                                     //_request.AddQueryParameter("fileName", FileName);
+                                     //_request.AddQueryParameter("user", LoginCookyUser == null || LoginCookyUser.UserID.NullOrWhiteSpace() ? "JOLLY" : LoginCookyUser.UserID.ToUpperInvariant());
+                                     //_request.AddQueryParameter("path", Start.UploadsPath);
+                                     //_request.AddQueryParameter("pageCount", SearchModel.ItemCount);
+
+                                     Dictionary<string, string> _parameters = new()
+                                                                              {
+                                                                                  {"fileName", FileName},
+                                                                                  {"user", General.GetUserName(LoginCookyUser)},
+                                                                                  {"path", Start.UploadsPath},
+                                                                                  {"pageCount", SearchModel.ItemCount.ToString()}
+                                                                              };
+                                     Dictionary<string, object> _parsingObjects = await General.PostRest<Dictionary<string, object>>("Candidates/ParseResume", _parameters, null,
+                                                                                                                                     AddedDocument.ToArray(), FileName);
                                      if (_parsingObjects != null)
                                      {
                                          _jsonPath = _parsingObjects["Json"].ToString();

@@ -35,19 +35,16 @@ public partial class ViewPDFDocument
     ///     Defines the set of toolbar items available in the PDF viewer. The toolbar includes page navigation,
     ///     magnification, selection, pan, print, and download options.
     /// </summary>
-    private PdfViewerToolbarSettings _toolbarItems = new()
-                                                     {
-                                                         ToolbarItems =
-                                                         [
-                                                             ToolbarItem.PageNavigationTool,
-                                                             ToolbarItem.MagnificationTool,
-                                                             ToolbarItem.SelectionTool,
-                                                             ToolbarItem.PanTool,
-                                                             //ToolbarItem.SearchOption,
-                                                             ToolbarItem.PrintOption,
-                                                             ToolbarItem.DownloadOption
-                                                         ]
-                                                     };
+    private List<ToolbarItem> _toolbarItems =
+    [
+        ToolbarItem.PageNavigationTool,
+        ToolbarItem.MagnificationTool,
+        ToolbarItem.SelectionTool,
+        ToolbarItem.PanTool,
+        //ToolbarItem.SearchOption,
+        ToolbarItem.PrintOption,
+        ToolbarItem.DownloadOption
+    ];
 
     /// <summary>
     ///     Gets or sets the SfDialog instance used to display the PDF document.
@@ -148,12 +145,6 @@ public partial class ViewPDFDocument
         set;
     }
 
-    private PdfViewerToolbarSettings ToolbarItems
-    {
-        get;
-        set;
-    }
-
     /// <summary>
     ///     Determines the format type of the document based on its file extension.
     /// </summary>
@@ -174,12 +165,6 @@ public partial class ViewPDFDocument
         }
 
         return DocumentLocation.EndsWith(".rtf") ? WFormatType.Rtf : WFormatType.Automatic;
-    }
-
-    protected override Task OnInitializedAsync()
-    {
-        ToolbarItems = _toolbarItems;
-        return base.OnInitializedAsync();
     }
 
     /// <summary>
