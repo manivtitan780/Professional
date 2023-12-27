@@ -22,11 +22,13 @@
 		</div>
 		<div>
 			<div>Hourly Pay Rate:</div>
-			<div>@string.Format(new CultureInfo("en-US"), "{0:C} - {1:C}", Model.HourlyRate, Model.HourlyRateHigh)</div>
+			<div>@($"{Model.HourlyRate.ToString("C", new CultureInfo("en-US"))} - {Model.HourlyRateHigh.ToString("C", new CultureInfo("en-US"))}")</div>
+			@* <div>@string.Format(new CultureInfo("en-US"), "{0:C} - {1:C}", Model.HourlyRate, Model.HourlyRateHigh)</div> *@
 		</div>
 		<div>
 			<div>Salary Expected:</div>
-			<div>@string.Format(new CultureInfo("en-US"), "{0:C} - {1:C}", Model.SalaryLow, Model.SalaryHigh)</div>
+			<div>@($"{Model.SalaryLow.ToString("C", new CultureInfo("en-US"))} - {Model.SalaryHigh.ToString("C", new CultureInfo("en-US"))}")</div>
+			@* <div>@string.Format(new CultureInfo("en-US"), "{0:C} - {1:C}", Model.SalaryLow, Model.SalaryHigh)</div> *@
 		</div>
 	</div>
 	<div>
@@ -63,7 +65,7 @@
 		<div>
 			<div>Rating:</div>
 			<div style="padding-left: 0">
-				<SfRating Value="@Model.RateCandidate" CssClass="ratingBasicInfoCandidate" ReadOnly="true" ItemsCount="5"></SfRating>
+				<SfRating CssClass="ratingBasicInfoCandidate" ItemsCount="5" ReadOnly="true" Value="@Model.RateCandidate"></SfRating>
 			</div>
 		</div>
 		<div>
@@ -74,7 +76,7 @@
 			<div>Rating Notes:</div>
 			<div>@GetRatingNote</div>
 		</div>
-			<hr style="width: 80%; color: var(--c-888); margin-top: 17px; margin-bottom: 18px;"/>
+		<hr style="width: 80%; color: var(--c-888); margin-top: 17px; margin-bottom: 18px;" />
 		<div>
 			<div>M.P.C?:</div>
 			<div>@(Model.MPC ? "Yes" : "No")</div>

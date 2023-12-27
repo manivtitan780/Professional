@@ -1157,6 +1157,7 @@ public partial class Candidate
                                  await SessionStorage.SetItemAsync(StorageName, SearchModel);
                                  await Grid.Refresh();
                                  StateHasChanged();
+                                 string _a = "test" + _currentPage.ToString() + " this one" + SearchModel.Page + " none";
                              });
     }
 
