@@ -93,11 +93,11 @@
 					<TextBoxControl @bind-Value="@(Model.Title)" @bind-Value:event="ValueChanged" CreateDivTag="true" ID="textTitle" MaxLength="200"
 									MinLength="1" Placeholder="Title" ValidationMessage="@(() => Model.Title)" Width="100%" />
 					<TextBoxControl @bind-Value="@(Model.Keywords)" @bind-Value:event="ValueChanged" CreateDivTag="true" ID="textKeywords" MaxLength="200"
-									MinLength="1" Multiline="true" Placeholder="Keywords" ValidationMessage="@(() => Model.Keywords)" Width="100%" Rows="5" />
+									MinLength="1" Multiline="true" Placeholder="Keywords" Rows="5" ValidationMessage="@(() => Model.Keywords)" Width="100%" />
 					<TextBoxControl @bind-Value="@(Model.Summary)" @bind-Value:event="ValueChanged" CreateDivTag="true" CreateTooltip="false" ID="textSummary"
-                                    MaxLength="32767" Multiline="true" Placeholder="Summary" Width="100%" Rows="5" />
+									MaxLength="32767" Multiline="true" Placeholder="Summary" Rows="5" Width="100%" />
 					<div class="divFlex">
-						<div style="display: flex; width: 100%">	
+						<div style="display: flex; width: 100%">
 							<div class="divFlexLabel" style="width: 48%">
 								<label class="labelStatus" for="numericHourlyLow">Hourly Rate Min. / Max. ($):</label>
 							</div>
@@ -111,8 +111,8 @@
 												Max="2000" Placeholder="Hourly Rate (Min.)" TValue="decimal" ValidationMessage="@(() => Model.HourlyRate)" />
 							</div>
 							<div class="divFlexSmall" style="margin-left: 2%; width: 23%;">
-								<NumericControl @bind-Value="@(Model.HourlyRateHigh)" @bind-Value:event="ValueChanged" CreateDivTag="false" Decimals="2" Format="c2" ID="numericHourlyHigh"
-												Max="2000" Placeholder="Hourly Rate (Max.)" TValue="decimal" ValidationMessage="@(() => Model.HourlyRateHigh)" CreateTooltip="true" />
+								<NumericControl @bind-Value="@(Model.HourlyRateHigh)" @bind-Value:event="ValueChanged" CreateDivTag="false" CreateTooltip="true" Decimals="2" Format="c2"
+												ID="numericHourlyHigh" Max="2000" Placeholder="Hourly Rate (Max.)" TValue="decimal" ValidationMessage="@(() => Model.HourlyRateHigh)" />
 							</div>
 							<div class="divFlexSmall" style="margin-left: 4%; width: 23%;">
 								<NumericControl @bind-Value="@(Model.SalaryLow)" @bind-Value:event="ValueChanged" CreateDivTag="false" Decimals="2" Format="c2" ID="numericSalaryLow"

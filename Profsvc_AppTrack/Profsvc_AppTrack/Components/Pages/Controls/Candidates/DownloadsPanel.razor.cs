@@ -17,6 +17,7 @@ using Profsvc_AppTrack.Components.Pages.Controls.Common;
 
 using ConfirmDialog = Profsvc_AppTrack.Components.Pages.Controls.Common.ConfirmDialog;
 using ViewPDFDocument = Profsvc_AppTrack.Components.Pages.Controls.Common.ViewPDFDocument;
+// ReSharper disable MemberCanBePrivate.Global
 
 namespace Profsvc_AppTrack.Components.Pages.Controls.Candidates;
 
@@ -288,16 +289,22 @@ public partial class DownloadsPanel
     /// </remarks>
     private async Task ViewDocumentDialog(int documentID)
     {
-        await Task.Yield();
         await Spinner.ShowAsync();
-        RestClient _restClient = new($"{Start.ApiHost}");
-        RestRequest _request = new("Candidates/DownloadFile")
-                               {
-                                   RequestFormat = DataFormat.Json
-                               };
-        _request.AddQueryParameter("documentID", documentID);
+        //RestClient _restClient = new($"{Start.ApiHost}");
+        //RestRequest _request = new("Candidates/DownloadFile")
+        //                       {
+        //                           RequestFormat = DataFormat.Json
+        //                       };
+        //_request.AddQueryParameter("documentID", documentID);
 
-        DocumentDetails _restResponse = await _restClient.GetAsync<DocumentDetails>(_request);
+        //DocumentDetails _restResponse = await _restClient.GetAsync<DocumentDetails>(_request);
+
+        Dictionary<string, string> _parameters = new()
+                                                 {
+                                                     {"documentID", documentID.ToString() }
+                                                 };
+
+        DocumentDetails _restResponse = await General.GetRest<DocumentDetails>("Candidates/DownloadFile", _parameters);
 
         if (_restResponse != null)
         {
@@ -320,7 +327,6 @@ public partial class DownloadsPanel
             }
         }
 
-        await Task.Yield();
         await Spinner.HideAsync();
     }
 }

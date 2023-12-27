@@ -10,12 +10,12 @@
 				<TextBoxControl @bind-Value="@(Model.College)" @bind-Value:event="ValueChanged" ID="textCollege" MaxLength="100" MinLength="1" Multiline="false"
 								Placeholder="School / College"
 								ValidationMessage="@(() => Model.College)" />
-				<TextBoxControl @bind-Value="@(Model.Degree)" @bind-Value:event="ValueChanged" ID="textDegree" MaxLength="100" MinLength="1" Multiline="false" Placeholder="Degree"
-                                ValidationMessage="@(() => Model.Degree)" Created='() => TextOnly("textDegree", false)' />
-				<TextBoxControl @bind-Value="@(Model.State)" @bind-Value:event="ValueChanged" ID="textState" MaxLength="100" MinLength="1" Multiline="false" Placeholder="State"
-								ValidationMessage="@(() => Model.State)" Created='() => TextOnly("textState", false)' />
-				<TextBoxControl @bind-Value="@(Model.Country)" @bind-Value:event="ValueChanged" ID="textCountry" MaxLength="100" MinLength="1" Multiline="false" Placeholder="Country"
-								ValidationMessage="@(() => Model.Country)" Created='() => TextOnly("textCountry", false)' />
+				<TextBoxControl @bind-Value="@(Model.Degree)" @bind-Value:event="ValueChanged" Created='() => TextOnly("textDegree", false)' ID="textDegree" MaxLength="100" MinLength="1" Multiline="false"
+								Placeholder="Degree" ValidationMessage="@(() => Model.Degree)" />
+				<TextBoxControl @bind-Value="@(Model.State)" @bind-Value:event="ValueChanged" Created='() => TextOnly("textState", false)' ID="textState" MaxLength="100" MinLength="1" Multiline="false"
+								Placeholder="State" ValidationMessage="@(() => Model.State)" />
+				<TextBoxControl @bind-Value="@(Model.Country)" @bind-Value:event="ValueChanged" Created='() => TextOnly("textCountry", false)' ID="textCountry" MaxLength="100" MinLength="1" Multiline="false"
+								Placeholder="Country" ValidationMessage="@(() => Model.Country)" />
 				<TextBoxControl @bind-Value="@(Model.Year)" @bind-Value:event="ValueChanged" ID="textYear" MaxLength="100" MinLength="1" Multiline="false" Placeholder="Graduation Year"
 								ValidationMessage="@(() => Model.Year)" />
 			</div>

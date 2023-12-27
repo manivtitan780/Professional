@@ -52,4 +52,4 @@
 <SfSpinner CssClass="spinnerHeight" @ref="Spinner" Type="SpinnerType.Fabric" ZIndex="12000" />
 <ConfirmDialog Delete="() => DeleteDocument.InvokeAsync(_selectedID)" Entity="Document" Height="160px" @ref="DialogConfirm" Width="381px" />
 <ViewPDFDocument DocumentLocation="@_documentLocation" DocumentName="@_documentName" EntityID="@_candidateID" InternalFileName="@_internalFileName" @ref="@DocumentViewPDF" />
-<ViewWordDocument DocumentLocation="@_documentLocation" DocumentName="@_documentName" EntityID="@_candidateID" EntityType="EntityType.Candidate" InternalFileName="@_internalFileName" @ref="@DocumentViewWord"/>
+<ViewWordDocument DocumentLocation="@_documentLocation" DocumentName="@_documentName" EntityID="@_candidateID" EntityType="EntityType.Candidate" InternalFileName="@_internalFileName" @ref="@DocumentViewWord" />
