@@ -3012,7 +3012,7 @@ public class CandidatesController : ControllerBase
 	///     The method is asynchronous and returns a Task.
 	/// </remarks>
 	[HttpPost, RequestSizeLimit(10 * 1024 * 1024)]
-	public async Task UploadResume(IFormFile file)
+	public async Task<string> UploadResume(IFormFile file)
 	{
 		await Task.Yield();
 		string _fileName = file.FileName; //Request.Form["filename"].ToString();
@@ -3047,7 +3047,7 @@ public class CandidatesController : ControllerBase
 		}
 		catch
 		{
-			return;
+			return "";
 		}
 
 		if (_internalFileName != null)
@@ -3065,5 +3065,7 @@ public class CandidatesController : ControllerBase
 				_fs.Close();
 			}
 		}
+
+		return "";
 	}
 }

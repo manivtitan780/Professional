@@ -8,11 +8,12 @@
 // File Name:           AddResume.razor.cs
 // Created By:          Narendra Kumaran Kadhirvelu, Jolly Joseph Paily, DonBosco Paily, Mariappan Raja
 // Created On:          11-23-2023 19:53
-// Last Updated On:     11-23-2023 20:27
+// Last Updated On:     12-27-2023 21:0
 // *****************************************/
 
 #endregion
 
+// ReSharper disable UnusedMember.Global
 namespace Profsvc_AppTrack.Components.Pages.Controls.Candidates;
 
 /// <summary>
@@ -238,10 +239,7 @@ public partial class AddResume
     ///     It is typically invoked when the user triggers the cancel action in the workflow dialog.
     /// </remarks>
     /// <returns>A task that represents the asynchronous operation.</returns>
-    private async Task CancelResumeDialog(MouseEventArgs args)
-    {
-        await General.CallCancelMethod(args, Spinner, DialogFooter, Dialog, Cancel);
-    }
+    private async Task CancelResumeDialog(MouseEventArgs args) => await General.CallCancelMethod(args, Spinner, DialogFooter, Dialog, Cancel);
 
     /// <summary>
     ///     Disables the buttons in the AddResume.
@@ -252,10 +250,7 @@ public partial class AddResume
     ///     It is typically called before a resume upload starts to prevent any unintended user actions during the upload
     ///     process.
     /// </remarks>
-    internal void DisableButtons()
-    {
-        DialogFooter.DisableButtons();
-    }
+    internal void DisableButtons() => DialogFooter.DisableButtons();
 
     /// <summary>
     ///     Enables the buttons in the AddResume.
@@ -265,10 +260,7 @@ public partial class AddResume
     ///     allowing any further user interaction with these buttons until they are disabled.
     ///     It is typically called after a resume upload ends during the upload process.
     /// </remarks>
-    internal void EnableButtons()
-    {
-        DialogFooter.EnableButtons();
-    }
+    internal void EnableButtons() => DialogFooter.EnableButtons();
 
     /// <summary>
     ///     Handles the event when a file is removed from the upload queue.
@@ -305,10 +297,7 @@ public partial class AddResume
         await Task.Yield();
         if (Model.Files == null)
         {
-            Model.Files = new()
-                          {
-                              file.FilesData[0].Name
-                          };
+            Model.Files = [file.FilesData[0].Name];
         }
         else
         {
@@ -342,10 +331,7 @@ public partial class AddResume
     ///     event callback.
     ///     It is typically triggered when the user confirms the save operation in the dialog.
     /// </remarks>
-    private async Task SaveResumeDialog(EditContext editContext)
-    {
-        await General.CallSaveMethod(editContext, Spinner, DialogFooter, Dialog, Save);
-    }
+    private async Task SaveResumeDialog(EditContext editContext) => await General.CallSaveMethod(editContext, Spinner, DialogFooter, Dialog, Save);
 
     /// <summary>
     ///     Asynchronously displays the AddResume.
@@ -357,8 +343,5 @@ public partial class AddResume
     ///     This method is used to programmatically display the dialog for adding a resume for a candidate.
     ///     It uses the ShowAsync method of the Syncfusion Blazor Dialog component.
     /// </remarks>
-    public async Task ShowDialog()
-    {
-        await Dialog.ShowAsync();
-    }
+    public async Task ShowDialog() => await Dialog.ShowAsync();
 }

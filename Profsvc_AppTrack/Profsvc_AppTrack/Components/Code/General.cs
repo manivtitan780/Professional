@@ -8,7 +8,7 @@
 // File Name:           General.cs
 // Created By:          Narendra Kumaran Kadhirvelu, Jolly Joseph Paily, DonBosco Paily, Mariappan Raja
 // Created On:          11-22-2023 16:27
-// Last Updated On:     12-22-2023 19:44
+// Last Updated On:     12-27-2023 20:43
 // *****************************************/
 
 #endregion
@@ -1163,7 +1163,7 @@ internal class General
     /// <returns>
     ///     The user ID in uppercase if it exists and is not null or whitespace; otherwise, returns "JOLLY".
     /// </returns>
-    internal static string GetUserName(LoginCooky cooky) => cooky == null || cooky.UserID.NullOrWhiteSpace() ? "JOLLY" : cooky.UserID.ToUpperInvariant();
+    internal static string GetUserName(LoginCooky cooky) => cooky == null ||  cooky.UserID.NullOrWhiteSpace() ? "JOLLY" : cooky.UserID.ToUpperInvariant();
 
     /// <summary>
     ///     Asynchronously fetches a list of users based on the provided filter and DataManagerRequest.
@@ -1350,6 +1350,9 @@ internal class General
     /// <param name="endpoint">The API endpoint to which the request is sent.</param>
     /// <param name="parameters">The parameters to be included in the request.</param>
     /// <param name="jsonBody">The JSON body to be included in the request. Default is null.</param>
+    /// <param name="fileArray">Array of bytes containing the file contents. Default is null.</param>
+    /// <param name="fileName">Name of the file to be uploaded. Default is blank and will be used in fileArray is not null.</param>
+    /// <param name="parameterName">Name of the parameter to pass to the RESTful API. Default is `file`.</param>
     /// <returns>
     ///     A task that represents the asynchronous operation. The task result contains a dictionary with the response data.
     /// </returns>
@@ -1358,8 +1361,9 @@ internal class General
     ///     If a JSON body is provided, it is added to the request.
     ///     All key-value pairs in the parameters dictionary are added as query parameters to the request.
     /// </remarks>
-    internal static Task<Dictionary<string, object>> PostRest(string endpoint, Dictionary<string, string> parameters, object jsonBody = null) =>
-        PostRest<Dictionary<string, object>>(endpoint, parameters, jsonBody);
+    internal static Task<Dictionary<string, object>> PostRest(string endpoint, Dictionary<string, string> parameters, object jsonBody = null, byte[] fileArray = null, string fileName = "",
+                                                              string parameterName = "file") =>
+        PostRest<Dictionary<string, object>>(endpoint, parameters, jsonBody, fileArray, fileName, parameterName);
 
     /// <summary>
     ///     Sends a POST request to the specified endpoint with the provided parameters and JSON body.
@@ -1378,7 +1382,8 @@ internal class General
     ///     If a JSON body is provided, it is added to the request.
     ///     All key-value pairs in the parameters dictionary are added as query parameters to the request.
     /// </remarks>
-    internal static async Task<T> PostRest<T>(string endpoint, Dictionary<string, string> parameters = null, object jsonBody = null, byte[] fileArray = null, string fileName = "", string parameterName = "file")
+    internal static async Task<T> PostRest<T>(string endpoint, Dictionary<string, string> parameters = null, object jsonBody = null, byte[] fileArray = null, string fileName = "",
+                                              string parameterName = "file")
     {
         using RestClient _client = new(Start.ApiHost);
         RestRequest _request = new(endpoint, Method.Post)
@@ -1396,6 +1401,55 @@ internal class General
             foreach (KeyValuePair<string, string> _parameter in parameters)
             {
                 _request.AddQueryParameter(_parameter.Key, _parameter.Value);
+            }
+        }
+
+        if (fileArray == null)
+        {
+            return await _client.PostAsync<T>(_request);
+        }
+
+        _request.AddFile(parameterName, fileArray, fileName);
+
+        return await _client.PostAsync<T>(_request);
+    }
+
+    /// <summary>
+    ///     Sends a POST request to the specified endpoint with the provided parameters and JSON body.
+    /// </summary>
+    /// <param name="endpoint">The API endpoint to which the request is sent.</param>
+    /// <param name="parameters">The parameters to be included in the request.</param>
+    /// <param name="jsonBody">The JSON body to be included in the request. Default is null.</param>
+    /// <param name="fileArray">Array of bytes containing the file contents. Default is null.</param>
+    /// <param name="fileName">Name of the file to be uploaded. Default is blank and will be used in fileArray is not null.</param>
+    /// <param name="parameterName">Name of the parameter to pass to the RESTful API. Default is `file`.</param>
+    /// <returns>
+    ///     A task that represents the asynchronous operation. The task result contains a dictionary with the response data.
+    /// </returns>
+    /// <remarks>
+    ///     This method uses the RestClient to send a POST request to the API.
+    ///     If a JSON body is provided, it is added to the request.
+    ///     All key-value pairs in the parameters dictionary are added as query parameters to the request.
+    /// </remarks>
+    internal static async Task<T> PostRestParameter<T>(string endpoint, Dictionary<string, string> parameters = null, object jsonBody = null, byte[] fileArray = null, string fileName = "",
+                                                       string parameterName = "file")
+    {
+        using RestClient _client = new(Start.ApiHost);
+        RestRequest _request = new(endpoint, Method.Post)
+                               {
+                                   AlwaysMultipartFormData = true
+                               };
+
+        if (jsonBody != null)
+        {
+            _request.AddJsonBody(jsonBody);
+        }
+
+        if (parameters != null)
+        {
+            foreach (KeyValuePair<string, string> _parameter in parameters)
+            {
+                _request.AddParameter(_parameter.Key, _parameter.Value, ParameterType.GetOrPost);
             }
         }
 

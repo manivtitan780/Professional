@@ -3,17 +3,23 @@
 // /*****************************************
 // Copyright:           Titan-Techs.
 // Location:            Newtown, PA, USA
-// Solution:            ProfSvc_AppTrack
-// Project:             ProfSvc_AppTrack
+// Solution:            Profsvc_AppTrack
+// Project:             Profsvc_AppTrack
 // File Name:           ActivityPanel.razor.cs
 // Created By:          Narendra Kumaran Kadhirvelu, Jolly Joseph Paily, DonBosco Paily, Mariappan Raja
-// Created On:          12-09-2022 15:57
-// Last Updated On:     09-13-2023 15:37
+// Created On:          11-23-2023 19:53
+// Last Updated On:     12-27-2023 20:58
 // *****************************************/
 
 #endregion
 
+#region Using
+
 using Profsvc_AppTrack.Components.Pages.Controls.Common;
+
+// ReSharper disable MemberCanBePrivate.Global
+
+#endregion
 
 namespace Profsvc_AppTrack.Components.Pages.Controls.Candidates;
 
@@ -40,13 +46,6 @@ public partial class ActivityPanel
     ///     The dialog can be used for various purposes, such as confirming the undoing of an activity.
     /// </remarks>
     private ConfirmDialog DialogConfirm
-    {
-        get;
-        set;
-    }
-
-    [Parameter]
-    public string User
     {
         get;
         set;
@@ -183,6 +182,13 @@ public partial class ActivityPanel
         set;
     }
 
+    [Parameter]
+    public string User
+    {
+        get;
+        set;
+    }
+
     /// <summary>
     ///     Asynchronously opens the dialog for editing a candidate activity.
     /// </summary>
@@ -251,7 +257,6 @@ public partial class ActivityPanel
     private async Task UndoActivity(int activityID)
     {
         _selectedID = activityID;
-        await Task.Yield();
         int _index = await GridActivity.GetRowIndexByPrimaryKeyAsync(activityID);
         await GridActivity.SelectRowAsync(_index);
         await DialogConfirm.ShowDialog();

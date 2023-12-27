@@ -8,7 +8,7 @@
 // File Name:           Candidate.razor.cs
 // Created By:          Narendra Kumaran Kadhirvelu, Jolly Joseph Paily, DonBosco Paily, Mariappan Raja
 // Created On:          11-23-2023 19:53
-// Last Updated On:     12-27-2023 15:42
+// Last Updated On:     12-27-2023 20:56
 // *****************************************/
 
 #endregion
@@ -1016,7 +1016,7 @@ public partial class Candidate
     ///     This property is used to store the username of the currently logged-in user.
     ///     It is used in various methods and components for user-specific operations and data handling.
     /// </remarks>
-    public string User
+    private string User
     {
         get;
         set;
@@ -1219,7 +1219,7 @@ public partial class Candidate
                                                                           {
                                                                               {"jsonFileName", _jsonPath},
                                                                               {"fileName", FileName},
-                                                                              {"user", General.GetUserName(LoginCookyUser)},
+                                                                              {"user", User},
                                                                               {"candidateID", ExistingCandidateDetailsDialog.Value.ToString()},
                                                                               {"path", Start.UploadsPath},
                                                                               {"pageCount", _itemCount.ToString()}
@@ -1253,7 +1253,7 @@ public partial class Candidate
                                                                    {
                                                                        {"id", id.ToString()},
                                                                        {"candidateID", _target.ID.ToString()},
-                                                                       {"user", General.GetUserName(LoginCookyUser)}
+                                                                       {"user", User}
                                                                    };
 
     /// <summary>
@@ -1327,7 +1327,7 @@ public partial class Candidate
                                  Dictionary<string, string> _parameters = new()
                                                                           {
                                                                               {"documentID", arg.ToString()},
-                                                                              {"user", General.GetUserName(LoginCookyUser)}
+                                                                              {"user", User}
                                                                           };
 
                                  //Dictionary<string, object> _response = await _client.PostAsync<Dictionary<string, object>>(_request);
@@ -2239,7 +2239,7 @@ public partial class Candidate
                                      Dictionary<string, string> _parameters = new()
                                                                               {
                                                                                   {"fileName", FileName},
-                                                                                  {"user", General.GetUserName(LoginCookyUser)},
+                                                                                  {"user", User},
                                                                                   {"path", Start.UploadsPath},
                                                                                   {"pageCount", SearchModel.ItemCount.ToString()}
                                                                               };
@@ -2303,6 +2303,7 @@ public partial class Candidate
 
                                 RoleID = LoginCookyUser.RoleID;
                                 UserRights = LoginCookyUser.GetUserRights(_roles);
+                                User = General.GetUserName(LoginCookyUser);
 
                                 DisplayAdd = RequisitionID > 0 ? "none" : UserRights.EditCandidate ? "unset" : "none";
                                 DisplaySubmit = RequisitionID > 0 ? "unset" : "none";
@@ -2486,8 +2487,8 @@ public partial class Candidate
                                  Dictionary<string, string> _parameters = new()
                                                                           {
                                                                               {"candidateID", _target.ID.ToString()},
-                                                                              {"user", General.GetUserName(LoginCookyUser)},
-                                                                              {"roleID", General.GetRoleID(LoginCookyUser)},
+                                                                              {"user", User},
+                                                                              {"roleID", RoleID},
                                                                               {"isCandidateScreen", true.ToString()},
                                                                               {"jsonPath", Start.JsonFilePath},
                                                                               {"emailAddress", General.GetEmail(LoginCookyUser)},
@@ -2531,7 +2532,7 @@ public partial class Candidate
                                  Dictionary<string, string> _parameters = new()
                                                                           {
                                                                               {"jsonPath", Start.JsonFilePath},
-                                                                              {"userName", General.GetUserName(LoginCookyUser)},
+                                                                              {"userName", User},
                                                                               {"emailAddress", General.GetEmail(LoginCookyUser)}
                                                                           };
 
@@ -2571,22 +2572,37 @@ public partial class Candidate
                              {
                                  if (document.Model is CandidateDocument _document)
                                  {
-                                     RestClient _client = new(Start.ApiHost);
-                                     RestRequest _request = new("Candidates/UploadDocument", Method.Post)
-                                                            {
-                                                                AlwaysMultipartFormData = true
-                                                            };
-                                     _request.AddFile("file", AddedDocument.ToStreamByteArray(), FileName);
-                                     _request.AddParameter("filename", FileName, ParameterType.GetOrPost);
-                                     _request.AddParameter("mime", Mime, ParameterType.GetOrPost);
-                                     _request.AddParameter("name", _document.Name, ParameterType.GetOrPost);
-                                     _request.AddParameter("notes", _document.Notes, ParameterType.GetOrPost);
-                                     _request.AddParameter("candidateID", _target.ID.ToString(), ParameterType.GetOrPost);
-                                     _request.AddParameter("user", LoginCookyUser == null || LoginCookyUser.UserID.NullOrWhiteSpace() ? "JOLLY" : LoginCookyUser.UserID.ToUpperInvariant(),
-                                                           ParameterType.GetOrPost);
-                                     _request.AddParameter("path", Start.UploadsPath, ParameterType.GetOrPost);
-                                     _request.AddParameter("type", _document.DocumentTypeID.ToString(), ParameterType.GetOrPost);
-                                     Dictionary<string, object> _response = await _client.PostAsync<Dictionary<string, object>>(_request);
+                                     //RestClient _client = new(Start.ApiHost);
+                                     //RestRequest _request = new("Candidates/UploadDocument", Method.Post)
+                                     //                       {
+                                     //                           AlwaysMultipartFormData = true
+                                     //                       };
+                                     //_request.AddFile("file", AddedDocument.ToStreamByteArray(), FileName);
+                                     //_request.AddParameter("filename", FileName, ParameterType.GetOrPost);
+                                     //_request.AddParameter("mime", Mime, ParameterType.GetOrPost);
+                                     //_request.AddParameter("name", _document.Name, ParameterType.GetOrPost);
+                                     //_request.AddParameter("notes", _document.Notes, ParameterType.GetOrPost);
+                                     //_request.AddParameter("candidateID", _target.ID.ToString(), ParameterType.GetOrPost);
+                                     //_request.AddParameter("user", LoginCookyUser == null || LoginCookyUser.UserID.NullOrWhiteSpace() ? "JOLLY" : LoginCookyUser.UserID.ToUpperInvariant(),
+                                     //                      ParameterType.GetOrPost);
+                                     //_request.AddParameter("path", Start.UploadsPath, ParameterType.GetOrPost);
+                                     //_request.AddParameter("type", _document.DocumentTypeID.ToString(), ParameterType.GetOrPost);
+
+                                     Dictionary<string, string> _parameters = new()
+                                                                              {
+                                                                                  {"filename", FileName},
+                                                                                  {"mime", Mime},
+                                                                                  {"name", _document.Name},
+                                                                                  {"notes", _document.Notes},
+                                                                                  {"candidateID", _target.ID.ToString()},
+                                                                                  {"user", User},
+                                                                                  {"path", Start.UploadsPath},
+                                                                                  {"type", _document.DocumentTypeID.ToString()}
+                                                                              };
+                                     //Dictionary<string, object> _response = await _client.PostAsync<Dictionary<string, object>>(_request);
+
+                                     Dictionary<string, object> _response = await General.PostRestParameter<Dictionary<string, object>>("Candidates/UploadDocument", _parameters, null,
+                                                                                                                                        AddedDocument.ToArray(), FileName);
                                      if (_response == null)
                                      {
                                          return;
@@ -2618,7 +2634,7 @@ public partial class Candidate
                                      Dictionary<string, string> _parameters = new()
                                                                               {
                                                                                   {"candidateID", _target.ID.ToString()},
-                                                                                  {"user", General.GetUserName(LoginCookyUser)}
+                                                                                  {"user", User}
                                                                               };
                                      Dictionary<string, object> _response = await General.PostRest("Candidates/SaveEducation", _parameters, _candidateEducation);
                                      if (_response == null)
@@ -2651,7 +2667,7 @@ public partial class Candidate
                                      Dictionary<string, string> _parameters = new()
                                                                               {
                                                                                   {"candidateID", _target.ID.ToString()},
-                                                                                  {"user", General.GetUserName(LoginCookyUser)}
+                                                                                  {"user", User}
                                                                               };
                                      Dictionary<string, object> _response = await General.PostRest("Candidates/SaveExperience", _parameters, _candidateExperience);
                                      if (_response == null)
@@ -2682,7 +2698,7 @@ public partial class Candidate
                                  {
                                      Dictionary<string, string> _parameters = new()
                                                                               {
-                                                                                  {"user", General.GetUserName(LoginCookyUser)}
+                                                                                  {"user", User}
                                                                               };
                                      Dictionary<string, object> _response = await General.PostRest("Candidates/SaveMPC", _parameters, _mpc);
                                      if (_response != null)
@@ -2719,7 +2735,7 @@ public partial class Candidate
                                      Dictionary<string, string> _parameters = new()
                                                                               {
                                                                                   {"candidateID", _target.ID.ToString()},
-                                                                                  {"user", General.GetUserName(LoginCookyUser)}
+                                                                                  {"user", User}
                                                                               };
                                      Dictionary<string, object> _response = await General.PostRest("Candidates/SaveNotes", _parameters, _notes);
                                      if (_response == null)
@@ -2747,7 +2763,7 @@ public partial class Candidate
                                  {
                                      Dictionary<string, string> _parameters = new()
                                                                               {
-                                                                                  {"user", General.GetUserName(LoginCookyUser)}
+                                                                                  {"user", User}
                                                                               };
                                      Dictionary<string, object> _response = await General.PostRest("Candidates/SaveRating", _parameters, _rating);
                                      if (_response != null)
@@ -2781,20 +2797,32 @@ public partial class Candidate
                              {
                                  if (resume.Model is UploadResume)
                                  {
-                                     RestClient _client = new(Start.ApiHost);
-                                     RestRequest _request = new("Candidates/UploadResume", Method.Post)
-                                                            {
-                                                                AlwaysMultipartFormData = true
-                                                            };
-                                     _request.AddFile("file", AddedDocument.ToStreamByteArray(), FileName);
-                                     _request.AddParameter("filename", FileName, ParameterType.GetOrPost);
-                                     _request.AddParameter("mime", Mime, ParameterType.GetOrPost);
-                                     _request.AddParameter("type", ResumeType, ParameterType.GetOrPost);
-                                     _request.AddParameter("candidateID", _target.ID.ToString(), ParameterType.GetOrPost);
-                                     _request.AddParameter("user", LoginCookyUser == null || LoginCookyUser.UserID.NullOrWhiteSpace() ? "JOLLY" : LoginCookyUser.UserID.ToUpperInvariant(),
-                                                           ParameterType.GetOrPost);
-                                     _request.AddParameter("path", Start.UploadsPath, ParameterType.GetOrPost);
-                                     await _client.PostAsync(_request);
+                                     //RestClient _client = new(Start.ApiHost);
+                                     //RestRequest _request = new("Candidates/UploadResume", Method.Post)
+                                     //                       {
+                                     //                           AlwaysMultipartFormData = true
+                                     //                       };
+                                     //_request.AddFile("file", AddedDocument.ToStreamByteArray(), FileName);
+                                     //_request.AddParameter("filename", FileName, ParameterType.GetOrPost);
+                                     //_request.AddParameter("mime", Mime, ParameterType.GetOrPost);
+                                     //_request.AddParameter("type", ResumeType, ParameterType.GetOrPost);
+                                     //_request.AddParameter("candidateID", _target.ID.ToString(), ParameterType.GetOrPost);
+                                     //_request.AddParameter("user", LoginCookyUser == null || LoginCookyUser.UserID.NullOrWhiteSpace() ? "JOLLY" : LoginCookyUser.UserID.ToUpperInvariant(),
+                                     //                      ParameterType.GetOrPost);
+                                     //_request.AddParameter("path", Start.UploadsPath, ParameterType.GetOrPost);
+                                     //await _client.PostAsync(_request);
+
+                                     Dictionary<string, string> _parameters = new()
+                                                                              {
+                                                                                  {"filename", FileName},
+                                                                                  {"mime", Mime},
+                                                                                  {"type", ResumeType},
+                                                                                  {"candidateID", _target.ID.ToString()},
+                                                                                  {"user", User},
+                                                                                  {"path", Start.UploadsPath}
+                                                                              };
+
+                                     await General.PostRestParameter<string>("Candidates/UploadResume", _parameters, null, AddedDocument.ToArray(), FileName);
                                  }
                              });
     }
@@ -2821,7 +2849,7 @@ public partial class Candidate
                                      Dictionary<string, string> _parameters = new()
                                                                               {
                                                                                   {"candidateID", _target.ID.ToString()},
-                                                                                  {"user", General.GetUserName(LoginCookyUser)}
+                                                                                  {"user", User}
                                                                               };
 
                                      Dictionary<string, object> _response = await General.PostRest("Candidates/SaveSkill", _parameters, _skill);
@@ -3186,7 +3214,7 @@ public partial class Candidate
                                                                               {"requisitionID", RequisitionID.ToString()},
                                                                               {"candidateID", _targetSelected.ID.ToString()},
                                                                               {"notes", SubmitCandidateModel.Text},
-                                                                              {"user", General.GetUserName(LoginCookyUser)},
+                                                                              {"user", User},
                                                                               {"jsonPath", Start.JsonFilePath},
                                                                               {"emailAddress", General.GetEmail(LoginCookyUser)},
                                                                               {"uploadPath", Start.UploadsPath}
@@ -3246,16 +3274,24 @@ public partial class Candidate
     {
         return ExecuteMethod(async () =>
                              {
-                                 RestClient _client = new(Start.ApiHost);
-                                 RestRequest _request = new("Candidates/UndoCandidateActivity", Method.Post)
-                                                        {
-                                                            RequestFormat = DataFormat.Json
-                                                        };
-                                 _request.AddQueryParameter("submissionID", activityID);
-                                 _request.AddQueryParameter("user", LoginCookyUser == null || LoginCookyUser.UserID.NullOrWhiteSpace() ? "JOLLY" : LoginCookyUser.UserID.ToUpperInvariant());
-                                 _request.AddQueryParameter("isCandidateScreen", true);
+                                 //RestClient _client = new(Start.ApiHost);
+                                 //RestRequest _request = new("Candidates/UndoCandidateActivity", Method.Post)
+                                 //                       {
+                                 //                           RequestFormat = DataFormat.Json
+                                 //                       };
+                                 //_request.AddQueryParameter("submissionID", activityID);
+                                 //_request.AddQueryParameter("user", LoginCookyUser == null || LoginCookyUser.UserID.NullOrWhiteSpace() ? "JOLLY" : LoginCookyUser.UserID.ToUpperInvariant());
+                                 //_request.AddQueryParameter("isCandidateScreen", true);
 
-                                 Dictionary<string, object> _response = await _client.PostAsync<Dictionary<string, object>>(_request);
+                                 //Dictionary<string, object> _response = await _client.PostAsync<Dictionary<string, object>>(_request);
+
+                                 Dictionary<string, string> _parameters = new()
+                                                                          {
+                                                                              {"submissionID", activityID.ToString()},
+                                                                              {"user", User},
+                                                                              {"isCandidateScreen", "true"}
+                                                                          };
+                                 Dictionary<string, object> _response = await General.PostRest<Dictionary<string, object>>("Candidates/UndoCandidateActivity", _parameters);
                                  if (_response == null)
                                  {
                                      return;

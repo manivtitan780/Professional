@@ -47,6 +47,7 @@
 									{
 										<SfButton Content="" IconCss="editIconInner" @onclick="() => EditActivityDialog(_con.ID)" />
 									}
+
 									if (_con.StatusCode != "PEN" && (_con.UpdatedBy == User || RoleID == "AD"))
 									{
 										<SfButton Content="" IconCss="undoIconInner" @onclick="() => UndoActivity(_con.ID)" />
