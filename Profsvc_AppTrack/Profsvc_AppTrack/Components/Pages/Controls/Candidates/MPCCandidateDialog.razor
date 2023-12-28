@@ -9,7 +9,7 @@
 			<div style="height: 100%">
 				<div class="divContainerTable">
 					<div style="width: 100%">
-						<SfGrid AllowPaging="false" DataSource="@MPCGrid" EnableHeaderFocus="true" EnableHover="true" Height="170px" ID="gridMPC" RowHeight="@RowHeight" SelectedRowIndex="0" 
+						<SfGrid AllowPaging="false" DataSource="@MPCGrid" EnableHeaderFocus="true" EnableHover="true" Height="170px" ID="gridMPC" RowHeight="@RowHeight" SelectedRowIndex="0"
 								TValue="CandidateMPC" Width="99%">
 							<GridSelectionSettings EnableToggle="false" Mode="SelectionMode.Row" Type="SelectionType.Single"></GridSelectionSettings>
 							<GridColumns>
@@ -25,8 +25,8 @@
 							<SwitchControl @bind-BindValue="@Model.MPC" ID="checkedEnabled" OffLabel="NO" OnLabel="YES" Placeholder="M.P.C.?" />
 						</div>
 					</div>
-					<TextBoxControl @bind-Value="@Model.MPCComments" @bind-Value:event="ValueChanged" CreateDivTag="true" ID="textComments" MaxLength="500"  MinLength="1" Multiline="true" 
-									Placeholder="Comments" ValidationMessage="@(() => Model.MPCComments)" Rows="4" />
+					<TextBoxControl @bind-Value="@Model.MPCComments" @bind-Value:event="ValueChanged" CreateDivTag="true" ID="textComments" MaxLength="500" MinLength="1" Multiline="true"
+									Placeholder="Comments" Rows="4" ValidationMessage="@(() => Model.MPCComments)" />
 				</div>
 			</div>
 			<DialogFooter CancelMethod="CancelMPCDialog" @ref="FooterDialog" />

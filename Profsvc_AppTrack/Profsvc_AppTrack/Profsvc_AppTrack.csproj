@@ -61,7 +61,7 @@
 		<PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="8.0.0" />
 		<PackageReference Include="RestSharp" Version="110.2.0" />
 		<PackageReference Include="Serilog.AspNetCore" Version="8.0.0" />
-		<PackageReference Include="Syncfusion.DocIORenderer.Net.Core" Version="24.1.41" />
+		<PackageReference Include="Syncfusion.DocIORenderer.Net.Core" Version="24.1.43" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -8,7 +8,7 @@
 			<FluentValidationValidator />
 			<div class="divContainerTable">
 				<TextBoxControl @bind-Value="@(Model.Notes)" @bind-Value:event="ValueChanged" ID="textNotes" MaxLength="1000" MinLength="1" Multiline="true" Placeholder="@($"{Entity} Notes")"
-								ValidationMessage="@(() => Model.Notes)" Rows="5" />
+								Rows="5" ValidationMessage="@(() => Model.Notes)" />
 			</div>
 			<DialogFooter CancelMethod="CancelNotesDialog" @ref="FooterDialog" />
 		</EditForm>

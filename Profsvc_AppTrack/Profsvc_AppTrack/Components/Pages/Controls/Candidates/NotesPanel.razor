@@ -30,7 +30,7 @@
 					<GridColumn Width="10%">
 						<Template Context="bCon">
 							@{
-								if (bCon is CandidateNotes {UpdatedBy: "JOLLY" } _con && !IsRequisition && EditRights)
+								if (bCon is CandidateNotes _con && _con.UpdatedBy == UserName && !IsRequisition && EditRights)
 								{
 									<SfButton Content="" IconCss="editIconInner" @onclick="() => EditNotesDialog(_con.ID)" />
 									<SfButton Content="" IconCss="deleteIconInner" @onclick="() => DeleteNotesMethod(_con.ID)" />

@@ -59,20 +59,20 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Syncfusion.Blazor.Buttons" Version="24.1.41" />
-    <PackageReference Include="Syncfusion.Blazor.Calendars" Version="24.1.41" />
-    <PackageReference Include="Syncfusion.Blazor.Charts" Version="24.1.41" />
-    <PackageReference Include="Syncfusion.Blazor.Data" Version="24.1.41" />
-    <PackageReference Include="Syncfusion.Blazor.DropDowns" Version="24.1.41" />
-    <PackageReference Include="Syncfusion.Blazor.Grid" Version="24.1.41" />
-    <PackageReference Include="Syncfusion.Blazor.Inputs" Version="24.1.41" />
-    <PackageReference Include="Syncfusion.Blazor.Layouts" Version="24.1.41" />
-    <PackageReference Include="Syncfusion.Blazor.Popups" Version="24.1.41" />
-    <PackageReference Include="Syncfusion.Blazor.RichTextEditor" Version="24.1.41" />
-    <PackageReference Include="Syncfusion.Blazor.Schedule" Version="24.1.41" />
-    <PackageReference Include="Syncfusion.Blazor.SfPdfViewer" Version="24.1.41" />
-    <PackageReference Include="Syncfusion.Blazor.Themes" Version="24.1.41" />
-    <PackageReference Include="Syncfusion.Blazor.WordProcessor" Version="24.1.41" />
+    <PackageReference Include="Syncfusion.Blazor.Buttons" Version="24.1.43" />
+    <PackageReference Include="Syncfusion.Blazor.Calendars" Version="24.1.43" />
+    <PackageReference Include="Syncfusion.Blazor.Charts" Version="24.1.43" />
+    <PackageReference Include="Syncfusion.Blazor.Data" Version="24.1.43" />
+    <PackageReference Include="Syncfusion.Blazor.DropDowns" Version="24.1.43" />
+    <PackageReference Include="Syncfusion.Blazor.Grid" Version="24.1.43" />
+    <PackageReference Include="Syncfusion.Blazor.Inputs" Version="24.1.43" />
+    <PackageReference Include="Syncfusion.Blazor.Layouts" Version="24.1.43" />
+    <PackageReference Include="Syncfusion.Blazor.Popups" Version="24.1.43" />
+    <PackageReference Include="Syncfusion.Blazor.RichTextEditor" Version="24.1.43" />
+    <PackageReference Include="Syncfusion.Blazor.Schedule" Version="24.1.43" />
+    <PackageReference Include="Syncfusion.Blazor.SfPdfViewer" Version="24.1.43" />
+    <PackageReference Include="Syncfusion.Blazor.Themes" Version="24.1.43" />
+    <PackageReference Include="Syncfusion.Blazor.WordProcessor" Version="24.1.43" />
   </ItemGroup>
 
   <ItemGroup>

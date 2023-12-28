@@ -9,7 +9,7 @@
 			<div style="height: 100%">
 				<div class="divContainerTable">
 					<div style="width: 100%">
-						<SfGrid AllowPaging="false" DataSource="@RatingGrid" EnableHeaderFocus="true" EnableHover="true" Height="145px" ID="gridRating" RowHeight="@RowHeight" 
+						<SfGrid AllowPaging="false" DataSource="@RatingGrid" EnableHeaderFocus="true" EnableHover="true" Height="145px" ID="gridRating" RowHeight="@RowHeight"
 								SelectedRowIndex="0" TValue="CandidateRating" Width="99%">
 							<GridSelectionSettings EnableToggle="false" Mode="SelectionMode.Row" Type="SelectionType.Single" />
 							<GridColumns>
@@ -25,7 +25,7 @@
 							<label class="labelStatus" for="candidateRating">Rating:</label>
 						</div>
 						<div class="divFlexSmall">
-							<SfRating @bind-Value="@Model.Rating" ID="candidateRating" ItemsCount="5" CssClass="ratingBasicInfoCandidate" ShowTooltip="false"></SfRating>
+							<SfRating @bind-Value="@Model.Rating" CssClass="ratingBasicInfoCandidate" ID="candidateRating" ItemsCount="5" ShowTooltip="false"></SfRating>
 						</div>
 					</div>
 					<TextBoxControl @bind-Value="@(Model.RatingComments)" @bind-Value:event="ValueChanged" CreateDivTag="true" Height="100px" ID="textComments"
