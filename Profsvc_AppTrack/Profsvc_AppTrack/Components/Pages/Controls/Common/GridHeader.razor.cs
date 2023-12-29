@@ -28,7 +28,7 @@ public partial class GridHeader
     private static string _method, _parameterName;
 
     private readonly List<IntValues> _showRecords =
-        new() { new(10, "10 rows"), new(25, "25 rows"), new(50, "50 rows"), new(75, "75 rows"), new(100, "100 rows") };
+        [new(10, "10 rows"), new(25, "25 rows"), new(50, "50 rows"), new(75, "75 rows"), new(100, "100 rows")];
 
     /// <summary>
     ///     Gets or sets the value for the AutoCompleteButton in the GridHeader component. This value is bound to the
@@ -68,7 +68,7 @@ public partial class GridHeader
     {
         get;
         set;
-    } = false;
+    }
 
     private AutoCompleteButton AutoCompleteControl
     {

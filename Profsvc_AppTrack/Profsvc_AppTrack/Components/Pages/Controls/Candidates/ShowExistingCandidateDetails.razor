@@ -4,7 +4,7 @@
 		<Content>
 			<SfSpinner CssClass="spinnerHeight" @ref="Spinner" Type="SpinnerType.Fabric" ZIndex="12000" />
 			<div style="margin: 20px; text-align: center">
-				<SfListBox CssClass="listBox" DataSource="@ExistingCandidates" @ref="ListBox" TItem="ExistingCandidate" TValue="int" @bind-Value="@Value">
+				<SfListBox @bind-Value="@Value" CssClass="listBox" DataSource="@ExistingCandidates" @ref="ListBox" TItem="ExistingCandidate" TValue="int">
 					<ListBoxSelectionSettings Mode="Syncfusion.Blazor.DropDowns.SelectionMode.Single" />
 					<ListBoxFieldSettings Text="Name" Value="ID" />
 					<ListBoxTemplates TItem="ExistingCandidate">
@@ -26,7 +26,7 @@
 			</div>
 		</Content>
 		<FooterTemplate>
-			<SfButton Content="Continue Parsing" Disabled="@SaveDisabled" IconCss="parseIconButton" IconPosition="IconPosition.Left" IsPrimary="true" type="submit" OnClick="Parse" />
+			<SfButton Content="Continue Parsing" Disabled="@SaveDisabled" IconCss="parseIconButton" IconPosition="IconPosition.Left" IsPrimary="true" OnClick="Parse" type="submit" />
 		</FooterTemplate>
 	</DialogTemplates>
 	<DialogPositionData X="center" Y="center" />

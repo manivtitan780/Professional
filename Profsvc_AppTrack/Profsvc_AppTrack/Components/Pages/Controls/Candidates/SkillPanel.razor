@@ -25,7 +25,7 @@
 					<GridColumn Width="10%">
 						<Template Context="bCon">
 							@{
-								if (bCon is CandidateSkills {UpdatedBy: "JOLLY" } _con && !IsRequisition && EditRights)
+								if (bCon is CandidateSkills _con && _con.UpdatedBy == UserName && !IsRequisition && EditRights)
 								{
 									<SfButton Content="" IconCss="editIconInner" @onclick="() => EditSkillDialog(_con.ID)" />
 									<SfButton Content="" IconCss="deleteIconInner" @onclick="() => DeleteSkillMethod(_con.ID)" />
