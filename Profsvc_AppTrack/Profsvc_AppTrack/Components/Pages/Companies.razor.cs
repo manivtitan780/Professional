@@ -8,7 +8,7 @@
 // File Name:           Companies.razor.cs
 // Created By:          Narendra Kumaran Kadhirvelu, Jolly Joseph Paily, DonBosco Paily, Mariappan Raja
 // Created On:          11-23-2023 19:53
-// Last Updated On:     12-29-2023 16:27
+// Last Updated On:     12-29-2023 20:51
 // *****************************************/
 
 #endregion
@@ -38,7 +38,6 @@ public partial class Companies
 {
 	private const string StorageName = "CompaniesGrid";
 	private static TaskCompletionSource<bool> _initializationTaskSource;
-	private bool _actionProgress;
 
 	//private bool _clickInProgress;
 	private List<CompanyContact> _companyContactsObject = [];
@@ -50,7 +49,6 @@ public partial class Companies
 
 	private List<IntValues> _education, _eligibility, _experience, _skills, _states, _titles;
 
-	private bool _isSpeedDial;
 	private List<KeyValues> _jobOptions, _recruiters;
 
 	private string _lastValue = "";
@@ -946,46 +944,43 @@ public partial class Companies
 	/// </summary>
 	/// <param name="id">The id of the contact to edit. If 0, a new contact is created.</param>
 	/// <returns>A Task representing the asynchronous operation.</returns>
-	private async Task EditContact(int id)
+	private Task EditContact(int id)
 	{
-		if (!_actionProgress)
-		{
-			await Task.Yield();
-			_actionProgress = true;
-			if (id == 0)
-			{
-				if (SelectedContactClone == null)
-				{
-					SelectedContactClone = new();
-				}
-				else
-				{
-					SelectedContactClone.Clear();
-				}
+		return ExecuteMethod(async () =>
+							 {
+								 if (id == 0)
+								 {
+									 if (SelectedContactClone == null)
+									 {
+										 SelectedContactClone = new();
+									 }
+									 else
+									 {
+										 SelectedContactClone.Clear();
+									 }
 
-				if (_target != null)
-				{
-					SelectedContactClone.Address = _companyDetailsObject.Address;
-					SelectedContactClone.City = _companyDetailsObject.City;
-					SelectedContactClone.StateID = _companyDetailsObject.StateID;
-					SelectedContactClone.State = _companyDetailsObject.State;
-					SelectedContactClone.ZipCode = _companyDetailsObject.ZipCode;
-					SelectedContactClone.Phone = _companyDetailsObject.Phone;
-					SelectedContactClone.Extension = _companyDetailsObject.Extension;
-					SelectedContactClone.Fax = _companyDetailsObject.Fax;
-					SelectedContactClone.ClientID = _companyDetailsObject.ID;
-					SelectedContactClone.IsPrimary = false;
-					SelectedContactClone.StatusCode = "ACT";
-				}
-			}
-			else
-			{
-				SelectedContactClone = ContactPanel.SelectedRow.Copy();
-			}
+									 if (_target != null)
+									 {
+										 SelectedContactClone.Address = _companyDetailsObject.Address;
+										 SelectedContactClone.City = _companyDetailsObject.City;
+										 SelectedContactClone.StateID = _companyDetailsObject.StateID;
+										 SelectedContactClone.State = _companyDetailsObject.State;
+										 SelectedContactClone.ZipCode = _companyDetailsObject.ZipCode;
+										 SelectedContactClone.Phone = _companyDetailsObject.Phone;
+										 SelectedContactClone.Extension = _companyDetailsObject.Extension;
+										 SelectedContactClone.Fax = _companyDetailsObject.Fax;
+										 SelectedContactClone.ClientID = _companyDetailsObject.ID;
+										 SelectedContactClone.IsPrimary = false;
+										 SelectedContactClone.StatusCode = "ACT";
+									 }
+								 }
+								 else
+								 {
+									 SelectedContactClone = ContactPanel.SelectedRow.Copy();
+								 }
 
-			_actionProgress = false;
-			await DialogEditContact.ShowDialog();
-		}
+								 await DialogEditContact.ShowDialog();
+							 });
 	}
 
 	/// <summary>
@@ -1003,10 +998,7 @@ public partial class Companies
 	///     Handles the file selection event. It disables the dialog buttons when a file is selected.
 	/// </summary>
 	/// <param name="arg">The event arguments associated with the file selection event.</param>
-	private void FileSelect(SelectedEventArgs arg)
-	{
-		DialogDocument.DisableButtons();
-	}
+	private void FileSelect(SelectedEventArgs arg) => DialogDocument.DisableButtons();
 
 	/// <summary>
 	///     The FilterGrid method is an asynchronous task that is responsible for filtering the grid view of companies on the
@@ -1018,26 +1010,24 @@ public partial class Companies
 	/// </summary>
 	/// <param name="company">The ChangeEventArgs object containing the company details for filtering.</param>
 	/// <returns>A Task that represents the asynchronous operation.</returns>
-	private async Task FilterGrid(ChangeEventArgs<string, KeyValues> company)
+	private Task FilterGrid(ChangeEventArgs<string, KeyValues> company)
 	{
-		string _currentValue = company.Value ?? "";
-		if (_currentValue.Equals(_lastValue))
-		{
-			return;
-		}
+		return ExecuteMethod(async () =>
+							 {
+								 string _currentValue = company.Value ?? "";
+								 if (_currentValue.Equals(_lastValue))
+								 {
+									 return;
+								 }
 
-		if (!_actionProgress)
-		{
-			_actionProgress = true;
-			SearchModel.CompanyName = company.Value ?? "";
-			AutocompleteValue = SearchModel.CompanyName;
-			_currentPage = 1;
-			SearchModel.Page = _currentPage;
-			//company.IsInteracted = true;
-			await LocalStorage.SetItemAsync(StorageName, SearchModel);
-			await Grid.Refresh();
-			_actionProgress = false;
-		}
+								 SearchModel.CompanyName = company.Value ?? "";
+								 AutocompleteValue = SearchModel.CompanyName;
+								 _currentPage = 1;
+								 SearchModel.Page = _currentPage;
+								 //company.IsInteracted = true;
+								 await LocalStorage.SetItemAsync(StorageName, SearchModel);
+								 await Grid.Refresh();
+							 });
 	}
 
 	/// <summary>
@@ -1045,23 +1035,20 @@ public partial class Companies
 	///     It ensures that the action is not in progress, sets the current page to 1, updates the search model,
 	///     stores the current state of the Companies grid in the session storage, and then refreshes the grid.
 	/// </summary>
-	private async Task FirstClick()
+	private Task FirstClick()
 	{
-		if (!_actionProgress)
-		{
-			await Task.Yield();
-			_actionProgress = true;
-			if (_currentPage < 1)
-			{
-				_currentPage = 1;
-			}
+		return ExecuteMethod(async () =>
+							 {
+								 if (_currentPage < 1)
+								 {
+									 _currentPage = 1;
+								 }
 
-			_currentPage = 1;
-			SearchModel.Page = 1;
-			await SessionStorage.SetItemAsync(StorageName, SearchModel);
-			await Grid.Refresh();
-			_actionProgress = false;
-		}
+								 _currentPage = 1;
+								 SearchModel.Page = 1;
+								 await SessionStorage.SetItemAsync(StorageName, SearchModel);
+								 await Grid.Refresh();
+							 });
 	}
 
 	/// <summary>
@@ -1071,23 +1058,20 @@ public partial class Companies
 	///     and then refreshes the grid.
 	///     This method also prevents multiple simultaneous actions by using the _actionProgress flag.
 	/// </summary>
-	private async Task LastClick()
+	private Task LastClick()
 	{
-		if (!_actionProgress)
-		{
-			await Task.Yield();
-			_actionProgress = true;
-			if (_currentPage < 1)
-			{
-				_currentPage = 1;
-			}
+		return ExecuteMethod(async () =>
+							 {
+								 if (_currentPage < 1)
+								 {
+									 _currentPage = 1;
+								 }
 
-			_currentPage = PageCount.ToInt32();
-			SearchModel.Page = _currentPage;
-			await SessionStorage.SetItemAsync(StorageName, SearchModel);
-			await Grid.Refresh();
-			_actionProgress = false;
-		}
+								 _currentPage = PageCount.ToInt32();
+								 SearchModel.Page = _currentPage;
+								 await SessionStorage.SetItemAsync(StorageName, SearchModel);
+								 await Grid.Refresh();
+							 });
 	}
 
 	/// <summary>
@@ -1096,23 +1080,20 @@ public partial class Companies
 	///     It also stores the updated page number in the session storage for persistence across page refreshes.
 	///     This method is asynchronous and utilizes a flag to prevent multiple simultaneous actions.
 	/// </summary>
-	private async Task NextClick()
+	private Task NextClick()
 	{
-		if (!_actionProgress)
-		{
-			await Task.Yield();
-			_actionProgress = true;
-			if (_currentPage < 1)
-			{
-				_currentPage = 1;
-			}
+		return ExecuteMethod(async () =>
+							 {
+								 if (_currentPage < 1)
+								 {
+									 _currentPage = 1;
+								 }
 
-			_currentPage = SearchModel.Page >= PageCount.ToInt32() ? PageCount.ToInt32() : SearchModel.Page + 1;
-			SearchModel.Page = _currentPage;
-			await SessionStorage.SetItemAsync(StorageName, SearchModel);
-			await Grid.Refresh();
-			_actionProgress = false;
-		}
+								 _currentPage = SearchModel.Page >= PageCount.ToInt32() ? PageCount.ToInt32() : SearchModel.Page + 1;
+								 SearchModel.Page = _currentPage;
+								 await SessionStorage.SetItemAsync(StorageName, SearchModel);
+								 await Grid.Refresh();
+							 });
 	}
 
 	/// <summary>
@@ -1128,53 +1109,46 @@ public partial class Companies
 	///     column name for sorting actions.
 	/// </param>
 	/// <returns>A Task representing the asynchronous operation.</returns>
-	private async Task OnActionBegin(ActionEventArgs<Company> args)
+	private Task OnActionBegin(ActionEventArgs<Company> args)
 	{
-		if (!_actionProgress)
-		{
-			await Task.Yield();
-			_actionProgress = true;
-			if (args.RequestType == Action.Sorting)
-			{
-				SearchModel.SortField = args.ColumnName switch
-										{
-											"CompanyName" => 2,
-											"StateID" => 3,
-											"Phone" => 4,
-											_ => 1
-										};
-				SearchModel.SortDirection = args.Direction == SortDirection.Ascending ? (byte)1 : (byte)0;
-				await SessionStorage.SetItemAsync(StorageName, SearchModel);
-				await Grid.Refresh();
-			}
-
-			_actionProgress = false;
-		}
+		return ExecuteMethod(async () =>
+							 {
+								 if (args.RequestType == Action.Sorting)
+								 {
+									 SearchModel.SortField = args.ColumnName switch
+															 {
+																 "CompanyName" => 2,
+																 "StateID" => 3,
+																 "Phone" => 4,
+																 _ => 1
+															 };
+									 SearchModel.SortDirection = args.Direction == SortDirection.Ascending ? (byte)1 : (byte)0;
+									 await SessionStorage.SetItemAsync(StorageName, SearchModel);
+									 await Grid.Refresh();
+								 }
+							 });
 	}
 
-	/// <summary>
-	///     This method is called after the component has finished rendering. It performs post-rendering logic.
-	///     If this is the first render, the method returns immediately. Otherwise, it yields control back to the caller before
-	///     setting the 'User' property of the 'SearchModel' object. If 'LoginCookyUser' is null or its 'UserID' is a
-	///     whitespace string,
-	///     'User' is set to "JOLLY". Otherwise, 'User' is set to the upper case version of 'UserID'.
-	/// </summary>
-	/// <param name="firstRender">A boolean indicating whether this is the first render of the component.</param>
-	/// <returns>A Task representing the asynchronous operation.</returns>
-	protected override async Task OnAfterRenderAsync(bool firstRender)
-	{
-		if (firstRender)
-		{
-			return;
-		}
-
-		await Task.Yield();
-
-		//_currentPage = SearchModel.Page;
-		//PageCount = _currentPage;
-		SearchModel.User = User;
-		await base.OnAfterRenderAsync(true);
-	}
+	///// <summary>
+	/////     This method is called after the component has finished rendering. It performs post-rendering logic.
+	/////     If this is the first render, the method returns immediately. Otherwise, it yields control back to the caller before
+	/////     setting the 'User' property of the 'SearchModel' object. If 'LoginCookyUser' is null or its 'UserID' is a
+	/////     whitespace string,
+	/////     'User' is set to "JOLLY". Otherwise, 'User' is set to the upper case version of 'UserID'.
+	///// </summary>
+	///// <param name="firstRender">A boolean indicating whether this is the first render of the component.</param>
+	///// <returns>A Task representing the asynchronous operation.</returns>
+	//protected override async Task OnAfterRenderAsync(bool firstRender)
+	//{
+	//	if (firstRender)
+	//	{
+	//		return;
+	//	}
+	//	await Task.Yield();
+	//	//_currentPage = SearchModel.Page;
+	//	//PageCount = _currentPage;
+	//	await base.OnAfterRenderAsync(true);
+	//}
 
 	/// <summary>
 	///     Asynchronously initializes the Companies page.
@@ -1188,93 +1162,92 @@ public partial class Companies
 	/// <returns>A task that represents the asynchronous operation.</returns>
 	protected override async Task OnInitializedAsync()
 	{
-		LoginCookyUser = await NavManager.RedirectInner(LocalStorage);
-		while (_roles == null)
-		{
-			_roles = await Redis.GetAsync<List<Role>>("Roles");
-		}
+		_initializationTaskSource = new();
+		await ExecuteMethod(async () =>
+							{
+								LoginCookyUser = await NavManager.RedirectInner(LocalStorage);
+								List<string> _keys =
+								[
+									"Roles", "States", "Skills", "Titles", "Users", "Eligibility", "Experience", "Education", "JobOptions", "StatusCodes", "Workflow"
+								];
 
-		RoleID = LoginCookyUser.RoleID;
-		UserRights = LoginCookyUser.GetUserRights(_roles);
-		DisplayAdd = UserRights.EditCompany ? "unset" : "none";
+								Dictionary<string, string> _cacheValues = await Redis.BatchGet(_keys);
 
-		if (!UserRights.ViewCompany) // User doesn't have View Company rights. This is done by looping through the Roles of the current user and determining the rights for ViewCompany.
-		{
-			NavManager.NavigateTo($"{NavManager.BaseUri}home", true);
-		}
+								_roles = JsonConvert.DeserializeObject<List<Role>>(_cacheValues["Roles"]);
 
-		while (_states == null)
-		{
-			_states = await Redis.GetAsync<List<IntValues>>("States");
-		}
+								RoleID = LoginCookyUser.RoleID;
+								UserRights = LoginCookyUser.GetUserRights(_roles);
+								DisplayAdd = UserRights.EditCompany ? "unset" : "none";
+								if (!UserRights.ViewCompany) // User doesn't have View Company rights. This is done by looping through the Roles of the current user and determining the rights for ViewCompany.
+								{
+									NavManager.NavigateTo($"{NavManager.BaseUri}home", true);
+								}
 
-		_statesCopy.Clear();
-		_statesCopy.Add(new(0, "All"));
-		_statesCopy.AddRange(_states);
+								_states = JsonConvert.DeserializeObject<List<IntValues>>(_cacheValues["States"]);
 
-		while (_skills == null)
-		{
-			_skills = await Redis.GetAsync<List<IntValues>>("Skills");
-		}
+								_statesCopy.Clear();
+								_statesCopy.Add(new(0, "All"));
+								_statesCopy.AddRange(_states);
 
-		while (_titles == null)
-		{
-			_titles = await Redis.GetAsync<List<IntValues>>("Titles");
-		}
+								_skills = JsonConvert.DeserializeObject<List<IntValues>>(_cacheValues["Skills"]);
+								_titles = JsonConvert.DeserializeObject<List<IntValues>>(_cacheValues["Titles"]);
 
-		while (_recruiters == null)
-		{
-			List<User> _users = await Redis.GetAsync<List<User>>("Users");
-			if (_users == null)
-			{
-				continue;
-			}
+								while (_recruiters == null)
+								{
+									List<User> _users = JsonConvert.DeserializeObject<List<User>>(_cacheValues["Users"]);
+									if (_users == null)
+									{
+										continue;
+									}
 
-			_recruiters = [];
-			foreach (User _user in _users.Where(user => user.Role is "Recruiter" or "Recruiter & Sales Manager"))
-			{
-				_recruiters?.Add(new(_user.UserName, _user.UserName));
-			}
-		}
+									_recruiters = [];
+									foreach (User _user in _users.Where(user => user.Role is "Recruiter" or "Recruiter & Sales Manager"))
+									{
+										_recruiters?.Add(new(_user.UserName, _user.UserName));
+									}
+								}
 
-		_eligibility = await Redis.GetAsync<List<IntValues>>("Eligibility");
-		_experience = await Redis.GetAsync<List<IntValues>>("Experience");
-		_education = await Redis.GetAsync<List<IntValues>>("Education");
+								_eligibility = await Redis.GetAsync<List<IntValues>>("Eligibility");
+								_experience = await Redis.GetAsync<List<IntValues>>("Experience");
+								_education = await Redis.GetAsync<List<IntValues>>("Education");
 
-		while (_jobOptions == null || _jobOptions.Count == 0)
-		{
-			_jobOptions = await Redis.GetAsync<List<KeyValues>>("JobOptions");
-		}
+								while (_jobOptions == null || _jobOptions.Count == 0)
+								{
+									_jobOptions = await Redis.GetAsync<List<KeyValues>>("JobOptions");
+								}
 
-		_statusCodes = await Redis.GetAsync<List<StatusCode>>("StatusCodes");
-		_workflows = await Redis.GetAsync<List<AppWorkflow>>("Workflow");
+								_statusCodes = await Redis.GetAsync<List<StatusCode>>("StatusCodes");
+								_workflows = await Redis.GetAsync<List<AppWorkflow>>("Workflow");
 
-		string _cookyString = await SessionStorage.GetItemAsStringAsync(StorageName);
+								string _cookyString = await SessionStorage.GetItemAsStringAsync(StorageName);
 
-		if (!_cookyString.NullOrWhiteSpace())
-		{
-			SearchModel = JsonConvert.DeserializeObject<CompanySearch>(_cookyString);
-		}
-		else
-		{
-			await SessionStorage.SetItemAsync(StorageName, SearchModel);
-		}
+								if (!_cookyString.NullOrWhiteSpace())
+								{
+									SearchModel = JsonConvert.DeserializeObject<CompanySearch>(_cookyString);
+								}
+								else
+								{
+									await SessionStorage.SetItemAsync(StorageName, SearchModel);
+								}
 
-		_currentPage = SearchModel.Page;
-		_lastValue = SearchModel.CompanyName;
+								_currentPage = SearchModel.Page;
+								_lastValue = SearchModel.CompanyName;
 
-		User = LoginCookyUser?.UserID.NullOrWhiteSpace() != false ? "JOLLY" : LoginCookyUser.UserID.ToUpperInvariant();
+								User = General.GetUserName(LoginCookyUser);
+								SearchModel.User = User;
 
-		SortDirectionProperty = SearchModel.SortDirection == 1 ? SortDirection.Ascending : SortDirection.Descending;
-		SortField = SearchModel.SortField switch
-					{
-						2 => "CompanyName",
-						3 => "Location",
-						4 => "Phone",
-						_ => "Updated"
-					};
-		AutocompleteValue = SearchModel.CompanyName;
+								SortDirectionProperty = SearchModel.SortDirection == 1 ? SortDirection.Ascending : SortDirection.Descending;
+								SortField = SearchModel.SortField switch
+											{
+												2 => "CompanyName",
+												3 => "Location",
+												4 => "Phone",
+												_ => "Updated"
+											};
+								AutocompleteValue = SearchModel.CompanyName;
+							});
 
+		_initializationTaskSource.SetResult(true);
 		await base.OnInitializedAsync();
 	}
 
@@ -1289,28 +1262,25 @@ public partial class Companies
 	///     The method uses session storage to persist the current state of the Companies grid, including the current page
 	///     number.
 	/// </remarks>
-	private async Task PageNumberChanged(ChangeEventArgs obj)
+	private Task PageNumberChanged(ChangeEventArgs obj)
 	{
-		if (!_actionProgress)
-		{
-			await Task.Yield();
-			_actionProgress = true;
-			int _currentValue = obj.Value.ToInt32();
-			if (_currentValue < 1)
-			{
-				_currentValue = 1;
-			}
-			else if (_currentValue > PageCount)
-			{
-				_currentValue = PageCount;
-			}
+		return ExecuteMethod(async () =>
+							 {
+								 int _currentValue = obj.Value.ToInt32();
+								 if (_currentValue < 1)
+								 {
+									 _currentValue = 1;
+								 }
+								 else if (_currentValue > PageCount)
+								 {
+									 _currentValue = PageCount;
+								 }
 
-			_currentPage = _currentValue;
-			SearchModel.Page = _currentPage;
-			await SessionStorage.SetItemAsync(StorageName, SearchModel);
-			await Grid.Refresh();
-			_actionProgress = false;
-		}
+								 _currentPage = _currentValue;
+								 SearchModel.Page = _currentPage;
+								 await SessionStorage.SetItemAsync(StorageName, SearchModel);
+								 await Grid.Refresh();
+							 });
 	}
 
 	/// <summary>
@@ -1320,23 +1290,20 @@ public partial class Companies
 	///     It also saves the updated page number to the local storage.
 	///     The method is asynchronous and uses a flag to prevent multiple simultaneous invocations.
 	/// </summary>
-	private async Task PreviousClick()
+	private Task PreviousClick()
 	{
-		if (!_actionProgress)
-		{
-			await Task.Yield();
-			_actionProgress = true;
-			if (_currentPage < 1)
-			{
-				_currentPage = 1;
-			}
+		return ExecuteMethod(async () =>
+							 {
+								 if (_currentPage < 1)
+								 {
+									 _currentPage = 1;
+								 }
 
-			_currentPage = SearchModel.Page <= 1 ? 1 : SearchModel.Page - 1;
-			SearchModel.Page = _currentPage;
-			await LocalStorage.SetItemAsync(StorageName, SearchModel);
-			await Grid.Refresh();
-			_actionProgress = false;
-		}
+								 _currentPage = SearchModel.Page <= 1 ? 1 : SearchModel.Page - 1;
+								 SearchModel.Page = _currentPage;
+								 await LocalStorage.SetItemAsync(StorageName, SearchModel);
+								 await Grid.Refresh();
+							 });
 	}
 
 	/// <summary>
@@ -1356,46 +1323,46 @@ public partial class Companies
 	///     If the operation is successful, the method updates the company details in the local state and refreshes the grid
 	///     view.
 	/// </remarks>
-	private async Task SaveCompany(EditContext context)
+	private Task SaveCompany(EditContext context)
 	{
-		await Task.Yield();
-		//if (DialogEditCompany.FooterDialog.ButtonsDisabled())
-		//{
-		//	return;
-		//}
+		return ExecuteMethod(async () =>
+							 {
+								 //RestClient _client = new($"{Start.ApiHost}");
+								 //RestRequest _request = new("Company/SaveCompany", Method.Post)
+								 //{
+								 // RequestFormat = DataFormat.Json
+								 //};
+								 //_request.AddJsonBody(_companyDetailsObjectClone);
+								 //_request.AddQueryParameter("user", User);
 
-		//DialogEditCompany.FooterDialog.DisableButtons();
+								 //await _client.PostAsync<int>(_request);
 
-		RestClient _client = new($"{Start.ApiHost}");
-		RestRequest _request = new("Company/SaveCompany", Method.Post)
-							   {
-								   RequestFormat = DataFormat.Json
-							   };
-		_request.AddJsonBody(_companyDetailsObjectClone);
-		_request.AddQueryParameter("user", User);
+								 Dictionary<string, string> _parameters = new()
+																		  {
+																			  {"user", User}
+																		  };
 
-		await _client.PostAsync<int>(_request);
+								 await General.PostRest<int>("Company/SaveCompany", _parameters, _companyDetailsObjectClone);
 
-		_companyDetailsObject = _companyDetailsObjectClone.Copy();
-		if (_target != null)
-		{
-			_target.Address = _companyDetailsObject.Address;
-			_target.City = _companyDetailsObject.City;
-			_target.State = _companyDetailsObject.State;
-			_target.ZipCode = _companyDetailsObject.ZipCode;
-			_target.Phone = _companyDetailsObject.Phone;
-			_target.EmailAddress = _companyDetailsObject.EmailAddress;
+								 _companyDetailsObject = _companyDetailsObjectClone.Copy();
+								 if (_target != null)
+								 {
+									 _target.Address = _companyDetailsObject.Address;
+									 _target.City = _companyDetailsObject.City;
+									 _target.State = _companyDetailsObject.State;
+									 _target.ZipCode = _companyDetailsObject.ZipCode;
+									 _target.Phone = _companyDetailsObject.Phone;
+									 _target.EmailAddress = _companyDetailsObject.EmailAddress;
 
-			SetupAddress();
-		}
-		else
-		{
-			await Grid.Refresh();
-		}
+									 SetupAddress();
+								 }
+								 else
+								 {
+									 await Grid.Refresh();
+								 }
 
-		//DialogEditCompany.FooterDialog.EnableButtons();
-		await Task.Yield();
-		StateHasChanged();
+								 StateHasChanged();
+							 });
 	}
 
 	/// <summary>
@@ -1405,37 +1372,36 @@ public partial class Companies
 	/// </summary>
 	/// <param name="context">The context for the edit operation.</param>
 	/// <returns>A Task that represents the asynchronous operation.</returns>
-	private async Task SaveCompanyContact(EditContext context)
+	private Task SaveCompanyContact(EditContext context)
 	{
-		await DialogEditContact.Spinner.ShowAsync();
-		//if (DialogEditContact.FooterDialog.ButtonsDisabled())
-		//{
-		//	return;
-		//}
+		return ExecuteMethod(async () =>
+							 {
+								 //RestClient _client = new($"{Start.ApiHost}");
+								 //RestRequest _request = new("Company/SaveContact", Method.Post)
+								 //					{
+								 //						RequestFormat = DataFormat.Json
+								 //					};
+								 //_request.AddJsonBody(SelectedContactClone);
+								 //_request.AddQueryParameter();
 
-		//DialogEditContact.FooterDialog.DisableButtons();
+								 //Dictionary<string, object> _response = await _client.PostAsync<Dictionary<string, object>>(_request);
 
-		RestClient _client = new($"{Start.ApiHost}");
-		RestRequest _request = new("Company/SaveContact", Method.Post)
-							   {
-								   RequestFormat = DataFormat.Json
-							   };
-		_request.AddJsonBody(SelectedContactClone);
-		_request.AddQueryParameter("user", User);
+								 Dictionary<string, string> _parameters = new()
+																		  {
+																			  {"user", User}
+																		  };
 
-		Dictionary<string, object> _response = await _client.PostAsync<Dictionary<string, object>>(_request);
+								 Dictionary<string, object> _response = await General.PostRest("Company/SaveContact", _parameters, SelectedContactClone);
 
-		if (_response == null)
-		{
-			return;
-		}
+								 if (_response == null)
+								 {
+									 return;
+								 }
 
-		_companyContactsObject = General.DeserializeObject<List<CompanyContact>>(_response["Contacts"]);
+								 _companyContactsObject = General.DeserializeObject<List<CompanyContact>>(_response["Contacts"]);
 
-		//DialogEditContact.FooterDialog.EnableButtons();
-		//await DialogEditContact.Spinner.HideAsync();
-		//await DialogEditContact.Dialog.HideAsync();
-		StateHasChanged();
+								 StateHasChanged();
+							 });
 	}
 
 	/// <summary>
@@ -1448,41 +1414,53 @@ public partial class Companies
 	/// </summary>
 	/// <param name="document">The EditContext object representing the document to be saved.</param>
 	/// <returns>A Task representing the asynchronous operation.</returns>
-	private async Task SaveDocument(EditContext document)
+	private Task SaveDocument(EditContext document)
 	{
-		await Task.Yield();
-		try
-		{
-			if (document.Model is RequisitionDocuments _document)
-			{
-				RestClient _client = new($"{Start.ApiHost}");
-				RestRequest _request = new("Company/UploadDocument", Method.Post)
-									   {
-										   AlwaysMultipartFormData = true
-									   };
-				_request.AddFile("file", AddedDocument.ToStreamByteArray(), FileName);
-				_request.AddParameter("filename", FileName, ParameterType.GetOrPost);
-				_request.AddParameter("mime", Mime, ParameterType.GetOrPost);
-				_request.AddParameter("name", _document.DocumentName, ParameterType.GetOrPost);
-				_request.AddParameter("notes", _document.DocumentNotes, ParameterType.GetOrPost);
-				_request.AddParameter("companyID", _target.ID.ToString(), ParameterType.GetOrPost);
-				_request.AddParameter("user", User, ParameterType.GetOrPost);
-				_request.AddParameter("path", Start.UploadsPath, ParameterType.GetOrPost);
-				Dictionary<string, object> _response = await _client.PostAsync<Dictionary<string, object>>(_request);
-				if (_response == null)
-				{
-					return;
-				}
+		return ExecuteMethod(async () =>
+							 {
+								 try
+								 {
+									 if (document.Model is RequisitionDocuments _document)
+									 {
+										 //RestClient _client = new($"{Start.ApiHost}");
+										 //RestRequest _request = new("Company/UploadDocument", Method.Post)
+										 //					{
+										 //						AlwaysMultipartFormData = true
+										 //					};
+										 //_request.AddFile("file", AddedDocument.ToStreamByteArray(), FileName);
+										 //_request.AddParameter("filename", FileName, ParameterType.GetOrPost);
+										 //_request.AddParameter("mime", Mime, ParameterType.GetOrPost);
+										 //_request.AddParameter("name", _document.DocumentName, ParameterType.GetOrPost);
+										 //_request.AddParameter("notes", _document.DocumentNotes, ParameterType.GetOrPost);
+										 //_request.AddParameter("companyID", _target.ID.ToString(), ParameterType.GetOrPost);
+										 //_request.AddParameter("user", User, ParameterType.GetOrPost);
+										 //_request.AddParameter("path", Start.UploadsPath, ParameterType.GetOrPost);
+										 //Dictionary<string, object> _response = await _client.PostAsync<Dictionary<string, object>>(_request);
 
-				_companyDocumentsObject = General.DeserializeObject<List<RequisitionDocuments>>(_response["Document"]);
-			}
-		}
-		catch
-		{
-			//
-		}
+										 Dictionary<string, string> _parameters = new()
+																				  {
+																					  {"filename", FileName},
+																					  {"mime", Mime},
+																					  {"name", _document.DocumentName},
+																					  {"notes", _document.DocumentNotes},
+																					  {"companyID", _target.ID.ToString()},
+																					  {"user", User},
+																					  {"path", Start.UploadsPath}
+																				  };
+										 Dictionary<string, object> _response = await General.PostRest("Company/UploadDocument", _parameters, null, AddedDocument.ToArray(), FileName);
+										 if (_response == null)
+										 {
+											 return;
+										 }
 
-		await Task.Yield();
+										 _companyDocumentsObject = General.DeserializeObject<List<RequisitionDocuments>>(_response["Document"]);
+									 }
+								 }
+								 catch
+								 {
+									 //
+								 }
+							 });
 	}
 
 	/// <summary>
@@ -1493,17 +1471,14 @@ public partial class Companies
 	/// </summary>
 	/// <param name="args">The edit context containing the search parameters.</param>
 	/// <returns>A task that represents the asynchronous operation.</returns>
-	private async Task SearchCompany(EditContext args)
+	private Task SearchCompany(EditContext args)
 	{
-		if (!_actionProgress)
-		{
-			await Task.Yield();
-			_actionProgress = true;
-			SearchModel = SearchModelClone.Copy();
-			await SessionStorage.SetItemAsync(StorageName, SearchModel);
-			await Grid.Refresh();
-			_actionProgress = false;
-		}
+		return ExecuteMethod(async () =>
+							 {
+								 SearchModel = SearchModelClone.Copy();
+								 await SessionStorage.SetItemAsync(StorageName, SearchModel);
+								 await Grid.Refresh();
+							 });
 	}
 
 	/// <summary>
@@ -1516,20 +1491,17 @@ public partial class Companies
 	///     resets the current page to 1, and refreshes the grid. It also manages a flag to indicate
 	///     the progress of the action to prevent multiple simultaneous operations.
 	/// </remarks>
-	private async Task SetAlphabet(char alphabet)
+	private Task SetAlphabet(char alphabet)
 	{
-		if (!_actionProgress)
-		{
-			await Task.Yield();
-			_actionProgress = true;
-			SearchModel.CompanyName = alphabet.ToString();
-			_currentPage = 1;
-			SearchModel.Page = 1;
-			await SessionStorage.SetItemAsync(StorageName, SearchModel);
-			AutocompleteValue = alphabet.ToString();
-			await Grid.Refresh();
-			_actionProgress = false;
-		}
+		return ExecuteMethod(async () =>
+							 {
+								 SearchModel.CompanyName = alphabet.ToString();
+								 _currentPage = 1;
+								 SearchModel.Page = 1;
+								 await SessionStorage.SetItemAsync(StorageName, SearchModel);
+								 AutocompleteValue = alphabet.ToString();
+								 await Grid.Refresh();
+							 });
 	}
 
 	/// <summary>
@@ -1607,32 +1579,22 @@ public partial class Companies
 	/// </summary>
 	/// <param name="args">The arguments of the Speed Dial item click event, which include the clicked item's details.</param>
 	/// <returns>A task that represents the asynchronous operation.</returns>
-	private async Task SpeedDialItemClicked(SpeedDialItemEventArgs args)
+	private Task SpeedDialItemClicked(SpeedDialItemEventArgs args)
 	{
-		if (!_isSpeedDial)
+		switch (args.Item.ID)
 		{
-			await Task.Yield();
-			//_actionProgress = true;
-			_isSpeedDial = true;
-			switch (args.Item.ID)
-			{
-				case "itemEditCompany":
-					_selectedTab = 0;
-					await EditCompany(_target.ID);
-					break;
-				case "itemAddContact":
-					_selectedTab = 0;
-					await EditContact(0);
-					break;
-				case "itemAddDocument":
-					_selectedTab = 1;
-					await AddDocument();
-					break;
-			}
-
-			_isSpeedDial = false;
-			//_actionProgress = false;
+			case "itemEditCompany":
+				_selectedTab = 0;
+				return EditCompany(_target.ID);
+			case "itemAddContact":
+				_selectedTab = 0;
+				return EditContact(0);
+			case "itemAddDocument":
+				_selectedTab = 1;
+				return AddDocument();
 		}
+
+		return Task.CompletedTask;
 	}
 
 	/// <summary>
@@ -1642,11 +1604,7 @@ public partial class Companies
 	/// </summary>
 	/// <param name="args">An instance of SelectEventArgs containing data related to the tab selection event.</param>
 	/// <returns>A Task representing the asynchronous operation.</returns>
-	private async Task TabSelected(SelectEventArgs args)
-	{
-		await Task.Yield();
-		_selectedTab = args.SelectedIndex;
-	}
+	private void TabSelected(SelectEventArgs args) => _selectedTab = args.SelectedIndex;
 
 	/// <summary>
 	///     Handles the upload of a document. It reads the uploaded file(s), copies the content to a memory stream,
@@ -1677,7 +1635,7 @@ public partial class Companies
 	/// </summary>
 	public class CompanyAdaptor : DataAdaptor
 	{
-		private bool _reading;
+		private readonly SemaphoreSlim _semaphoreSlim = new(1, 1);
 
 		/// <summary>
 		///     Asynchronously reads company data for the grid view on the Companies page.
@@ -1691,28 +1649,38 @@ public partial class Companies
 		///     A Task that represents the asynchronous read operation. The value of the TResult parameter contains the
 		///     retrieved data.
 		/// </returns>
-		public override Task<object> ReadAsync(DataManagerRequest dm, string key = null)
+		public override async Task<object> ReadAsync(DataManagerRequest dm, string key = null)
 		{
-			if (_reading)
+			if (!await _semaphoreSlim.WaitAsync(TimeSpan.Zero))
 			{
 				return null;
 			}
 
-			_reading = true;
-			bool _getInformation = true;
-			if (CompaniesList != null)
+			await _initializationTaskSource.Task;
+			try
 			{
-				_getInformation = CompaniesList.Count == 0;
-			}
+				bool _getInformation = true;
+				if (CompaniesList != null)
+				{
+					_getInformation = CompaniesList.Count == 0;
+				}
 
-			Task<object> _companyReturn = General.GetCompanyReadAdaptor(SearchModel, "JOLLY", dm, _getInformation);
-			if (Count > 0)
+				Task<object> _companyReturn = General.GetCompanyReadAdaptor(SearchModel, "JOLLY", dm, _getInformation);
+				if (Count > 0)
+				{
+					await Grid.SelectRowAsync(0);
+				}
+
+				return _companyReturn;
+			}
+			catch
 			{
-				Grid.SelectRowAsync(0);
+				return null;
 			}
-
-			_reading = false;
-			return _companyReturn;
+			finally
+			{
+				_semaphoreSlim.Release();
+			}
 		}
 	}
 }

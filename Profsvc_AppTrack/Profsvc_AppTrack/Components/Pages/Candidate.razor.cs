@@ -8,11 +8,11 @@
 // File Name:           Candidate.razor.cs
 // Created By:          Narendra Kumaran Kadhirvelu, Jolly Joseph Paily, DonBosco Paily, Mariappan Raja
 // Created On:          11-23-2023 19:53
-// Last Updated On:     12-29-2023 15:49
+// Last Updated On:     12-29-2023 20:48
 // *****************************************/
 
 #endregion
-
+//using CacheObjects = ProfSvc_Classes.CacheObjects;
 namespace Profsvc_AppTrack.Components.Pages;
 
 /// <summary>
@@ -129,19 +129,19 @@ public partial class Candidate
 		set;
 	}
 
-    /// <summary>
-    ///     Gets or sets the communication rating of the candidate.
-    /// </summary>
-    /// <value>
-    ///     The communication rating of the candidate, represented as a <see cref="MarkupString" />.
-    /// </value>
-    /// <remarks>
-    ///     This property is used to store the communication rating of the candidate, which is set by the
-    ///     <see cref="SetCommunication" /> method.
-    ///     The communication rating is a string that describes the candidate's communication skills, and can be one of the
-    ///     following values: "Good", "Average", "Excellent", or "Fair".
-    /// </remarks>
-    private MarkupString CandidateCommunication
+	/// <summary>
+	///     Gets or sets the communication rating of the candidate.
+	/// </summary>
+	/// <value>
+	///     The communication rating of the candidate, represented as a <see cref="MarkupString" />.
+	/// </value>
+	/// <remarks>
+	///     This property is used to store the communication rating of the candidate, which is set by the
+	///     <see cref="SetCommunication" /> method.
+	///     The communication rating is a string that describes the candidate's communication skills, and can be one of the
+	///     following values: "Good", "Average", "Excellent", or "Fair".
+	/// </remarks>
+	private MarkupString CandidateCommunication
 	{
 		get;
 		set;
@@ -867,11 +867,11 @@ public partial class Candidate
 		set;
 	} = new();
 
-    /// <summary>
-    ///     Gets or sets the selected education for the candidate. This property is of type
-    ///     <see cref="ProfSvc_Classes.CandidateEducation" />.
-    /// </summary>
-    private CandidateEducation SelectedEducation
+	/// <summary>
+	///     Gets or sets the selected education for the candidate. This property is of type
+	///     <see cref="ProfSvc_Classes.CandidateEducation" />.
+	/// </summary>
+	private CandidateEducation SelectedEducation
 	{
 		get;
 		set;
@@ -2231,7 +2231,7 @@ public partial class Candidate
 																				  {"pageCount", SearchModel.ItemCount.ToString()}
 																			  };
 									 Dictionary<string, object> _parsingObjects = await General.PostRest("Candidates/ParseResume", _parameters, null,
-																																	 AddedDocument.ToArray(), FileName);
+																										 AddedDocument.ToArray(), FileName);
 									 if (_parsingObjects != null)
 									 {
 										 _jsonPath = _parsingObjects["Json"].ToString();
@@ -2277,15 +2277,17 @@ public partial class Candidate
 
 								List<string> _keys =
 								[
-									"Roles", "States",
-									"Eligibility", "Experience", "TaxTerms", "JobOptions", "StatusCodes", "Workflow", "Communication", "DocumentTypes"
+									CacheObjects.Roles.ToString(), CacheObjects.States.ToString(), CacheObjects.Eligibility.ToString(), CacheObjects.Experience.ToString(),
+									CacheObjects.TaxTerms.ToString(), CacheObjects.JobOptions.ToString(), CacheObjects.StatusCodes.ToString(), CacheObjects.Workflow.ToString(),
+									CacheObjects.Communication.ToString(), CacheObjects.DocumentTypes.ToString()
+									//"Roles", "States", "Eligibility", "Experience", "TaxTerms", "JobOptions", "StatusCodes", "Workflow", "Communication", "DocumentTypes"
 								];
 
 								Dictionary<string, string> _cacheValues = await Redis.BatchGet(_keys);
 
 								while (_roles == null)
 								{
-									_roles = JsonConvert.DeserializeObject<List<Role>>(_cacheValues["Roles"]); //await Redis.GetAsync<List<Role>>("Roles");
+									_roles = JsonConvert.DeserializeObject<List<Role>>(_cacheValues[CacheObjects.Roles.ToString()]); //await Redis.GetAsync<List<Role>>("Roles");
 								}
 
 								RoleID = LoginCookyUser.RoleID;
@@ -2321,34 +2323,34 @@ public partial class Candidate
 									await SessionStorage.SetItemAsync(StorageName, SearchModel);
 								}
 
-								SearchModel.User = LoginCookyUser == null || LoginCookyUser.UserID.NullOrWhiteSpace() ? "JOLLY" : LoginCookyUser.UserID.ToUpperInvariant();
+								SearchModel.User = General.GetUserName(LoginCookyUser);
 
 								_currentPage = SearchModel.Page;
 								_lastValue = SearchModel.Name;
 
-								_states = General.DeserializeObject<List<IntValues>>(_cacheValues["States"]);
+								_states = General.DeserializeObject<List<IntValues>>(_cacheValues[CacheObjects.States.ToString()]);
 								_statesCopy.Clear();
 								_statesCopy.Add(new(0, "All"));
 								_statesCopy.AddRange(_states);
 
-								_eligibility = General.DeserializeObject<List<IntValues>>(_cacheValues["Eligibility"]);
+								_eligibility = General.DeserializeObject<List<IntValues>>(_cacheValues[CacheObjects.Eligibility.ToString()]);
 								_eligibilityCopy.Clear();
 								_eligibilityCopy.Add(new(0, "All"));
 								_eligibilityCopy.AddRange(_eligibility);
 
-								_experience = General.DeserializeObject<List<IntValues>>(_cacheValues["Experience"]);
+								_experience = General.DeserializeObject<List<IntValues>>(_cacheValues[CacheObjects.Experience.ToString()]);
 
-								_taxTerms = General.DeserializeObject<List<KeyValues>>(_cacheValues["TaxTerms"]);
+								_taxTerms = General.DeserializeObject<List<KeyValues>>(_cacheValues[CacheObjects.TaxTerms.ToString()]);
 
-								_jobOptions = General.DeserializeObject<List<KeyValues>>(_cacheValues["JobOptions"]);
+								_jobOptions = General.DeserializeObject<List<KeyValues>>(_cacheValues[CacheObjects.JobOptions.ToString()]);
 								_jobOptionsCopy.Clear();
 								_jobOptionsCopy.Add(new("%", "All"));
 								_jobOptionsCopy.AddRange(_jobOptions);
 
-								_statusCodes = General.DeserializeObject<List<StatusCode>>(_cacheValues["StatusCodes"]);
-								_workflows = General.DeserializeObject<List<AppWorkflow>>(_cacheValues["Workflow"]);
-								_communication = General.DeserializeObject<List<KeyValues>>(_cacheValues["Communication"]);
-								_documentTypes = General.DeserializeObject<List<IntValues>>(_cacheValues["DocumentTypes"]);
+								_statusCodes = General.DeserializeObject<List<StatusCode>>(_cacheValues[CacheObjects.StatusCodes.ToString()]);
+								_workflows = General.DeserializeObject<List<AppWorkflow>>(_cacheValues[CacheObjects.Workflow.ToString()]);
+								_communication = General.DeserializeObject<List<KeyValues>>(_cacheValues[CacheObjects.Communication.ToString()]);
+								_documentTypes = General.DeserializeObject<List<IntValues>>(_cacheValues[CacheObjects.DocumentTypes.ToString()]);
 
 								SortDirectionProperty = SearchModel.SortDirection == 1 ? SortDirection.Ascending : SortDirection.Descending;
 								SortField = SearchModel.SortField switch

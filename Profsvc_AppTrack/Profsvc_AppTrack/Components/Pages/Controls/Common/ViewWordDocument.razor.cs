@@ -8,7 +8,7 @@
 // File Name:           ViewWordDocument.razor.cs
 // Created By:          Narendra Kumaran Kadhirvelu, Jolly Joseph Paily, DonBosco Paily, Mariappan Raja
 // Created On:          11-23-2023 19:53
-// Last Updated On:     12-29-2023 15:34
+// Last Updated On:     12-29-2023 21:0
 // *****************************************/
 
 #endregion
@@ -285,28 +285,28 @@ public partial class ViewWordDocument
 	/// </remarks>
 	public async Task ShowDialog() => await Dialog.ShowAsync();
 
-    /// <summary>
-    ///     Handles the toolbar click events in the document viewer.
-    /// </summary>
-    /// <param name="args">The arguments associated with the toolbar click event.</param>
-    /// <returns>A task that represents the asynchronous operation.</returns>
-    /// <remarks>
-    ///     This method is triggered when a toolbar button is clicked in the document viewer.
-    ///     It handles the 'save', 'print', and 'close' actions.
-    ///     The 'save' action saves the current state of the document to the specified document location in the Docx format.
-    ///     The 'print' action sends the document to the printer.
-    ///     The 'close' action hides the document viewer dialog.
-    /// </remarks>
-    /// <explain>
-    ///     This method is part of the ViewWordDocument class, which is a Razor component for viewing Word documents. The
-    ///     ToolbarClicked method is responsible for handling the toolbar click events in the document viewer. It takes a
-    ///     ClickEventArgs parameter which contains the details of the toolbar click event.<br />
-    ///     When a toolbar button is clicked, this method is triggered and performs the corresponding action. If the 'save'
-    ///     button is clicked, the current state of the document is saved to the specified document location in the Docx
-    ///     format. If the 'print' button is clicked, the document is sent to the printer. If the 'close' button is clicked,
-    ///     the document viewer dialog is hidden.
-    /// </explain>
-    private async Task ToolbarClicked(ClickEventArgs args)
+	/// <summary>
+	///     Handles the toolbar click events in the document viewer.
+	/// </summary>
+	/// <param name="args">The arguments associated with the toolbar click event.</param>
+	/// <returns>A task that represents the asynchronous operation.</returns>
+	/// <remarks>
+	///     This method is triggered when a toolbar button is clicked in the document viewer.
+	///     It handles the 'save', 'print', and 'close' actions.
+	///     The 'save' action saves the current state of the document to the specified document location in the Docx format.
+	///     The 'print' action sends the document to the printer.
+	///     The 'close' action hides the document viewer dialog.
+	/// </remarks>
+	/// <explain>
+	///     This method is part of the ViewWordDocument class, which is a Razor component for viewing Word documents. The
+	///     ToolbarClicked method is responsible for handling the toolbar click events in the document viewer. It takes a
+	///     ClickEventArgs parameter which contains the details of the toolbar click event.<br />
+	///     When a toolbar button is clicked, this method is triggered and performs the corresponding action. If the 'save'
+	///     button is clicked, the current state of the document is saved to the specified document location in the Docx
+	///     format. If the 'print' button is clicked, the document is sent to the printer. If the 'close' button is clicked,
+	///     the document viewer dialog is hidden.
+	/// </explain>
+	private async Task ToolbarClicked(ClickEventArgs args)
 	{
 		switch (args.Item.Id)
 		{
