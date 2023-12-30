@@ -8,7 +8,7 @@
 // File Name:           Leads.razor.cs
 // Created By:          Narendra Kumaran Kadhirvelu, Jolly Joseph Paily, DonBosco Paily, Mariappan Raja
 // Created On:          11-23-2023 19:53
-// Last Updated On:     12-30-2023 16:31
+// Last Updated On:     12-30-2023 19:15
 // *****************************************/
 
 #endregion
@@ -671,15 +671,18 @@ public partial class Leads
 	///     If the total item count in the Grid is more than 0, it selects the first row asynchronously.
 	/// </remarks>
 	/// <returns>A Task that represents the asynchronous operation.</returns>
-	private async Task DataHandler(object obj)
+	private Task DataHandler(object obj)
 	{
-		DotNetObjectReference<Leads> _dotNetReference = DotNetObjectReference.Create(this); // create dotnet ref
-		await Runtime.InvokeAsync<string>("detail", _dotNetReference);
-		//  send the dotnet ref to JS side
-		if (Grid.TotalItemCount > 0)
-		{
-			await Grid.SelectRowAsync(0);
-		}
+		return ExecuteMethod(async () =>
+							 {
+								 DotNetObjectReference<Leads> _dotNetReference = DotNetObjectReference.Create(this); // create dotnet ref
+								 await Runtime.InvokeAsync<string>("detail", _dotNetReference);
+								 //  send the dotnet ref to JS side
+								 if (Grid.TotalItemCount > 0)
+								 {
+									 await Grid.SelectRowAsync(0);
+								 }
+							 });
 	}
 
 	/// <summary>
@@ -692,37 +695,32 @@ public partial class Leads
 	///     The document ID and user are passed as query parameters in the request.
 	///     If the deletion is successful, the method updates the list of lead documents.
 	/// </remarks>
-	private async Task DeleteDocument(int args)
+	private Task DeleteDocument(int args)
 	{
-		if (!_deleteInProgress)
-		{
-			await Task.Yield();
-			_deleteInProgress = true;
-			try
-			{
-				RestClient _client = new($"{Start.ApiHost}");
-				RestRequest _request = new("Lead/DeleteLeadDocument", Method.Post)
-									   {
-										   RequestFormat = DataFormat.Json
-									   };
-				_request.AddQueryParameter("documentID", args.ToString());
-				_request.AddQueryParameter("user", User);
+		return ExecuteMethod(async () =>
+							 {
+								 //RestClient _client = new($"{Start.ApiHost}");
+								 //RestRequest _request = new("Lead/DeleteLeadDocument", Method.Post)
+								 //{
+								 // RequestFormat = DataFormat.Json
+								 //};
+								 //_request.AddQueryParameter("documentID", args.ToString());
+								 //_request.AddQueryParameter("user", User);
 
-				Dictionary<string, object> _response = await _client.PostAsync<Dictionary<string, object>>(_request);
-				if (_response == null)
-				{
-					return;
-				}
+								 Dictionary<string, string> _parameters = new()
+																		  {
+																			  {"documentID", args.ToString()},
+																			  {"user", User}
+																		  };
 
-				_leadDocumentsObject = General.DeserializeObject<List<RequisitionDocuments>>(_response["Document"]);
-			}
-			catch
-			{
-				//
-			}
+								 Dictionary<string, object> _response = await General.PostRest("Lead/DeleteLeadDocument", _parameters);
+								 if (_response == null)
+								 {
+									 return;
+								 }
 
-			_deleteInProgress = false;
-		}
+								 _leadDocumentsObject = General.DeserializeObject<List<RequisitionDocuments>>(_response["Document"]);
+							 });
 	}
 
 	/// <summary>
@@ -736,38 +734,34 @@ public partial class Leads
 	///     assigns it to the LeadNotesObject.
 	/// </remarks>
 	/// <returns>A Task representing the asynchronous operation.</returns>
-	private async Task DeleteNotes(int id)
+	private Task DeleteNotes(int id)
 	{
-		if (!_deleteInProgress)
-		{
-			await Task.Yield();
-			_deleteInProgress = true;
-			try
-			{
-				using RestClient _client = new($"{Start.ApiHost}");
-				RestRequest _request = new("Lead/DeleteNotes", Method.Post)
-									   {
-										   RequestFormat = DataFormat.Json
-									   };
-				_request.AddQueryParameter("id", id.ToString());
-				_request.AddQueryParameter("leadID", _target.ID.ToString());
-				_request.AddQueryParameter("user", User);
+		return ExecuteMethod(async () =>
+							 {
+								 //using RestClient _client = new($"{Start.ApiHost}");
+								 //RestRequest _request = new("Lead/DeleteNotes", Method.Post)
+								 //					   {
+								 //						   RequestFormat = DataFormat.Json
+								 //					   };
+								 //_request.AddQueryParameter("id", id.ToString());
+								 //_request.AddQueryParameter("leadID", _target.ID.ToString());
+								 //_request.AddQueryParameter("user", User);
 
-				Dictionary<string, object> _response = await _client.PostAsync<Dictionary<string, object>>(_request);
-				if (_response == null)
-				{
-					return;
-				}
+								 Dictionary<string, string> _parameters = new()
+																		  {
+																			  {"id", id.ToString()},
+																			  {"leadID", _target.ID.ToString()},
+																			  {"user", User}
+																		  };
 
-				LeadNotesObject = General.DeserializeObject<List<CandidateNotes>>(_response["Notes"]);
-			}
-			catch
-			{
-				//
-			}
+								 Dictionary<string, object> _response = await General.PostRest("Lead/DeleteNotes", _parameters);
+								 if (_response == null)
+								 {
+									 return;
+								 }
 
-			_deleteInProgress = false;
-		}
+								 LeadNotesObject = General.DeserializeObject<List<CandidateNotes>>(_response["Notes"]);
+							 });
 	}
 
 	/// <summary>
