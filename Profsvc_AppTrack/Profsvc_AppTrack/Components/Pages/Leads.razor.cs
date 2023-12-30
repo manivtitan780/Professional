@@ -215,7 +215,7 @@ public partial class Leads
 	///     It is injected at runtime by the dependency injection system.
 	/// </remarks>
 	[Inject]
-	private ILogger<Candidate> Logger
+	private ILogger<Leads> Logger
 	{
 		get;
 		set;
