@@ -8,10 +8,11 @@
 // File Name:           Candidate.razor.cs
 // Created By:          Narendra Kumaran Kadhirvelu, Jolly Joseph Paily, DonBosco Paily, Mariappan Raja
 // Created On:          11-23-2023 19:53
-// Last Updated On:     12-29-2023 20:48
+// Last Updated On:     12-29-2023 21:17
 // *****************************************/
 
 #endregion
+
 //using CacheObjects = ProfSvc_Classes.CacheObjects;
 namespace Profsvc_AppTrack.Components.Pages;
 

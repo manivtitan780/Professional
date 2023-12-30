@@ -8,7 +8,7 @@
 // File Name:           Companies.razor.cs
 // Created By:          Narendra Kumaran Kadhirvelu, Jolly Joseph Paily, DonBosco Paily, Mariappan Raja
 // Created On:          11-23-2023 19:53
-// Last Updated On:     12-29-2023 20:51
+// Last Updated On:     12-29-2023 21:16
 // *****************************************/
 
 #endregion
@@ -312,7 +312,7 @@ public partial class Companies
 	///     It is also used in the `SaveDocument()` method to determine the user ID for the document upload request.
 	///     If the user is not logged in, the user ID defaults to "JOLLY".
 	/// </remarks>
-	private LoginCooky LoginCookyUser
+	private static LoginCooky LoginCookyUser
 	{
 		get;
 		set;
@@ -1168,12 +1168,15 @@ public partial class Companies
 								LoginCookyUser = await NavManager.RedirectInner(LocalStorage);
 								List<string> _keys =
 								[
-									"Roles", "States", "Skills", "Titles", "Users", "Eligibility", "Experience", "Education", "JobOptions", "StatusCodes", "Workflow"
+									CacheObjects.Roles.ToString(), CacheObjects.States.ToString(), CacheObjects.Skills.ToString(), CacheObjects.Titles.ToString(), CacheObjects.Users.ToString(),
+									CacheObjects.Eligibility.ToString(), CacheObjects.Experience.ToString(), CacheObjects.Education.ToString(), CacheObjects.JobOptions.ToString(),
+									CacheObjects.StatusCodes.ToString(), CacheObjects.Workflow.ToString()
+									//"Roles", "States", "Skills", "Titles", "Users", "Eligibility", "Experience", "Education", "JobOptions", "StatusCodes", "Workflow"
 								];
 
 								Dictionary<string, string> _cacheValues = await Redis.BatchGet(_keys);
 
-								_roles = JsonConvert.DeserializeObject<List<Role>>(_cacheValues["Roles"]);
+								_roles = JsonConvert.DeserializeObject<List<Role>>(_cacheValues[CacheObjects.Roles.ToString()]);
 
 								RoleID = LoginCookyUser.RoleID;
 								UserRights = LoginCookyUser.GetUserRights(_roles);
@@ -1189,12 +1192,12 @@ public partial class Companies
 								_statesCopy.Add(new(0, "All"));
 								_statesCopy.AddRange(_states);
 
-								_skills = JsonConvert.DeserializeObject<List<IntValues>>(_cacheValues["Skills"]);
-								_titles = JsonConvert.DeserializeObject<List<IntValues>>(_cacheValues["Titles"]);
+								_skills = JsonConvert.DeserializeObject<List<IntValues>>(_cacheValues[CacheObjects.Skills.ToString()]);
+								_titles = JsonConvert.DeserializeObject<List<IntValues>>(_cacheValues[CacheObjects.Titles.ToString()]);
 
 								while (_recruiters == null)
 								{
-									List<User> _users = JsonConvert.DeserializeObject<List<User>>(_cacheValues["Users"]);
+									List<User> _users = JsonConvert.DeserializeObject<List<User>>(_cacheValues[CacheObjects.Users.ToString()]);
 									if (_users == null)
 									{
 										continue;
@@ -1207,17 +1210,17 @@ public partial class Companies
 									}
 								}
 
-								_eligibility = await Redis.GetAsync<List<IntValues>>("Eligibility");
-								_experience = await Redis.GetAsync<List<IntValues>>("Experience");
-								_education = await Redis.GetAsync<List<IntValues>>("Education");
+								_eligibility = JsonConvert.DeserializeObject<List<IntValues>>(_cacheValues[CacheObjects.Eligibility.ToString()]);
+								_experience = JsonConvert.DeserializeObject<List<IntValues>>(_cacheValues[CacheObjects.Experience.ToString()]);
+								_education = JsonConvert.DeserializeObject<List<IntValues>>(_cacheValues[CacheObjects.Education.ToString()]);
 
 								while (_jobOptions == null || _jobOptions.Count == 0)
 								{
-									_jobOptions = await Redis.GetAsync<List<KeyValues>>("JobOptions");
+									_jobOptions = JsonConvert.DeserializeObject<List<KeyValues>>(_cacheValues[CacheObjects.JobOptions.ToString()]);
 								}
 
-								_statusCodes = await Redis.GetAsync<List<StatusCode>>("StatusCodes");
-								_workflows = await Redis.GetAsync<List<AppWorkflow>>("Workflow");
+								_statusCodes = JsonConvert.DeserializeObject<List<StatusCode>>(_cacheValues[CacheObjects.StatusCodes.ToString()]);
+								_workflows = JsonConvert.DeserializeObject<List<AppWorkflow>>(_cacheValues[CacheObjects.Workflow.ToString()]);
 
 								string _cookyString = await SessionStorage.GetItemAsStringAsync(StorageName);
 
@@ -1245,6 +1248,7 @@ public partial class Companies
 												_ => "Updated"
 											};
 								AutocompleteValue = SearchModel.CompanyName;
+								await Grid.Refresh();
 							});
 
 		_initializationTaskSource.SetResult(true);
@@ -1665,7 +1669,7 @@ public partial class Companies
 					_getInformation = CompaniesList.Count == 0;
 				}
 
-				Task<object> _companyReturn = General.GetCompanyReadAdaptor(SearchModel, "JOLLY", dm, _getInformation);
+				object _companyReturn = await General.GetCompanyReadAdaptor(SearchModel, General.GetUserName(LoginCookyUser), dm, _getInformation);
 				if (Count > 0)
 				{
 					await Grid.SelectRowAsync(0);
