@@ -1451,7 +1451,7 @@ public partial class Companies
 																					  {"user", User},
 																					  {"path", Start.UploadsPath}
 																				  };
-										 Dictionary<string, object> _response = await General.PostRest("Company/UploadDocument", _parameters, null, AddedDocument.ToArray(), FileName);
+										 Dictionary<string, object> _response = await General.PostRest("Company/UploadDocument", _parameters, null, AddedDocument.ToStreamByteArray(), FileName);
 										 if (_response == null)
 										 {
 											 return;

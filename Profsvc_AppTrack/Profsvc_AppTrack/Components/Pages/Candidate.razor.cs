@@ -2232,7 +2232,7 @@ public partial class Candidate
 																				  {"pageCount", SearchModel.ItemCount.ToString()}
 																			  };
 									 Dictionary<string, object> _parsingObjects = await General.PostRest("Candidates/ParseResume", _parameters, null,
-																										 AddedDocument.ToArray(), FileName);
+																										 AddedDocument.ToStreamByteArray(), FileName);
 									 if (_parsingObjects != null)
 									 {
 										 _jsonPath = _parsingObjects["Json"].ToString();
@@ -2592,7 +2592,7 @@ public partial class Candidate
 									 //Dictionary<string, object> _response = await _client.PostAsync<Dictionary<string, object>>(_request);
 
 									 Dictionary<string, object> _response = await General.PostRestParameter<Dictionary<string, object>>("Candidates/UploadDocument", _parameters, null,
-																																		AddedDocument.ToArray(), FileName);
+																																		AddedDocument.ToStreamByteArray(), FileName);
 									 if (_response == null)
 									 {
 										 return;
@@ -2812,7 +2812,7 @@ public partial class Candidate
 																				  {"path", Start.UploadsPath}
 																			  };
 
-									 await General.PostRestParameter<string>("Candidates/UploadResume", _parameters, null, AddedDocument.ToArray(), FileName);
+									 await General.PostRestParameter<string>("Candidates/UploadResume", _parameters, null, AddedDocument.ToStreamByteArray(), FileName);
 								 }
 							 });
 	}

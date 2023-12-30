@@ -8,7 +8,7 @@
 // File Name:           Leads.razor.cs
 // Created By:          Narendra Kumaran Kadhirvelu, Jolly Joseph Paily, DonBosco Paily, Mariappan Raja
 // Created On:          11-23-2023 19:53
-// Last Updated On:     12-30-2023 19:15
+// Last Updated On:     12-30-2023 20:28
 // *****************************************/
 
 #endregion
@@ -40,7 +40,6 @@ public partial class Leads
 {
 	private const string StorageName = "LeadGrid";
 	private static TaskCompletionSource<bool> _initializationTaskSource;
-	private bool _actionProgress, _deleteInProgress, _downloadInProgress, _filterInProgress, _speedDialItemClicked;
 	private int _currentPage = 1, _selectedTab;
 	private List<ByteValues> _industries, _sources, _status;
 
@@ -506,13 +505,13 @@ public partial class Leads
 								 if (args.RequestType == Action.Sorting)
 								 {
 									 SearchModel.SortField = args.ColumnName switch
-															 {
-																 "Company" => 1,
-																 "Location" => 2,
-																 "Industry" => 3,
-																 "Status" => 4,
-																 _ => 5
-															 };
+									 {
+										 "Company" => 1,
+										 "Location" => 2,
+										 "Industry" => 3,
+										 "Status" => 4,
+										 _ => 5
+									 };
 									 SearchModel.SortDirection = args.Direction == SortDirection.Ascending ? (byte)1 : (byte)0;
 									 await LocalStorageBlazored.SetItemAsync(StorageName, SearchModel);
 									 await Grid.Refresh();
@@ -781,62 +780,64 @@ public partial class Leads
 	///     - Hides the spinner.
 	///     - Sets the action progress to false.
 	/// </remarks>
-	private async Task DetailDataBind(DetailDataBoundEventArgs<LeadClass> lead)
+	private Task DetailDataBind(DetailDataBoundEventArgs<LeadClass> lead)
 	{
-		if (!_actionProgress)
-		{
-			_actionProgress = true;
-			if (_target != null && _target != lead.Data)
-			{
-				// return when target is equal to args.data
-				await Grid.ExpandCollapseDetailRowAsync(_target);
-			}
+		return ExecuteMethod(async () =>
+							 {
+								 if (_target != null && _target != lead.Data)
+								 {
+									 // return when target is equal to args.data
+									 await Grid.ExpandCollapseDetailRowAsync(_target);
+								 }
 
-			int _index = await Grid.GetRowIndexByPrimaryKeyAsync(lead.Data.ID);
-			if (_index != Grid.SelectedRowIndex)
-			{
-				await Grid.SelectRowAsync(_index);
-			}
+								 int _index = await Grid.GetRowIndexByPrimaryKeyAsync(lead.Data.ID);
+								 if (_index != Grid.SelectedRowIndex)
+								 {
+									 await Grid.SelectRowAsync(_index);
+								 }
 
-			_target = lead.Data;
+								 _target = lead.Data;
 
-			await Task.Yield();
-			try
-			{
-				await Spinner.ShowAsync();
-			}
-			catch
-			{
-				//
-			}
+								 await Task.Yield();
+								 try
+								 {
+									 await Spinner.ShowAsync();
+								 }
+								 catch
+								 {
+									 //
+								 }
 
-			RestClient _restClient = new($"{Start.ApiHost}");
-			RestRequest _request = new("Lead/GetLeadDetails");
-			_request.AddQueryParameter("leadID", _target.ID);
+								 //RestClient _restClient = new($"{Start.ApiHost}");
+								 //RestRequest _request = new("Lead/GetLeadDetails");
+								 //_request.AddQueryParameter("leadID", _target.ID);
 
-			Dictionary<string, object> _restResponse = await _restClient.GetAsync<Dictionary<string, object>>(_request);
+								 Dictionary<string, string> _parameters = new()
+																		  {
+																			  {"leadID", _target.ID.ToString()}
+																		  };
 
-			if (_restResponse != null)
-			{
-				_leadDetailsObject = JsonConvert.DeserializeObject<LeadDetails>(_restResponse["Lead"]?.ToString() ?? string.Empty);
-				LeadNotesObject = General.DeserializeObject<List<CandidateNotes>>(_restResponse["Notes"]);
-				_leadDocumentsObject = General.DeserializeObject<List<RequisitionDocuments>>(_restResponse["Documents"]);
-			}
+								 Dictionary<string, object> _restResponse = await General.GetRest<Dictionary<string, object>>("Lead/GetLeadDetails", _parameters);
 
-			_selectedTab = 0;
+								 if (_restResponse != null)
+								 {
+									 _leadDetailsObject = JsonConvert.DeserializeObject<LeadDetails>(_restResponse["Lead"]?.ToString() ?? string.Empty);
+									 LeadNotesObject = General.DeserializeObject<List<CandidateNotes>>(_restResponse["Notes"]);
+									 _leadDocumentsObject = General.DeserializeObject<List<RequisitionDocuments>>(_restResponse["Documents"]);
+								 }
 
-			await Task.Yield();
-			try
-			{
-				await Spinner.HideAsync();
-			}
-			catch
-			{
-				//
-			}
+								 _selectedTab = 0;
 
-			_actionProgress = false;
-		}
+								 await Task.Yield();
+								 try
+								 {
+									 await Spinner.HideAsync();
+								 }
+								 catch
+								 {
+									 //
+								 }
+							 });
 	}
 
 	/// <summary>
@@ -860,17 +861,14 @@ public partial class Leads
 	///     for the download URL.
 	///     Once the download is initiated, the method resets the download in progress flag.
 	/// </remarks>
-	private async Task DownloadDocument(int args)
+	private Task DownloadDocument(int args)
 	{
-		if (!_downloadInProgress)
-		{
-			await Task.Yield();
-			_downloadInProgress = true;
-			SelectedDownload = PanelDocument.SelectedRow;
-			string _queryString = (SelectedDownload.DocumentFileName + "^" + _target.ID + "^" + SelectedDownload.OriginalFileName + "^3").ToBase64String();
-			await JsRuntime.InvokeVoidAsync("open", $"{NavManager.BaseUri}Download/{_queryString}", "_blank");
-			_downloadInProgress = false;
-		}
+		return ExecuteMethod(async () =>
+							 {
+								 SelectedDownload = PanelDocument.SelectedRow;
+								 string _queryString = $"{SelectedDownload.DocumentFileName}^{_target.ID}^{SelectedDownload.OriginalFileName}^3".ToBase64String();
+								 await JsRuntime.InvokeVoidAsync("open", $"{NavManager.BaseUri}Download/{_queryString}", "_blank");
+							 });
 	}
 
 	/// <summary>
@@ -878,62 +876,58 @@ public partial class Leads
 	/// </summary>
 	/// <param name="isAdd">If true, a new lead is added. If false, an existing lead is edited.</param>
 	/// <returns>A Task that represents the asynchronous operation.</returns>
-	private async Task EditLead(bool isAdd)
+	private Task EditLead(bool isAdd)
 	{
-		if (!_actionProgress)
-		{
-			await Task.Yield();
-			_actionProgress = true;
-			if (Spinner != null)
-			{
-				try
-				{
-					await Spinner.ShowAsync();
-				}
-				catch
-				{
-					//
-				}
-			}
+		return ExecuteMethod(async () =>
+							 {
+								 if (Spinner != null)
+								 {
+									 try
+									 {
+										 await Spinner.ShowAsync();
+									 }
+									 catch
+									 {
+										 //
+									 }
+								 }
 
-			if (isAdd)
-			{
-				Title = "Add";
-				if (_leadDetailsObjectClone == null)
-				{
-					_leadDetailsObjectClone = new();
-				}
-				else
-				{
-					_leadDetailsObjectClone.Clear();
-				}
+								 if (isAdd)
+								 {
+									 Title = "Add";
+									 if (_leadDetailsObjectClone == null)
+									 {
+										 _leadDetailsObjectClone = new();
+									 }
+									 else
+									 {
+										 _leadDetailsObjectClone.Clear();
+									 }
 
-				_leadDetailsObjectClone.IsAdd = true;
-			}
-			else
-			{
-				Title = "Edit";
-				_leadDetailsObjectClone = _leadDetailsObject.Copy();
+									 _leadDetailsObjectClone.IsAdd = true;
+								 }
+								 else
+								 {
+									 Title = "Edit";
+									 _leadDetailsObjectClone = _leadDetailsObject.Copy();
 
-				_leadDetailsObjectClone.IsAdd = false;
-			}
+									 _leadDetailsObjectClone.IsAdd = false;
+								 }
 
-			StateHasChanged();
-			await DialogEditLead.ShowDialog();
-			if (Spinner != null)
-			{
-				try
-				{
-					await Spinner.HideAsync();
-				}
-				catch
-				{
-					//
-				}
-			}
-
-			_actionProgress = false;
-		}
+								 StateHasChanged();
+								 await DialogEditLead.ShowDialog();
+								 if (Spinner != null)
+								 {
+									 try
+									 {
+										 await Spinner.HideAsync();
+									 }
+									 catch
+									 {
+										 //
+									 }
+								 }
+							 });
 	}
 
 	/// <summary>
@@ -953,33 +947,30 @@ public partial class Leads
 	///     the PanelNotes.
 	///     After setting up the SelectedNotes object, it sets the action progress flag to false and shows the NotesDialog.
 	/// </remarks>
-	private async Task EditNotes(int id)
+	private Task EditNotes(int id)
 	{
-		if (!_actionProgress)
-		{
-			await Task.Yield();
-			_actionProgress = true;
-			if (id == 0)
-			{
-				Title = "Add";
-				if (SelectedNotes == null)
-				{
-					SelectedNotes = new();
-				}
-				else
-				{
-					SelectedNotes.Clear();
-				}
-			}
-			else
-			{
-				Title = "Edit";
-				SelectedNotes = PanelNotes.SelectedRow.Copy();
-			}
+		return ExecuteMethod(async () =>
+							 {
+								 if (id == 0)
+								 {
+									 Title = "Add";
+									 if (SelectedNotes == null)
+									 {
+										 SelectedNotes = new();
+									 }
+									 else
+									 {
+										 SelectedNotes.Clear();
+									 }
+								 }
+								 else
+								 {
+									 Title = "Edit";
+									 SelectedNotes = PanelNotes.SelectedRow.Copy();
+								 }
 
-			_actionProgress = false;
-			await NotesDialog.ShowDialog();
-		}
+								 await NotesDialog.ShowDialog();
+							 });
 	}
 
 	/// <summary>
@@ -1001,19 +992,17 @@ public partial class Leads
 	/// </summary>
 	/// <param name="lead">The lead information used to filter the grid. The lead's value is used as the search model's name.</param>
 	/// <returns>A Task that represents the asynchronous operation.</returns>
-	private async Task FilterGrid(ChangeEventArgs<string, KeyValues> lead)
+	private Task FilterGrid(ChangeEventArgs<string, KeyValues> lead)
 	{
-		if (!_actionProgress)
-		{
-			_actionProgress = true;
-			SearchModel.Name = lead.Value ?? "";
-			_currentPage = 1;
-			SearchModel.Page = 1;
-			await LocalStorageBlazored.SetItemAsync(StorageName, SearchModel);
-			AutocompleteValue = SearchModel.Name;
-			await Grid.Refresh();
-			_actionProgress = false;
-		}
+		return ExecuteMethod(async () =>
+							 {
+								 SearchModel.Name = lead.Value ?? "";
+								 _currentPage = 1;
+								 SearchModel.Page = 1;
+								 await LocalStorageBlazored.SetItemAsync(StorageName, SearchModel);
+								 AutocompleteValue = SearchModel.Name;
+								 await Grid.Refresh();
+							 });
 	}
 
 	/// <summary>
@@ -1025,23 +1014,20 @@ public partial class Leads
 	///     "LeadGrid",
 	///     and refreshes the grid. After the operation, it resets the action progress indicator.
 	/// </remarks>
-	private async Task FirstClick()
+	private Task FirstClick()
 	{
-		if (!_actionProgress)
-		{
-			await Task.Yield();
-			_actionProgress = true;
-			if (_currentPage < 1)
-			{
-				_currentPage = 1;
-			}
+		return ExecuteMethod(async () =>
+							 {
+								 if (_currentPage < 1)
+								 {
+									 _currentPage = 1;
+								 }
 
-			_currentPage = 1;
-			SearchModel.Page = 1;
-			await LocalStorageBlazored.SetItemAsync(StorageName, SearchModel);
-			await Grid.Refresh();
-			_actionProgress = false;
-		}
+								 _currentPage = 1;
+								 SearchModel.Page = 1;
+								 await LocalStorageBlazored.SetItemAsync(StorageName, SearchModel);
+								 await Grid.Refresh();
+							 });
 	}
 
 	/// <summary>
@@ -1055,23 +1041,20 @@ public partial class Leads
 	///     and refreshes the grid.
 	///     It also ensures that the method execution is not overlapped by using the _actionProgress flag.
 	/// </remarks>
-	private async Task LastClick()
+	private Task LastClick()
 	{
-		if (!_actionProgress)
-		{
-			await Task.Yield();
-			_actionProgress = true;
-			if (_currentPage < 1)
-			{
-				_currentPage = 1;
-			}
+		return ExecuteMethod(async () =>
+							 {
+								 if (_currentPage < 1)
+								 {
+									 _currentPage = 1;
+								 }
 
-			_currentPage = PageCount.ToInt32();
-			SearchModel.Page = _currentPage;
-			await LocalStorageBlazored.SetItemAsync(StorageName, SearchModel);
-			await Grid.Refresh();
-			_actionProgress = false;
-		}
+								 _currentPage = PageCount.ToInt32();
+								 SearchModel.Page = _currentPage;
+								 await LocalStorageBlazored.SetItemAsync(StorageName, SearchModel);
+								 await Grid.Refresh();
+							 });
 	}
 
 	/// <summary>
@@ -1089,45 +1072,20 @@ public partial class Leads
 	///     - Finally, it sets the `_actionProgress` flag back to false, indicating that the action has completed.
 	/// </remarks>
 	/// <returns>A <see cref="Task" /> representing the asynchronous operation.</returns>
-	private async Task NextClick()
+	private Task NextClick()
 	{
-		if (!_actionProgress)
-		{
-			await Task.Yield();
-			_actionProgress = true;
-			if (_currentPage < 1)
-			{
-				_currentPage = 1;
-			}
+		return ExecuteMethod(async () =>
+							 {
+								 if (_currentPage < 1)
+								 {
+									 _currentPage = 1;
+								 }
 
-			_currentPage = SearchModel.Page >= PageCount.ToInt32() ? PageCount.ToInt32() : SearchModel.Page + 1;
-			SearchModel.Page = _currentPage;
-			await LocalStorageBlazored.SetItemAsync(StorageName, SearchModel);
-			await Grid.Refresh();
-			_actionProgress = false;
-		}
-	}
-
-	/// <summary>
-	///     Asynchronously handles the post-rendering logic for the Leads page.
-	/// </summary>
-	/// <param name="firstRender">A boolean value that indicates whether this is the first render of the component.</param>
-	/// <remarks>
-	///     This method is invoked after the component has been rendered for the first time.
-	///     It updates the current page number and user in the SearchModel, which is used for lead search functionality.
-	/// </remarks>
-	protected override async Task OnAfterRenderAsync(bool firstRender)
-	{
-		if (!firstRender)
-		{
-			return;
-		}
-
-		await Task.Yield();
-
-		_currentPage = SearchModel.Page;
-		PageCount = _currentPage + 1;
-		SearchModel.User = User;
+								 _currentPage = SearchModel.Page >= PageCount.ToInt32() ? PageCount.ToInt32() : SearchModel.Page + 1;
+								 SearchModel.Page = _currentPage;
+								 await LocalStorageBlazored.SetItemAsync(StorageName, SearchModel);
+								 await Grid.Refresh();
+							 });
 	}
 
 	/// <summary>
@@ -1143,60 +1101,64 @@ public partial class Leads
 	/// </remarks>
 	protected override async Task OnInitializedAsync()
 	{
-		await Task.Yield();
 		_initializationTaskSource = new();
-		LoginCookyUser = await NavManager.RedirectInner(LocalStorageBlazored);
-		//IMemoryCache _memoryCache = Start.MemCache;
-		while (_roles == null)
-		{
-			_roles = await Redis.GetAsync<List<Role>>("Roles");
-			//_memoryCache.TryGetValue("Roles", out _roles);
-		}
+		await ExecuteMethod(async () =>
+							{
+								LoginCookyUser = await NavManager.RedirectInner(LocalStorageBlazored);
 
-		RoleID = LoginCookyUser.RoleID;
-		UserRights = LoginCookyUser.GetUserRights(_roles);
-		DisplayAdd = UserRights.EditCompany ? "unset" : "none";
+								List<string> _keys =
+								[
+									CacheObjects.Roles.ToString(),
+									CacheObjects.States.ToString(),
+									CacheObjects.LeadStatus.ToString(),
+									CacheObjects.LeadSources.ToString(),
+									CacheObjects.LeadIndustries.ToString()
+								];
 
-		if (!UserRights.ViewCompany) // User doesn't have View Company/Leads rights. This is done by looping through the Roles of the current user and determining the rights for ViewCompany.
-		{
-			NavManager.NavigateTo($"{NavManager.BaseUri}home", true);
-		}
+								Dictionary<string, string> _cacheValues = await Redis.BatchGet(_keys);
+								_roles = General.DeserializeObject<List<Role>>(_cacheValues[CacheObjects.Roles.ToString()]);
+								_states = General.DeserializeObject<List<IntValues>>(_cacheValues[CacheObjects.States.ToString()]);
+								_status = General.DeserializeObject<List<ByteValues>>(_cacheValues[CacheObjects.LeadStatus.ToString()]);
+								_sources = General.DeserializeObject<List<ByteValues>>(_cacheValues[CacheObjects.LeadSources.ToString()]);
+								_industries = General.DeserializeObject<List<ByteValues>>(_cacheValues[CacheObjects.LeadIndustries.ToString()]);
 
-		while (_states == null)
-		{
-			_states = await Redis.GetAsync<List<IntValues>>("States");
-			//_memoryCache.TryGetValue("States", out _states);
-		}
+								RoleID = LoginCookyUser.RoleID;
+								UserRights = LoginCookyUser.GetUserRights(_roles);
+								DisplayAdd = UserRights.EditCompany ? "unset" : "none";
 
-		_status = await Redis.GetAsync<List<ByteValues>>("LeadStatus");
-		//_memoryCache.TryGetValue("LeadStatus", out _status);
-		_sources = await Redis.GetAsync<List<ByteValues>>("LeadSources");
-		//_memoryCache.TryGetValue("LeadSources", out _sources);
-		_industries = await Redis.GetAsync<List<ByteValues>>("LeadIndustries");
+								if (!UserRights.ViewCompany) // User doesn't have View Company/Leads rights. This is done by looping through the Roles of the current user and determining the rights for ViewCompany.
+								{
+									NavManager.NavigateTo($"{NavManager.BaseUri}home", true);
+								}
 
-		string _cookyString = await LocalStorageBlazored.GetItemAsync<string>(StorageName);
-		if (!_cookyString.NullOrWhiteSpace())
-		{
-			SearchModel = JsonConvert.DeserializeObject<LeadSearch>(_cookyString);
-		}
-		else
-		{
-			await LocalStorageBlazored.SetItemAsync(StorageName, SearchModel);
-		}
+								string _cookyString = await LocalStorageBlazored.GetItemAsync<string>(StorageName);
+								if (!_cookyString.NullOrWhiteSpace())
+								{
+									SearchModel = General.DeserializeObject<LeadSearch>(_cookyString);
+								}
+								else
+								{
+									await LocalStorageBlazored.SetItemAsync(StorageName, SearchModel);
+								}
 
-		SortDirectionProperty = SearchModel.SortDirection == 1 ? SortDirection.Ascending : SortDirection.Descending;
-		SortField = SearchModel.SortField switch
-					{
-						1 => "Company",
-						2 => "Location",
-						3 => "Industry",
-						4 => "Status",
-						_ => "Updated"
-					};
-		User = LoginCookyUser?.UserID.NullOrWhiteSpace() != false ? "JOLLY" : LoginCookyUser.UserID.ToUpperInvariant();
+								SortDirectionProperty = SearchModel.SortDirection == 1 ? SortDirection.Ascending : SortDirection.Descending;
+								SortField = SearchModel.SortField switch
+								{
+									1 => "Company",
+									2 => "Location",
+									3 => "Industry",
+									4 => "Status",
+									_ => "Updated"
+								};
+								User = General.GetUserName(LoginCookyUser);
 
-		AutocompleteValue = SearchModel.Name;
+								AutocompleteValue = SearchModel.Name;
+								_currentPage = SearchModel.Page;
+								PageCount = _currentPage + 1;
+								SearchModel.User = User;
+							});
 
+		_initializationTaskSource.SetResult(true);
 		await base.OnInitializedAsync();
 	}
 
@@ -1205,27 +1167,24 @@ public partial class Leads
 	/// </summary>
 	/// <param name="obj">The event arguments containing the new page number.</param>
 	/// <returns>A <see cref="Task" /> representing the asynchronous operation.</returns>
-	private async Task PageNumberChanged(ChangeEventArgs obj)
+	private Task PageNumberChanged(ChangeEventArgs obj)
 	{
-		if (!_actionProgress)
-		{
-			await Task.Yield();
-			_actionProgress = true;
-			decimal _currentValue = obj.Value.ToDecimal();
-			if (_currentValue < 1)
-			{
-				_currentPage = 1;
-			}
-			else if (_currentValue > PageCount)
-			{
-				_currentPage = PageCount.ToInt32();
-			}
+		return ExecuteMethod(async () =>
+							 {
+								 decimal _currentValue = obj.Value.ToDecimal();
+								 if (_currentValue < 1)
+								 {
+									 _currentPage = 1;
+								 }
+								 else if (_currentValue > PageCount)
+								 {
+									 _currentPage = PageCount.ToInt32();
+								 }
 
-			SearchModel.Page = _currentPage;
-			await LocalStorageBlazored.SetItemAsync(StorageName, SearchModel);
-			await Grid.Refresh();
-			_actionProgress = false;
-		}
+								 SearchModel.Page = _currentPage;
+								 await LocalStorageBlazored.SetItemAsync(StorageName, SearchModel);
+								 await Grid.Refresh();
+							 });
 	}
 
 	/// <summary>
@@ -1237,23 +1196,20 @@ public partial class Leads
 	///     The method also updates the SearchModel and the local storage with the new page number, and refreshes the grid.
 	///     If the current page number is less than 1, it sets it to 1.
 	/// </remarks>
-	private async Task PreviousClick()
+	private Task PreviousClick()
 	{
-		if (!_actionProgress)
-		{
-			await Task.Yield();
-			_actionProgress = true;
-			if (_currentPage < 1)
-			{
-				_currentPage = 1;
-			}
+		return ExecuteMethod(async () =>
+							 {
+								 if (_currentPage < 1)
+								 {
+									 _currentPage = 1;
+								 }
 
-			_currentPage = SearchModel.Page <= 1 ? 1 : SearchModel.Page - 1;
-			SearchModel.Page = _currentPage;
-			await LocalStorageBlazored.SetItemAsync(StorageName, SearchModel);
-			await Grid.Refresh();
-			_actionProgress = false;
-		}
+								 _currentPage = SearchModel.Page <= 1 ? 1 : SearchModel.Page - 1;
+								 SearchModel.Page = _currentPage;
+								 await LocalStorageBlazored.SetItemAsync(StorageName, SearchModel);
+								 await Grid.Refresh();
+							 });
 	}
 
 	/// <summary>
@@ -1273,39 +1229,47 @@ public partial class Leads
 	///     and upload path.
 	///     If the document is successfully uploaded, the method updates the list of documents related to the lead.
 	/// </remarks>
-	private async Task SaveDocument(EditContext document)
+	private Task SaveDocument(EditContext document)
 	{
-		await Task.Yield();
-		try
-		{
-			if (document.Model is RequisitionDocuments _document)
-			{
-				RestClient _client = new($"{Start.ApiHost}");
-				RestRequest _request = new("Lead/UploadDocument", Method.Post)
-									   {
-										   AlwaysMultipartFormData = true
-									   };
-				_request.AddFile("file", AddedDocument.ToStreamByteArray(), FileName);
-				_request.AddParameter("filename", FileName, ParameterType.GetOrPost);
-				_request.AddParameter("mime", Mime, ParameterType.GetOrPost);
-				_request.AddParameter("name", _document.DocumentName, ParameterType.GetOrPost);
-				_request.AddParameter("notes", _document.DocumentNotes, ParameterType.GetOrPost);
-				_request.AddParameter("leadID", _target.ID.ToString(), ParameterType.GetOrPost);
-				_request.AddParameter("user", User, ParameterType.GetOrPost);
-				_request.AddParameter("path", Start.UploadsPath, ParameterType.GetOrPost);
-				Dictionary<string, object> _response = await _client.PostAsync<Dictionary<string, object>>(_request);
-				if (_response == null)
-				{
-					return;
-				}
+		return ExecuteMethod(async () =>
+							 {
+								 if (document.Model is RequisitionDocuments _document)
+								 {
+									 //RestClient _client = new($"{Start.ApiHost}");
+									 //RestRequest _request = new("Lead/UploadDocument", Method.Post)
+									 //					   {
+									 //						   AlwaysMultipartFormData = true
+									 //					   };
+									 //_request.AddFile("file", AddedDocument.ToStreamByteArray(), FileName);
+									 //_request.AddParameter("filename", FileName, ParameterType.GetOrPost);
+									 //_request.AddParameter("mime", Mime, ParameterType.GetOrPost);
+									 //_request.AddParameter("name", _document.DocumentName, ParameterType.GetOrPost);
+									 //_request.AddParameter("notes", _document.DocumentNotes, ParameterType.GetOrPost);
+									 //_request.AddParameter("leadID", _target.ID.ToString(), ParameterType.GetOrPost);
+									 //_request.AddParameter("user", User, ParameterType.GetOrPost);
+									 //_request.AddParameter("path", Start.UploadsPath, ParameterType.GetOrPost);
 
-				_leadDocumentsObject = General.DeserializeObject<List<RequisitionDocuments>>(_response["Document"]);
-			}
-		}
-		catch
-		{
-			//
-		}
+									 Dictionary<string, string> _parameters = new()
+																			  {
+																				  {"filename", FileName},
+																				  {"mime", Mime},
+																				  {"name", _document.DocumentName},
+																				  {"notes", _document.DocumentNotes},
+																				  {"leadID", _target.ID.ToString()},
+																				  {"user", User},
+																				  {"path", Start.UploadsPath}
+																			  };
+
+									 Dictionary<string, object> _response =
+										 await General.PostRestParameter<Dictionary<string, object>>("Lead/UploadDocument", _parameters, null, AddedDocument.ToStreamByteArray(), FileName);
+									 if (_response == null)
+									 {
+										 return;
+									 }
+
+									 _leadDocumentsObject = General.DeserializeObject<List<RequisitionDocuments>>(_response["Document"]);
+								 }
+							 });
 	}
 
 	/// <summary>
@@ -1317,42 +1281,49 @@ public partial class Leads
 	///     This method makes a POST request to the "Lead/SaveLeads" endpoint with the lead information.
 	///     After the lead information is saved, it updates the local lead details object and refreshes the grid if necessary.
 	/// </remarks>
-	private async Task SaveLead(EditContext lead)
+	private Task SaveLead(EditContext lead)
 	{
-		RestClient _client = new($"{Start.ApiHost}");
-		RestRequest _request = new("Lead/SaveLeads", Method.Post)
-							   {
-								   RequestFormat = DataFormat.Json
-							   };
-		_request.AddJsonBody(lead.Model);
-		_request.AddQueryParameter("user", User);
+		return ExecuteMethod(async () =>
+							 {
+								 //RestClient _client = new($"{Start.ApiHost}");
+								 //RestRequest _request = new("Lead/SaveLeads", Method.Post)
+								 //{
+								 // RequestFormat = DataFormat.Json
+								 //};
+								 //_request.AddJsonBody(lead.Model);
+								 //_request.AddQueryParameter("user", User);
 
-		await _client.PostAsync(_request);
+								 Dictionary<string, string> _parameters = new()
+																		  {
+																			  {"user", User}
+																		  };
 
-		_leadDetailsObject = _leadDetailsObjectClone.Copy();
+								 await General.PostRest<int>("Lead/SaveLeads", _parameters, lead.Model);
 
-		if (_leadDetailsObject.ID > 0)
-		{
-			_target.Company = _leadDetailsObject.Company;
-			_target.Phone = _leadDetailsObject.Phone.StripPhoneNumber().FormatPhoneNumber();
-			if (_leadDetailsObject.StateName.Contains("["))
-			{
-				string[] _stateArray = _leadDetailsObject.StateName.Split('-');
-				_target.Location = $"{_leadDetailsObject.City}, {(_stateArray.Length > 1 ? _stateArray[1].Replace("[", "").Replace("]", "").Trim() : _leadDetailsObject.StateName)}";
-			}
+								 _leadDetailsObject = _leadDetailsObjectClone.Copy();
 
-			_target.Industry = _leadDetailsObject.LeadIndustry;
-			_target.Status = _leadDetailsObject.LeadStatus;
-			_target.LastUpdated = $"{DateTime.Today.CultureDate()} [{User}]";
-		}
-		else
-		{
-			SearchModel.Clear();
-			await Grid.Refresh();
-		}
+								 if (_leadDetailsObject.ID > 0)
+								 {
+									 _target.Company = _leadDetailsObject.Company;
+									 _target.Phone = _leadDetailsObject.Phone.StripPhoneNumber().FormatPhoneNumber();
+									 if (_leadDetailsObject.StateName.Contains("["))
+									 {
+										 string[] _stateArray = _leadDetailsObject.StateName.Split('-');
+										 _target.Location = $"{_leadDetailsObject.City}, {(_stateArray.Length > 1 ? _stateArray[1].Replace("[", "").Replace("]", "").Trim() : _leadDetailsObject.StateName)}";
+									 }
 
-		await Task.Yield();
-		StateHasChanged();
+									 _target.Industry = _leadDetailsObject.LeadIndustry;
+									 _target.Status = _leadDetailsObject.LeadStatus;
+									 _target.LastUpdated = $"{DateTime.Today.CultureDate()} [{User}]";
+								 }
+								 else
+								 {
+									 SearchModel.Clear();
+									 await Grid.Refresh();
+								 }
+
+								 StateHasChanged();
+							 });
 	}
 
 	/// <summary>
@@ -1367,31 +1338,33 @@ public partial class Leads
 	///     If the response is not null, it deserializes the "Notes" from the response into a list of CandidateNotes objects
 	///     and assigns it to LeadNotesObject.
 	/// </remarks>
-	private async Task SaveNotes(EditContext notes)
+	private Task SaveNotes(EditContext notes)
 	{
-		try
-		{
-			RestClient _client = new($"{Start.ApiHost}");
-			RestRequest _request = new("Lead/SaveNotes", Method.Post)
-								   {
-									   RequestFormat = DataFormat.Json
-								   };
-			_request.AddJsonBody(notes.Model);
-			_request.AddQueryParameter("user", User);
-			_request.AddQueryParameter("leadID", _target.ID);
+		return ExecuteMethod(async () =>
+							 {
+								 //RestClient _client = new($"{Start.ApiHost}");
+								 //RestRequest _request = new("Lead/SaveNotes", Method.Post)
+								 //{
+								 //	RequestFormat = DataFormat.Json
+								 //};
+								 //_request.AddJsonBody(notes.Model);
+								 //_request.AddQueryParameter("user", User);
+								 //_request.AddQueryParameter("leadID", _target.ID);
 
-			Dictionary<string, object> _response = await _client.PostAsync<Dictionary<string, object>>(_request);
-			if (_response == null)
-			{
-				return;
-			}
+								 Dictionary<string, string> _parameters = new()
+																		  {
+																			  {"user", User},
+																			  {"leadID", _target.ID.ToString()}
+																		  };
 
-			LeadNotesObject = General.DeserializeObject<List<CandidateNotes>>(_response["Notes"]);
-		}
-		catch
-		{
-			//
-		}
+								 Dictionary<string, object> _response = await General.PostRest("Lead/SaveNotes", _parameters, notes.Model);
+								 if (_response == null)
+								 {
+									 return;
+								 }
+
+								 LeadNotesObject = General.DeserializeObject<List<CandidateNotes>>(_response["Notes"]);
+							 });
 	}
 
 	/// <summary>
@@ -1404,20 +1377,17 @@ public partial class Leads
 	///     and then refreshes the grid. It uses local storage to persist the search model.
 	///     The method is asynchronous and will yield if a filter operation is already in progress.
 	/// </remarks>
-	private async Task SetAlphabet(char alphabet)
+	private Task SetAlphabet(char alphabet)
 	{
-		if (!_filterInProgress)
-		{
-			await Task.Yield();
-			_filterInProgress = true;
-			SearchModel.Name = alphabet.ToString();
-			_currentPage = 1;
-			SearchModel.Page = 1;
-			await LocalStorageBlazored.SetItemAsync(StorageName, SearchModel);
-			AutocompleteValue = alphabet.ToString();
-			await Grid.Refresh();
-			_filterInProgress = false;
-		}
+		return ExecuteMethod(async () =>
+							 {
+								 SearchModel.Name = alphabet.ToString();
+								 _currentPage = 1;
+								 SearchModel.Page = 1;
+								 await LocalStorageBlazored.SetItemAsync(StorageName, SearchModel);
+								 AutocompleteValue = alphabet.ToString();
+								 await Grid.Refresh();
+							 });
 	}
 
 	/// <summary>
@@ -1433,31 +1403,24 @@ public partial class Leads
 	/// </remarks>
 	private async Task SpeedDialItemClicked(SpeedDialItemEventArgs args)
 	{
-		if (!_speedDialItemClicked)
+		switch (args.Item.ID)
 		{
-			await Task.Yield();
-			_speedDialItemClicked = true;
-			switch (args.Item.ID)
-			{
-				case "itemEditLead":
-					_selectedTab = 0;
-					await EditLead(false);
-					break;
-				case "itemAddNotes":
-					_selectedTab = 1;
-					await EditNotes(0);
-					break;
-				case "itemAddDocument":
-					_selectedTab = 2;
-					await AddDocument();
-					break;
-				case "itemConvertLead":
-					_selectedTab = 2;
-					await ConvertLead();
-					break;
-			}
-
-			_speedDialItemClicked = false;
+			case "itemEditLead":
+				_selectedTab = 0;
+				await EditLead(false);
+				break;
+			case "itemAddNotes":
+				_selectedTab = 1;
+				await EditNotes(0);
+				break;
+			case "itemAddDocument":
+				_selectedTab = 2;
+				await AddDocument();
+				break;
+			case "itemConvertLead":
+				_selectedTab = 2;
+				await ConvertLead();
+				break;
 		}
 	}
 
@@ -1469,11 +1432,7 @@ public partial class Leads
 	/// <remarks>
 	///     The method sets the _selectedTab field to the index of the selected tab.
 	/// </remarks>
-	private async Task TabSelected(SelectEventArgs args)
-	{
-		await Task.Yield();
-		_selectedTab = args.SelectedIndex;
-	}
+	private void TabSelected(SelectEventArgs args) => _selectedTab = args.SelectedIndex;
 
 	/// <summary>
 	///     Handles the upload of a document.
@@ -1485,17 +1444,20 @@ public partial class Leads
 	///     stream, and then close the original stream.
 	///     The file name and MIME type of the uploaded file are also stored.
 	/// </remarks>
-	private async Task UploadDocument(UploadChangeEventArgs file)
+	private Task UploadDocument(UploadChangeEventArgs file)
 	{
-		foreach (UploadFiles _file in file.Files)
-		{
-			Stream _str = _file.File.OpenReadStream(20 * 1024 * 1024);
-			await _str.CopyToAsync(AddedDocument);
-			FileName = _file.FileInfo.Name;
-			Mime = _file.FileInfo.MimeContentType;
-			AddedDocument.Position = 0;
-			_str.Close();
-		}
+		return ExecuteMethod(async () =>
+							 {
+								 foreach (UploadFiles _file in file.Files)
+								 {
+									 Stream _str = _file.File.OpenReadStream(20 * 1024 * 1024);
+									 await _str.CopyToAsync(AddedDocument);
+									 FileName = _file.FileInfo.Name;
+									 Mime = _file.FileInfo.MimeContentType;
+									 AddedDocument.Position = 0;
+									 _str.Close();
+								 }
+							 });
 	}
 
 	/// <summary>
