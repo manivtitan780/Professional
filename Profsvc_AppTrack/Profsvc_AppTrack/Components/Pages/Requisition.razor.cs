@@ -8,7 +8,7 @@
 // File Name:           Requisition.razor.cs
 // Created By:          Narendra Kumaran Kadhirvelu, Jolly Joseph Paily, DonBosco Paily, Mariappan Raja
 // Created On:          11-23-2023 19:53
-// Last Updated On:     12-30-2023 20:46
+// Last Updated On:     12-30-2023 20:56
 // *****************************************/
 
 #endregion
@@ -79,19 +79,19 @@ public partial class Requisition
 	/// </summary>
 	private readonly List<ToolbarItemModel> _tools1 =
 	[
-		new() {Command = ToolbarCommand.Bold},
-		new() {Command = ToolbarCommand.Italic},
-		new() {Command = ToolbarCommand.Underline},
-		new() {Command = ToolbarCommand.StrikeThrough},
-		new() {Command = ToolbarCommand.LowerCase},
-		new() {Command = ToolbarCommand.UpperCase},
-		new() {Command = ToolbarCommand.SuperScript},
-		new() {Command = ToolbarCommand.SubScript},
-		new() {Command = ToolbarCommand.Separator},
-		new() {Command = ToolbarCommand.ClearFormat},
-		new() {Command = ToolbarCommand.Separator},
-		new() {Command = ToolbarCommand.Undo},
-		new() {Command = ToolbarCommand.Redo}
+		new() { Command = ToolbarCommand.Bold },
+		new() { Command = ToolbarCommand.Italic },
+		new() { Command = ToolbarCommand.Underline },
+		new() { Command = ToolbarCommand.StrikeThrough },
+		new() { Command = ToolbarCommand.LowerCase },
+		new() { Command = ToolbarCommand.UpperCase },
+		new() { Command = ToolbarCommand.SuperScript },
+		new() { Command = ToolbarCommand.SubScript },
+		new() { Command = ToolbarCommand.Separator },
+		new() { Command = ToolbarCommand.ClearFormat },
+		new() { Command = ToolbarCommand.Separator },
+		new() { Command = ToolbarCommand.Undo },
+		new() { Command = ToolbarCommand.Redo }
 	];
 
 	private List<AppWorkflow> _workflows;
@@ -660,10 +660,7 @@ public partial class Requisition
 	///     AddRequisitionDocument dialog to prevent any other actions during the upload process.
 	/// </summary>
 	/// <param name="arg">The arguments related to the document upload event.</param>
-	private void BeforeDocument(BeforeUploadEventArgs arg)
-	{
-		DialogDocument.DisableButtons();
-	}
+	private void BeforeDocument(BeforeUploadEventArgs arg) => DialogDocument.DisableButtons();
 
 	/// <summary>
 	///     Asynchronously changes the item count of the requisition.
@@ -675,20 +672,17 @@ public partial class Requisition
 	///     This method is not executed if an action is already in progress.
 	/// </remarks>
 	/// <returns>A <see cref="Task" /> representing the asynchronous operation.</returns>
-	private async Task ChangeItemCount(ChangeEventArgs<int, IntValues> item)
+	private Task ChangeItemCount(ChangeEventArgs<int, IntValues> item)
 	{
-		if (!_actionProgress)
-		{
-			_actionProgress = true;
-			_currentPage = 1;
-			SearchModel.Page = 1;
-			SearchModel.ItemCount = item.Value;
+		return ExecuteMethod(async () =>
+							 {
+								 SearchModel.Page = 1;
+								 SearchModel.ItemCount = item.Value;
 
-			await SessionStorage.SetItemAsync(StorageName, SearchModel);
-			await Grid.Refresh();
-			_actionProgress = false;
-			StateHasChanged();
-		}
+								 await SessionStorage.SetItemAsync(StorageName, SearchModel);
+								 await Grid.Refresh();
+								 StateHasChanged();
+							 });
 	}
 
 	/// <summary>
@@ -700,22 +694,20 @@ public partial class Requisition
 	/// </summary>
 	/// <param name="arg">The mouse event arguments. This parameter is not used in the method.</param>
 	/// <returns>A <see cref="Task" /> representing the asynchronous operation.</returns>
-	private async Task ClearFilter(MouseEventArgs arg)
+	private Task ClearFilter(MouseEventArgs arg)
 	{
-		if (!_actionProgress)
-		{
-			_actionProgress = true;
-			int _currentPageItemCount = SearchModel.ItemCount;
-			SearchModel.Clear();
-			_currentPage = 1;
-			SearchModel.Page = 1;
-			SearchModel.ItemCount = _currentPageItemCount;
-			SearchModel.User = LoginCookyUser == null || LoginCookyUser.UserID.NullOrWhiteSpace() ? "JOLLY" : LoginCookyUser.UserID.ToUpperInvariant();
-			await SessionStorage.SetItemAsync(StorageName, SearchModel);
-			AutocompleteValue = "";
-			await Grid.Refresh();
-			_actionProgress = false;
-		}
+		return ExecuteMethod(async () =>
+							 {
+								 int _currentPageItemCount = SearchModel.ItemCount;
+								 SearchModel.Clear();
+								 _currentPage = 1;
+								 SearchModel.Page = 1;
+								 SearchModel.ItemCount = _currentPageItemCount;
+								 SearchModel.User = LoginCookyUser == null || LoginCookyUser.UserID.NullOrWhiteSpace() ? "JOLLY" : LoginCookyUser.UserID.ToUpperInvariant();
+								 await SessionStorage.SetItemAsync(StorageName, SearchModel);
+								 AutocompleteValue = "";
+								 await Grid.Refresh();
+							 });
 	}
 
 	/// <summary>
@@ -723,18 +715,16 @@ public partial class Requisition
 	///     This method resets the search model and refreshes the requisition grid.
 	/// </summary>
 	/// <returns>A <see cref="Task" /> representing the asynchronous operation.</returns>
-	private async Task ClearLinkClicked()
+	private Task ClearLinkClicked()
 	{
-		if (!_actionProgress)
-		{
-			_actionProgress = true;
-			_currentPage = 1;
-			SearchModel.Status = "";
-			SearchModel.Page = 1;
-			await SessionStorage.SetItemAsync(StorageName, SearchModel);
-			await Grid.Refresh();
-			_actionProgress = false;
-		}
+		return ExecuteMethod(async () =>
+							 {
+								 _currentPage = 1;
+								 SearchModel.Status = "";
+								 SearchModel.Page = 1;
+								 await SessionStorage.SetItemAsync(StorageName, SearchModel);
+								 await Grid.Refresh();
+							 });
 	}
 
 	/// <summary>
@@ -749,36 +739,39 @@ public partial class Requisition
 	/// </summary>
 	/// <param name="obj">The object that triggers the data handling.</param>
 	/// <returns>A <see cref="Task" /> representing the asynchronous operation.</returns>
-	private async Task DataHandler(object obj)
+	private Task DataHandler(object obj)
 	{
-		DotNetObjectReference<Requisition> _dotNetReference = DotNetObjectReference.Create(this); // create dotnet ref
-		await Runtime.InvokeAsync<string>("detail", _dotNetReference);
-		//  send the dotnet ref to JS side
-		if (Grid.TotalItemCount > 0)
-		{
-			if (RequisitionID > 0)
-			{
-				int _index = await Grid.GetRowIndexByPrimaryKeyAsync(RequisitionID);
-				if (_index != Grid.SelectedRowIndex)
-				{
-					await Grid.SelectRowAsync(_index);
-					foreach (Requisitions _requisition in Grid.CurrentViewData.OfType<Requisitions>().Where(requisitions => requisitions.ID == RequisitionID))
-					{
-						await Grid.ExpandCollapseDetailRowAsync(_requisition);
-						break;
-					}
-				}
+		return ExecuteMethod(async () =>
+							 {
+								 DotNetObjectReference<Requisition> _dotNetReference = DotNetObjectReference.Create(this); // create dotnet ref
+								 await Runtime.InvokeAsync<string>("detail", _dotNetReference);
+								 //  send the dotnet ref to JS side
+								 if (Grid.TotalItemCount > 0)
+								 {
+									 if (RequisitionID > 0)
+									 {
+										 int _index = await Grid.GetRowIndexByPrimaryKeyAsync(RequisitionID);
+										 if (_index != Grid.SelectedRowIndex)
+										 {
+											 await Grid.SelectRowAsync(_index);
+											 foreach (Requisitions _requisition in Grid.CurrentViewData.OfType<Requisitions>().Where(requisitions => requisitions.ID == RequisitionID))
+											 {
+												 await Grid.ExpandCollapseDetailRowAsync(_requisition);
+												 break;
+											 }
+										 }
 
-				await SessionStorage.SetItemAsync(StorageName, SearchModel);
-				await SessionStorage.RemoveItemAsync("RequisitionIDFromDashboard");
-			}
-			else
-			{
-				await Grid.SelectRowAsync(0);
-			}
-		}
+										 await SessionStorage.SetItemAsync(StorageName, SearchModel);
+										 await SessionStorage.RemoveItemAsync("RequisitionIDFromDashboard");
+									 }
+									 else
+									 {
+										 await Grid.SelectRowAsync(0);
+									 }
+								 }
 
-		RequisitionID = 0;
+								 RequisitionID = 0;
+							 });
 	}
 
 	/// <summary>
@@ -793,37 +786,31 @@ public partial class Requisition
 	///     This method is safe to call concurrently. If the method is already in progress, subsequent calls will return
 	///     immediately.
 	/// </remarks>
-	private async Task DeleteDocument(int args)
+	private Task DeleteDocument(int args)
 	{
-		if (!_actionProgress)
-		{
-			await Task.Yield();
-			_actionProgress = true;
-			try
-			{
-				RestClient _client = new($"{Start.ApiHost}");
-				RestRequest _request = new("Requisition/DeleteRequisitionDocument", Method.Post)
-									   {
-										   RequestFormat = DataFormat.Json
-									   };
-				_request.AddQueryParameter("documentID", args.ToString());
-				_request.AddQueryParameter("user", LoginCookyUser == null || LoginCookyUser.UserID.NullOrWhiteSpace() ? "JOLLY" : LoginCookyUser.UserID.ToUpperInvariant());
+		return ExecuteMethod(async () =>
+							 {
+								 //RestClient _client = new($"{Start.ApiHost}");
+								 //RestRequest _request = new("Requisition/DeleteRequisitionDocument", Method.Post)
+								 //{
+								 //	RequestFormat = DataFormat.Json
+								 //};
+								 //_request.AddQueryParameter("documentID", args.ToString());
+								 //_request.AddQueryParameter("user", LoginCookyUser == null || LoginCookyUser.UserID.NullOrWhiteSpace() ? "JOLLY" : LoginCookyUser.UserID.ToUpperInvariant());
+								 Dictionary<string, string> _parameters = new()
+																		  {
+																			  {"documentID", args.ToString()},
+																			  {"user", User}
+																		  };
 
-				Dictionary<string, object> _response = await _client.PostAsync<Dictionary<string, object>>(_request);
-				if (_response == null)
-				{
-					return;
-				}
+								 Dictionary<string, object> _response = await General.PostRest("Requisition/DeleteRequisitionDocument", _parameters);
+								 if (_response == null)
+								 {
+									 return;
+								 }
 
-				_requisitionDocumentsObject = General.DeserializeObject<List<RequisitionDocuments>>(_response["Document"]);
-			}
-			catch
-			{
-				//
-			}
-
-			_actionProgress = false;
-		}
+								 _requisitionDocumentsObject = General.DeserializeObject<List<RequisitionDocuments>>(_response["Document"]);
+							 });
 	}
 
 	/// <summary>
@@ -845,63 +832,72 @@ public partial class Requisition
 	///     - Finally, it resets the action progress flag to false.
 	/// </remarks>
 	/// <returns>A <see cref="Task" /> representing the asynchronous operation.</returns>
-	private async Task DetailDataBind(DetailDataBoundEventArgs<Requisitions> requisition)
+	private Task DetailDataBind(DetailDataBoundEventArgs<Requisitions> requisition)
 	{
-		if (!_actionProgress)
-		{
-			_actionProgress = true;
-			if (_target != null && _target != requisition.Data)
-			{
-				// return when target is equal to args.data
-				await Grid.ExpandCollapseDetailRowAsync(_target);
-			}
+		return ExecuteMethod(async () =>
+							 {
+								 if (_target != null && _target != requisition.Data)
+								 {
+									 // return when target is equal to args.data
+									 await Grid.ExpandCollapseDetailRowAsync(_target);
+								 }
 
-			int _index = await Grid.GetRowIndexByPrimaryKeyAsync(requisition.Data.ID);
-			if (_index != Grid.SelectedRowIndex)
-			{
-				await Grid.SelectRowAsync(_index);
-			}
+								 int _index = await Grid.GetRowIndexByPrimaryKeyAsync(requisition.Data.ID);
+								 if (_index != Grid.SelectedRowIndex)
+								 {
+									 await Grid.SelectRowAsync(_index);
+								 }
 
-			_target = requisition.Data;
+								 _target = requisition.Data;
 
-			await Task.Yield();
-			try
-			{
-				await Spinner.ShowAsync();
-			}
-			catch
-			{
-				//
-			}
+								 await Task.Yield();
+								 if (Spinner != null)
+								 {
+									 try
+									 {
+										 await Spinner.ShowAsync();
+									 }
+									 catch
+									 {
+										 //
+									 }
+								 }
 
-			RestClient _restClient = new($"{Start.ApiHost}");
-			RestRequest request = new("Requisition/GetRequisitionDetails");
-			request.AddQueryParameter("requisitionID", _target.ID);
+								 //RestClient _restClient = new($"{Start.ApiHost}");
+								 //RestRequest request = new("Requisition/GetRequisitionDetails");
+								 //request.AddQueryParameter("requisitionID", _target.ID);
 
-			Dictionary<string, object> _restResponse = await _restClient.GetAsync<Dictionary<string, object>>(request);
+								 Dictionary<string, string> _parameters = new()
+																		  {
+																			  {"requisitionID", _target.ID.ToString()}
+																		  };
 
-			if (_restResponse != null)
-			{
-				_requisitionDetailsObject = JsonConvert.DeserializeObject<RequisitionDetails>(_restResponse["Requisition"]?.ToString() ?? string.Empty);
-				_candidateActivityObject = General.DeserializeObject<List<CandidateActivity>>(_restResponse["Activity"]);
-				_requisitionDocumentsObject = General.DeserializeObject<List<RequisitionDocuments>>(_restResponse["Documents"]);
-				SetSkills();
-			}
+								 Dictionary<string, object> _restResponse = await General.GetRest<Dictionary<string, object>>("Requisition/GetRequisitionDetails", _parameters);
 
-			_selectedTab = _candidateActivityObject.Count > 0 ? 2 : 0;
+								 if (_restResponse != null)
+								 {
+									 _requisitionDetailsObject = JsonConvert.DeserializeObject<RequisitionDetails>(_restResponse["Requisition"]?.ToString() ?? string.Empty);
+									 _candidateActivityObject = General.DeserializeObject<List<CandidateActivity>>(_restResponse["Activity"]);
+									 _requisitionDocumentsObject = General.DeserializeObject<List<RequisitionDocuments>>(_restResponse["Documents"]);
+									 SetSkills();
+								 }
 
-			await Task.Yield();
-			try
-			{
-				await Spinner.HideAsync();
-			}
-			catch
-			{
-				//
-			}
+								 _selectedTab = _candidateActivityObject.Count > 0 ? 2 : 0;
 
-			_actionProgress = false;
-		}
+								 await Task.Yield();
+
+								 if (Spinner != null)
+								 {
+									 try
+									 {
+										 await Spinner.HideAsync();
+									 }
+									 catch
+									 {
+										 //
+									 }
+								 }
+							 });
 	}
 
 	/// <summary>
@@ -924,17 +920,14 @@ public partial class Requisition
 	///     After the download is initiated, the method resets the action progress indicator.
 	/// </remarks>
 	/// <returns>A <see cref="Task" /> representing the asynchronous operation.</returns>
-	private async Task DownloadDocument(int args)
+	private Task DownloadDocument(int args)
 	{
-		if (!_actionProgress)
-		{
-			await Task.Yield();
-			_actionProgress = true;
-			SelectedDownload = DocumentsPanel.SelectedRow;
-			string _queryString = (SelectedDownload.DocumentFileName + "^" + _target.ID + "^" + SelectedDownload.OriginalFileName + "^1").ToBase64String();
-			await JsRuntime.InvokeVoidAsync("open", $"{NavManager.BaseUri}Download/{_queryString}", "_blank");
-			_actionProgress = false;
-		}
+		return ExecuteMethod(async () =>
+							 {
+								 SelectedDownload = DocumentsPanel.SelectedRow;
+								 string _queryString = $"{SelectedDownload.DocumentFileName}^{_target.ID}^{SelectedDownload.OriginalFileName}^1".ToBase64String();
+								 await JsRuntime.InvokeVoidAsync("open", $"{NavManager.BaseUri}Download/{_queryString}", "_blank");
+							 });
 	}
 
 	/// <summary>
@@ -949,39 +942,36 @@ public partial class Requisition
 	/// <returns>
 	///     A <see cref="Task" /> representing the asynchronous operation.
 	/// </returns>
-	private async Task EditActivity(int args)
+	private Task EditActivity(int args)
 	{
-		if (!_editInProgress)
-		{
-			await Task.Yield();
-			_editInProgress = true;
-			SelectedActivity = ActivityPanel.SelectedRow;
-			NextSteps.Clear();
-			NextSteps.Add(new("No Change", ""));
-			try
-			{
-				foreach (string[] _next in _workflows.Where(flow => flow.Step == SelectedActivity.StatusCode).Select(flow => flow.Next.Split(',')))
-				{
-					foreach (string _nextString in _next)
-					{
-						foreach (StatusCode _status in _statusCodes.Where(status => status.Code == _nextString && status.AppliesToCode == "SCN"))
-						{
-							NextSteps.Add(new(_status.Status, _nextString));
-							break;
-						}
-					}
+		return ExecuteMethod(async () =>
+							 {
+								 SelectedActivity = ActivityPanel.SelectedRow;
+								 NextSteps.Clear();
+								 NextSteps.Add(new("No Change", ""));
+								 try
+								 {
+									 foreach (string[] _next in _workflows.Where(flow => flow.Step == SelectedActivity.StatusCode).Select(flow => flow.Next.Split(',')))
+									 {
+										 foreach (string _nextString in _next)
+										 {
+											 foreach (StatusCode _status in _statusCodes.Where(status => status.Code == _nextString && status.AppliesToCode == "SCN"))
+											 {
+												 NextSteps.Add(new(_status.Status, _nextString));
+												 break;
+											 }
+										 }
 
-					break;
-				}
-			}
-			catch
-			{
-				//
-			}
+										 break;
+									 }
+								 }
+								 catch
+								 {
+									 //
+								 }
 
-			_editInProgress = false;
-			await DialogActivity.ShowDialog();
-		}
+								 await DialogActivity.ShowDialog();
+							 });
 	}
 
 	/// <summary>
@@ -1227,15 +1217,15 @@ public partial class Requisition
 		if (args.RequestType == Action.Sorting)
 		{
 			SearchModel.SortField = args.ColumnName switch
-									{
-										"Code" => 2,
-										"Title" => 3,
-										"Company" => 4,
-										"Option" => 5,
-										"Status" => 6,
-										"DueEnd" => 8,
-										_ => 1
-									};
+			{
+				"Code" => 2,
+				"Title" => 3,
+				"Company" => 4,
+				"Option" => 5,
+				"Status" => 6,
+				"DueEnd" => 8,
+				_ => 1
+			};
 			SearchModel.SortDirection = args.Direction == SortDirection.Ascending ? (byte)1 : (byte)0;
 			SessionStorage.SetItemAsync(StorageName, SearchModel);
 			Grid.Refresh();
@@ -1382,7 +1372,7 @@ public partial class Requisition
 		_statusCodes = await Redis.GetAsync<List<StatusCode>>("StatusCodes");
 		_preference = await Redis.GetAsync<Preferences>("Preferences");
 
-		if (_statusCodes is {Count: > 0})
+		if (_statusCodes is { Count: > 0 })
 		{
 			foreach (StatusCode _statusCode in _statusCodes.Where(statusCode => statusCode.AppliesToCode == "REQ"))
 			{
@@ -1404,15 +1394,15 @@ public partial class Requisition
 
 		SortDirectionProperty = SearchModel.SortDirection == 1 ? SortDirection.Ascending : SortDirection.Descending;
 		SortField = SearchModel.SortField switch
-					{
-						2 => "Code",
-						3 => "Title",
-						4 => "Company",
-						5 => "Option",
-						6 => "Status",
-						8 => "DueEnd",
-						_ => "Updated"
-					};
+		{
+			2 => "Code",
+			3 => "Title",
+			4 => "Company",
+			5 => "Option",
+			6 => "Status",
+			8 => "DueEnd",
+			_ => "Updated"
+		};
 		AutocompleteValue = SearchModel.Title;
 
 		_loaded = true;
@@ -1519,9 +1509,9 @@ public partial class Requisition
 		{
 			RestClient _client = new($"{Start.ApiHost}");
 			RestRequest _request = new("Candidates/SaveCandidateActivity", Method.Post)
-								   {
-									   RequestFormat = DataFormat.Json
-								   };
+			{
+				RequestFormat = DataFormat.Json
+			};
 			_request.AddJsonBody(activity.Model);
 			_request.AddQueryParameter("candidateID", _target.ID);
 			_request.AddQueryParameter("user", LoginCookyUser == null || LoginCookyUser.UserID.NullOrWhiteSpace() ? "JOLLY" : LoginCookyUser.UserID.ToUpperInvariant());
@@ -1568,9 +1558,9 @@ public partial class Requisition
 			{
 				RestClient _client = new($"{Start.ApiHost}");
 				RestRequest _request = new("Requisition/UploadDocument", Method.Post)
-									   {
-										   AlwaysMultipartFormData = true
-									   };
+				{
+					AlwaysMultipartFormData = true
+				};
 				_request.AddFile("file", AddedDocument.ToStreamByteArray(), FileName);
 				_request.AddParameter("filename", FileName, ParameterType.GetOrPost);
 				_request.AddParameter("mime", Mime, ParameterType.GetOrPost);
@@ -1617,9 +1607,9 @@ public partial class Requisition
 
 		RestClient _client = new($"{Start.ApiHost}");
 		RestRequest _request = new("Requisition/SaveRequisition", Method.Post)
-							   {
-								   RequestFormat = DataFormat.Json
-							   };
+		{
+			RequestFormat = DataFormat.Json
+		};
 		_request.AddJsonBody(_requisitionDetailsObjectClone);
 		_request.AddQueryParameter("user", LoginCookyUser == null || LoginCookyUser.UserID.NullOrWhiteSpace() ? "JOLLY" : LoginCookyUser.UserID.ToUpperInvariant());
 		_request.AddQueryParameter("jsonPath", Start.JsonFilePath);
@@ -1636,11 +1626,11 @@ public partial class Requisition
 			_target.JobOptions = _requisitionDetailsObject.JobOptions;
 			_target.Status = _requisitionDetailsObject.Status;
 			_target.PriorityColor = _requisitionDetailsObject.Priority.ToUpperInvariant() switch
-									{
-										"HIGH" => _preference.HighPriorityColor,
-										"LOW" => _preference.LowPriorityColor,
-										_ => _preference.NormalPriorityColor
-									};
+			{
+				"HIGH" => _preference.HighPriorityColor,
+				"LOW" => _preference.LowPriorityColor,
+				_ => _preference.NormalPriorityColor
+			};
 		}
 		else
 		{
@@ -1863,9 +1853,9 @@ public partial class Requisition
 		{
 			RestClient _client = new($"{Start.ApiHost}");
 			RestRequest _request = new("Candidates/UndoCandidateActivity", Method.Post)
-								   {
-									   RequestFormat = DataFormat.Json
-								   };
+			{
+				RequestFormat = DataFormat.Json
+			};
 			_request.AddQueryParameter("submissionID", activityID);
 			_request.AddQueryParameter("user", LoginCookyUser == null || LoginCookyUser.UserID.NullOrWhiteSpace() ? "JOLLY" : LoginCookyUser.UserID.ToUpperInvariant());
 			_request.AddQueryParameter("isCandidateScreen", false);
