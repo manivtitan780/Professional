@@ -8,7 +8,7 @@
 // File Name:           Leads.razor.cs
 // Created By:          Narendra Kumaran Kadhirvelu, Jolly Joseph Paily, DonBosco Paily, Mariappan Raja
 // Created On:          11-23-2023 19:53
-// Last Updated On:     12-30-2023 16:23
+// Last Updated On:     12-30-2023 16:31
 // *****************************************/
 
 #endregion
@@ -506,13 +506,13 @@ public partial class Leads
 								 if (args.RequestType == Action.Sorting)
 								 {
 									 SearchModel.SortField = args.ColumnName switch
-									 {
-										 "Company" => 1,
-										 "Location" => 2,
-										 "Industry" => 3,
-										 "Status" => 4,
-										 _ => 5
-									 };
+															 {
+																 "Company" => 1,
+																 "Location" => 2,
+																 "Industry" => 3,
+																 "Status" => 4,
+																 _ => 5
+															 };
 									 SearchModel.SortDirection = args.Direction == SortDirection.Ascending ? (byte)1 : (byte)0;
 									 await LocalStorageBlazored.SetItemAsync(StorageName, SearchModel);
 									 await Grid.Refresh();
@@ -635,28 +635,30 @@ public partial class Leads
 	///     The method then awaits the asynchronous POST request to the server and refreshes the grid upon completion.
 	/// </remarks>
 	/// <returns>A <see cref="Task" /> representing the asynchronous operation.</returns>
-	private async Task ConvertLead()
+	private Task ConvertLead()
 	{
-		await Task.Yield();
-		try
-		{
-			RestClient _client = new($"{Start.ApiHost}");
-			RestRequest _request = new("Lead/ConvertLead", Method.Post)
-			{
-				RequestFormat = DataFormat.Json
-			};
-			_request.AddQueryParameter("leadID", _target.ID);
-			_request.AddQueryParameter("user", User);
-			_request.AddQueryParameter("path", Start.UploadsPath);
+		return ExecuteMethod(async () =>
+							 {
+								 //RestClient _client = new($"{Start.ApiHost}");
+								 //RestRequest _request = new("Lead/ConvertLead", Method.Post)
+								 //{
+								 // RequestFormat = DataFormat.Json
+								 //};
+								 //_request.AddQueryParameter("leadID", _target.ID);
+								 //_request.AddQueryParameter("user", User);
+								 //_request.AddQueryParameter("path", Start.UploadsPath);
 
-			await _client.PostAsync(_request);
+								 Dictionary<string, string> _parameters = new()
+																		  {
+																			  {"leadID", _target.ID.ToString()},
+																			  {"user", User},
+																			  {"path", Start.UploadsPath}
+																		  };
 
-			await Grid.Refresh();
-		}
-		catch
-		{
-			//
-		}
+								 await General.PostRest<int>("Lead/ConvertLead", _parameters);
+
+								 await Grid.Refresh();
+							 });
 	}
 
 	/// <summary>
@@ -700,9 +702,9 @@ public partial class Leads
 			{
 				RestClient _client = new($"{Start.ApiHost}");
 				RestRequest _request = new("Lead/DeleteLeadDocument", Method.Post)
-				{
-					RequestFormat = DataFormat.Json
-				};
+									   {
+										   RequestFormat = DataFormat.Json
+									   };
 				_request.AddQueryParameter("documentID", args.ToString());
 				_request.AddQueryParameter("user", User);
 
@@ -744,9 +746,9 @@ public partial class Leads
 			{
 				using RestClient _client = new($"{Start.ApiHost}");
 				RestRequest _request = new("Lead/DeleteNotes", Method.Post)
-				{
-					RequestFormat = DataFormat.Json
-				};
+									   {
+										   RequestFormat = DataFormat.Json
+									   };
 				_request.AddQueryParameter("id", id.ToString());
 				_request.AddQueryParameter("leadID", _target.ID.ToString());
 				_request.AddQueryParameter("user", User);
@@ -1190,13 +1192,13 @@ public partial class Leads
 
 		SortDirectionProperty = SearchModel.SortDirection == 1 ? SortDirection.Ascending : SortDirection.Descending;
 		SortField = SearchModel.SortField switch
-		{
-			1 => "Company",
-			2 => "Location",
-			3 => "Industry",
-			4 => "Status",
-			_ => "Updated"
-		};
+					{
+						1 => "Company",
+						2 => "Location",
+						3 => "Industry",
+						4 => "Status",
+						_ => "Updated"
+					};
 		User = LoginCookyUser?.UserID.NullOrWhiteSpace() != false ? "JOLLY" : LoginCookyUser.UserID.ToUpperInvariant();
 
 		AutocompleteValue = SearchModel.Name;
@@ -1286,9 +1288,9 @@ public partial class Leads
 			{
 				RestClient _client = new($"{Start.ApiHost}");
 				RestRequest _request = new("Lead/UploadDocument", Method.Post)
-				{
-					AlwaysMultipartFormData = true
-				};
+									   {
+										   AlwaysMultipartFormData = true
+									   };
 				_request.AddFile("file", AddedDocument.ToStreamByteArray(), FileName);
 				_request.AddParameter("filename", FileName, ParameterType.GetOrPost);
 				_request.AddParameter("mime", Mime, ParameterType.GetOrPost);
@@ -1325,9 +1327,9 @@ public partial class Leads
 	{
 		RestClient _client = new($"{Start.ApiHost}");
 		RestRequest _request = new("Lead/SaveLeads", Method.Post)
-		{
-			RequestFormat = DataFormat.Json
-		};
+							   {
+								   RequestFormat = DataFormat.Json
+							   };
 		_request.AddJsonBody(lead.Model);
 		_request.AddQueryParameter("user", User);
 
@@ -1377,9 +1379,9 @@ public partial class Leads
 		{
 			RestClient _client = new($"{Start.ApiHost}");
 			RestRequest _request = new("Lead/SaveNotes", Method.Post)
-			{
-				RequestFormat = DataFormat.Json
-			};
+								   {
+									   RequestFormat = DataFormat.Json
+								   };
 			_request.AddJsonBody(notes.Model);
 			_request.AddQueryParameter("user", User);
 			_request.AddQueryParameter("leadID", _target.ID);
