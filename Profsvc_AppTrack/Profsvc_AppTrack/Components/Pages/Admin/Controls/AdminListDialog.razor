@@ -4,27 +4,15 @@
         <DialogPositionData X="right" Y="center"></DialogPositionData>
         <DialogAnimationSettings Effect="DialogEffect.SlideRight"></DialogAnimationSettings>
         <DialogEvents OnOpen="OpenDialog"></DialogEvents>
-        @* <EditForm Model="@Model" OnValidSubmit="SaveAdminList" @ref="EditAdminForm">
-        @*<DataAnnotationsValidator />* @
-        
-        <div class="divContainerTable">
-        <TextBoxControl @bind-Value="@(Model.Text)" @bind-Value:event="ValueChanged" ID="textText" MaxLength="100" MinLength="1" Multiline="false" Placeholder="@Placeholder"
-        ValidationMessage="@(() => Model.Text)" />@*Readonly="@(!HeaderString.Contains("Add"))"* @
-        <SwitchControl @bind-BindValue="@(Model.IsEnabled)" ID="checkedEnabled" OffLabel="INACTIVE" OnLabel="ACTIVE" Placeholder="Status?" />
-        </div>
-        </EditForm> *@
-        <SfDataForm ID="adminListForm" Model="@Model" ValidationDisplayMode="FormValidationDisplay.Tooltip" LabelPosition="FormLabelPosition.Top">
-            <FormValidator><FluentValidationValidator /></FormValidator>
-            <FormItems>
-                <FormItem Field="@nameof(Model.Text)" Placeholder="@Placeholder" LabelText="@Placeholder"></FormItem>
-                <FormItem Field="@nameof(Model.IsEnabled)" Placeholder="Status?:" LabelText="@Placeholder">
-                    <Template>
-                        <SfSwitch @bind-Checked="@(Model.IsEnabled)" CssClass="switchStatus taxEnabledSwitch" HtmlAttributes="@(new Dictionary<string, object> {{"id", "checkedEnabled"}})" 
-                                  OffLabel="INACTIVE" OnLabel="ACTIVE" />
-                    </Template>
-                </FormItem>
-            </FormItems>
-        </SfDataForm>
-        <DialogFooter Cancel="Cancel" CancelMethod="CancelAdminList" @ref="FooterDialog" Save="Save" />
+        <EditForm Model="@Model" OnValidSubmit="SaveAdminList" @ref="EditAdminForm">
+            @*<DataAnnotationsValidator />*@
+            <FluentValidationValidator/>
+            <div class="divContainerTable">
+                <TextBoxControl @bind-Value="@(Model.Text)" @bind-Value:event="ValueChanged" ID="textText" MaxLength="100" MinLength="1" Multiline="false" Placeholder="@Placeholder"
+                                ValidationMessage="@(() => Model.Text)" />@*Readonly="@(!HeaderString.Contains("Add"))"*@
+                <SwitchControl @bind-BindValue="@(Model.IsEnabled)" ID="checkedEnabled" OffLabel="INACTIVE" OnLabel="ACTIVE" Placeholder="Status?" />
+            </div>
+            <DialogFooter Cancel="Cancel" CancelMethod="CancelAdminList" @ref="FooterDialog" Save="Save" />
+        </EditForm>
     </ChildContent>
 </SfDialog>

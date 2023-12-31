@@ -170,7 +170,7 @@ public partial class AdminListDialog
     /// <param name="args">The mouse event arguments associated with the cancel action.</param>
     /// <remarks>
     ///     This method is invoked when the user clicks on the Cancel button in the AdminListDialog.
-    ///     It calls the <see cref="Code.General.CallCancelMethod" /> method to perform the necessary
+    ///     It calls the <see cref="General.CallCancelMethod" /> method to perform the necessary
     ///     operations to cancel the current action and close the dialog.
     /// </remarks>
     /// <returns>A task that represents the asynchronous operation.</returns>
@@ -184,10 +184,7 @@ public partial class AdminListDialog
     ///     This method is invoked when the dialog is about to be opened. It yields control back to the caller before
     ///     validating the EditForm's context.
     /// </remarks>
-    private void OpenDialog(BeforeOpenEventArgs arg)
-    {
-        //EditAdminForm.EditContext?.Validate();
-    }
+    private void OpenDialog(BeforeOpenEventArgs arg) => EditAdminForm.EditContext?.Validate();
 
     /// <summary>
     ///     Asynchronously saves the administrative list in the AdminListDialog.
