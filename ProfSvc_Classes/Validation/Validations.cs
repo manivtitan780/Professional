@@ -598,7 +598,7 @@ public class Validations
             context.MemberName
         };
 
-        if (context.ObjectInstance is not Template _currentContext)
+        if (context.ObjectInstance is not AppTemplate _currentContext)
         {
             return new("Could not verify. Try again.", _memberNames);
         }

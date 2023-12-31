@@ -40,14 +40,14 @@ public partial class Templates
     ///     Gets or sets the AdminGrid component for managing Template data in the Templates page.
     /// </summary>
     /// <value>
-    ///     The AdminGrid component of type <see cref="Template" />.
+    ///     The AdminGrid component of type <see cref="AppTemplate" />.
     /// </value>
     /// <remarks>
     ///     This property is used to manage the display, sorting, filtering, and other operations of Template data in the
     ///     Templates page.
     ///     The AdminGrid component is a generic component that can manage data of any type, in this case, Template data.
     /// </remarks>
-    private AdminGrid<Template> AdminGrid
+    private AdminGrid<AppTemplate> AdminGrid
     {
         get;
         set;
@@ -213,7 +213,7 @@ public partial class Templates
     ///     The TemplateRecord property is used to manage the currently selected template in the Templates page.
     ///     It is initialized with a new instance of the Template class.
     /// </remarks>
-    private Template TemplateRecord
+    private AppTemplate AppTemplateRecord
     {
         get;
         set;
@@ -227,7 +227,7 @@ public partial class Templates
     ///     saving a template.
     ///     The clone is created to avoid direct modifications to the original template record during these operations.
     /// </remarks>
-    private Template TemplateRecordClone
+    private AppTemplate AppTemplateRecordClone
     {
         get;
         set;
@@ -276,7 +276,7 @@ public partial class Templates
     {
         return ExecuteMethod(async () =>
                              {
-                                 List<Template> _selectedList = await AdminGrid.Grid.GetSelectedRecordsAsync();
+                                 List<AppTemplate> _selectedList = await AdminGrid.Grid.GetSelectedRecordsAsync();
                                  if (_selectedList.Any() && _selectedList.First().ID != id)
                                  {
                                      int _index = await AdminGrid.Grid.GetRowIndexByPrimaryKeyAsync(id);
@@ -286,19 +286,19 @@ public partial class Templates
                                  if (id == 0)
                                  {
                                      Title = "Add";
-                                     if (TemplateRecordClone == null)
+                                     if (AppTemplateRecordClone == null)
                                      {
-                                         TemplateRecordClone = new();
+                                         AppTemplateRecordClone = new();
                                      }
                                      else
                                      {
-                                         TemplateRecordClone.Clear();
+                                         AppTemplateRecordClone.Clear();
                                      }
                                  }
                                  else
                                  {
                                      Title = "Edit";
-                                     TemplateRecordClone = TemplateRecord.Copy();
+                                     AppTemplateRecordClone = AppTemplateRecord.Copy();
                                  }
 
                                  StateHasChanged();
@@ -398,7 +398,7 @@ public partial class Templates
     ///     This method is triggered when a row in the Templates page grid is selected.
     ///     It updates the TemplateRecord property with the data of the selected row.
     /// </remarks>
-    private void RowSelected(RowSelectEventArgs<Template> template) => TemplateRecord = template.Data;
+    private void RowSelected(RowSelectEventArgs<AppTemplate> template) => AppTemplateRecord = template.Data;
 
     /// <summary>
     ///     Asynchronously saves the template record.
@@ -414,14 +414,14 @@ public partial class Templates
     {
         return ExecuteMethod(async () =>
                              {
-                                 int _response = await General.PostRest<int>("Admin/SaveTemplate", null, TemplateRecordClone);
+                                 int _response = await General.PostRest<int>("Admin/SaveTemplate", null, AppTemplateRecordClone);
 
                                  if (_response.NullOrWhiteSpace())
                                  {
-                                     _response = TemplateRecordClone.ID;
+                                     _response = AppTemplateRecordClone.ID;
                                  }
 
-                                 TemplateRecord = TemplateRecordClone.Copy();
+                                 AppTemplateRecord = AppTemplateRecordClone.Copy();
 
                                  await AdminGrid.Grid.Refresh();
                                  int _index = await AdminGrid.Grid.GetRowIndexByPrimaryKeyAsync(_response);
@@ -457,7 +457,7 @@ public partial class Templates
                              {
                                  _selectedID = id;
                                  _toggleValue = enabled ? (byte)2 : (byte)1;
-                                 List<Template> _selectedList = await AdminGrid.Grid.GetSelectedRecordsAsync();
+                                 List<AppTemplate> _selectedList = await AdminGrid.Grid.GetSelectedRecordsAsync();
                                  if (_selectedList.Any() && _selectedList.First().ID != id)
                                  {
                                      int _index = await AdminGrid.Grid.GetRowIndexByPrimaryKeyAsync(id);

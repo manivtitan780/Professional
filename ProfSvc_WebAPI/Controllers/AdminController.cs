@@ -583,7 +583,7 @@ public class AdminController : ControllerBase
 			List<KeyValues> _taxTerms = [];
 			List<IntValues> _skills = [];
 			List<IntValues> _experience = [];
-			List<Template> _templates = [];
+			List<AppTemplate> _templates = [];
 			List<User> _users = [];
 			List<StatusCode> _statusCodes = [];
 			List<Zip> _zips = [];
@@ -1165,7 +1165,7 @@ public class AdminController : ControllerBase
 	public async Task<Dictionary<string, object>> GetTemplateList(string filter = "")
 	{
 		await using SqlConnection _connection = new(_configuration.GetConnectionString("DBConnect"));
-		List<Template> _templates = [];
+		List<AppTemplate> _templates = [];
 		await using SqlCommand _command = new("Admin_GetTemplate", _connection);
 		_command.CommandType = CommandType.StoredProcedure;
 		if (!filter.NullOrWhiteSpace())
@@ -1784,7 +1784,7 @@ public class AdminController : ControllerBase
 	/// <summary>
 	///     Saves a template to the database.
 	/// </summary>
-	/// <param name="template">The template to be saved. It is an instance of the Template class.</param>
+	/// <param name="appTemplate">The template to be saved. It is an instance of the Template class.</param>
 	/// <returns>
 	///     An integer value indicating the result of the save operation. A non-zero value indicates success, while zero
 	///     indicates failure.
@@ -1800,7 +1800,7 @@ public class AdminController : ControllerBase
 	///     In case of any exception during the execution, it is caught and ignored, and the method returns zero.
 	/// </remarks>
 	[HttpPost]
-	public async Task<int> SaveTemplate(Template template)
+	public async Task<int> SaveTemplate(AppTemplate appTemplate)
 	{
 		await using SqlConnection _con = new(_configuration.GetConnectionString("DBConnect"));
 		_con.Open();
@@ -1810,16 +1810,16 @@ public class AdminController : ControllerBase
 		{
 			await using SqlCommand _command = new("Admin_SaveTemplate", _con);
 			_command.CommandType = CommandType.StoredProcedure;
-			_command.Int("Id", template.ID);
-			_command.Varchar("TemplateName", 50, template.TemplateName);
-			_command.Varchar("Cc", 2000, template.CC);
-			_command.Varchar("Subject", 255, template.Subject);
-			_command.Varchar("Template", -1, template.TemplateContent);
-			_command.Varchar("Notes", 500, template.Notes);
-			_command.Varchar("SendTo", 200, template.SendTo);
-			_command.TinyInt("Action", template.Action);
+			_command.Int("Id", appTemplate.ID);
+			_command.Varchar("TemplateName", 50, appTemplate.TemplateName);
+			_command.Varchar("Cc", 2000, appTemplate.CC);
+			_command.Varchar("Subject", 255, appTemplate.Subject);
+			_command.Varchar("Template", -1, appTemplate.TemplateContent);
+			_command.Varchar("Notes", 500, appTemplate.Notes);
+			_command.Varchar("SendTo", 200, appTemplate.SendTo);
+			_command.TinyInt("Action", appTemplate.Action);
 			_command.Varchar("User", 10, "ADMIN");
-			_command.Bit("Enabled", template.IsEnabled);
+			_command.Bit("Enabled", appTemplate.IsEnabled);
 
 			_returnValue = _command.ExecuteScalar().ToInt32();
 		}

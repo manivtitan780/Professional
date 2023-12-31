@@ -184,7 +184,10 @@ public partial class AdminListDialog
     ///     This method is invoked when the dialog is about to be opened. It yields control back to the caller before
     ///     validating the EditForm's context.
     /// </remarks>
-    private void OpenDialog(BeforeOpenEventArgs arg) => EditAdminForm.EditContext?.Validate();
+    private void OpenDialog(BeforeOpenEventArgs arg)
+    {
+        //EditAdminForm.EditContext?.Validate();
+    }
 
     /// <summary>
     ///     Asynchronously saves the administrative list in the AdminListDialog.

@@ -188,7 +188,7 @@ public partial class TemplateDialog
     ///     This model is used to bind the template data in the dialog for editing purposes.
     /// </remarks>
     [Parameter]
-    public Template Model
+    public AppTemplate Model
     {
         get;
         set;

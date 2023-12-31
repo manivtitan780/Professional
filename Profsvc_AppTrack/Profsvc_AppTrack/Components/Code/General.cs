@@ -1106,7 +1106,7 @@ internal class General
 	/// </returns>
 	internal static async Task<object> GetTemplateReadAdaptor(DataManagerRequest dm, string filter = "") //string name, int page, int count)
 	{
-		List<Template> _dataSource = [];
+		List<AppTemplate> _dataSource = [];
 
 		try
 		{
@@ -1125,7 +1125,7 @@ internal class General
 																		 } : _dataSource);
 			}
 
-			_dataSource = DeserializeObject<List<Template>>(_restResponse["Templates"]);
+			_dataSource = DeserializeObject<List<AppTemplate>>(_restResponse["Templates"]);
 
 			int _count = _restResponse["Count"].ToInt32();
 

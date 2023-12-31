@@ -1851,8 +1851,8 @@ col.e-detail-intent {
 }
 
 .e-speeddial-popup.e-speeddial-vert-right .e-speeddial-li span {
-    background-color: var(--c-red-light);
-    border-color: var(--c-red-light);
+    background-color: var(--c-red);
+    border-color: var(--c-red);
     color: white !important;
 }
 
@@ -1862,16 +1862,16 @@ col.e-detail-intent {
     }
 
 .e-speeddial-popup.e-speeddial-vert-right .e-speeddial-li {
-    background-color: var(--c-red-light);
-    border-color: var(--c-red-light);
+    background-color: var(--c-red);
+    border-color: var(--c-red);
 }
 
 .e-speeddial-popup.e-speeddial-linear .e-speeddial-li:hover,
 /*sets the background and border color for text and icon to when Li is in hovered state*/
 .e-speeddial-popup.e-speeddial-linear .e-speeddial-li:hover .e-speeddial-li-text,
 .e-speeddial-popup.e-speeddial-linear .e-speeddial-li:hover .e-speeddial-li-icon {
-    background-color: var(--c-red-light) !important;
-    border-color: var(--c-red-light) !important;
+    background-color: var(--c-red) !important;
+    border-color: var(--c-red) !important;
     color: var(--c-yellow) !important;
 }
 

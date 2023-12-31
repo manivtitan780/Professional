@@ -16,11 +16,11 @@
 namespace ProfSvc_Classes.Validators;
 
 /// <summary>
-///     Represents a validator for the <see cref="ProfSvc_Classes.Template" /> class.
+///     Represents a validator for the <see cref="AppTemplate" /> class.
 /// </summary>
 /// <remarks>
 ///     This class extends the <see cref="AbstractValidator{T}" /> class and defines specific validation rules for the
-///     <see cref="ProfSvc_Classes.Template" /> class.
+///     <see cref="AppTemplate" /> class.
 ///     The rules include:
 ///     - CC should be less than 2000 characters.
 ///     - Notes should not be empty and should be between 5 and 500 characters.
@@ -29,13 +29,13 @@ namespace ProfSvc_Classes.Validators;
 ///     - Template Name should not be empty, should be between 2 and 50 characters, and should not already exist in the
 ///     system.
 /// </remarks>
-public class TemplateValidator : AbstractValidator<Template>
+public class TemplateValidator : AbstractValidator<AppTemplate>
 {
     /// <summary>
     ///     Initializes a new instance of the <see cref="TemplateValidator" /> class.
     /// </summary>
     /// <remarks>
-    ///     This constructor sets up the validation rules for a <see cref="Template" /> object.
+    ///     This constructor sets up the validation rules for a <see cref="AppTemplate" /> object.
     ///     The rules include:
     ///     - CC should be less than 2000 characters.
     ///     - Notes should not be empty and should be between 5 and 500 characters.

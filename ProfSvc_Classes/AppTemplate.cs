@@ -22,18 +22,18 @@ namespace ProfSvc_Classes;
 ///     A template is a predefined set of data that can be used as a starting point for creating new items.
 ///     This class provides properties for storing template data and methods for manipulating it.
 /// </remarks>
-public class Template
+public class AppTemplate
 {
 	/// <summary>
-	///     Initializes a new instance of the <see cref="Template" /> class and resets its properties to their default values.
+	///     Initializes a new instance of the <see cref="AppTemplate" /> class and resets its properties to their default values.
 	/// </summary>
-	public Template()
+	public AppTemplate()
 	{
 		Clear();
 	}
 
 	/// <summary>
-	///     Initializes a new instance of the <see cref="Template" /> class.
+	///     Initializes a new instance of the <see cref="AppTemplate" /> class.
 	/// </summary>
 	/// <param name="id">The unique identifier for the template.</param>
 	/// <param name="templateName">The name of the template.</param>
@@ -43,7 +43,7 @@ public class Template
 	/// <remarks>
 	///     This constructor is used to create a new template with the specified values.
 	/// </remarks>
-	public Template(int id, string templateName, string subject, string cc, string templateContent)
+	public AppTemplate(int id, string templateName, string subject, string cc, string templateContent)
 	{
 		ID = id;
 		TemplateName = templateName;
@@ -60,7 +60,7 @@ public class Template
 	}
 
 	/// <summary>
-	///     Initializes a new instance of the <see cref="Template" /> class.
+	///     Initializes a new instance of the <see cref="AppTemplate" /> class.
 	/// </summary>
 	/// <param name="id">The unique identifier for the template.</param>
 	/// <param name="templateName">The name of the template.</param>
@@ -79,7 +79,7 @@ public class Template
 	/// <remarks>
 	///     This constructor is used to create a new template with the specified values.
 	/// </remarks>
-	public Template(int id, string templateName, string subject, string cc, string templateContent, string notes, DateTime createdDate, string createdBy,
+	public AppTemplate(int id, string templateName, string subject, string cc, string templateContent, string notes, DateTime createdDate, string createdBy,
 					DateTime updatedDate, string updatedBy, string status, bool enabled, string sendTo, byte action)
 	{
 		ID = id;
@@ -337,5 +337,5 @@ public class Template
 	/// <returns>
 	///     A new Template object that is a copy of this instance.
 	/// </returns>
-	public Template Copy() => MemberwiseClone() as Template;
+	public AppTemplate Copy() => MemberwiseClone() as AppTemplate;
 }
