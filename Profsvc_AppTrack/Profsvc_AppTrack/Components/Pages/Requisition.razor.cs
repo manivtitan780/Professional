@@ -8,7 +8,7 @@
 // File Name:           Requisition.razor.cs
 // Created By:          Narendra Kumaran Kadhirvelu, Jolly Joseph Paily, DonBosco Paily, Mariappan Raja
 // Created On:          11-23-2023 19:53
-// Last Updated On:     12-31-2023 16:2
+// Last Updated On:     12-31-2023 16:31
 // *****************************************/
 
 #endregion
@@ -42,10 +42,6 @@ public partial class Requisition
 	private static TaskCompletionSource<bool> _initializationTaskSource;
 
 	private static int _currentPage = 1;
-
-	private static bool _loaded;
-
-	private bool _actionProgress;
 
 	private List<CandidateActivity> _candidateActivityObject = [];
 	private readonly List<KeyValues> _companies = [];
@@ -1252,18 +1248,9 @@ public partial class Requisition
 
 								List<string> _keys =
 								[
-									CacheObjects.Roles.ToString(),
-									CacheObjects.States.ToString(),
-									CacheObjects.Eligibility.ToString(),
-									CacheObjects.Education.ToString(),
-									CacheObjects.Experience.ToString(),
-									CacheObjects.JobOptions.ToString(),
-									CacheObjects.Users.ToString(),
-									CacheObjects.Skills.ToString(),
-									CacheObjects.StatusCodes.ToString(),
-									CacheObjects.Preferences.ToString(),
-									CacheObjects.Companies.ToString(),
-									CacheObjects.Workflow.ToString()
+									CacheObjects.Roles.ToString(), CacheObjects.States.ToString(), CacheObjects.Eligibility.ToString(), CacheObjects.Education.ToString(),
+									CacheObjects.Experience.ToString(), CacheObjects.JobOptions.ToString(), CacheObjects.Users.ToString(), CacheObjects.Skills.ToString(),
+									CacheObjects.StatusCodes.ToString(), CacheObjects.Preferences.ToString(), CacheObjects.Companies.ToString(), CacheObjects.Workflow.ToString()
 								];
 
 								Dictionary<string, string> _cacheValues = await Redis.BatchGet(_keys);
@@ -1393,7 +1380,6 @@ public partial class Requisition
 											};
 								AutocompleteValue = SearchModel.Title;
 
-								_loaded = true;
 								await Grid.Refresh();
 							});
 
@@ -1600,45 +1586,52 @@ public partial class Requisition
 	///     8. Triggers a state change to update the UI.
 	/// </remarks>
 	/// <returns>A task that represents the asynchronous operation.</returns>
-	private async Task SaveRequisition(EditContext arg)
+	private Task SaveRequisition(EditContext arg)
 	{
-		await Task.Yield();
+		return ExecuteMethod(async () =>
+							 {
+								 //RestClient _client = new($"{Start.ApiHost}");
+								 //RestRequest _request = new("Requisition/SaveRequisition", Method.Post)
+								 //{
+								 // RequestFormat = DataFormat.Json
+								 //};
+								 //_request.AddJsonBody(_requisitionDetailsObjectClone);
+								 //_request.AddQueryParameter("user", LoginCookyUser == null || LoginCookyUser.UserID.NullOrWhiteSpace() ? "JOLLY" : LoginCookyUser.UserID.ToUpperInvariant());
+								 //_request.AddQueryParameter("jsonPath", Start.JsonFilePath);
+								 //_request.AddQueryParameter("emailAddress", LoginCookyUser == null || LoginCookyUser.Email.NullOrWhiteSpace() ? "maniv@titan-techs.com" : LoginCookyUser.Email.ToUpperInvariant());
 
-		RestClient _client = new($"{Start.ApiHost}");
-		RestRequest _request = new("Requisition/SaveRequisition", Method.Post)
-							   {
-								   RequestFormat = DataFormat.Json
-							   };
-		_request.AddJsonBody(_requisitionDetailsObjectClone);
-		_request.AddQueryParameter("user", LoginCookyUser == null || LoginCookyUser.UserID.NullOrWhiteSpace() ? "JOLLY" : LoginCookyUser.UserID.ToUpperInvariant());
-		_request.AddQueryParameter("jsonPath", Start.JsonFilePath);
-		_request.AddQueryParameter("emailAddress", LoginCookyUser == null || LoginCookyUser.Email.NullOrWhiteSpace() ? "maniv@titan-techs.com" : LoginCookyUser.Email.ToUpperInvariant());
+								 Dictionary<string, string> _parameters = new()
+																		  {
+																			  {"user", General.GetUserName(LoginCookyUser)},
+																			  {"jsonPath", Start.JsonFilePath},
+																			  {"emailAddress", General.GetEmail(LoginCookyUser)}
+																		  };
 
-		await _client.PostAsync<int>(_request);
+								 await General.PostRest<int>("Requisition/SaveRequisition", _parameters, _requisitionDetailsObjectClone);
 
-		_requisitionDetailsObject = _requisitionDetailsObjectClone.Copy();
+								 _requisitionDetailsObject = _requisitionDetailsObjectClone.Copy();
 
-		if (_requisitionDetailsObject.RequisitionID > 0)
-		{
-			_target.Title = $"{_requisitionDetailsObject.PositionTitle} ({_candidateActivityObject.Count})";
-			_target.Company = _requisitionDetailsObject.CompanyName;
-			_target.JobOptions = _requisitionDetailsObject.JobOptions;
-			_target.Status = _requisitionDetailsObject.Status;
-			_target.PriorityColor = _requisitionDetailsObject.Priority.ToUpperInvariant() switch
-									{
-										"HIGH" => _preference.HighPriorityColor,
-										"LOW" => _preference.LowPriorityColor,
-										_ => _preference.NormalPriorityColor
-									};
-		}
-		else
-		{
-			SearchModel.Clear();
-			await Grid.Refresh();
-		}
+								 if (_requisitionDetailsObject.RequisitionID > 0)
+								 {
+									 _target.Title = $"{_requisitionDetailsObject.PositionTitle} ({_candidateActivityObject.Count})";
+									 _target.Company = _requisitionDetailsObject.CompanyName;
+									 _target.JobOptions = _requisitionDetailsObject.JobOptions;
+									 _target.Status = _requisitionDetailsObject.Status;
+									 _target.PriorityColor = _requisitionDetailsObject.Priority.ToUpperInvariant() switch
+															 {
+																 "HIGH" => _preference.HighPriorityColor,
+																 "LOW" => _preference.LowPriorityColor,
+																 _ => _preference.NormalPriorityColor
+															 };
+								 }
+								 else
+								 {
+									 SearchModel.Clear();
+									 await Grid.Refresh();
+								 }
 
-		await Task.Yield();
-		StateHasChanged();
+								 StateHasChanged();
+							 });
 	}
 
 	/// <summary>
@@ -1650,21 +1643,17 @@ public partial class Requisition
 	///     It sets the title of the search model to the provided alphabet character, resets the page count to 1,
 	///     and refreshes the grid to display the filtered results.
 	/// </remarks>
-	private void SetAlphabet(char alphabet)
+	private Task SetAlphabet(char alphabet)
 	{
-		if (_actionProgress)
-		{
-			return;
-		}
-
-		_actionProgress = true;
-		SearchModel.Title = alphabet.ToString();
-		_currentPage = 1;
-		SearchModel.Page = 1;
-		SessionStorage.SetItemAsync(StorageName, SearchModel);
-		AutocompleteValue = alphabet.ToString();
-		Grid.Refresh();
-		_actionProgress = false;
+		return ExecuteMethod(async () =>
+							 {
+								 SearchModel.Title = alphabet.ToString();
+								 _currentPage = 1;
+								 SearchModel.Page = 1;
+								 await SessionStorage.SetItemAsync(StorageName, SearchModel);
+								 AutocompleteValue = alphabet.ToString();
+								 await Grid.Refresh();
+							 });
 	}
 
 	/// <summary>
@@ -1773,25 +1762,25 @@ public partial class Requisition
 	/// </remarks>
 	private Task SpeedDialItemClicked(SpeedDialItemEventArgs args)
 	{
-			switch (args.Item.ID)
-			{
-				case "itemEditRequisition":
-					_selectedTab = 0;
-					return EditRequisition(false);
-				case "itemAddDocument":
-					_selectedTab = 1;
-					return AddDocument();
-				case "itemSubmitExisting":
-					_selectedTab = 2;
-					SubmitCandidate();
-					return Task.CompletedTask;
-				case "itemSubmitNew":
-					_selectedTab = 2;
-					//await SubmitCandidate();
-					return Task.CompletedTask;
-			}
+		switch (args.Item.ID)
+		{
+			case "itemEditRequisition":
+				_selectedTab = 0;
+				return EditRequisition(false);
+			case "itemAddDocument":
+				_selectedTab = 1;
+				return AddDocument();
+			case "itemSubmitExisting":
+				_selectedTab = 2;
+				SubmitCandidate();
+				return Task.CompletedTask;
+			case "itemSubmitNew":
+				_selectedTab = 2;
+				//await SubmitCandidate();
+				return Task.CompletedTask;
+		}
 
-			return Task.CompletedTask;
+		return Task.CompletedTask;
 	}
 
 	/// <summary>
@@ -1829,35 +1818,34 @@ public partial class Requisition
 	/// <returns>
 	///     A task that represents the asynchronous operation.
 	/// </returns>
-	private async Task UndoActivity(int activityID)
+	private Task UndoActivity(int activityID)
 	{
-		await Task.Yield();
+		return ExecuteMethod(async () =>
+							 {
+								 //RestClient _client = new($"{Start.ApiHost}");
+								 //RestRequest _request = new("Candidates/UndoCandidateActivity", Method.Post)
+								 //{
+								 // RequestFormat = DataFormat.Json
+								 //};
+								 //_request.AddQueryParameter("submissionID", activityID);
+								 //_request.AddQueryParameter("user", LoginCookyUser == null || LoginCookyUser.UserID.NullOrWhiteSpace() ? "JOLLY" : LoginCookyUser.UserID.ToUpperInvariant());
+								 //_request.AddQueryParameter("isCandidateScreen", false);
 
-		try
-		{
-			RestClient _client = new($"{Start.ApiHost}");
-			RestRequest _request = new("Candidates/UndoCandidateActivity", Method.Post)
-								   {
-									   RequestFormat = DataFormat.Json
-								   };
-			_request.AddQueryParameter("submissionID", activityID);
-			_request.AddQueryParameter("user", LoginCookyUser == null || LoginCookyUser.UserID.NullOrWhiteSpace() ? "JOLLY" : LoginCookyUser.UserID.ToUpperInvariant());
-			_request.AddQueryParameter("isCandidateScreen", false);
+								 Dictionary<string, string> _parameters = new()
+																		  {
+																			  {"submissionID", activityID.ToString()},
+																			  {"user", General.GetUserName(LoginCookyUser)},
+																			  {"isCandidateScreen", "false"}
+																		  };
 
-			Dictionary<string, object> _response = await _client.PostAsync<Dictionary<string, object>>(_request);
-			if (_response == null)
-			{
-				return;
-			}
+								 Dictionary<string, object> _response = await General.PostRest("Candidates/UndoCandidateActivity", _parameters);
+								 if (_response == null)
+								 {
+									 return;
+								 }
 
-			_candidateActivityObject = General.DeserializeObject<List<CandidateActivity>>(_response["Activity"]);
-		}
-		catch
-		{
-			//
-		}
-
-		await Task.Yield();
+								 _candidateActivityObject = General.DeserializeObject<List<CandidateActivity>>(_response["Activity"]);
+							 });
 	}
 
 	/// <summary>
@@ -1875,17 +1863,20 @@ public partial class Requisition
 	/// <returns>
 	///     A Task that represents the asynchronous operation.
 	/// </returns>
-	private async Task UploadDocument(UploadChangeEventArgs file)
+	private Task UploadDocument(UploadChangeEventArgs file)
 	{
-		foreach (UploadFiles _file in file.Files)
-		{
-			Stream _str = _file.File.OpenReadStream(20 * 1024 * 1024);
-			await _str.CopyToAsync(AddedDocument);
-			FileName = _file.FileInfo.Name;
-			Mime = _file.FileInfo.MimeContentType;
-			AddedDocument.Position = 0;
-			_str.Close();
-		}
+		return ExecuteMethod(async () =>
+							 {
+								 foreach (UploadFiles _file in file.Files)
+								 {
+									 Stream _str = _file.File.OpenReadStream(20 * 1024 * 1024);
+									 await _str.CopyToAsync(AddedDocument);
+									 FileName = _file.FileInfo.Name;
+									 Mime = _file.FileInfo.MimeContentType;
+									 AddedDocument.Position = 0;
+									 _str.Close();
+								 }
+							 });
 	}
 
 	/// <summary>
@@ -1901,7 +1892,7 @@ public partial class Requisition
 	/// </remarks>
 	internal class AdminRequisitionAdaptor : DataAdaptor
 	{
-		private bool _reading;
+		private readonly SemaphoreSlim _semaphoreSlim = new(1, 1);
 
 		/// <summary>
 		///     Asynchronously reads data from the Requisition data source.
@@ -1924,28 +1915,34 @@ public partial class Requisition
 		/// </returns>
 		public override async Task<object> ReadAsync(DataManagerRequest dm, string key = null)
 		{
-			if (_reading || !_loaded)
+			if (!await _semaphoreSlim.WaitAsync(TimeSpan.Zero))
 			{
 				return null;
 			}
 
-			_reading = true;
-			bool _getInformation = true;
-			if (Companies != null)
+			await _initializationTaskSource.Task;
+			try
 			{
-				_getInformation = Companies.Count == 0;
+				bool _getInformation = true;
+				if (Companies != null)
+				{
+					_getInformation = Companies.Count == 0;
+				}
+
+				object _requisitionReturn = await General.GetRequisitionReadAdaptor(SearchModel, dm, _getInformation, RequisitionID, true, User);
+
+				_currentPage = SearchModel.Page;
+
+				return _requisitionReturn;
 			}
-
-			object _requisitionReturn = await General.GetRequisitionReadAdaptor(SearchModel, dm, _getInformation, RequisitionID, true, User);
-
-			_currentPage = SearchModel.Page;
-			//if (Count > 0)
-			//{
-			//    await Grid.SelectRowAsync(0);
-			//}
-
-			_reading = false;
-			return _requisitionReturn;
+			catch
+			{
+				return null;
+			}
+			finally
+			{
+				_semaphoreSlim.Release();
+			}
 		}
 	}
 }
