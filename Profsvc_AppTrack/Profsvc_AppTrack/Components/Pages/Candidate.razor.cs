@@ -8,7 +8,7 @@
 // File Name:           Candidate.razor.cs
 // Created By:          Narendra Kumaran Kadhirvelu, Jolly Joseph Paily, DonBosco Paily, Mariappan Raja
 // Created On:          11-23-2023 19:53
-// Last Updated On:     12-29-2023 21:17
+// Last Updated On:     12-31-2023 15:37
 // *****************************************/
 
 #endregion
@@ -2281,15 +2281,11 @@ public partial class Candidate
 									CacheObjects.Roles.ToString(), CacheObjects.States.ToString(), CacheObjects.Eligibility.ToString(), CacheObjects.Experience.ToString(),
 									CacheObjects.TaxTerms.ToString(), CacheObjects.JobOptions.ToString(), CacheObjects.StatusCodes.ToString(), CacheObjects.Workflow.ToString(),
 									CacheObjects.Communication.ToString(), CacheObjects.DocumentTypes.ToString()
-									//"Roles", "States", "Eligibility", "Experience", "TaxTerms", "JobOptions", "StatusCodes", "Workflow", "Communication", "DocumentTypes"
 								];
 
 								Dictionary<string, string> _cacheValues = await Redis.BatchGet(_keys);
 
-								while (_roles == null)
-								{
-									_roles = JsonConvert.DeserializeObject<List<Role>>(_cacheValues[CacheObjects.Roles.ToString()]); //await Redis.GetAsync<List<Role>>("Roles");
-								}
+								_roles = JsonConvert.DeserializeObject<List<Role>>(_cacheValues[CacheObjects.Roles.ToString()]); //await Redis.GetAsync<List<Role>>("Roles");
 
 								RoleID = LoginCookyUser.RoleID;
 								UserRights = LoginCookyUser.GetUserRights(_roles);

@@ -569,7 +569,7 @@ internal class General
 	/// </summary>
 	/// <param name="cooky">The login cookie containing the user's session information.</param>
 	/// <returns>
-	///     The user ID in uppercase if it exists and is not null or whitespace; otherwise, returns "JOLLY".
+	///     The user ID in uppercase if it exists and is not null or whitespace; otherwise, returns "info[at]titan[hyphen]techs[dot]com".
 	/// </returns>
 	internal static string GetEmail(LoginCooky cooky) => cooky == null || cooky.Email.NullOrWhiteSpace() ? "info@titan-techs.com" : cooky.Email.ToLowerInvariant();
 

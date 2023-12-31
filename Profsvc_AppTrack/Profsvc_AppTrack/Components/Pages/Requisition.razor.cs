@@ -8,7 +8,7 @@
 // File Name:           Requisition.razor.cs
 // Created By:          Narendra Kumaran Kadhirvelu, Jolly Joseph Paily, DonBosco Paily, Mariappan Raja
 // Created On:          11-23-2023 19:53
-// Last Updated On:     12-30-2023 20:56
+// Last Updated On:     12-31-2023 16:2
 // *****************************************/
 
 #endregion
@@ -45,7 +45,7 @@ public partial class Requisition
 
 	private static bool _loaded;
 
-	private bool _actionProgress, _editInProgress;
+	private bool _actionProgress;
 
 	private List<CandidateActivity> _candidateActivityObject = [];
 	private readonly List<KeyValues> _companies = [];
@@ -79,19 +79,19 @@ public partial class Requisition
 	/// </summary>
 	private readonly List<ToolbarItemModel> _tools1 =
 	[
-		new() { Command = ToolbarCommand.Bold },
-		new() { Command = ToolbarCommand.Italic },
-		new() { Command = ToolbarCommand.Underline },
-		new() { Command = ToolbarCommand.StrikeThrough },
-		new() { Command = ToolbarCommand.LowerCase },
-		new() { Command = ToolbarCommand.UpperCase },
-		new() { Command = ToolbarCommand.SuperScript },
-		new() { Command = ToolbarCommand.SubScript },
-		new() { Command = ToolbarCommand.Separator },
-		new() { Command = ToolbarCommand.ClearFormat },
-		new() { Command = ToolbarCommand.Separator },
-		new() { Command = ToolbarCommand.Undo },
-		new() { Command = ToolbarCommand.Redo }
+		new() {Command = ToolbarCommand.Bold},
+		new() {Command = ToolbarCommand.Italic},
+		new() {Command = ToolbarCommand.Underline},
+		new() {Command = ToolbarCommand.StrikeThrough},
+		new() {Command = ToolbarCommand.LowerCase},
+		new() {Command = ToolbarCommand.UpperCase},
+		new() {Command = ToolbarCommand.SuperScript},
+		new() {Command = ToolbarCommand.SubScript},
+		new() {Command = ToolbarCommand.Separator},
+		new() {Command = ToolbarCommand.ClearFormat},
+		new() {Command = ToolbarCommand.Separator},
+		new() {Command = ToolbarCommand.Undo},
+		new() {Command = ToolbarCommand.Redo}
 	];
 
 	private List<AppWorkflow> _workflows;
@@ -992,74 +992,62 @@ public partial class Requisition
 	///     - It hides the spinner once the process is complete.
 	/// </remarks>
 	/// <returns>A <see cref="Task" /> representing the asynchronous operation.</returns>
-	private async Task EditRequisition(bool isAdd)
+	private Task EditRequisition(bool isAdd)
 	{
-		await Task.Yield();
-		if (isAdd)
-		{
-			try
-			{
-				await SpinnerTop.ShowAsync();
-			}
-			catch
-			{
-				//
-			}
-		}
-		else
-		{
-			try
-			{
-				await Spinner.ShowAsync();
-			}
-			catch
-			{
-				//
-			}
-		}
+		return ExecuteMethod(async () =>
+							 {
+								 try
+								 {
+									 if (isAdd)
+									 {
+										 await SpinnerTop.ShowAsync();
+									 }
+									 else
+									 {
+										 await Spinner.ShowAsync();
+									 }
+								 }
+								 catch
+								 {
+									 //
+								 }
 
-		if (isAdd)
-		{
-			Title = "Add";
-			if (_requisitionDetailsObjectClone == null)
-			{
-				_requisitionDetailsObjectClone = new();
-			}
-			else
-			{
-				_requisitionDetailsObjectClone.Clear();
-			}
-		}
-		else
-		{
-			Title = "Edit";
-			_requisitionDetailsObjectClone = _requisitionDetailsObject.Copy();
-		}
+								 if (isAdd)
+								 {
+									 Title = "Add";
+									 if (_requisitionDetailsObjectClone == null)
+									 {
+										 _requisitionDetailsObjectClone = new();
+									 }
+									 else
+									 {
+										 _requisitionDetailsObjectClone.Clear();
+									 }
+								 }
+								 else
+								 {
+									 Title = "Edit";
+									 _requisitionDetailsObjectClone = _requisitionDetailsObject.Copy();
+								 }
 
-		StateHasChanged();
-		await DialogEditRequisition.ShowDialog();
-		if (isAdd)
-		{
-			try
-			{
-				await SpinnerTop.HideAsync();
-			}
-			catch
-			{
-				//
-			}
-		}
-		else
-		{
-			try
-			{
-				await Spinner.HideAsync();
-			}
-			catch
-			{
-				//
-			}
-		}
+								 StateHasChanged();
+								 await DialogEditRequisition.ShowDialog();
+								 try
+								 {
+									 if (isAdd)
+									 {
+										 await SpinnerTop.HideAsync();
+									 }
+									 else
+									 {
+										 await Spinner.HideAsync();
+									 }
+								 }
+								 catch
+								 {
+									 //
+								 }
+							 });
 	}
 
 	/// <summary>
@@ -1084,21 +1072,24 @@ public partial class Requisition
 	///     string and TKey is <see cref="KeyValues" />.
 	///     The value of the requisition is used to update the search model's title.
 	/// </param>
-	private void FilterGrid(ChangeEventArgs<string, KeyValues> requisition)
+	private Task FilterGrid(ChangeEventArgs<string, KeyValues> requisition)
 	{
-		string _currentValue = requisition.Value ?? "";
-		if (_currentValue.Equals(_lastValue))
-		{
-			return;
-		}
+		return ExecuteMethod(async () =>
+							 {
+								 string _currentValue = requisition.Value ?? "";
+								 if (_currentValue.Equals(_lastValue))
+								 {
+									 return;
+								 }
 
-		_lastValue = _currentValue;
-		SearchModel.Title = requisition.Value ?? "";
-		_currentPage = 1;
-		SearchModel.Page = 1;
-		SessionStorage.SetItemAsync(StorageName, SearchModel);
-		AutocompleteValue = SearchModel.Title;
-		Grid.Refresh();
+								 _lastValue = _currentValue;
+								 SearchModel.Title = requisition.Value ?? "";
+								 _currentPage = 1;
+								 SearchModel.Page = 1;
+								 await SessionStorage.SetItemAsync(StorageName, SearchModel);
+								 AutocompleteValue = SearchModel.Title;
+								 await Grid.Refresh();
+							 });
 	}
 
 	/// <summary>
@@ -1106,24 +1097,20 @@ public partial class Requisition
 	///     updates the search model's page property to 1, and refreshes the grid. This method is designed to prevent multiple
 	///     actions from being processed at the same time by using the _actionProgress flag.
 	/// </summary>
-	private void FirstClick()
+	private Task FirstClick()
 	{
-		if (_actionProgress)
-		{
-			return;
-		}
+		return ExecuteMethod(async () =>
+							 {
+								 if (_currentPage < 1)
+								 {
+									 _currentPage = 1;
+								 }
 
-		_actionProgress = true;
-		if (_currentPage < 1)
-		{
-			_currentPage = 1;
-		}
-
-		_currentPage = 1;
-		SearchModel.Page = 1;
-		SessionStorage.SetItemAsync(StorageName, SearchModel);
-		Grid.Refresh();
-		_actionProgress = false;
+								 _currentPage = 1;
+								 SearchModel.Page = 1;
+								 await SessionStorage.SetItemAsync(StorageName, SearchModel);
+								 await Grid.Refresh();
+							 });
 	}
 
 	/// <summary>
@@ -1132,24 +1119,20 @@ public partial class Requisition
 	///     to prevent multiple
 	///     actions from being processed at the same time by using the _actionProgress flag.
 	/// </summary>
-	private void LastClick()
+	private Task LastClick()
 	{
-		if (_actionProgress)
-		{
-			return;
-		}
+		return ExecuteMethod(async () =>
+							 {
+								 if (_currentPage < 1)
+								 {
+									 _currentPage = 1;
+								 }
 
-		_actionProgress = true;
-		if (_currentPage < 1)
-		{
-			_currentPage = 1;
-		}
-
-		_currentPage = PageCount.ToInt32();
-		SearchModel.Page = _currentPage;
-		SessionStorage.SetItemAsync(StorageName, SearchModel);
-		Grid.Refresh();
-		_actionProgress = false;
+								 _currentPage = PageCount.ToInt32();
+								 SearchModel.Page = _currentPage;
+								 await SessionStorage.SetItemAsync(StorageName, SearchModel);
+								 await Grid.Refresh();
+							 });
 	}
 
 	/// <summary>
@@ -1159,20 +1142,16 @@ public partial class Requisition
 	///     actions from being processed at the same time by using the _actionProgress flag.
 	/// </summary>
 	/// <param name="args">The status argument passed when the link is clicked.</param>
-	private void LinkClicked(string args)
+	private Task LinkClicked(string args)
 	{
-		if (_actionProgress)
-		{
-			return;
-		}
-
-		_actionProgress = true;
-		_currentPage = 1;
-		SearchModel.Status = args;
-		SearchModel.Page = 1;
-		SessionStorage.SetItemAsync(StorageName, SearchModel);
-		Grid.Refresh();
-		_actionProgress = false;
+		return ExecuteMethod(async () =>
+							 {
+								 _currentPage = 1;
+								 SearchModel.Status = args;
+								 SearchModel.Page = 1;
+								 await SessionStorage.SetItemAsync(StorageName, SearchModel);
+								 await Grid.Refresh();
+							 });
 	}
 
 	/// <summary>
@@ -1180,22 +1159,20 @@ public partial class Requisition
 	///     updates the search model's page property, and refreshes the grid. This method is designed to prevent multiple
 	///     actions from being processed at the same time by using the _actionProgress flag.
 	/// </summary>
-	private void NextClick()
+	private Task NextClick()
 	{
-		if (!_actionProgress)
-		{
-			_actionProgress = true;
-			if (_currentPage < 1)
-			{
-				_currentPage = 1;
-			}
+		return ExecuteMethod(async () =>
+							 {
+								 if (_currentPage < 1)
+								 {
+									 _currentPage = 1;
+								 }
 
-			_currentPage = SearchModel.Page >= PageCount.ToInt32() ? PageCount.ToInt32() : SearchModel.Page + 1;
-			SearchModel.Page = _currentPage;
-			SessionStorage.SetItemAsync(StorageName, SearchModel);
-			Grid.Refresh();
-			_actionProgress = false;
-		}
+								 _currentPage = SearchModel.Page >= PageCount.ToInt32() ? PageCount.ToInt32() : SearchModel.Page + 1;
+								 SearchModel.Page = _currentPage;
+								 await SessionStorage.SetItemAsync(StorageName, SearchModel);
+								 await Grid.Refresh();
+							 });
 	}
 
 	/// <summary>
@@ -1205,33 +1182,27 @@ public partial class Requisition
 	///     actions from being processed at the same time by using the _actionProgress flag.
 	/// </summary>
 	/// <param name="args">The action event arguments.</param>
-	private void OnActionBegin(ActionEventArgs<Requisitions> args)
+	private Task OnActionBegin(ActionEventArgs<Requisitions> args)
 	{
-		if (_actionProgress)
-		{
-			return;
-		}
-
-		_actionProgress = true;
-
-		if (args.RequestType == Action.Sorting)
-		{
-			SearchModel.SortField = args.ColumnName switch
-			{
-				"Code" => 2,
-				"Title" => 3,
-				"Company" => 4,
-				"Option" => 5,
-				"Status" => 6,
-				"DueEnd" => 8,
-				_ => 1
-			};
-			SearchModel.SortDirection = args.Direction == SortDirection.Ascending ? (byte)1 : (byte)0;
-			SessionStorage.SetItemAsync(StorageName, SearchModel);
-			Grid.Refresh();
-		}
-
-		_actionProgress = false;
+		return ExecuteMethod(async () =>
+							 {
+								 if (args.RequestType == Action.Sorting)
+								 {
+									 SearchModel.SortField = args.ColumnName switch
+															 {
+																 "Code" => 2,
+																 "Title" => 3,
+																 "Company" => 4,
+																 "Option" => 5,
+																 "Status" => 6,
+																 "DueEnd" => 8,
+																 _ => 1
+															 };
+									 SearchModel.SortDirection = args.Direction == SortDirection.Ascending ? (byte)1 : (byte)0;
+									 await SessionStorage.SetItemAsync(StorageName, SearchModel);
+									 await Grid.Refresh();
+								 }
+							 });
 	}
 
 	/// <summary>
@@ -1274,139 +1245,159 @@ public partial class Requisition
 	/// <returns>A Task that represents the asynchronous operation.</returns>
 	protected override async Task OnInitializedAsync()
 	{
-		_loaded = false;
-		LoginCookyUser = await NavManager.RedirectInner(LocalStorage);
-		//IMemoryCache _memoryCache = Start.MemCache;
-		while (_roles == null)
-		{
-			_roles = await Redis.GetAsync<List<Role>>("Roles");
-			//_memoryCache.TryGetValue("Roles", out _roles);
-		}
+		_initializationTaskSource = new();
+		await ExecuteMethod(async () =>
+							{
+								LoginCookyUser = await NavManager.RedirectInner(LocalStorage);
 
-		RoleID = LoginCookyUser.RoleID;
-		UserRights = LoginCookyUser.GetUserRights(_roles);
-		DisplayAdd = UserRights.EditRequisition ? "unset" : "none";
+								List<string> _keys =
+								[
+									CacheObjects.Roles.ToString(),
+									CacheObjects.States.ToString(),
+									CacheObjects.Eligibility.ToString(),
+									CacheObjects.Education.ToString(),
+									CacheObjects.Experience.ToString(),
+									CacheObjects.JobOptions.ToString(),
+									CacheObjects.Users.ToString(),
+									CacheObjects.Skills.ToString(),
+									CacheObjects.StatusCodes.ToString(),
+									CacheObjects.Preferences.ToString(),
+									CacheObjects.Companies.ToString(),
+									CacheObjects.Workflow.ToString()
+								];
 
-		if (!UserRights.ViewRequisition) // User doesn't have View Requisition rights. This is done by looping through the Roles of the current user and determining the rights for ViewRequisition.
-		{
-			NavManager.NavigateTo($"{NavManager.BaseUri}home", true);
-		}
+								Dictionary<string, string> _cacheValues = await Redis.BatchGet(_keys);
 
-		User = LoginCookyUser?.UserID.NullOrWhiteSpace() != false ? "JOLLY" : LoginCookyUser.UserID.ToUpperInvariant();
+								_roles = JsonConvert.DeserializeObject<List<Role>>(_cacheValues[CacheObjects.Roles.ToString()]); //await Redis.GetAsync<List<Role>>("Roles");
 
-		string _cookyString = await SessionStorage.GetItemAsync<string>(StorageName);
-		string _tempRequisitionID = await SessionStorage.GetItemAsStringAsync("RequisitionIDFromDashboard");
-		if (!_tempRequisitionID.NullOrWhiteSpace())
-		{
-			RequisitionID = _tempRequisitionID.ToInt32();
-		}
+								RoleID = LoginCookyUser.RoleID;
+								UserRights = LoginCookyUser.GetUserRights(_roles);
+								DisplayAdd = UserRights.EditRequisition ? "unset" : "none";
 
-		if (!_cookyString.NullOrWhiteSpace() && RequisitionID == 0)
-		{
-			SearchModel = JsonConvert.DeserializeObject<RequisitionSearch>(_cookyString);
-		}
-		else
-		{
-			SearchModel.Company = "%";
-			SearchModel.Status = "NEW,OPN,PAR";
-			SearchModel.CreatedOn = new(2010, 1, 1);
-			SearchModel.CreatedOnEnd = DateTime.Today.AddYears(1);
-			SearchModel.Due = new(2010, 1, 1);
-			SearchModel.DueEnd = DateTime.Today.AddYears(2);
-			SearchModel.CreatedBy = "A";
-			SearchModel.ItemCount = 25;
-			SearchModel.Page = 1;
+								// User doesn't have View Requisition rights. This is done by looping through the Roles of the current user and determining the rights for ViewRequisition.
+								if (!UserRights.ViewRequisition)
+								{
+									NavManager.NavigateTo($"{NavManager.BaseUri}home", true);
+								}
 
-			await SessionStorage.SetItemAsync(StorageName, SearchModel);
-		}
+								User = LoginCookyUser?.UserID.NullOrWhiteSpace() != false ? "JOLLY" : LoginCookyUser.UserID.ToUpperInvariant();
 
-		_currentPage = SearchModel.Page;
-		_lastValue = SearchModel.Title;
+								string _cookyString = await SessionStorage.GetItemAsync<string>(StorageName);
+								string _tempRequisitionID = await SessionStorage.GetItemAsStringAsync("RequisitionIDFromDashboard");
+								if (!_tempRequisitionID.NullOrWhiteSpace())
+								{
+									RequisitionID = _tempRequisitionID.ToInt32();
+								}
 
-		while (_states == null)
-		{
-			_states = await Redis.GetAsync<List<IntValues>>("States");
-		}
+								if (!_cookyString.NullOrWhiteSpace() && RequisitionID == 0)
+								{
+									SearchModel = JsonConvert.DeserializeObject<RequisitionSearch>(_cookyString);
+								}
+								else
+								{
+									SearchModel.Company = "%";
+									SearchModel.Status = "NEW,OPN,PAR";
+									SearchModel.CreatedOn = new(2010, 1, 1);
+									SearchModel.CreatedOnEnd = DateTime.Today.AddYears(1);
+									SearchModel.Due = new(2010, 1, 1);
+									SearchModel.DueEnd = DateTime.Today.AddYears(2);
+									SearchModel.CreatedBy = "A";
+									SearchModel.ItemCount = 25;
+									SearchModel.Page = 1;
 
-		while (_eligibility == null)
-		{
-			_eligibility = await Redis.GetAsync<List<IntValues>>("Eligibility");
-		}
+									await SessionStorage.SetItemAsync(StorageName, SearchModel);
+								}
 
-		while (_education == null)
-		{
-			_education = await Redis.GetAsync<List<IntValues>>("Education");
-		}
+								_currentPage = SearchModel.Page;
+								_lastValue = SearchModel.Title;
 
-		while (_experience == null)
-		{
-			_experience = await Redis.GetAsync<List<IntValues>>("Experience");
-		}
+								while (_states == null)
+								{
+									_states = General.DeserializeObject<List<IntValues>>(_cacheValues[CacheObjects.States.ToString()]);
+								}
 
-		while (_jobOptions == null)
-		{
-			_jobOptions = await Redis.GetAsync<List<KeyValues>>("JobOptions");
-		}
+								while (_eligibility == null)
+								{
+									_eligibility = General.DeserializeObject<List<IntValues>>(_cacheValues[CacheObjects.Eligibility.ToString()]);
+								}
 
-		while (_recruiters == null)
-		{
-			List<User> _users = await Redis.GetAsync<List<User>>("Users");
-			//_memoryCache.TryGetValue("Users", out List<User> _users);
-			if (_users == null)
-			{
-				continue;
-			}
+								while (_education == null)
+								{
+									_education = General.DeserializeObject<List<IntValues>>(_cacheValues[CacheObjects.Education.ToString()]);
+								}
 
-			_recruiters = [];
-			foreach (User _user in _users.Where(user => user.Role is "Recruiter" or "Recruiter & Sales Manager"))
-			{
-				_recruiters?.Add(new(_user.UserName, _user.UserName));
-			}
-		}
+								while (_experience == null)
+								{
+									_experience = General.DeserializeObject<List<IntValues>>(_cacheValues[CacheObjects.Experience.ToString()]);
+								}
 
-		while (_skills == null)
-		{
-			_skills = await Redis.GetAsync<List<IntValues>>("Skills");
-		}
+								while (_jobOptions == null)
+								{
+									_jobOptions = General.DeserializeObject<List<KeyValues>>(_cacheValues[CacheObjects.JobOptions.ToString()]);
+								}
 
-		_statusCodes = await Redis.GetAsync<List<StatusCode>>("StatusCodes");
-		_preference = await Redis.GetAsync<Preferences>("Preferences");
+								while (_recruiters == null)
+								{
+									List<User> _users = General.DeserializeObject<List<User>>(_cacheValues[CacheObjects.Users.ToString()]);
+									//_memoryCache.TryGetValue("Users", out List<User> _users);
+									if (_users == null)
+									{
+										continue;
+									}
 
-		if (_statusCodes is { Count: > 0 })
-		{
-			foreach (StatusCode _statusCode in _statusCodes.Where(statusCode => statusCode.AppliesToCode == "REQ"))
-			{
-				_statusSearch.Add(new(_statusCode.Status, _statusCode.Code));
-			}
-		}
+									_recruiters = [];
+									foreach (User _user in _users.Where(user => user.Role is "Recruiter" or "Recruiter & Sales Manager"))
+									{
+										_recruiters?.Add(new(_user.UserName, _user.UserName));
+									}
+								}
 
-		List<Company> _companyList = await Redis.GetAsync<List<Company>>("Companies");
-		_companies.Add(new("All Companies", "%"));
-		if (_companyList != null)
-		{
-			foreach (Company _company in _companyList.Where(company => company.Owner == User || company.Owner == "ADMIN"))
-			{
-				_companies.Add(new(_company.CompanyName, _company.CompanyName));
-			}
-		}
+								while (_skills == null)
+								{
+									_skills = General.DeserializeObject<List<IntValues>>(_cacheValues[CacheObjects.Skills.ToString()]);
+								}
 
-		_workflows = await Redis.GetAsync<List<AppWorkflow>>("Workflow");
+								_statusCodes = General.DeserializeObject<List<StatusCode>>(_cacheValues[CacheObjects.StatusCodes.ToString()]);
+								_preference = General.DeserializeObject<Preferences>(_cacheValues[CacheObjects.Preferences.ToString()]);
 
-		SortDirectionProperty = SearchModel.SortDirection == 1 ? SortDirection.Ascending : SortDirection.Descending;
-		SortField = SearchModel.SortField switch
-		{
-			2 => "Code",
-			3 => "Title",
-			4 => "Company",
-			5 => "Option",
-			6 => "Status",
-			8 => "DueEnd",
-			_ => "Updated"
-		};
-		AutocompleteValue = SearchModel.Title;
+								if (_statusCodes is {Count: > 0})
+								{
+									foreach (StatusCode _statusCode in _statusCodes.Where(statusCode => statusCode.AppliesToCode == "REQ"))
+									{
+										_statusSearch.Add(new(_statusCode.Status, _statusCode.Code));
+									}
+								}
 
-		_loaded = true;
-		await Grid.Refresh();
+								List<Company> _companyList = General.DeserializeObject<List<Company>>(_cacheValues[CacheObjects.Companies.ToString()]);
+								_companies.Add(new("All Companies", "%"));
+								if (_companyList != null)
+								{
+									foreach (Company _company in _companyList.Where(company => company.Owner == User || company.Owner == "ADMIN"))
+									{
+										_companies.Add(new(_company.CompanyName, _company.CompanyName));
+									}
+								}
+
+								_workflows = General.DeserializeObject<List<AppWorkflow>>(_cacheValues[CacheObjects.Workflow.ToString()]);
+
+								SortDirectionProperty = SearchModel.SortDirection == 1 ? SortDirection.Ascending : SortDirection.Descending;
+								SortField = SearchModel.SortField switch
+											{
+												2 => "Code",
+												3 => "Title",
+												4 => "Company",
+												5 => "Option",
+												6 => "Status",
+												8 => "DueEnd",
+												_ => "Updated"
+											};
+								AutocompleteValue = SearchModel.Title;
+
+								_loaded = true;
+								await Grid.Refresh();
+							});
+
+		_initializationTaskSource.SetResult(true);
 		await base.OnInitializedAsync();
 	}
 
@@ -1418,29 +1409,25 @@ public partial class Requisition
 	///     This method updates the current page number and refreshes the grid to display the requisitions for the new page.
 	///     It also prevents multiple simultaneous actions by checking the _actionProgress flag.
 	/// </remarks>
-	private void PageNumberChanged(ChangeEventArgs obj)
+	private Task PageNumberChanged(ChangeEventArgs obj)
 	{
-		if (_actionProgress)
-		{
-			return;
-		}
+		return ExecuteMethod(async () =>
+							 {
+								 decimal _currentValue = obj.Value.ToInt32();
+								 if (_currentValue < 1)
+								 {
+									 _currentValue = 1;
+								 }
+								 else if (_currentValue > PageCount)
+								 {
+									 _currentValue = PageCount.ToInt32();
+								 }
 
-		_actionProgress = true;
-		decimal _currentValue = obj.Value.ToInt32();
-		if (_currentValue < 1)
-		{
-			_currentValue = 1;
-		}
-		else if (_currentValue > PageCount)
-		{
-			_currentValue = PageCount.ToInt32();
-		}
-
-		_currentPage = _currentValue.ToInt32();
-		SearchModel.Page = _currentPage;
-		SessionStorage.SetItemAsync(StorageName, SearchModel);
-		Grid.Refresh();
-		_actionProgress = false;
+								 _currentPage = _currentValue.ToInt32();
+								 SearchModel.Page = _currentPage;
+								 await SessionStorage.SetItemAsync(StorageName, SearchModel);
+								 await Grid.Refresh();
+							 });
 	}
 
 	/// <summary>
@@ -1448,24 +1435,20 @@ public partial class Requisition
 	///     This method decrements the current page number and refreshes the grid to display the previous page of requisitions.
 	///     If the current page is the first page, the page number will not be decremented.
 	/// </summary>
-	private void PreviousClick()
+	private Task PreviousClick()
 	{
-		if (_actionProgress)
-		{
-			return;
-		}
+		return ExecuteMethod(async () =>
+							 {
+								 if (_currentPage < 1)
+								 {
+									 _currentPage = 1;
+								 }
 
-		_actionProgress = true;
-		if (_currentPage < 1)
-		{
-			_currentPage = 1;
-		}
-
-		_currentPage = SearchModel.Page <= 1 ? 1 : SearchModel.Page - 1;
-		SearchModel.Page = _currentPage;
-		SessionStorage.SetItemAsync(StorageName, SearchModel);
-		Grid.Refresh();
-		_actionProgress = false;
+								 _currentPage = SearchModel.Page <= 1 ? 1 : SearchModel.Page - 1;
+								 SearchModel.Page = _currentPage;
+								 await SessionStorage.SetItemAsync(StorageName, SearchModel);
+								 await Grid.Refresh();
+							 });
 	}
 
 	/// <summary>
@@ -1479,11 +1462,14 @@ public partial class Requisition
 	///     The search results are then refreshed in the Grid.
 	/// </summary>
 	/// <param name="args">The context of the edit operation triggering the advanced search.</param>
-	private void RequisitionAdvancedSearch(EditContext args)
+	private Task RequisitionAdvancedSearch(EditContext args)
 	{
-		SessionStorage.SetItemAsync(StorageName, SearchModelClone);
-		SearchModel = SearchModelClone.Copy();
-		Grid.Refresh();
+		return ExecuteMethod(async () =>
+							 {
+								 await SessionStorage.SetItemAsync(StorageName, SearchModelClone);
+								 SearchModel = SearchModelClone.Copy();
+								 await Grid.Refresh();
+							 });
 	}
 
 	/// <summary>
@@ -1501,38 +1487,43 @@ public partial class Requisition
 	/// <returns>
 	///     A task that represents the asynchronous operation.
 	/// </returns>
-	private async Task SaveActivity(EditContext activity)
+	private Task SaveActivity(EditContext activity)
 	{
-		await Task.Yield();
+		return ExecuteMethod(async () =>
+							 {
+								 //RestClient _client = new($"{Start.ApiHost}");
+								 //RestRequest _request = new("Candidates/SaveCandidateActivity", Method.Post)
+								 //{
+								 // RequestFormat = DataFormat.Json
+								 //};
+								 //_request.AddJsonBody(activity.Model);
+								 //_request.AddQueryParameter("candidateID", _target.ID);
+								 //_request.AddQueryParameter("user", LoginCookyUser == null || LoginCookyUser.UserID.NullOrWhiteSpace() ? "JOLLY" : LoginCookyUser.UserID.ToUpperInvariant());
+								 //_request.AddQueryParameter("roleID", LoginCookyUser == null || LoginCookyUser.RoleID.NullOrWhiteSpace() ? "RS" : LoginCookyUser.RoleID.ToUpperInvariant());
+								 //_request.AddQueryParameter("isCandidateScreen", false);
+								 //_request.AddQueryParameter("jsonPath", Start.JsonFilePath);
+								 //_request.AddQueryParameter("emailAddress", LoginCookyUser == null || LoginCookyUser.Email.NullOrWhiteSpace() ? "info@titan-techs.com" : LoginCookyUser.Email.ToUpperInvariant());
+								 //_request.AddQueryParameter("uploadPath", Start.UploadsPath);
 
-		try
-		{
-			RestClient _client = new($"{Start.ApiHost}");
-			RestRequest _request = new("Candidates/SaveCandidateActivity", Method.Post)
-			{
-				RequestFormat = DataFormat.Json
-			};
-			_request.AddJsonBody(activity.Model);
-			_request.AddQueryParameter("candidateID", _target.ID);
-			_request.AddQueryParameter("user", LoginCookyUser == null || LoginCookyUser.UserID.NullOrWhiteSpace() ? "JOLLY" : LoginCookyUser.UserID.ToUpperInvariant());
-			_request.AddQueryParameter("roleID", LoginCookyUser == null || LoginCookyUser.RoleID.NullOrWhiteSpace() ? "RS" : LoginCookyUser.RoleID.ToUpperInvariant());
-			_request.AddQueryParameter("isCandidateScreen", false);
-			_request.AddQueryParameter("jsonPath", Start.JsonFilePath);
-			_request.AddQueryParameter("emailAddress", LoginCookyUser == null || LoginCookyUser.Email.NullOrWhiteSpace() ? "info@titan-techs.com" : LoginCookyUser.Email.ToUpperInvariant());
-			_request.AddQueryParameter("uploadPath", Start.UploadsPath);
+								 Dictionary<string, string> _parameters = new()
+																		  {
+																			  {"candidateID", _target.ID.ToString()},
+																			  {"user", General.GetUserName(LoginCookyUser)},
+																			  {"roleID", General.GetRoleID(LoginCookyUser)},
+																			  {"isCandidateScreen", "false"},
+																			  {"jsonPath", Start.JsonFilePath},
+																			  {"emailAddress", General.GetEmail(LoginCookyUser)},
+																			  {"uploadPath", Start.UploadsPath}
+																		  };
 
-			Dictionary<string, object> _response = await _client.PostAsync<Dictionary<string, object>>(_request);
-			if (_response == null)
-			{
-				return;
-			}
+								 Dictionary<string, object> _response = await General.PostRest("Candidates/SaveCandidateActivity", _parameters, activity.Model);
+								 if (_response == null)
+								 {
+									 return;
+								 }
 
-			_candidateActivityObject = General.DeserializeObject<List<CandidateActivity>>(_response["Activity"]);
-		}
-		catch
-		{
-			//
-		}
+								 _candidateActivityObject = General.DeserializeObject<List<CandidateActivity>>(_response["Activity"]);
+							 });
 	}
 
 	/// <summary>
@@ -1549,39 +1540,47 @@ public partial class Requisition
 	///     in a multipart form data request. Additional parameters, such as filename, mime type, document name, notes,
 	///     requisition ID, user, and path are also sent with the request.
 	/// </remarks>
-	private async Task SaveDocument(EditContext document)
+	private Task SaveDocument(EditContext document)
 	{
-		await Task.Yield();
-		try
-		{
-			if (document.Model is RequisitionDocuments _document)
-			{
-				RestClient _client = new($"{Start.ApiHost}");
-				RestRequest _request = new("Requisition/UploadDocument", Method.Post)
-				{
-					AlwaysMultipartFormData = true
-				};
-				_request.AddFile("file", AddedDocument.ToStreamByteArray(), FileName);
-				_request.AddParameter("filename", FileName, ParameterType.GetOrPost);
-				_request.AddParameter("mime", Mime, ParameterType.GetOrPost);
-				_request.AddParameter("name", _document.DocumentName, ParameterType.GetOrPost);
-				_request.AddParameter("notes", _document.DocumentNotes, ParameterType.GetOrPost);
-				_request.AddParameter("requisitionID", _target.ID.ToString(), ParameterType.GetOrPost);
-				_request.AddParameter("user", LoginCookyUser == null || LoginCookyUser.UserID.NullOrWhiteSpace() ? "JOLLY" : LoginCookyUser.UserID.ToUpperInvariant(), ParameterType.GetOrPost);
-				_request.AddParameter("path", Start.UploadsPath, ParameterType.GetOrPost);
-				Dictionary<string, object> _response = await _client.PostAsync<Dictionary<string, object>>(_request);
-				if (_response == null)
-				{
-					return;
-				}
+		return ExecuteMethod(async () =>
+							 {
+								 if (document.Model is RequisitionDocuments _document)
+								 {
+									 //RestClient _client = new($"{Start.ApiHost}");
+									 //RestRequest _request = new("Requisition/UploadDocument", Method.Post)
+									 //					{
+									 //						AlwaysMultipartFormData = true
+									 //					};
+									 //_request.AddFile("file", AddedDocument.ToStreamByteArray(), FileName);
+									 //_request.AddParameter("filename", FileName, ParameterType.GetOrPost);
+									 //_request.AddParameter("mime", Mime, ParameterType.GetOrPost);
+									 //_request.AddParameter("name", _document.DocumentName, ParameterType.GetOrPost);
+									 //_request.AddParameter("notes", _document.DocumentNotes, ParameterType.GetOrPost);
+									 //_request.AddParameter("requisitionID", _target.ID.ToString(), ParameterType.GetOrPost);
+									 //_request.AddParameter("user", LoginCookyUser == null || LoginCookyUser.UserID.NullOrWhiteSpace() ? "JOLLY" : LoginCookyUser.UserID.ToUpperInvariant(),
+									 //				   ParameterType.GetOrPost);
+									 //_request.AddParameter("path", Start.UploadsPath, ParameterType.GetOrPost);
 
-				_requisitionDocumentsObject = General.DeserializeObject<List<RequisitionDocuments>>(_response["Document"]);
-			}
-		}
-		catch
-		{
-			//
-		}
+									 Dictionary<string, string> _parameters = new()
+																			  {
+																				  {"filename", FileName},
+																				  {"mime", Mime},
+																				  {"name", _document.DocumentName},
+																				  {"notes", _document.DocumentNotes},
+																				  {"requisitionID", _target.ID.ToString()},
+																				  {"user", General.GetUserName(LoginCookyUser)},
+																				  {"path", Start.UploadsPath}
+																			  };
+									 Dictionary<string, object> _response = await General.PostRest("Requisition/UploadDocument", _parameters, null, AddedDocument.ToStreamByteArray(),
+																								   FileName);
+									 if (_response == null)
+									 {
+										 return;
+									 }
+
+									 _requisitionDocumentsObject = General.DeserializeObject<List<RequisitionDocuments>>(_response["Document"]);
+								 }
+							 });
 	}
 
 	/// <summary>
@@ -1607,9 +1606,9 @@ public partial class Requisition
 
 		RestClient _client = new($"{Start.ApiHost}");
 		RestRequest _request = new("Requisition/SaveRequisition", Method.Post)
-		{
-			RequestFormat = DataFormat.Json
-		};
+							   {
+								   RequestFormat = DataFormat.Json
+							   };
 		_request.AddJsonBody(_requisitionDetailsObjectClone);
 		_request.AddQueryParameter("user", LoginCookyUser == null || LoginCookyUser.UserID.NullOrWhiteSpace() ? "JOLLY" : LoginCookyUser.UserID.ToUpperInvariant());
 		_request.AddQueryParameter("jsonPath", Start.JsonFilePath);
@@ -1626,11 +1625,11 @@ public partial class Requisition
 			_target.JobOptions = _requisitionDetailsObject.JobOptions;
 			_target.Status = _requisitionDetailsObject.Status;
 			_target.PriorityColor = _requisitionDetailsObject.Priority.ToUpperInvariant() switch
-			{
-				"HIGH" => _preference.HighPriorityColor,
-				"LOW" => _preference.LowPriorityColor,
-				_ => _preference.NormalPriorityColor
-			};
+									{
+										"HIGH" => _preference.HighPriorityColor,
+										"LOW" => _preference.LowPriorityColor,
+										_ => _preference.NormalPriorityColor
+									};
 		}
 		else
 		{
@@ -1772,34 +1771,27 @@ public partial class Requisition
 	///     - "itemSubmitExisting": Sets the selected tab to 2 and submits a candidate.
 	///     - "itemSubmitNew": Sets the selected tab to 2.
 	/// </remarks>
-	private async Task SpeedDialItemClicked(SpeedDialItemEventArgs args)
+	private Task SpeedDialItemClicked(SpeedDialItemEventArgs args)
 	{
-		if (!_actionProgress)
-		{
-			await Task.Yield();
-			_actionProgress = true;
 			switch (args.Item.ID)
 			{
 				case "itemEditRequisition":
 					_selectedTab = 0;
-					await EditRequisition(false);
-					break;
+					return EditRequisition(false);
 				case "itemAddDocument":
 					_selectedTab = 1;
-					await AddDocument();
-					break;
+					return AddDocument();
 				case "itemSubmitExisting":
 					_selectedTab = 2;
-					await SubmitCandidate();
-					break;
+					SubmitCandidate();
+					return Task.CompletedTask;
 				case "itemSubmitNew":
 					_selectedTab = 2;
 					//await SubmitCandidate();
-					break;
+					return Task.CompletedTask;
 			}
 
-			_actionProgress = false;
-		}
+			return Task.CompletedTask;
 	}
 
 	/// <summary>
@@ -1810,11 +1802,7 @@ public partial class Requisition
 	///     the ID of the current requisition as a parameter in the URL.
 	/// </remarks>
 	/// <returns>A <see cref="Task" /> representing the asynchronous operation.</returns>
-	private async Task SubmitCandidate()
-	{
-		await Task.Yield();
-		NavManager.NavigateTo($"{NavManager.BaseUri}candidate?requisition={_target.ID}", true);
-	}
+	private void SubmitCandidate() => NavManager.NavigateTo($"{NavManager.BaseUri}candidate?requisition={_target.ID}", true);
 
 	/// <summary>
 	///     Handles the event when a tab is selected in the user interface.
@@ -1825,11 +1813,7 @@ public partial class Requisition
 	/// <returns>
 	///     A <see cref="Task" /> representing the asynchronous operation.
 	/// </returns>
-	private async Task TabSelected(SelectEventArgs args)
-	{
-		await Task.Yield();
-		_selectedTab = args.SelectedIndex;
-	}
+	private void TabSelected(SelectEventArgs args) => _selectedTab = args.SelectedIndex;
 
 	/// <summary>
 	///     Asynchronously undoes a candidate activity based on the provided activity ID.
@@ -1853,9 +1837,9 @@ public partial class Requisition
 		{
 			RestClient _client = new($"{Start.ApiHost}");
 			RestRequest _request = new("Candidates/UndoCandidateActivity", Method.Post)
-			{
-				RequestFormat = DataFormat.Json
-			};
+								   {
+									   RequestFormat = DataFormat.Json
+								   };
 			_request.AddQueryParameter("submissionID", activityID);
 			_request.AddQueryParameter("user", LoginCookyUser == null || LoginCookyUser.UserID.NullOrWhiteSpace() ? "JOLLY" : LoginCookyUser.UserID.ToUpperInvariant());
 			_request.AddQueryParameter("isCandidateScreen", false);
