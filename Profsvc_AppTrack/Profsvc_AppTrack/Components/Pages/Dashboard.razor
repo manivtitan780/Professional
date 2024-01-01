@@ -146,7 +146,8 @@
 			<div class="dashboardHeader">My Requisitions</div>
 			<div style="height: 245px; padding: 0 5px;">
 				<SfGrid AllowMultiSorting="false" AllowPaging="false" AllowSorting="true" DataSource="MyRequisitions" EnableHeaderFocus="true" EnableHover="true" EnableStickyHeader="true" Height="100%" ID="gridMyRequisitions"
-						@ref="GridMyRequisitions" TValue="Requisitions" Width="calc(100% - 15px)">
+                        TValue="Requisitions" Width="calc(100% - 15px)">
+                    @* @ref="GridMyRequisitions" *@
 					<GridSelectionSettings EnableToggle="false" Mode="SelectionMode.Row" Type="SelectionType.Single" />
 					<GridColumns>
 						<GridColumn Field="@nameof(Requisitions.ID)" HeaderText="ID" IsPrimaryKey="true" Visible="false" Width="0" />
@@ -173,8 +174,9 @@
 			<div class="dashboardHeader">Candidates submitted by me in last 2 months @RoleName</div>
 			<div style="height: 245px; padding: 0 5px;">
 				<SfGrid AllowMultiSorting="false" AllowPaging="false" AllowSorting="true" DataSource="CandidatesSubmitted" EnableHover="true" EnableStickyHeader="true" Height="100%" ID="gridSubmittedCandidates"
-						@ref="GridCandidatesSubmitted" TValue="Candidates" Width="99.75%">
-					<GridSelectionSettings EnableToggle="false" Mode="SelectionMode.Row" Type="SelectionType.Single" />
+                        TValue="Candidates" Width="99.75%">
+                    @* @ref="GridCandidatesSubmitted" *@
+                    <GridSelectionSettings EnableToggle="false" Mode="SelectionMode.Row" Type="SelectionType.Single" />
 					<GridColumns>
 						<GridColumn Field="@nameof(Candidates.ID)" HeaderText="ID" IsPrimaryKey="true" Visible="false" Width="0"></GridColumn>
 						<GridColumn AllowSorting="true" Field="@nameof(Candidates.Name)" HeaderText="Name" Width="20%">

@@ -8,7 +8,7 @@
 // File Name:           Dashboard.razor.cs
 // Created By:          Narendra Kumaran Kadhirvelu, Jolly Joseph Paily, DonBosco Paily, Mariappan Raja
 // Created On:          11-23-2023 19:53
-// Last Updated On:     12-6-2023 21:16
+// Last Updated On:     12-31-2023 19:53
 // *****************************************/
 
 #endregion
@@ -32,6 +32,8 @@ namespace Profsvc_AppTrack.Components.Pages;
 /// </remarks>
 public partial class Dashboard
 {
+    private readonly SemaphoreSlim _semaphoreMainPage = new(1, 1);
+
     /// <summary>
     ///     Gets or sets the list of candidates that have been submitted.
     /// </summary>
@@ -58,6 +60,12 @@ public partial class Dashboard
     ///     It is updated when the ActivitiesTab is selected.
     /// </remarks>
     private SfChart ChartActivities
+    {
+        get;
+        set;
+    }
+
+    private IEnumerable<object> ChartActivitiesDataSource
     {
         get;
         set;
@@ -109,7 +117,9 @@ public partial class Dashboard
     {
         get;
         set;
-    } /*= new()
+    } 
+    
+    /*= new()
             {
                 new()
                 {Id = 1, Subject = "Paris", StartTime = new(2023, 5, 15, 10, 0, 0), EndTime = new(2023, 5, 15, 14, 0, 0)},
@@ -117,52 +127,52 @@ public partial class Dashboard
                 {Id = 2, Subject = "Germany", StartTime = new(2023, 5, 18, 10, 0, 0), EndTime = new(2023, 5, 18, 12, 0, 0)}
             };*/
 
-    /// <summary>
-    ///     Gets or sets the grid of submitted candidates for the Dashboard.
-    /// </summary>
-    /// <value>
-    ///     The grid of submitted candidates.
-    /// </value>
-    /// <remarks>
-    ///     This property is used to display the list of candidates who have submitted their applications.
-    ///     It is a grid view that provides a structured and easy-to-read presentation of the candidates' data.
-    /// </remarks>
-    private SfGrid<Candidates> GridCandidatesSubmitted
-    {
-        get;
-        set;
-    }
+    ///// <summary>
+    /////     Gets or sets the grid of submitted candidates for the Dashboard.
+    ///// </summary>
+    ///// <value>
+    /////     The grid of submitted candidates.
+    ///// </value>
+    ///// <remarks>
+    /////     This property is used to display the list of candidates who have submitted their applications.
+    /////     It is a grid view that provides a structured and easy-to-read presentation of the candidates' data.
+    ///// </remarks>
+    //private SfGrid<Candidates> GridCandidatesSubmitted
+    //{
+    //    get;
+    //    set;
+    //}
 
-    /// <summary>
-    ///     Gets or sets the grid that displays the user's requisitions on the Dashboard page.
-    /// </summary>
-    /// <value>
-    ///     The grid of requisitions.
-    /// </value>
-    /// <remarks>
-    ///     This property is used to bind the data of the user's requisitions to the grid on the Dashboard page.
-    ///     The grid is implemented using the Syncfusion Blazor Grids component.
-    /// </remarks>
-    private SfGrid<Requisitions> GridMyRequisitions
-    {
-        get;
-        set;
-    }
+    ///// <summary>
+    /////     Gets or sets the grid that displays the user's requisitions on the Dashboard page.
+    ///// </summary>
+    ///// <value>
+    /////     The grid of requisitions.
+    ///// </value>
+    ///// <remarks>
+    /////     This property is used to bind the data of the user's requisitions to the grid on the Dashboard page.
+    /////     The grid is implemented using the Syncfusion Blazor Grids component.
+    ///// </remarks>
+    //private SfGrid<Requisitions> GridMyRequisitions
+    //{
+    //    get;
+    //    set;
+    //}
 
-    /// <summary>
-    ///     Gets or sets the grid of submitted requisitions for the Dashboard.
-    /// </summary>
-    /// <value>
-    ///     The grid of submitted requisitions.
-    /// </value>
-    /// <remarks>
-    ///     This property is used to display the submitted requisitions in a grid format on the Dashboard.
-    /// </remarks>
-    private SfGrid<Requisitions> GridSubmittedRequisitions
-    {
-        get;
-        set;
-    }
+    ///// <summary>
+    /////     Gets or sets the grid of submitted requisitions for the Dashboard.
+    ///// </summary>
+    ///// <value>
+    /////     The grid of submitted requisitions.
+    ///// </value>
+    ///// <remarks>
+    /////     This property is used to display the submitted requisitions in a grid format on the Dashboard.
+    ///// </remarks>
+    //private SfGrid<Requisitions> GridSubmittedRequisitions
+    //{
+    //    get;
+    //    set;
+    //}
 
     /// <summary>
     ///     Gets or sets the local storage service for the Dashboard.
@@ -176,6 +186,20 @@ public partial class Dashboard
     /// </remarks>
     [Inject]
     private ILocalStorageService LocalStorage
+    {
+        get;
+        set;
+    }
+
+    /// <summary>
+    ///     Gets or sets the ILogger instance used for logging in the Candidate class.
+    /// </summary>
+    /// <remarks>
+    ///     This property is used to log information about the execution of tasks and methods within the Candidate class.
+    ///     It is injected at runtime by the dependency injection system.
+    /// </remarks>
+    [Inject]
+    private ILogger<Dashboard> Logger
     {
         get;
         set;
@@ -208,7 +232,7 @@ public partial class Dashboard
     /// <remarks>
     ///     This property is used to limit the date range for the data displayed on the Dashboard.
     /// </remarks>
-    internal DateTime MaxDate
+    private DateTime MaxDate
     {
         get;
         set;
@@ -223,7 +247,7 @@ public partial class Dashboard
     /// <remarks>
     ///     This property is used to limit the range of dates that can be selected or displayed on the Dashboard.
     /// </remarks>
-    internal DateTime MinDate
+    private DateTime MinDate
     {
         get;
         set;
@@ -322,7 +346,7 @@ public partial class Dashboard
     {
         get;
         set;
-    }
+    } = new();
 
     /// <summary>
     ///     Gets or sets the status of the spinner on the Dashboard.
@@ -509,12 +533,6 @@ public partial class Dashboard
         set;
     }
 
-    private IEnumerable<object> ChartActivitiesDataSource
-    {
-        get;
-        set;
-    }
-
     /// <summary>
     ///     Handles the selection of the Activities tab on the Dashboard.
     /// </summary>
@@ -529,21 +547,23 @@ public partial class Dashboard
     ///     It updates the data source of the ChartActivities based on the selected index and refreshes the chart.
     ///     It also controls the visibility of the Spinner during the data fetching and processing.
     /// </remarks>
-    private async Task ActivitiesTabSelected(SelectEventArgs args)
+    private Task ActivitiesTabSelected(SelectEventArgs args)
     {
-        await Spinner.ShowAsync();
-        ChartActivitiesDataSource = args.SelectedIndex switch
-                                     {
-                                         0 => SubmissionStatus7,
-                                         1 => SubmissionStatus30,
-                                         2 => SubmissionStatus90,
-                                         _ => SubmissionStatus365
-                                     };
+        return ExecuteMethod(async () =>
+                             {
+                                 await Spinner.ShowAsync();
+                                 ChartActivitiesDataSource = args.SelectedIndex switch
+                                                             {
+                                                                 0 => SubmissionStatus7,
+                                                                 1 => SubmissionStatus30,
+                                                                 2 => SubmissionStatus90,
+                                                                 _ => SubmissionStatus365
+                                                             };
 
-        await ChartActivities.RefreshAsync(false);
-        //await Task.Delay(2000);
-        StateHasChanged();
-        await Spinner.HideAsync();
+                                 await ChartActivities.RefreshAsync(false);
+                                 StateHasChanged();
+                                 await Spinner.HideAsync();
+                             });
     }
 
     /// <summary>
@@ -556,11 +576,13 @@ public partial class Dashboard
     ///     This method is called when a candidate is clicked on the Dashboard page.
     ///     It stores the clicked candidate's ID in the session storage and navigates to the candidate's page.
     /// </remarks>
-    private async Task ClickCandidate(int candidateID)
+    private Task ClickCandidate(int candidateID)
     {
-        await Task.Yield();
-        await SessionStorage.SetItemAsync("CandidateIDFromDashboard", candidateID);
-        NavManager.NavigateTo($"{NavManager.BaseUri}candidate", true);
+        return ExecuteMethod(async () =>
+                             {
+                                 await SessionStorage.SetItemAsync("CandidateIDFromDashboard", candidateID);
+                                 NavManager.NavigateTo($"{NavManager.BaseUri}candidate", true);
+                             });
     }
 
     /// <summary>
@@ -574,12 +596,25 @@ public partial class Dashboard
     ///     It stores the ID of the clicked requisition item in the session storage and navigates
     ///     the user to the Requisition page for the clicked item.
     /// </remarks>
-    private async Task ClickRequisition(int requisitionID)
+    private Task ClickRequisition(int requisitionID)
     {
-        await Task.Yield();
-        await SessionStorage.SetItemAsync("RequisitionIDFromDashboard", requisitionID);
-        NavManager.NavigateTo($"{NavManager.BaseUri}requisition", true);
+        return ExecuteMethod(async () =>
+                             {
+                                 await SessionStorage.SetItemAsync("RequisitionIDFromDashboard", requisitionID);
+                                 NavManager.NavigateTo($"{NavManager.BaseUri}requisition", true);
+                             });
     }
+
+    /// <summary>
+    ///     Executes the provided task within a semaphore lock. If the semaphore is currently locked, the method will return
+    ///     immediately.
+    ///     If an exception occurs during the execution of the task, it will be logged using the provided logger.
+    /// </summary>
+    /// <param name="task">The task to be executed.</param>
+    /// <returns>
+    ///     A task that represents the asynchronous operation.
+    /// </returns>
+    private Task ExecuteMethod(Func<Task> task) => General.ExecuteMethod(_semaphoreMainPage, task, Logger);
 
     /// <summary>
     ///     Handles the event that occurs when an appointment is rendered on the Dashboard.
@@ -616,33 +651,42 @@ public partial class Dashboard
     /// </returns>
     protected override async Task OnInitializedAsync()
     {
-        MinDate = DateTime.Today.AddDays(-7);
-        MaxDate = DateTime.Today.AddYears(1);
+        await ExecuteMethod(async () =>
+                            {
+                                MinDate = DateTime.Today.AddDays(-7);
+                                MaxDate = DateTime.Today.AddYears(1);
 
-        LoginCookyUser = await NavManager.RedirectInner(LocalStorage);
-        RoleID = RoleName = LoginCookyUser == null || LoginCookyUser.RoleID.NullOrWhiteSpace() ? "RC" : LoginCookyUser.RoleID.ToUpperInvariant();
-        RestClient _restClient = new($"{Start.ApiHost}");
-        RestRequest _request = new("Login/Dashboard");
-        _request.AddQueryParameter("userName", LoginCookyUser == null || LoginCookyUser.UserID.NullOrWhiteSpace() ? "JOLLY" : LoginCookyUser.UserID.ToUpperInvariant());
-        _request.AddQueryParameter("roleID", RoleName);
+                                LoginCookyUser = await NavManager.RedirectInner(LocalStorage);
+                                RoleID = RoleName = General.GetRoleID(LoginCookyUser);
+                                //RestClient _restClient = new($"{Start.ApiHost}");
+                                //RestRequest _request = new("Login/Dashboard");
+                                //_request.AddQueryParameter("userName", LoginCookyUser == null || LoginCookyUser.UserID.NullOrWhiteSpace() ? "JOLLY" : LoginCookyUser.UserID.ToUpperInvariant());
+                                //_request.AddQueryParameter("roleID", RoleName);
 
-        Dictionary<string, object> _restResponse = await _restClient.GetAsync<Dictionary<string, object>>(_request);
-        if (_restResponse != null)
-        {
-            DataSource = General.DeserializeObject<List<AppointmentData>>(_restResponse["Appointments"]);
-            SubmissionStatus7 = General.DeserializeObject<List<SubmissionStatus>>(_restResponse["SubmissionStatus7"]);
-            SubmissionStatus30 = General.DeserializeObject<List<SubmissionStatus>>(_restResponse["SubmissionStatus30"]);
-            SubmissionStatus90 = General.DeserializeObject<List<SubmissionStatus>>(_restResponse["SubmissionStatus90"]);
-            SubmissionStatus365 = General.DeserializeObject<List<SubmissionStatus>>(_restResponse["SubmissionStatus365"]);
-            CandidatesSubmitted = General.DeserializeObject<List<Candidates>>(_restResponse["Candidates"]);
-            MyRequisitions = General.DeserializeObject<List<Requisitions>>(_restResponse["Requisitions"]);
-            SubmittedRequisitions = General.DeserializeObject<List<Requisitions>>(_restResponse["RequisitionsSubmitted"]);
-            ChartStatus = General.DeserializeObject<ChartStatusPoints>(_restResponse["ChartStatus"]);
-            UserStatus7 = General.DeserializeObject<List<ChartUsersStatus>>(_restResponse["UserStatus7"]);
-            UserStatus30 = General.DeserializeObject<List<ChartUsersStatus>>(_restResponse["UserStatus30"]);
-            UserStatus90 = General.DeserializeObject<List<ChartUsersStatus>>(_restResponse["UserStatus90"]);
-            UserStatus365 = General.DeserializeObject<List<ChartUsersStatus>>(_restResponse["UserStatus365"]);
-        }
+                                Dictionary<string, string> _parameters = new()
+                                                                         {
+                                                                             {"userName", General.GetUserName(LoginCookyUser)},
+                                                                             {"roleID", RoleName}
+                                                                         };
+
+                                Dictionary<string, object> _restResponse = await General.GetRest<Dictionary<string, object>>("Login/Dashboard", _parameters);
+                                if (_restResponse != null)
+                                {
+                                    DataSource = General.DeserializeObject<List<AppointmentData>>(_restResponse["Appointments"]);
+                                    SubmissionStatus7 = General.DeserializeObject<List<SubmissionStatus>>(_restResponse["SubmissionStatus7"]);
+                                    SubmissionStatus30 = General.DeserializeObject<List<SubmissionStatus>>(_restResponse["SubmissionStatus30"]);
+                                    SubmissionStatus90 = General.DeserializeObject<List<SubmissionStatus>>(_restResponse["SubmissionStatus90"]);
+                                    SubmissionStatus365 = General.DeserializeObject<List<SubmissionStatus>>(_restResponse["SubmissionStatus365"]);
+                                    CandidatesSubmitted = General.DeserializeObject<List<Candidates>>(_restResponse["Candidates"]);
+                                    MyRequisitions = General.DeserializeObject<List<Requisitions>>(_restResponse["Requisitions"]);
+                                    SubmittedRequisitions = General.DeserializeObject<List<Requisitions>>(_restResponse["RequisitionsSubmitted"]);
+                                    ChartStatus = General.DeserializeObject<ChartStatusPoints>(_restResponse["ChartStatus"]);
+                                    UserStatus7 = General.DeserializeObject<List<ChartUsersStatus>>(_restResponse["UserStatus7"]);
+                                    UserStatus30 = General.DeserializeObject<List<ChartUsersStatus>>(_restResponse["UserStatus30"]);
+                                    UserStatus90 = General.DeserializeObject<List<ChartUsersStatus>>(_restResponse["UserStatus90"]);
+                                    UserStatus365 = General.DeserializeObject<List<ChartUsersStatus>>(_restResponse["UserStatus365"]);
+                                }
+                            });
     }
 
     /// <summary>
@@ -658,19 +702,22 @@ public partial class Dashboard
     /// <returns>
     ///     A Task representing the asynchronous operation.
     /// </returns>
-    private async Task StatusTabSelected(SelectEventArgs args)
+    private Task StatusTabSelected(SelectEventArgs args)
     {
-        await SpinnerStatus.ShowAsync();
-        StatusChartDataSource = args.SelectedIndex switch
-                                {
-                                    0 => UserStatus7,
-                                    1 => UserStatus30,
-                                    2 => UserStatus90,
-                                    _ => UserStatus365
-                                };
+        return ExecuteMethod(async () =>
+                             {
+                                 await SpinnerStatus.ShowAsync();
+                                 StatusChartDataSource = args.SelectedIndex switch
+                                                         {
+                                                             0 => UserStatus7,
+                                                             1 => UserStatus30,
+                                                             2 => UserStatus90,
+                                                             _ => UserStatus365
+                                                         };
 
-        await StatusChart.RefreshAsync(false);
-        StateHasChanged();
-        await SpinnerStatus.HideAsync();
+                                 await StatusChart.RefreshAsync(false);
+                                 StateHasChanged();
+                                 await SpinnerStatus.HideAsync();
+                             });
     }
 }

@@ -14,12 +14,12 @@
 			<label class="labelInfo">Login to Applicant Tracking System</label>
 		</div>
 		<div class="loginRow">
-			<TextBoxControl @bind-Value="@ModelLogin.UserName" @bind-Value:event="ValueChanged" CreateDivTag="false" CreateTooltip="true" ID="textUserName" MaxLength="10" MinLength="1"
-							Placeholder="User Name" ValidationMessage="@(() => ModelLogin.UserName)" />
+			<TextBoxControl @bind-Value="@ModelLoginClass.UserName" @bind-Value:event="ValueChanged" CreateDivTag="false" CreateTooltip="true" ID="textUserName" MaxLength="10" MinLength="1"
+							Placeholder="User Name" ValidationMessage="@(() => ModelLoginClass.UserName)" />
 		</div>
 		<div class="loginRow">
-			<TextBoxControl @bind-Value="@ModelLogin.Password" @bind-Value:event="ValueChanged" CreateDivTag="false" CreateTooltip="true" ID="textPassword" MaxLength="16" MinLength="1"
-							Placeholder="Password" TextBoxType="InputType.Password" ValidationMessage="@(() => ModelLogin.Password)" />
+			<TextBoxControl @bind-Value="@ModelLoginClass.Password" @bind-Value:event="ValueChanged" CreateDivTag="false" CreateTooltip="true" ID="textPassword" MaxLength="16" MinLength="1"
+							Placeholder="Password" TextBoxType="InputType.Password" ValidationMessage="@(() => ModelLoginClass.Password)" />
 		</div>
 		<div class="loginRow center" style="margin-top: 50px;">
 			<SfButton IsPrimary="true" type="submit">Login</SfButton>

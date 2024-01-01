@@ -17,7 +17,7 @@ namespace Profsvc_AppTrack.Components.Code;
 
 /// <summary>
 /// </summary>
-public class Login
+public class LoginClass
 {
 	/// <summary>
 	///     Gets or sets the password for the login. This property is required and its length should be between 3 and 16
